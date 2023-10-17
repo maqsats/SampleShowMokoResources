@@ -12,7 +12,7 @@
 
 ## Android, iOS, Desktop, Web
 
-![alt text](./result.png)
+![alt text](./result.jpg)
 
 ## Architecture
 
@@ -43,7 +43,6 @@ Run the browser application: `./gradlew :composeApp:jsBrowserDevelopmentRun`
 
 ## Especial thanks
 
-* [Alex Fuhrmann] for his fantastic job: [The Rick and Morty Api]
 * [Compose Multiplatform Wizard] amazing tool to create KMM template
 * [Voyager] simply: makes your kmm life easy
 
