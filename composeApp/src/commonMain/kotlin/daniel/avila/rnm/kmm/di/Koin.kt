@@ -16,6 +16,8 @@ import daniel.avila.rnm.kmm.presentation.ui.features.characters_favorites.Charac
 import daniel.avila.rnm.kmm.data.repository.ICacheData
 import daniel.avila.rnm.kmm.data.repository.IRemoteData
 import daniel.avila.rnm.kmm.domain.repository.RepositoryImp
+import daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.TrackerViewModel
+import daniel.avila.rnm.kmm.utils.maps.geo.LocationTracker
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
@@ -48,6 +50,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
 val viewModelModule = module {
     factory { CharactersViewModel(get()) }
     factory { CharactersFavoritesViewModel(get()) }
+    factory { TrackerViewModel(get()) }
     factory { params -> CharacterDetailViewModel(get(), get(), get(), params.get()) }
 }
 

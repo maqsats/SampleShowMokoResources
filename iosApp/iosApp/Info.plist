@@ -8,5 +8,7 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
     <string>Program requires GPS to track cars and job orders</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>Program requires FaceID to login</string>
 </dict>
 </plist>

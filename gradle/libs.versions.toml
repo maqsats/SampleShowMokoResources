@@ -19,8 +19,12 @@ koin = "3.4.3"
 koinCompose = "1.0.4"
 sqlDelight = "2.0.0-alpha05"
 resource-generator = "0.23.0"
+playServicesLocationVersion = "21.0.1"
+androidBiometricVersion = "1.1.0"
 [libraries]
 
+biometric = { module = "androidx.biometric:biometric", version.ref = "androidBiometricVersion" }
+playServicesLocation = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocationVersion" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 compose-uitooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-uitooling" }
@@ -60,3 +64,4 @@ libres = { id = "io.github.skeptick.libres", version.ref = "libres" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 resource-generator = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "resource-generator" }
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
+parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }

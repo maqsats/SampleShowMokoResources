@@ -17,13 +17,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import daniel.avila.rnm.kmm.presentation.ui.common.CustomToolbar
-import daniel.avila.rnm.kmm.utils.navigation.LocalNavigator
-import daniel.avila.rnm.kmm.utils.navigation.currentOrThrow
+import daniel.avila.rnm.kmm.presentation.ui.features.biometry_check.BiometryCheck
 import daniel.avila.rnm.kmm.presentation.ui.features.bottom_nav.BottomBarNav
 import daniel.avila.rnm.kmm.presentation.ui.features.bottom_nav.BottomBarRoute
 import daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.ExchangePlaces
 import daniel.avila.rnm.kmm.presentation.ui.features.main.Main
 import daniel.avila.rnm.kmm.presentation.ui.features.screen2.Screen2
+import daniel.avila.rnm.kmm.utils.navigation.LocalNavigator
+import daniel.avila.rnm.kmm.utils.navigation.currentOrThrow
 import daniel.avila.rnm.kmm.utils.pie_chart.PieChart
 import daniel.avila.rnm.kmm.utils.pie_chart.PieChartDataModel
 
@@ -44,15 +45,17 @@ class HomeScreen : Screen {
                 BottomBarRoute.MAIN -> Main(modifier = Modifier.weight(1f)) {
                     navigator.push(Screen2())
                 }
-                BottomBarRoute.EXCHANGE_PLACES -> ExchangePlaces(modifier = Modifier.weight(1f))
+                BottomBarRoute.EXCHANGE_PLACES -> ExchangePlaces(
+                    modifier = Modifier.weight(1f)
+                )
                 BottomBarRoute.NEWS -> {
                     PieChart(
                         PieChartDataModel().pieChartData, modifier = Modifier
-                            .fillMaxWidth()
+                            .weight(1f).fillMaxWidth()
                             .padding(vertical = 10.dp)
                     )
                 }
-                BottomBarRoute.PROFILE -> EmptyScreen(modifier = Modifier.weight(1f), "Profile")
+                BottomBarRoute.PROFILE -> BiometryCheck(modifier = Modifier.weight(1f))
             }
 
             BottomBarNav(

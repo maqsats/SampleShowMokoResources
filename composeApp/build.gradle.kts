@@ -9,7 +9,9 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.sqlDelight)
     alias(libs.plugins.resource.generator)
+    alias(libs.plugins.parcelize)
 }
+
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
@@ -50,7 +52,7 @@ kotlin {
         version = "1.0.0"
         summary = "Compose application framework"
         homepage = "empty"
-        ios.deploymentTarget = "11.0"
+        ios.deploymentTarget = "12.0"
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "ComposeApp"
@@ -99,6 +101,8 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.sqlDelight.driver.android)
                 implementation(libs.koin.android)
+                implementation(libs.playServicesLocation)
+                implementation(libs.biometric)
                 implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
             }
         }
