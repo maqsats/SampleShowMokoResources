@@ -52,7 +52,13 @@ kotlin {
         version = "1.0.0"
         summary = "Compose application framework"
         homepage = "empty"
-        ios.deploymentTarget = "12.0"
+
+        ios.deploymentTarget = "14.0"
+
+        pod("GoogleMaps") {
+            version = "8.2.0"
+        }
+
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "ComposeApp"
@@ -103,7 +109,9 @@ kotlin {
                 implementation(libs.koin.android)
                 implementation(libs.playServicesLocation)
                 implementation(libs.biometric)
-                implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
+                implementation(libs.play.services.maps)
+                implementation(libs.accompanist.systemuicontroller)
+                implementation(libs.maps.compose)
             }
         }
 
@@ -138,6 +146,7 @@ kotlin {
             dependencies {
                 implementation(libs.ktor.client.darwin)
                 implementation(libs.sqlDelight.driver.native)
+                implementation(libs.play.services.maps)
             }
         }
     }
@@ -151,7 +160,7 @@ android {
         minSdk = 21
         targetSdk = 34
 
-        applicationId = "daniel.avila.rnm.kmm.androidApp"
+        applicationId = "today.tenge"
         versionCode = 1
         versionName = "1.0.0"
     }

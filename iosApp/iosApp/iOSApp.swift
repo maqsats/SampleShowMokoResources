@@ -1,6 +1,8 @@
 import UIKit
 import SwiftUI
 import ComposeApp
+import GoogleMaps
+import MapKit
 
 @main
 struct iosApp: App {
@@ -23,7 +25,11 @@ struct ContentView: View {
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        MainKt.MainViewController()
+        let googleMapsApiKey = "AIzaSyDxAEDo7w2Fm7dR3DEIyHAU5B-BNOADaQw"
+        GMSServices.provideAPIKey(googleMapsApiKey)
+        GMSServices.setMetalRendererEnabled(true)
+
+        return MainKt.MainViewController()
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}

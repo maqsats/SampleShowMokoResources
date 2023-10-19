@@ -1,5 +1,6 @@
 [versions]
 
+accompanistSystemuicontroller = "0.27.0"
 kotlin = "1.9.10"
 agp = "8.1.0"
 compose = "1.5.1"
@@ -7,6 +8,8 @@ androidx-appcompat = "1.6.1"
 androidx-activityCompose = "1.7.2"
 compose-uitooling = "1.5.1"
 libres = "1.1.8"
+mapsCompose = "3.1.1"
+playServicesMaps = "18.1.0"
 resourcesCompose = "0.23.0"
 voyager = "1.0.0-rc07"
 composeImageLoader = "1.4.1"
@@ -23,7 +26,10 @@ playServicesLocationVersion = "21.0.1"
 androidBiometricVersion = "1.1.0"
 [libraries]
 
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 biometric = { module = "androidx.biometric:biometric", version.ref = "androidBiometricVersion" }
+maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 playServicesLocation = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocationVersion" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }

@@ -50,7 +50,7 @@ fun ExchangePlaces(modifier: Modifier = Modifier) {
                     coroutineScope.launch {
                         println("requesting permissions")
                         try {
-                            controller.providePermission(Permission.COARSE_LOCATION)
+                            controller.providePermission(Permission.LOCATION)
                             delay(2000)
                             locationTracker.startTracking()
                             locationTracker.getLocationsFlow().collect {
