@@ -11,12 +11,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.simplenavigationcompose.ui.theme.BACKGROUND
-import com.example.simplenavigationcompose.ui.theme.BACKGROUND_GRAY
-import com.example.simplenavigationcompose.ui.theme.BLACK
-import com.example.simplenavigationcompose.ui.theme.GRAY
-import com.example.simplenavigationcompose.ui.theme.RED
-import com.example.simplenavigationcompose.ui.theme.Shapes
 import daniel.avila.rnm.kmm.MR
 import dev.icerock.moko.resources.compose.asFont
 
@@ -26,6 +20,8 @@ private val DarkColorPalette = darkColors(
     secondary = GRAY,
     secondaryVariant = BACKGROUND_GRAY,
     background = BACKGROUND,
+    surface = BLUE,
+    onSurface = WHITE,
 )
 
 private val LightColorPalette = lightColors(
@@ -34,6 +30,8 @@ private val LightColorPalette = lightColors(
     secondary = GRAY,
     secondaryVariant = BACKGROUND_GRAY,
     background = BACKGROUND,
+    surface = BLUE,
+    onSurface = WHITE
     /* Other default colors to override
     background = Color.White,
     surface = Color.White,
@@ -78,7 +76,7 @@ fun TengeTodayTheme(
         ),
         button = TextStyle(
             fontFamily = openSansFamily,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold,
             fontSize = 14.sp
         ),
         caption = TextStyle(
@@ -100,6 +98,16 @@ fun TengeTodayTheme(
             fontFamily = openSansFamily,
             fontWeight = FontWeight.SemiBold,
             fontSize = 16.sp
+        ),
+        h5 = TextStyle(
+            fontFamily = openSansFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 9.sp
+        ),
+        h6 = TextStyle(
+            fontFamily = openSansFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp
         ),
     )
 

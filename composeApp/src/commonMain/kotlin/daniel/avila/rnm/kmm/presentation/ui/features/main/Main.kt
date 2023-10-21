@@ -16,8 +16,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import daniel.avila.rnm.kmm.presentation.ui.common.ButtonBlue
 import daniel.avila.rnm.kmm.presentation.ui.features.main.custom_keyboard.CustomKeyboard
 import daniel.avila.rnm.kmm.presentation.ui.features.main.custom_main_tab.CustomTabBar
+import daniel.avila.rnm.kmm.presentation.ui.features.main.exchange.ExchangeItem
+import daniel.avila.rnm.kmm.presentation.ui.features.main.exchange.ExchangeItemState
 import daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main.ExchangeListMain
 
 @Composable
@@ -41,23 +44,42 @@ fun Main(modifier: Modifier = Modifier, onEmptyScreenClick: () -> Unit) {
                 .height(100.dp)
                 .clickable(onClick = {
                     isKeyboardVisible = true
-                    onEmptyScreenClick()
                 })
         )
 
         if (!isKeyboardVisible) {
-            ExchangeListMain()
-        } else {
-            CustomKeyboard(
-                modifier = Modifier.weight(1f),
-                onKeyPress = {
-                    inputText += it
-                },
-                onClear = { inputText = inputText.dropLast(1) },
-                onClearAll = { inputText = "" },
-                onPaste = { inputText = it },
-                onClose = { isKeyboardVisible = false },
-            )
+            ExchangeListMain(modifier = Modifier.weight(1f))
+            return
         }
+
+        CustomKeyboard(
+            modifier = Modifier.weight(1f),
+            onKeyPress = {
+                if (inputText.length >= 10) return@CustomKeyboard
+
+                if (it == "0" && inputText.isEmpty()) return@CustomKeyboard
+
+                if (it == "," && inputText.contains(",")) return@CustomKeyboard
+
+                inputText += it
+            },
+            onClear = {
+                inputText = inputText.dropLast(1)
+            },
+            onClearAll = {
+                inputText = ""
+            }
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        ButtonBlue(
+            modifier = Modifier.padding(horizontal = 10.dp),
+            buttonText = "Смотреть Курс в городе"
+        ) {
+            isKeyboardVisible = !isKeyboardVisible
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }

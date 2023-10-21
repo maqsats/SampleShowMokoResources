@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -23,19 +24,20 @@ import androidx.compose.ui.unit.dp
 fun RoundedBackground(
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colors.secondary,
+    height: Dp = 36.dp,
+    border: Dp = 5.dp,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
-
     Box(
         modifier = modifier
             .background(
                 color = backgroundColor,
-                RoundedCornerShape(5.dp)
+                RoundedCornerShape(border)
             )
-            .height(36.dp)
-            .clip(RoundedCornerShape(5.dp))
+            .height(height)
+            .clip(RoundedCornerShape(border))
             .combinedClickable(
                 indication = rememberRipple(
                     bounded = true,
