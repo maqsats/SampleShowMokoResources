@@ -10,6 +10,7 @@ abstract class BaseUseCase<IN, OUT>(
         try {
             Result.success(block(param))
         } catch (ex: Exception) {
+            ex.printStackTrace()
             Result.failure(ex)
         }
     }

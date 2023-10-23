@@ -21,8 +21,4 @@ class ApiCharacterMapper : Mapper<ApiCharacter, Character>() {
             }, origin.name, location.name, image
         )
     }
-
-    override fun inverseMap(model: Character): ApiCharacter {
-        TODO("Not yet implemented")
-    }
 }

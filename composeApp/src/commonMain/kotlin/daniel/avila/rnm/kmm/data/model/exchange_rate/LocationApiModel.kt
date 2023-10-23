@@ -1,6 +1,9 @@
 package daniel.avila.rnm.kmm.data.model.exchange_rate
 
-data class Location(
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class LocationApiModel(
     val address: String,
     val city_id: Int,
     val distance: Double,

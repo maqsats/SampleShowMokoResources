@@ -5,7 +5,7 @@ data class ExchangeRate(
     val currencyRate: CurrencyRate,
     val id: Int,
     val location: Location,
-    val logo: Any,
+    val logo: String,
     val name: String,
     val openHours: List<OpenHour>
 )

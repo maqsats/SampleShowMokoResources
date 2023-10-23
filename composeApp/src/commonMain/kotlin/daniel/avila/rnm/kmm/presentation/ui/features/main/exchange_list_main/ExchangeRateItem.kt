@@ -1,6 +1,7 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main.exchange
+package daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,15 +16,19 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.seiko.imageloader.rememberAsyncImagePainter
+import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
 
 @Composable
-fun ExchangeItem(state: ExchangeItemState) {
+fun ExchangeRateItem(item: ExchangeRate, onClick: (Int) -> Unit) {
 
     Row(
         modifier = Modifier.wrapContentHeight()
-            .fillMaxWidth().padding(horizontal = 15.dp, vertical = 15.dp)
+            .fillMaxWidth().padding(horizontal = 15.dp, vertical = 15.dp).clickable {
+                onClick(item.id)
+            }
     ) {
         Image(
             painter = rememberAsyncImagePainter("https://play-lh.googleusercontent.com/xujXQTNmLHTZUit5_qZTfUjw1tRK7wlEWYE-JXPokn6Eaoi7hXCL5O5QuQa4bbYgdL4"),
@@ -36,31 +41,27 @@ fun ExchangeItem(state: ExchangeItemState) {
         Spacer(modifier = Modifier.width(10.dp))
 
         Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.Start) {
-            Text(state.name, style = MaterialTheme.typography.button)
+            Text(item.name, style = MaterialTheme.typography.button)
 
             Spacer(modifier = Modifier.height(3.dp))
 
-            Text(state.howFar + " " + state.location, style = MaterialTheme.typography.h6)
+            Text(
+                item.location.distance.toInt().toString() + " " + item.location.address,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.h6
+            )
         }
 
         Spacer(modifier = Modifier.width(10.dp))
 
         Column(modifier = Modifier.wrapContentWidth(), horizontalAlignment = Alignment.End) {
 
-            Text(state.priceTotal, style = MaterialTheme.typography.button)
+            Text(item.currencyRate.buy.toString(), style = MaterialTheme.typography.button)
 
             Spacer(modifier = Modifier.height(3.dp))
 
-            Text(state.priceForOneDollar, style = MaterialTheme.typography.h6)
+            Text(item.currencyRate.buy.toString(), style = MaterialTheme.typography.h6)
         }
     }
 }
-
-data class ExchangeItemState(
-    val name: String,
-    val priceTotal: String,
-    val location: String,
-    val howFar: String,
-    val priceForOneDollar: String,
-)
-

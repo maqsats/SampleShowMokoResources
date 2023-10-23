@@ -1,6 +1,9 @@
 package daniel.avila.rnm.kmm.data.model.exchange_rate
 
-data class CurrencyRate(
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class CurrencyRateApiModel(
     val buy: Double,
     val currency_code: String,
     val quantity: Int,

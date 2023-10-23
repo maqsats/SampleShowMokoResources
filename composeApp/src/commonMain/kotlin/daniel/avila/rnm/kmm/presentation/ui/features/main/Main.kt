@@ -19,8 +19,6 @@ import androidx.compose.ui.unit.dp
 import daniel.avila.rnm.kmm.presentation.ui.common.ButtonBlue
 import daniel.avila.rnm.kmm.presentation.ui.features.main.custom_keyboard.CustomKeyboard
 import daniel.avila.rnm.kmm.presentation.ui.features.main.custom_main_tab.CustomTabBar
-import daniel.avila.rnm.kmm.presentation.ui.features.main.exchange.ExchangeItem
-import daniel.avila.rnm.kmm.presentation.ui.features.main.exchange.ExchangeItemState
 import daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main.ExchangeListMain
 
 @Composable
