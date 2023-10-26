@@ -17,6 +17,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,14 +34,27 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import daniel.avila.rnm.kmm.MR
+import daniel.avila.rnm.kmm.domain.model.currency.Currency
+import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
+import daniel.avila.rnm.kmm.presentation.ui.common.LocalBottomSheetNavigator
 import daniel.avila.rnm.kmm.presentation.ui.common.RoundedBackground
+import daniel.avila.rnm.kmm.presentation.ui.features.main.currency.CurrencyBottomSheet
+import daniel.avila.rnm.kmm.presentation.ui.features.main.currency.CurrencyContract
+import daniel.avila.rnm.kmm.presentation.ui.features.main.currency.CurrencyViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.main.custom_main_tab.CustomTabBar
 import daniel.avila.rnm.kmm.presentation.ui.features.main.custom_main_tab.TabItem
 import daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main.ExchangeRateListMain
 import dev.icerock.moko.resources.compose.painterResource
+import kotlinx.coroutines.flow.collectLatest
+import org.koin.compose.koinInject
 
 @Composable
 fun Calculator(modifier: Modifier = Modifier) {
+
+    var selectedTab by remember { mutableStateOf(TabItem("", false)) }
+
+    val bottomSheetNavigator = LocalBottomSheetNavigator.current
+
     var inputText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(
             TextFieldValue(
@@ -48,13 +63,24 @@ fun Calculator(modifier: Modifier = Modifier) {
             )
         )
     }
-    var selectedTab by remember { mutableStateOf(TabItem("", false)) }
 
-//    val focusRequester = remember { FocusRequester() }
-//
-//    LaunchedEffect(Unit) {
-//        focusRequester.requestFocus()
-//    }
+    var currencies by remember { mutableStateOf<Pair<Currency, Currency>?>(null) }
+
+    val currencyViewModel = koinInject<CurrencyViewModel>()
+
+    val state by currencyViewModel.uiState.collectAsState()
+
+    LaunchedEffect(key1 = Unit) {
+        currencyViewModel.effect.collectLatest { effect ->
+            when (effect) {
+                is CurrencyContract.Effect.NavigateToCurrencyDialog -> {
+                    bottomSheetNavigator.show(CurrencyBottomSheet(effect.currencies) {
+                        currencies = Pair(currencies?.first ?: it, it)
+                    })
+                }
+            }
+        }
+    }
 
     Column(
         modifier = modifier.fillMaxWidth()
@@ -79,7 +105,6 @@ fun Calculator(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .weight(1f)
                     .wrapContentHeight(),
-//                    .focusRequester(focusRequester)
                 value = inputText,
                 onValueChange = { input ->
                     when {
@@ -114,7 +139,10 @@ fun Calculator(modifier: Modifier = Modifier) {
             RoundedBackground(
                 modifier = Modifier.wrapContentWidth(),
                 height = 36.dp,
-                paddingHorizontal = 8.dp
+                paddingHorizontal = 8.dp,
+                onClick = {
+                    currencyViewModel.setEvent(CurrencyContract.Event.OnCurrencyClick)
+                }
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
@@ -125,10 +153,20 @@ fun Calculator(modifier: Modifier = Modifier) {
                             .height(15.dp)
                     )
                     Spacer(modifier = Modifier.width(5.dp))
-                    Text(
-                        text = "USD",
-                        style = MaterialTheme.typography.h6
-                    )
+                    when (val currencyList = state.currencies) {
+                        is ResourceUiState.Success -> {
+                            LaunchedEffect(currencyList.data) {
+                                currencies = Pair(currencyList.data[0], currencyList.data[1])
+                            }
+                            Text(
+                                text = currencies?.second?.code.orEmpty(),
+                                style = MaterialTheme.typography.h6
+                            )
+                        }
+                        else -> {
+
+                        }
+                    }
                     Image(
                         painter = painterResource(MR.images.expand_more),
                         contentDescription = null,
@@ -167,7 +205,7 @@ fun Calculator(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(5.dp))
 
         ExchangeRateListMain(
-            modifier = Modifier.weight(1f), selectedTab.buyOrSell
+            modifier = Modifier.weight(1f), selectedTab.buyOrSell, inputText.text, currencies
         )
     }
 }

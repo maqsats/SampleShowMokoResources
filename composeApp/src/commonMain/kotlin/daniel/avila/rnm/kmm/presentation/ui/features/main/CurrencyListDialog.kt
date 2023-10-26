@@ -12,11 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import daniel.avila.rnm.kmm.domain.model.currency.Currency
 
 @Composable
-fun DialogScreen() {
-    val dialogState = rememberMaterialDialogState()
+fun CurrencyListDialog(currencyList: List<Currency>, dialogState: MaterialDialogState) {
     MaterialDialog(
         dialogState = dialogState, elevation = 0.dp,
         backgroundColor = Color.White,
@@ -32,8 +33,4 @@ fun DialogScreen() {
             }
         }
     )
-    LaunchedEffect(dialogState) {
-        /* This should be called in an onClick or an Effect */
-        dialogState.show()
-    }
 }

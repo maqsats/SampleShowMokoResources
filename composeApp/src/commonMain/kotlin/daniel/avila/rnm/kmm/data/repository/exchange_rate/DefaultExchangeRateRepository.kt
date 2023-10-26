@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.data.repository
+package daniel.avila.rnm.kmm.data.repository.exchange_rate
 
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
 import daniel.avila.rnm.kmm.domain.params.ExchangeRateParameters

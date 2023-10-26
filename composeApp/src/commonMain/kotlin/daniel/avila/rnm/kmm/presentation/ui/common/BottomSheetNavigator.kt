@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetDefaults
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
@@ -50,7 +49,7 @@ public fun BottomSheetNavigator(
     scrimColor: Color = ModalBottomSheetDefaults.scrimColor,
     sheetShape: Shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
     sheetElevation: Dp = 26.dp,
-    sheetBackgroundColor: Color = MaterialTheme.colors.surface,
+    sheetBackgroundColor: Color = Color.White,
     sheetContentColor: Color = contentColorFor(sheetBackgroundColor),
     sheetGesturesEnabled: Boolean = true,
     skipHalfExpanded: Boolean = true,

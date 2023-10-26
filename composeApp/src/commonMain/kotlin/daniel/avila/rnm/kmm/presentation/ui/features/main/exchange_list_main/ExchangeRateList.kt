@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import daniel.avila.rnm.kmm.domain.model.currency.Currency
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSell
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
 
@@ -13,6 +14,8 @@ import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
 fun ExchangeRateList(
     exchangeRateList: List<ExchangeRate>,
     buyOrSell: BuyOrSell,
+    inputText: String,
+    currencies: Pair<Currency, Currency>,
     onExchangeRateClick: (Int) -> Unit,
 ) {
     LazyColumn(
@@ -24,6 +27,8 @@ fun ExchangeRateList(
                 item = exchangeRate,
                 isFirst = exchangeRateList.first() == exchangeRate,
                 buyOrSell = buyOrSell,
+                inputText = inputText,
+                currencies = currencies,
                 onClick = { onExchangeRateClick(exchangeRate.id) }
             )
         }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,16 +19,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.seiko.imageloader.rememberAsyncImagePainter
+import daniel.avila.rnm.kmm.domain.model.currency.Currency
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSell
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
 import daniel.avila.rnm.kmm.presentation.ui.common.RoundedBackground
+import daniel.avila.rnm.kmm.utils.extension.formatDistance
+import daniel.avila.rnm.kmm.utils.extension.formatMoney
 
 @Composable
 fun ExchangeRateItem(
@@ -35,7 +38,9 @@ fun ExchangeRateItem(
     item: ExchangeRate,
     isFirst: Boolean = false,
     buyOrSell: BuyOrSell,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    inputText: String,
+    currencies: Pair<Currency, Currency>
 ) {
     val addBorder = item.location.tags.isNotEmpty()
 
@@ -70,39 +75,56 @@ fun ExchangeRateItem(
 
             Spacer(modifier = Modifier.width(10.dp))
 
-            Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.Start) {
-                Text(item.name, style = MaterialTheme.typography.button)
+            Column(
+                modifier = Modifier.weight(1f).wrapContentHeight(),
+                verticalArrangement = Arrangement.Center
+            ) {
+
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        item.name,
+                        style = MaterialTheme.typography.button,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    Spacer(modifier = Modifier.width(5.dp))
+
+                    Text(
+                        when (buyOrSell) {
+                            BuyOrSell.BUY -> item.currencyRate.buy.formatMoney(inputText) + " " + currencies.first.code
+                            BuyOrSell.SELL -> item.currencyRate.sell.formatMoney(inputText) + " " + currencies.first.code
+                        }, style = MaterialTheme.typography.button,
+                        modifier = Modifier.wrapContentWidth()
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(3.dp))
 
-                Text(
-                    item.location.distance.toInt().toString() + " " + item.location.address,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.h6
-                )
-            }
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        "~" + item.location.distance.formatDistance() + " • " + item.location.address,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.h6,
+                        modifier = Modifier.weight(1f)
+                    )
 
-            Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.width(5.dp))
 
-            Column(modifier = Modifier.wrapContentWidth(), horizontalAlignment = Alignment.End) {
-
-                Text(
-                    when (buyOrSell) {
-                        BuyOrSell.BUY -> item.currencyRate.buy.toString()
-                        BuyOrSell.SELL -> item.currencyRate.sell.toString()
-                    }, style = MaterialTheme.typography.button
-                )
-
-                Spacer(modifier = Modifier.height(3.dp))
-
-                Text(item.currencyRate.buy.toString(), style = MaterialTheme.typography.h6)
+                    Text(
+                        "1 ${currencies.second.code} = " + when (buyOrSell) {
+                            BuyOrSell.BUY -> item.currencyRate.buy.toString()
+                            BuyOrSell.SELL -> item.currencyRate.sell.toString()
+                        }, style = MaterialTheme.typography.h6,
+                        modifier = Modifier.wrapContentWidth()
+                    )
+                }
             }
         }
         Row(
             modifier = Modifier.fillMaxWidth()
                 .wrapContentHeight()
-                .padding(start = 15.dp,end = 15.dp, top = if (addBorder) 5.dp else 0.dp),
+                .padding(start = 15.dp, end = 15.dp, top = if (addBorder) 5.dp else 0.dp),
         ) {
             item.location.tags.forEach { tagItem ->
                 val isFillBlue = tagItem == item.location.tags.first() && isFirst
