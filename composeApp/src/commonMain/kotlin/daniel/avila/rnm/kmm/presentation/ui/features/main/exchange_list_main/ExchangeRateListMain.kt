@@ -1,8 +1,6 @@
 package daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -31,7 +29,7 @@ import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @Composable
-fun ExchangeListMain(modifier: Modifier, buyOrSell: BuyOrSell) {
+fun ExchangeRateListMain(modifier: Modifier, buyOrSell: BuyOrSell) {
 
     val exchangeRateViewModel = koinInject<ExchangeRateViewModel>()
 

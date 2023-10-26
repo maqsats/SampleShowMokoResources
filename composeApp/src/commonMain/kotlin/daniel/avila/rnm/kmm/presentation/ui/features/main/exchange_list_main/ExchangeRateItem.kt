@@ -43,7 +43,7 @@ fun ExchangeRateItem(
         Row(
             modifier = Modifier.wrapContentHeight()
                 .fillMaxWidth()
-                .padding(start = 10.dp, top = if (addBorder) 9.dp else 0.dp, end = 10.dp)
+                .padding(start = 10.dp, top = if (addBorder) 14.dp else 0.dp, end = 10.dp)
                 .border(
                     BorderStroke(
                         1.dp,
@@ -102,7 +102,7 @@ fun ExchangeRateItem(
         Row(
             modifier = Modifier.fillMaxWidth()
                 .wrapContentHeight()
-                .padding(horizontal = 15.dp).zIndex(1f),
+                .padding(start = 15.dp,end = 15.dp, top = if (addBorder) 5.dp else 0.dp),
         ) {
             item.location.tags.forEach { tagItem ->
                 val isFillBlue = tagItem == item.location.tags.first() && isFirst

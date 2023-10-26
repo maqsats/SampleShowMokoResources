@@ -12,5 +12,5 @@ data class LocationApiModel(
     val longitude: Double,
     val name: String,
     val phone: String,
-    val tags: List<String>
+    val tags: List<String> ?= emptyList()
 )

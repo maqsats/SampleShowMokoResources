@@ -22,7 +22,7 @@ fun ExchangeRateList(
         items(exchangeRateList) { exchangeRate ->
             ExchangeRateItem(
                 item = exchangeRate,
-                isFirst = false,
+                isFirst = exchangeRateList.first() == exchangeRate,
                 buyOrSell = buyOrSell,
                 onClick = { onExchangeRateClick(exchangeRate.id) }
             )

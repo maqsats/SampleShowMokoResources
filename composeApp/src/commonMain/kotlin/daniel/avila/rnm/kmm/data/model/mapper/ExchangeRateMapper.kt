@@ -50,8 +50,8 @@ class ExchangeRateMapper : Mapper<ExchangeRateApiModel, ExchangeRate>() {
         )
     }
 
-    private fun getTags(tags: List<String>): List<Tag> {
-        return tags.map { Tag.fromValue(it) }
+    private fun getTags(tags: List<String>?): List<Tag> {
+        return tags?.map { Tag.fromValue(it) } ?: emptyList()
     }
 
     private fun getCurrencyRate(from: CurrencyRateApiModel): CurrencyRate {

@@ -28,10 +28,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import daniel.avila.rnm.kmm.presentation.ui.features.main.custom_main_tab.CustomTabBar
 import daniel.avila.rnm.kmm.presentation.ui.features.main.custom_main_tab.TabItem
-import daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main.ExchangeListMain
+import daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main.ExchangeRateListMain
 
 @Composable
-fun Main(modifier: Modifier = Modifier) {
+fun Calculator(modifier: Modifier = Modifier) {
     var inputText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(
             TextFieldValue(
@@ -88,6 +88,6 @@ fun Main(modifier: Modifier = Modifier) {
             maxLines = 1,
             textStyle = MaterialTheme.typography.body2.copy(textAlign = TextAlign.End),
         )
-        ExchangeListMain(modifier = Modifier.weight(1f), selectedTab.buyOrSell)
+        ExchangeRateListMain(modifier = Modifier.weight(1f), selectedTab.buyOrSell)
     }
 }

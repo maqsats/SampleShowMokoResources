@@ -18,11 +18,8 @@ import daniel.avila.rnm.kmm.presentation.ui.common.CustomToolbar
 import daniel.avila.rnm.kmm.presentation.ui.features.biometry_check.BiometryCheck
 import daniel.avila.rnm.kmm.presentation.ui.features.bottom_nav.BottomBarNav
 import daniel.avila.rnm.kmm.presentation.ui.features.bottom_nav.BottomBarRoute
-import daniel.avila.rnm.kmm.presentation.ui.features.main.Main
+import daniel.avila.rnm.kmm.presentation.ui.features.main.Calculator
 import daniel.avila.rnm.kmm.presentation.ui.features.map_screen.MapScreen
-import daniel.avila.rnm.kmm.presentation.ui.features.screen2.Screen2
-import daniel.avila.rnm.kmm.utils.navigation.LocalNavigator
-import daniel.avila.rnm.kmm.utils.navigation.currentOrThrow
 
 class HomeScreen : Screen {
 
@@ -37,7 +34,7 @@ class HomeScreen : Screen {
         ) {
             CustomToolbar(bottomBarRoute = bottomBarRoute)
             when (bottomBarRoute) {
-                BottomBarRoute.MAIN -> Main(modifier = Modifier.weight(1f))
+                BottomBarRoute.MAIN -> Calculator(modifier = Modifier.weight(1f))
                 BottomBarRoute.EXCHANGE_PLACES -> EmptyScreen(modifier = Modifier.weight(1f))
                 BottomBarRoute.NEWS -> {
                     MapScreen(modifier = Modifier.weight(1f))
