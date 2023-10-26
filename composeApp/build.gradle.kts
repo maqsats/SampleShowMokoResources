@@ -26,10 +26,10 @@ kotlin {
 
     jvm("desktop")
 
-    js {
-        browser()
-        binaries.executable()
-    }
+//    js {
+//        browser()
+//        binaries.executable()
+//    }
 
     iosX64()
     iosArm64()
@@ -87,7 +87,8 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose)
                 implementation(libs.sqlDelight.extensions)
-                implementation("dev.icerock.moko:resources-compose:0.23.0")
+                implementation(libs.resources.compose)
+                implementation(libs.compose.material.dialogs.core)
             }
         }
 
@@ -112,6 +113,7 @@ kotlin {
                 implementation(libs.play.services.maps)
                 implementation(libs.accompanist.systemuicontroller)
                 implementation(libs.maps.compose)
+                implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
             }
         }
 
@@ -125,15 +127,15 @@ kotlin {
             }
         }
 
-        val jsMain by getting {
-            dependsOn(commonMain)
-            dependencies {
-                implementation(compose.html.core)
-                implementation(libs.sqlDelight.driver.sqljs)
-                implementation(npm("sql.js", "1.6.2"))
-                implementation(devNpm("copy-webpack-plugin", "9.1.0"))
-            }
-        }
+//        val jsMain by getting {
+//            dependsOn(commonMain)
+//            dependencies {
+//                implementation(compose.html.core)
+//                implementation(libs.sqlDelight.driver.sqljs)
+//                implementation(npm("sql.js", "1.6.2"))
+//                implementation(devNpm("copy-webpack-plugin", "9.1.0"))
+//            }
+//        }
 
         val iosX64Main by getting
         val iosArm64Main by getting

@@ -102,7 +102,7 @@ fun TengeTodayTheme(
         h5 = TextStyle(
             fontFamily = openSansFamily,
             fontWeight = FontWeight.Normal,
-            fontSize = 9.sp
+            fontSize = 8.sp
         ),
         h6 = TextStyle(
             fontFamily = openSansFamily,

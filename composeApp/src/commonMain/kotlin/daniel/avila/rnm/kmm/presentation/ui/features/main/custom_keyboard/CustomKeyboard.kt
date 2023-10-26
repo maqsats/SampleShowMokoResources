@@ -18,11 +18,10 @@ fun CustomKeyboard(
     onClear: () -> Unit,
     onClearAll: () -> Unit,
 ) {
-
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 10.dp)
+            .padding(start = 10.dp, bottom = 10.dp, end = 10.dp)
     ) {
         Spacer(modifier = Modifier.padding(vertical = 5.dp))
 

@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
@@ -39,5 +41,13 @@ class AppActivity : AppCompatActivity() {
             )
             App()
         }
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(this.currentFocus?.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
     }
 }

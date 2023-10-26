@@ -84,6 +84,10 @@ val repositoryModule = module {
 val ktorModule = module {
     single {
         HttpClient {
+            install(Logging) {
+                logger = Logger.DEFAULT
+                level = LogLevel.ALL
+            }
             install(ContentNegotiation) {
                 json(
                     Json {
@@ -92,10 +96,6 @@ val ktorModule = module {
                         isLenient = true
                     }
                 )
-            }
-            install(Logging) {
-                logger = Logger.DEFAULT
-                level = LogLevel.ALL
             }
         }
     }

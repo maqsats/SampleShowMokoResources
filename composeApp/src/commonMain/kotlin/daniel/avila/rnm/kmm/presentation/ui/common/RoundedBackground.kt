@@ -24,8 +24,9 @@ import androidx.compose.ui.unit.dp
 fun RoundedBackground(
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colors.secondary,
-    height: Dp = 36.dp,
+    height: Dp = 30.dp,
     border: Dp = 5.dp,
+    paddingHorizontal: Dp = 14.dp,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
     content: @Composable () -> Unit,
@@ -48,7 +49,7 @@ fun RoundedBackground(
                 onClick = onClick,
                 onLongClick = onLongClick
             )
-            .padding(horizontal = 14.dp),
+            .padding(horizontal = paddingHorizontal),
         contentAlignment = Alignment.Center
     ) {
         content()
