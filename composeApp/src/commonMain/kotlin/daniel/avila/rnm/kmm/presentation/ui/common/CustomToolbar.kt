@@ -36,7 +36,7 @@ fun CustomToolbar(modifier: Modifier = Modifier, bottomBarRoute: BottomBarRoute)
             tint = Color.Unspecified
         )
         Spacer(modifier = Modifier.weight(1f))
-        if (bottomBarRoute == BottomBarRoute.EXCHANGE_PLACES) {
+        if (bottomBarRoute == BottomBarRoute.MAIN) {
             Icon(
                 modifier = Modifier.wrapContentWidth(),
                 painter = painterResource(MR.images.search),

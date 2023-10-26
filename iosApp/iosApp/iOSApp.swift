@@ -12,14 +12,14 @@ struct iosApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().ignoresSafeArea(.keyboard)
         }
     }
 }
 
 struct ContentView: View {
     var body: some View {
-        ComposeView().ignoresSafeArea(.keyboard)
+        ComposeView()
     }
 }
 

@@ -21,10 +21,10 @@ fun BottomBarNav(
     onRouteChange: (bottomRoute: BottomBarRoute) -> Unit
 ) {
     val items = listOf(
-        BottomNavData("Calculator", MR.images.news, BottomBarRoute.MAIN),
-        BottomNavData("Exchange Places", MR.images.news, BottomBarRoute.EXCHANGE_PLACES),
-        BottomNavData("News", MR.images.news, BottomBarRoute.NEWS),
-        BottomNavData("Profile", MR.images.news, BottomBarRoute.PROFILE)
+        BottomNavData("Calculator", MR.images.calculate, BottomBarRoute.MAIN),
+        BottomNavData("Exchange Places", MR.images.format_list_bulleted, BottomBarRoute.EXCHANGE_PLACES),
+        BottomNavData("News", MR.images.full_coverage, BottomBarRoute.NEWS),
+        BottomNavData("Profile", MR.images.person, BottomBarRoute.PROFILE)
     )
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.background,

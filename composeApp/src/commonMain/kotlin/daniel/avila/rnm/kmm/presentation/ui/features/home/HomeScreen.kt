@@ -1,6 +1,8 @@
 package daniel.avila.rnm.kmm.presentation.ui.features.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import cafe.adriel.voyager.core.screen.Screen
 import daniel.avila.rnm.kmm.presentation.ui.common.CustomToolbar
 import daniel.avila.rnm.kmm.presentation.ui.features.biometry_check.BiometryCheck
@@ -28,9 +31,16 @@ class HomeScreen : Screen {
 
         var bottomBarRoute by remember { mutableStateOf(BottomBarRoute.MAIN) }
 
+        val focusManager = LocalFocusManager.current
+
         Column(
             verticalArrangement = Arrangement.Bottom,
-            modifier = Modifier.background(Color.White)
+            modifier = Modifier.background(Color.White).clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
+                focusManager.clearFocus()
+            }
         ) {
             CustomToolbar(bottomBarRoute = bottomBarRoute)
             when (bottomBarRoute) {
