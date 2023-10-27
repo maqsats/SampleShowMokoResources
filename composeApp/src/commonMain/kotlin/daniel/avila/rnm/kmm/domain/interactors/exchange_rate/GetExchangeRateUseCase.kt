@@ -1,9 +1,9 @@
-package daniel.avila.rnm.kmm.domain.interactors
+package daniel.avila.rnm.kmm.domain.interactors.exchange_rate
 
 import daniel.avila.rnm.kmm.domain.interactors.type.BaseUseCase
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
 import daniel.avila.rnm.kmm.domain.params.ExchangeRateParameters
-import daniel.avila.rnm.kmm.domain.repository.ExchangeRateRepository
+import daniel.avila.rnm.kmm.domain.repository.exchange_rate.ExchangeRateRepository
 import kotlinx.coroutines.CoroutineDispatcher
 
 class GetExchangeRateUseCase(

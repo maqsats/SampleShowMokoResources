@@ -34,7 +34,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import daniel.avila.rnm.kmm.MR
+import daniel.avila.rnm.kmm.domain.model.city.City
 import daniel.avila.rnm.kmm.domain.model.currency.Currency
+import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSell
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
 import daniel.avila.rnm.kmm.presentation.ui.common.LocalBottomSheetNavigator
 import daniel.avila.rnm.kmm.presentation.ui.common.RoundedBackground
@@ -49,7 +51,7 @@ import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.koinInject
 
 @Composable
-fun Calculator(modifier: Modifier = Modifier) {
+fun Calculator(modifier: Modifier = Modifier, city: City?) {
 
     var selectedTab by remember { mutableStateOf(TabItem("", false)) }
 
@@ -74,9 +76,13 @@ fun Calculator(modifier: Modifier = Modifier) {
         currencyViewModel.effect.collectLatest { effect ->
             when (effect) {
                 is CurrencyContract.Effect.NavigateToCurrencyDialog -> {
-                    bottomSheetNavigator.show(CurrencyBottomSheet(effect.currencies) {
-                        currencies = Pair(currencies?.first ?: it, it)
-                    })
+                    bottomSheetNavigator.show(
+                        CurrencyBottomSheet(
+                            effect.currencies,
+                            onCurrencySelected = {
+                                currencies = Pair(currencies?.first ?: it, it)
+                            })
+                    )
                 }
             }
         }
@@ -197,7 +203,10 @@ fun Calculator(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.width(10.dp))
 
             Text(
-                text = "Вы потратите".uppercase(),
+                text = when (selectedTab.buyOrSell) {
+                    BuyOrSell.BUY -> "Вы потратите".uppercase()
+                    BuyOrSell.SELL -> "Вы получите".uppercase()
+                },
                 style = MaterialTheme.typography.h1
             )
         }
@@ -205,7 +214,7 @@ fun Calculator(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(5.dp))
 
         ExchangeRateListMain(
-            modifier = Modifier.weight(1f), selectedTab.buyOrSell, inputText.text, currencies
+            modifier = Modifier.weight(1f), selectedTab.buyOrSell, inputText.text, currencies, city
         )
     }
 }

@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,7 +31,7 @@ class CurrencyBottomSheet(
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
 
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().height(400.dp).padding(10.dp)
+            modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(10.dp)
         ) {
             items(currencyList) {
                 Box(modifier = Modifier.fillMaxWidth().height(50.dp).padding(10.dp).clickable {

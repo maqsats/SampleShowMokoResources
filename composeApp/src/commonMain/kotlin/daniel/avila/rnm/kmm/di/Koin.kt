@@ -4,10 +4,13 @@ import daniel.avila.rnm.kmm.data.RemoteDataImp
 import daniel.avila.rnm.kmm.data.cache.CacheDataImp
 import daniel.avila.rnm.kmm.data.cache.sqldelight.SharedDatabase
 import daniel.avila.rnm.kmm.data.model.mapper.ApiCharacterMapper
+import daniel.avila.rnm.kmm.data.model.mapper.CityMapper
 import daniel.avila.rnm.kmm.data.model.mapper.CurrencyMapper
 import daniel.avila.rnm.kmm.data.model.mapper.ExchangeRateMapper
 import daniel.avila.rnm.kmm.data.repository.ICacheData
 import daniel.avila.rnm.kmm.data.repository.IRemoteData
+import daniel.avila.rnm.kmm.data.repository.city.DefaultCityRepository
+import daniel.avila.rnm.kmm.data.repository.city.DefaultRemoteCityRepository
 import daniel.avila.rnm.kmm.data.repository.currency.DefaultCurrencyRepository
 import daniel.avila.rnm.kmm.data.repository.currency.DefaultRemoteCurrencyRepository
 import daniel.avila.rnm.kmm.data.repository.exchange_rate.DefaultExchangeRateRepository
@@ -16,19 +19,23 @@ import daniel.avila.rnm.kmm.domain.IRepository
 import daniel.avila.rnm.kmm.domain.interactors.GetCharacterUseCase
 import daniel.avila.rnm.kmm.domain.interactors.GetCharactersFavoritesUseCase
 import daniel.avila.rnm.kmm.domain.interactors.GetCharactersUseCase
-import daniel.avila.rnm.kmm.domain.interactors.GetExchangeRateUseCase
 import daniel.avila.rnm.kmm.domain.interactors.IsCharacterFavoriteUseCase
 import daniel.avila.rnm.kmm.domain.interactors.SwitchCharacterFavoriteUseCase
+import daniel.avila.rnm.kmm.domain.interactors.city.GetCityUseCase
 import daniel.avila.rnm.kmm.domain.interactors.currency.GetCurrencyUseCase
-import daniel.avila.rnm.kmm.domain.repository.ExchangeRateRepository
-import daniel.avila.rnm.kmm.domain.repository.RemoteExchangeRateRepository
+import daniel.avila.rnm.kmm.domain.interactors.exchange_rate.GetExchangeRateUseCase
 import daniel.avila.rnm.kmm.domain.repository.RepositoryImp
+import daniel.avila.rnm.kmm.domain.repository.city.CityRepository
+import daniel.avila.rnm.kmm.domain.repository.city.RemoteCityRepository
 import daniel.avila.rnm.kmm.domain.repository.currency.CurrencyRepository
 import daniel.avila.rnm.kmm.domain.repository.currency.RemoteCurrencyRepository
+import daniel.avila.rnm.kmm.domain.repository.exchange_rate.ExchangeRateRepository
+import daniel.avila.rnm.kmm.domain.repository.exchange_rate.RemoteExchangeRateRepository
 import daniel.avila.rnm.kmm.presentation.ui.features.character_detail.CharacterDetailViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.characters.CharactersViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.characters_favorites.CharactersFavoritesViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.TrackerViewModel
+import daniel.avila.rnm.kmm.presentation.ui.features.main.city.CityViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.main.currency.CurrencyViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main.ExchangeRateViewModel
 import io.ktor.client.HttpClient
@@ -69,6 +76,7 @@ val viewModelModule = module {
     factory { TrackerViewModel(get()) }
     factoryOf(::ExchangeRateViewModel)
     factoryOf(::CurrencyViewModel)
+    factoryOf(::CityViewModel)
     factory { params -> CharacterDetailViewModel(get(), get(), get(), params.get()) }
 }
 
@@ -80,6 +88,7 @@ val useCasesModule: Module = module {
     factory { SwitchCharacterFavoriteUseCase(get(), get()) }
     factoryOf(::GetExchangeRateUseCase)
     factoryOf(::GetCurrencyUseCase)
+    factoryOf(::GetCityUseCase)
 }
 
 val repositoryModule = module {
@@ -91,6 +100,9 @@ val repositoryModule = module {
 
     singleOf(::DefaultCurrencyRepository).bind(CurrencyRepository::class)
     singleOf(::DefaultRemoteCurrencyRepository).bind(RemoteCurrencyRepository::class)
+
+    singleOf(::DefaultCityRepository).bind(CityRepository::class)
+    singleOf(::DefaultRemoteCityRepository).bind(RemoteCityRepository::class)
 
     single<IRemoteData> { RemoteDataImp(get(), get(), get()) }
 }
@@ -127,6 +139,7 @@ val mapperModule = module {
     factory { ApiCharacterMapper() }
     factoryOf(::ExchangeRateMapper)
     factoryOf(::CurrencyMapper)
+    factoryOf(::CityMapper)
 }
 
 fun initKoin() = initKoin {}

@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main
+package daniel.avila.rnm.kmm.presentation.ui.features.main.currency
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,12 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import daniel.avila.rnm.kmm.domain.model.currency.Currency
 
 @Composable
-fun CurrencyListDialog(currencyList: List<Currency>, dialogState: MaterialDialogState) {
+fun CurrencyListDialog(currencyList: List<Currency>) {
+    val dialogState = rememberMaterialDialogState()
+    LaunchedEffect(key1 = dialogState) {
+        dialogState.show()
+    }
     MaterialDialog(
         dialogState = dialogState, elevation = 0.dp,
         backgroundColor = Color.White,
@@ -26,7 +29,7 @@ fun CurrencyListDialog(currencyList: List<Currency>, dialogState: MaterialDialog
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp),
+                    .height(800.dp),
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(text = "Hello World")

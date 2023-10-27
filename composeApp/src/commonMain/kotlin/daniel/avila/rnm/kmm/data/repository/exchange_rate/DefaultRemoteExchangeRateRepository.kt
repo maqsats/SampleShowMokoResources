@@ -4,7 +4,7 @@ import daniel.avila.rnm.kmm.data.model.exchange_rate.ExchangeRateApiModel
 import daniel.avila.rnm.kmm.data.model.mapper.ExchangeRateMapper
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
 import daniel.avila.rnm.kmm.domain.params.ExchangeRateParameters
-import daniel.avila.rnm.kmm.domain.repository.RemoteExchangeRateRepository
+import daniel.avila.rnm.kmm.domain.repository.exchange_rate.RemoteExchangeRateRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get

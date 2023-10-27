@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import cafe.adriel.voyager.core.screen.Screen
+import daniel.avila.rnm.kmm.domain.model.city.City
 import daniel.avila.rnm.kmm.presentation.ui.common.CustomToolbar
 import daniel.avila.rnm.kmm.presentation.ui.features.biometry_check.BiometryCheck
 import daniel.avila.rnm.kmm.presentation.ui.features.bottom_nav.BottomBarNav
@@ -33,6 +34,8 @@ class HomeScreen : Screen {
 
         val focusManager = LocalFocusManager.current
 
+        val cityState = remember { mutableStateOf<City?>(null) }
+
         Column(
             verticalArrangement = Arrangement.Bottom,
             modifier = Modifier.background(Color.White).clickable(
@@ -42,16 +45,15 @@ class HomeScreen : Screen {
                 focusManager.clearFocus()
             }
         ) {
-            CustomToolbar(bottomBarRoute = bottomBarRoute)
+            CustomToolbar(bottomBarRoute = bottomBarRoute, cityState = cityState)
             when (bottomBarRoute) {
-                BottomBarRoute.MAIN -> Calculator(modifier = Modifier.weight(1f))
+                BottomBarRoute.MAIN -> Calculator(modifier = Modifier.weight(1f), cityState.value)
                 BottomBarRoute.EXCHANGE_PLACES -> EmptyScreen(modifier = Modifier.weight(1f))
                 BottomBarRoute.NEWS -> {
                     MapScreen(modifier = Modifier.weight(1f))
                 }
                 BottomBarRoute.PROFILE -> BiometryCheck(modifier = Modifier.weight(1f))
             }
-
             BottomBarNav(
                 modifier = Modifier.wrapContentHeight().fillMaxWidth(),
                 currentRoute = bottomBarRoute

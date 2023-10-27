@@ -1,7 +1,7 @@
 package daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main
 
 import cafe.adriel.voyager.core.model.coroutineScope
-import daniel.avila.rnm.kmm.domain.interactors.GetExchangeRateUseCase
+import daniel.avila.rnm.kmm.domain.interactors.exchange_rate.GetExchangeRateUseCase
 import daniel.avila.rnm.kmm.domain.model.currency.Currency
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
 import daniel.avila.rnm.kmm.domain.params.ExchangeRateParameters
