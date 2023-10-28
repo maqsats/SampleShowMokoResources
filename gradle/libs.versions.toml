@@ -12,6 +12,7 @@ libres = "1.1.8"
 mapsCompose = "3.1.1"
 playServicesMaps = "18.2.0"
 resourcesCompose = "0.23.0"
+uiToolingPreview = "1.5.3"
 voyager = "1.0.0-rc07"
 composeImageLoader = "1.6.8"
 napier = "2.6.1"
@@ -39,6 +40,7 @@ androidx-activityCompose = { module = "androidx.activity:activity-compose", vers
 compose-uitooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-uitooling" }
 libres = { module = "io.github.skeptick.libres:libres-compose", version.ref = "libres" }
 resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "resourcesCompose" }
+ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 composeImageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "composeImageLoader" }

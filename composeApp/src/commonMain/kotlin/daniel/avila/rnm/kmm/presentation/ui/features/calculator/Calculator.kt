@@ -49,8 +49,8 @@ import daniel.avila.rnm.kmm.presentation.ui.common.BottomSheet
 import daniel.avila.rnm.kmm.presentation.ui.common.RoundedBackground
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.currency.CurrencyContract
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.currency.CurrencyViewModel
-import daniel.avila.rnm.kmm.presentation.ui.features.home.custom_main_tab.CustomTabBar
-import daniel.avila.rnm.kmm.presentation.ui.features.home.custom_main_tab.TabItem
+import daniel.avila.rnm.kmm.presentation.ui.features.home.buy_sell_tab.BuySellTabBar
+import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSellTab
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.exchange_list_main.ExchangeRateListMain
 import dev.icerock.moko.resources.compose.painterResource
 import kotlinx.coroutines.flow.collectLatest
@@ -61,7 +61,7 @@ import org.koin.compose.koinInject
 @Composable
 fun Calculator(modifier: Modifier = Modifier, city: City?) {
 
-    var selectedTab by remember { mutableStateOf(TabItem("", false)) }
+    var selectedTab by remember { mutableStateOf(BuyOrSellTab("", false)) }
 
     var openBottomSheet by rememberSaveable { mutableStateOf(false) }
 
@@ -99,7 +99,7 @@ fun Calculator(modifier: Modifier = Modifier, city: City?) {
 
         Spacer(modifier = Modifier.height(6.dp))
 
-        CustomTabBar(modifier = Modifier.fillMaxWidth()) {
+        BuySellTabBar(modifier = Modifier.fillMaxWidth()) {
             selectedTab = it
         }
 

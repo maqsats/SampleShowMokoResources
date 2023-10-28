@@ -28,3 +28,17 @@ fun LoadingView(
             .shimmerLoadingAnimation()
     )
 }
+
+@Composable
+fun LoadingView(
+    modifier: Modifier,
+    cornerBorderSize: Dp = 8.dp,
+    backgroundColor: Color = Color.LightGray
+) {
+    Box(
+        modifier = modifier
+            .clip(shape = RoundedCornerShape(cornerBorderSize))
+            .background(color = backgroundColor)
+            .shimmerLoadingAnimation()
+    )
+}

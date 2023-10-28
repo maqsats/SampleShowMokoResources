@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import daniel.avila.rnm.kmm.MR
 import daniel.avila.rnm.kmm.domain.model.city.City
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
-import daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav.BottomBarRoute
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityScreen
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityViewModel
+import daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav.BottomBarRoute
 import dev.icerock.moko.resources.compose.painterResource
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -102,7 +102,7 @@ fun CustomToolbar(
             tint = Color.Unspecified
         )
         Spacer(modifier = Modifier.weight(1f))
-        if (bottomBarRoute == BottomBarRoute.MAIN) {
+        if (bottomBarRoute == BottomBarRoute.EXCHANGE_PLACES) {
             Icon(
                 modifier = Modifier.wrapContentWidth(),
                 painter = painterResource(MR.images.search),

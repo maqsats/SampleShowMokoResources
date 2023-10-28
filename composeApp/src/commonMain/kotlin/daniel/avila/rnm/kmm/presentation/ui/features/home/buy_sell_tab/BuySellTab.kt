@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.home.custom_main_tab
+package daniel.avila.rnm.kmm.presentation.ui.features.home.buy_sell_tab
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,12 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSell
 import daniel.avila.rnm.kmm.presentation.ui.common.RoundedBackground
+import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSellTab
 
 @Composable
-fun CustomTabBar(modifier: Modifier, onTabSelected: (TabItem) -> Unit) {
+fun BuySellTabBar(modifier: Modifier, onTabSelected: (BuyOrSellTab) -> Unit) {
     val list = listOf(
-        TabItem("Купить", true),
-        TabItem("Продать", false, buyOrSell = BuyOrSell.SELL)
+        BuyOrSellTab("Купить", true),
+        BuyOrSellTab("Продать", false, buyOrSell = BuyOrSell.SELL)
     )
     LaunchedEffect(list) {
         onTabSelected(list.first())

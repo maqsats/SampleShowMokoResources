@@ -46,6 +46,16 @@ fun Double.formatMoney(inputText: String): String {
     return "$integralPart,$decimalPart"
 }
 
+fun Double.formatMoney(): String {
+    val intValue = this.toLong()
+    val decimalValue = ((this - intValue) * 100).toInt()
+
+    val integralPart = addCommas(intValue)
+    val decimalPart = decimalValue.toString().padStart(2, '0')
+
+    return "$integralPart,${decimalPart.first()}"
+}
+
 fun addCommas(number: Long): String {
     val str = number.toString()
     val result = StringBuilder()

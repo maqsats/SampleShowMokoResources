@@ -7,6 +7,7 @@ import daniel.avila.rnm.kmm.data.model.mapper.ApiCharacterMapper
 import daniel.avila.rnm.kmm.data.model.mapper.CityMapper
 import daniel.avila.rnm.kmm.data.model.mapper.CurrencyMapper
 import daniel.avila.rnm.kmm.data.model.mapper.ExchangeRateMapper
+import daniel.avila.rnm.kmm.data.model.mapper.NationalBankMapper
 import daniel.avila.rnm.kmm.data.repository.ICacheData
 import daniel.avila.rnm.kmm.data.repository.IRemoteData
 import daniel.avila.rnm.kmm.data.repository.city.DefaultCityRepository
@@ -15,6 +16,8 @@ import daniel.avila.rnm.kmm.data.repository.currency.DefaultCurrencyRepository
 import daniel.avila.rnm.kmm.data.repository.currency.DefaultRemoteCurrencyRepository
 import daniel.avila.rnm.kmm.data.repository.exchange_rate.DefaultExchangeRateRepository
 import daniel.avila.rnm.kmm.data.repository.exchange_rate.DefaultRemoteExchangeRateRepository
+import daniel.avila.rnm.kmm.data.repository.national_bank.DefaultNationalBankRepository
+import daniel.avila.rnm.kmm.data.repository.national_bank.DefaultRemoteNationalBankRepository
 import daniel.avila.rnm.kmm.domain.IRepository
 import daniel.avila.rnm.kmm.domain.interactors.GetCharacterUseCase
 import daniel.avila.rnm.kmm.domain.interactors.GetCharactersFavoritesUseCase
@@ -24,6 +27,7 @@ import daniel.avila.rnm.kmm.domain.interactors.SwitchCharacterFavoriteUseCase
 import daniel.avila.rnm.kmm.domain.interactors.city.GetCityUseCase
 import daniel.avila.rnm.kmm.domain.interactors.currency.GetCurrencyUseCase
 import daniel.avila.rnm.kmm.domain.interactors.exchange_rate.GetExchangeRateUseCase
+import daniel.avila.rnm.kmm.domain.interactors.national_bank.GetNationalBankUseCase
 import daniel.avila.rnm.kmm.domain.repository.RepositoryImp
 import daniel.avila.rnm.kmm.domain.repository.city.CityRepository
 import daniel.avila.rnm.kmm.domain.repository.city.RemoteCityRepository
@@ -31,13 +35,15 @@ import daniel.avila.rnm.kmm.domain.repository.currency.CurrencyRepository
 import daniel.avila.rnm.kmm.domain.repository.currency.RemoteCurrencyRepository
 import daniel.avila.rnm.kmm.domain.repository.exchange_rate.ExchangeRateRepository
 import daniel.avila.rnm.kmm.domain.repository.exchange_rate.RemoteExchangeRateRepository
-import daniel.avila.rnm.kmm.presentation.ui.features.character_detail.CharacterDetailViewModel
-import daniel.avila.rnm.kmm.presentation.ui.features.characters.CharactersViewModel
-import daniel.avila.rnm.kmm.presentation.ui.features.characters_favorites.CharactersFavoritesViewModel
-import daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.TrackerViewModel
+import daniel.avila.rnm.kmm.domain.repository.national_bank.NationalBankRepository
+import daniel.avila.rnm.kmm.domain.repository.national_bank.RemoteNationalBankRepository
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.currency.CurrencyViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.exchange_list_main.ExchangeRateViewModel
+import daniel.avila.rnm.kmm.presentation.ui.features.character_detail.CharacterDetailViewModel
+import daniel.avila.rnm.kmm.presentation.ui.features.characters.CharactersViewModel
+import daniel.avila.rnm.kmm.presentation.ui.features.characters_favorites.CharactersFavoritesViewModel
+import daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.AllPlacesViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
@@ -73,10 +79,10 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
 val viewModelModule = module {
     factory { CharactersViewModel(get()) }
     factory { CharactersFavoritesViewModel(get()) }
-    factory { TrackerViewModel(get()) }
     factoryOf(::ExchangeRateViewModel)
     factoryOf(::CurrencyViewModel)
     factoryOf(::CityViewModel)
+    factoryOf(::AllPlacesViewModel)
     factory { params -> CharacterDetailViewModel(get(), get(), get(), params.get()) }
 }
 
@@ -88,6 +94,7 @@ val useCasesModule: Module = module {
     factory { SwitchCharacterFavoriteUseCase(get(), get()) }
     factoryOf(::GetExchangeRateUseCase)
     factoryOf(::GetCurrencyUseCase)
+    factoryOf(::GetNationalBankUseCase)
     factoryOf(::GetCityUseCase)
 }
 
@@ -103,6 +110,9 @@ val repositoryModule = module {
 
     singleOf(::DefaultCityRepository).bind(CityRepository::class)
     singleOf(::DefaultRemoteCityRepository).bind(RemoteCityRepository::class)
+
+    singleOf(::DefaultNationalBankRepository).bind(NationalBankRepository::class)
+    singleOf(::DefaultRemoteNationalBankRepository).bind(RemoteNationalBankRepository::class)
 
     single<IRemoteData> { RemoteDataImp(get(), get(), get()) }
 }
@@ -140,6 +150,7 @@ val mapperModule = module {
     factoryOf(::ExchangeRateMapper)
     factoryOf(::CurrencyMapper)
     factoryOf(::CityMapper)
+    factoryOf(::NationalBankMapper)
 }
 
 fun initKoin() = initKoin {}

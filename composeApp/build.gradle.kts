@@ -114,7 +114,7 @@ kotlin {
                 implementation(libs.play.services.maps)
                 implementation(libs.accompanist.systemuicontroller)
                 implementation(libs.maps.compose)
-                implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+                implementation(libs.ui.tooling.preview)
             }
         }
 
@@ -125,6 +125,7 @@ kotlin {
                 implementation(compose.desktop.currentOs)
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.sqlDelight.driver.sqlite)
+                implementation(libs.ui.tooling.preview)
             }
         }
 
