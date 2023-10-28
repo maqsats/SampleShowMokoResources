@@ -4,16 +4,16 @@ accompanistSystemuicontroller = "0.27.0"
 composeMaterialDialogsCore = "0.9.4"
 kotlin = "1.9.10"
 agp = "8.1.0"
-compose = "1.5.3"
+compose = "1.5.10-rc02"
 androidx-appcompat = "1.6.1"
 androidx-activityCompose = "1.7.2"
-compose-uitooling = "1.5.3"
+compose-uitooling = "1.6.0-alpha08"
 libres = "1.1.8"
 mapsCompose = "3.1.1"
-playServicesMaps = "18.1.0"
+playServicesMaps = "18.2.0"
 resourcesCompose = "0.23.0"
 voyager = "1.0.0-rc07"
-composeImageLoader = "1.4.1"
+composeImageLoader = "1.6.8"
 napier = "2.6.1"
 kotlinx-coroutines = "1.7.3"
 insetsx = "0.1.0-alpha07"
@@ -30,6 +30,7 @@ androidBiometricVersion = "1.1.0"
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 biometric = { module = "androidx.biometric:biometric", version.ref = "androidBiometricVersion" }
 compose-material-dialogs-core = { module = "ca.gosyer:compose-material-dialogs-core", version.ref = "composeMaterialDialogsCore" }
+image-loader-extension-moko-resources = { module = "io.github.qdsfdhvh:image-loader-extension-moko-resources", version.ref = "composeImageLoader" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 playServicesLocation = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocationVersion" }

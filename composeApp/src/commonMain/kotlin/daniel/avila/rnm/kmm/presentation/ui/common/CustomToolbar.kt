@@ -9,27 +9,38 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import daniel.avila.rnm.kmm.MR
 import daniel.avila.rnm.kmm.domain.model.city.City
-import daniel.avila.rnm.kmm.presentation.ui.features.bottom_nav.BottomBarRoute
-import daniel.avila.rnm.kmm.presentation.ui.features.main.city.CityScreen
+import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
+import daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav.BottomBarRoute
+import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityScreen
+import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityViewModel
 import dev.icerock.moko.resources.compose.painterResource
+import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomToolbar(
     modifier: Modifier = Modifier,
@@ -37,33 +48,45 @@ fun CustomToolbar(
     cityState: MutableState<City?>
 ) {
 
-    val dialogState = rememberMaterialDialogState()
+    var openBottomSheet by rememberSaveable { mutableStateOf(true) }
 
-    MaterialDialog(
-        dialogState = dialogState,
-        elevation = 0.dp,
-        backgroundColor = Color.White,
-        shape = RoundedCornerShape(20.dp),
-        autoDismiss = false,
-        onCloseRequest = {
+    val bottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false
+    )
 
-        },
-        content = {
+    val scope = rememberCoroutineScope()
+
+    val cityViewModel = koinInject<CityViewModel>()
+
+    val state by cityViewModel.uiState.collectAsState()
+
+    LaunchedEffect(state.cities) {
+        println("CustomToolbar: LaunchedEffect")
+        println("CustomToolbar: state.cities = ${state.cities}")
+        if (state.cities is ResourceUiState.Success) {
+            cityState.value = (state.cities as ResourceUiState.Success).data.firstOrNull()
+        }
+    }
+
+    if (openBottomSheet) {
+        BottomSheet(
+            sheetState = bottomSheetState,
+            onDismissRequest = { openBottomSheet = false }
+        ) {
             CityScreen(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(500.dp),
+                    .wrapContentHeight(),
+                state = state,
+                cityViewModel = cityViewModel,
                 onCitySelected = {
                     cityState.value = it
-                    dialogState.hide()
+                    scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+                        if (!bottomSheetState.isVisible) openBottomSheet = false
+                    }
                 }
             )
         }
-    )
-
-    LaunchedEffect(key1 = dialogState, cityState) {
-        if (cityState.value == null)
-            dialogState.show()
     }
 
     Row(
@@ -92,7 +115,7 @@ fun CustomToolbar(
             modifier = Modifier.clickable(
                 interactionSource = MutableInteractionSource(),
                 indication = null
-            ) { dialogState.show() },
+            ) { openBottomSheet = true },
             color = MaterialTheme.colors.primaryVariant,
             style = MaterialTheme.typography.h3
         )
@@ -103,7 +126,7 @@ fun CustomToolbar(
                     interactionSource = MutableInteractionSource(),
                     indication = null
                 ) {
-                    dialogState.show()
+                    openBottomSheet = true
                 },
             painter = painterResource(MR.images.location),
             contentDescription = null

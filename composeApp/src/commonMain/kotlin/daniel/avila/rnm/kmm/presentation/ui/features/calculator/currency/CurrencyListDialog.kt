@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main.currency
+package daniel.avila.rnm.kmm.presentation.ui.features.calculator.currency
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

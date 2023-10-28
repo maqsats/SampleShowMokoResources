@@ -35,9 +35,9 @@ import daniel.avila.rnm.kmm.presentation.ui.features.character_detail.CharacterD
 import daniel.avila.rnm.kmm.presentation.ui.features.characters.CharactersViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.characters_favorites.CharactersFavoritesViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.TrackerViewModel
-import daniel.avila.rnm.kmm.presentation.ui.features.main.city.CityViewModel
-import daniel.avila.rnm.kmm.presentation.ui.features.main.currency.CurrencyViewModel
-import daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main.ExchangeRateViewModel
+import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityViewModel
+import daniel.avila.rnm.kmm.presentation.ui.features.calculator.currency.CurrencyViewModel
+import daniel.avila.rnm.kmm.presentation.ui.features.calculator.exchange_list_main.ExchangeRateViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT

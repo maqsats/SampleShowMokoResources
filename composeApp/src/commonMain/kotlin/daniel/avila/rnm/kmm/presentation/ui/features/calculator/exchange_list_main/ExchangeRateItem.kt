@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main
+package daniel.avila.rnm.kmm.presentation.ui.features.calculator.exchange_list_main
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.seiko.imageloader.rememberAsyncImagePainter
+import com.seiko.imageloader.rememberImagePainter
 import daniel.avila.rnm.kmm.domain.model.currency.Currency
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSell
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
@@ -66,7 +66,7 @@ fun ExchangeRateItem(
                 .zIndex(0f)
         ) {
             Image(
-                painter = rememberAsyncImagePainter(item.logo),
+                painter = rememberImagePainter(item.logo),
                 contentDescription = null,
                 modifier = Modifier
                     .width(36.dp)

@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main
+package daniel.avila.rnm.kmm.presentation.ui.features.calculator.exchange_list_main
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -80,6 +80,8 @@ fun ExchangeRateListMain(
 //    }
 
     LaunchedEffect(city, currencies) {
+        println("city = $city")
+        println("currencies = $currencies")
         if (currencies == null || city == null) return@LaunchedEffect
 
         exchangeRateViewModel.setEvent(

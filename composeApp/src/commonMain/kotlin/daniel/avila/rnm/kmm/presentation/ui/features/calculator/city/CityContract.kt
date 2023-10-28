@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main.city
+package daniel.avila.rnm.kmm.presentation.ui.features.calculator.city
 
 import daniel.avila.rnm.kmm.domain.model.city.City
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState

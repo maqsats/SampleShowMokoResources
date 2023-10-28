@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main.exchange_list_main
+package daniel.avila.rnm.kmm.presentation.ui.features.calculator.exchange_list_main
 
 import daniel.avila.rnm.kmm.domain.model.currency.Currency
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate

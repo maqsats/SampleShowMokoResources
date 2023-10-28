@@ -1,6 +1,7 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main.city
+package daniel.avila.rnm.kmm.presentation.ui.features.calculator.city
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,11 +16,15 @@ import daniel.avila.rnm.kmm.domain.model.city.City
 @Composable
 fun CityItem(city: City, onClick: (City) -> Unit) {
 
-    Box(modifier = Modifier.fillMaxWidth().wrapContentHeight().clickable { onClick(city) }) {
+    Box(modifier = Modifier.fillMaxWidth().wrapContentHeight().clickable(
+        interactionSource = MutableInteractionSource(),
+        indication = null
+    ) { onClick(city) }) {
         Text(
             text = city.name,
             style = MaterialTheme.typography.body1,
-            modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(vertical = 10.dp, horizontal = 10.dp)
+            modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                .padding(vertical = 10.dp, horizontal = 10.dp)
         )
     }
 }

@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main.city
+package daniel.avila.rnm.kmm.presentation.ui.features.calculator.city
 
 import cafe.adriel.voyager.core.model.coroutineScope
 import daniel.avila.rnm.kmm.domain.interactors.city.GetCityUseCase

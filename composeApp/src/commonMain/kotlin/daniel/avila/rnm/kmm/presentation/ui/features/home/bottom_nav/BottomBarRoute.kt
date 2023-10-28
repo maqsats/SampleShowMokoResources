@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.bottom_nav
+package daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav
 
 enum class BottomBarRoute {
     MAIN,

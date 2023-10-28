@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main.currency
+package daniel.avila.rnm.kmm.presentation.ui.features.calculator.currency
 
 import daniel.avila.rnm.kmm.domain.model.currency.Currency
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState

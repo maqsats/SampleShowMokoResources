@@ -6,12 +6,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetDefaults
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.SwipeableDefaults
 import androidx.compose.material.contentColorFor
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
@@ -40,7 +39,7 @@ public typealias BottomSheetNavigatorContent = @Composable (bottomSheetNavigator
 public val LocalBottomSheetNavigator: ProvidableCompositionLocal<BottomSheetNavigator> =
     staticCompositionLocalOf { error("BottomSheetNavigator not initialized") }
 
-@OptIn(InternalVoyagerApi::class)
+@OptIn(InternalVoyagerApi::class, ExperimentalMaterial3Api::class)
 @ExperimentalMaterialApi
 @Composable
 public fun BottomSheetNavigator(
@@ -61,15 +60,8 @@ public fun BottomSheetNavigator(
     var showElevation by remember { mutableStateOf(true) }
     var hideBottomSheet: (() -> Unit)? = null
     val coroutineScope = rememberCoroutineScope()
-    val sheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        confirmValueChange = { state ->
-            showElevation = state != ModalBottomSheetValue.Hidden
-            if (state == ModalBottomSheetValue.Hidden) hideBottomSheet?.invoke()
-            true
-        },
-        skipHalfExpanded = skipHalfExpanded,
-        animationSpec = animationSpec
+    val sheetState = androidx.compose.material3.rememberModalBottomSheetState(
+        skipPartiallyExpanded = false
     )
 
     Navigator(HiddenBottomSheetScreen, onBackPressed = null, key = key) { navigator ->
@@ -80,41 +72,40 @@ public fun BottomSheetNavigator(
         hideBottomSheet = bottomSheetNavigator::hide
 
         CompositionLocalProvider(LocalBottomSheetNavigator provides bottomSheetNavigator) {
-            ModalBottomSheetLayout(
+            ModalBottomSheet(
                 modifier = modifier,
                 sheetState = sheetState,
-                sheetShape = sheetShape,
+                shape = sheetShape,
                 scrimColor = scrimColor,
-                sheetElevation = if (showElevation) sheetElevation else 0.dp,
-                sheetBackgroundColor = sheetBackgroundColor,
-                sheetContentColor = sheetContentColor,
-                sheetGesturesEnabled = sheetGesturesEnabled,
-                sheetContent = {
+                tonalElevation = if (showElevation) sheetElevation else 0.dp,
+                containerColor = sheetBackgroundColor,
+                contentColor = sheetContentColor,
+                onDismissRequest = {},
+                content = {
                     BottomSheetNavigatorBackHandler(
                         bottomSheetNavigator,
                         sheetState,
                         hideOnBackPress
                     )
                     sheetContent(bottomSheetNavigator)
-                },
-                content = {
-                    content(bottomSheetNavigator)
                 }
             )
         }
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
-public class BottomSheetNavigator internal constructor(
+public class BottomSheetNavigator @OptIn(ExperimentalMaterial3Api::class)
+internal constructor(
     private val navigator: Navigator,
-    private val sheetState: ModalBottomSheetState,
+    private val sheetState: SheetState,
     private val coroutineScope: CoroutineScope
 ) : Stack<Screen> by navigator {
 
+    @OptIn(ExperimentalMaterial3Api::class)
     public val isVisible: Boolean
         get() = sheetState.isVisible
 
+    @OptIn(ExperimentalMaterial3Api::class)
     public fun show(screen: Screen) {
         coroutineScope.launch {
             replaceAll(screen)
@@ -122,6 +113,7 @@ public class BottomSheetNavigator internal constructor(
         }
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     public fun hide() {
         coroutineScope.launch {
             if (isVisible) {

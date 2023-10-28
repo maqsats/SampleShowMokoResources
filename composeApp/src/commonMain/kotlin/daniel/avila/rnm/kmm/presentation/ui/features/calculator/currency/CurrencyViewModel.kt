@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main.currency
+package daniel.avila.rnm.kmm.presentation.ui.features.calculator.currency
 
 import cafe.adriel.voyager.core.model.coroutineScope
 import daniel.avila.rnm.kmm.domain.interactors.currency.GetCurrencyUseCase

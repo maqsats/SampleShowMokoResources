@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main.custom_main_tab
+package daniel.avila.rnm.kmm.presentation.ui.features.home.custom_main_tab
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

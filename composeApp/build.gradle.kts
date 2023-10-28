@@ -89,6 +89,7 @@ kotlin {
                 implementation(libs.sqlDelight.extensions)
                 implementation(libs.resources.compose)
                 implementation(libs.compose.material.dialogs.core)
+                implementation(libs.image.loader.extension.moko.resources)
             }
         }
 

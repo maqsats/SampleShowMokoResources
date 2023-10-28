@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.bottom_nav
+package daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
@@ -21,10 +21,10 @@ fun BottomBarNav(
     onRouteChange: (bottomRoute: BottomBarRoute) -> Unit
 ) {
     val items = listOf(
-        BottomNavData("Calculator", MR.images.calculate, BottomBarRoute.MAIN),
-        BottomNavData("Exchange Places", MR.images.format_list_bulleted, BottomBarRoute.EXCHANGE_PLACES),
-        BottomNavData("News", MR.images.full_coverage, BottomBarRoute.NEWS),
-        BottomNavData("Profile", MR.images.person, BottomBarRoute.PROFILE)
+        BottomNavData("Калькулятор", MR.images.calculate, BottomBarRoute.MAIN),
+        BottomNavData("Все точки", MR.images.format_list_bulleted, BottomBarRoute.EXCHANGE_PLACES),
+        BottomNavData("Новости", MR.images.full_coverage, BottomBarRoute.NEWS),
+        BottomNavData("Профиль", MR.images.person, BottomBarRoute.PROFILE)
     )
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.background,

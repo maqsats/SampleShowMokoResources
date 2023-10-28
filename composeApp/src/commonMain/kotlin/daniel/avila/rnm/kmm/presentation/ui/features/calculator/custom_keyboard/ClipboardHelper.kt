@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.main.custom_keyboard
+package daniel.avila.rnm.kmm.presentation.ui.features.calculator.custom_keyboard
 
 import androidx.compose.ui.platform.ClipboardManager
 
