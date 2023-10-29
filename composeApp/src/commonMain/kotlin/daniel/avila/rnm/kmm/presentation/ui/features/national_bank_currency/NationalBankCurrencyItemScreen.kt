@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import daniel.avila.rnm.kmm.domain.model.national_bank.NationalBankCurrency
+import daniel.avila.rnm.kmm.presentation.ui.features.line_chart.LineChartPreview
 import daniel.avila.rnm.kmm.presentation.ui.features.national_bank_currency.time_period_tab.TimePeriodsTab
 import daniel.avila.rnm.kmm.presentation.ui.features.toolbar.Toolbar
 import daniel.avila.rnm.kmm.utils.navigation.LocalNavigator
@@ -45,6 +46,7 @@ class NationalBankCurrencyItemScreen(private val nationalBankCurrency: NationalB
 
             })
 
+            LineChartPreview()
         }
     }
 }

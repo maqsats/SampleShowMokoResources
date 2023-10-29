@@ -27,6 +27,7 @@ sqlDelight = "2.0.0-alpha05"
 resource-generator = "0.23.0"
 playServicesLocationVersion = "21.0.1"
 androidBiometricVersion = "1.1.0"
+klock = "2.4.13"
 [libraries]
 
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -66,6 +67,7 @@ sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", versi
 sqlDelight-driver-sqljs = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqlDelight" }
 sqlDelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
 androidx-annotation-jvm = { group = "androidx.annotation", name = "annotation-jvm", version = "1.7.0" }
+time-klock = { module = "com.soywiz.korlibs.klock:klock", version.ref = "klock" }
 
 [plugins]
 
