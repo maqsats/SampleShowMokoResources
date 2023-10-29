@@ -28,6 +28,7 @@ import daniel.avila.rnm.kmm.presentation.ui.features.calculator.Calculator
 import daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav.BottomBarNav
 import daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav.BottomBarRoute
 import daniel.avila.rnm.kmm.presentation.ui.features.map_screen.MapScreen
+import daniel.avila.rnm.kmm.presentation.ui.features.profile.ProfileScreen
 
 class HomeScreen : Screen {
 
@@ -49,7 +50,7 @@ class HomeScreen : Screen {
                 BottomBarRoute.NEWS -> {
                     MapScreen(modifier = Modifier.weight(1f))
                 }
-                BottomBarRoute.PROFILE -> BiometryCheck(modifier = Modifier.weight(1f))
+                BottomBarRoute.PROFILE -> ProfileScreen(modifier = Modifier.weight(1f))
             }
             BottomBarNav(
                 modifier = Modifier.wrapContentHeight().fillMaxWidth(),
