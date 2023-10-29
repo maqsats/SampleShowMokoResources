@@ -15,15 +15,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import daniel.avila.rnm.kmm.MR
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSell
-import daniel.avila.rnm.kmm.presentation.ui.common.RoundedBackground
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSellTab
+import daniel.avila.rnm.kmm.presentation.ui.common.RoundedBackground
+import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
 fun BuySellTabBar(modifier: Modifier, onTabSelected: (BuyOrSellTab) -> Unit) {
     val list = listOf(
-        BuyOrSellTab("Купить", true),
-        BuyOrSellTab("Продать", false, buyOrSell = BuyOrSell.SELL)
+        BuyOrSellTab(stringResource(MR.strings.buy), true),
+        BuyOrSellTab(stringResource(MR.strings.sell), false, buyOrSell = BuyOrSell.SELL)
     )
     LaunchedEffect(list) {
         onTabSelected(list.first())

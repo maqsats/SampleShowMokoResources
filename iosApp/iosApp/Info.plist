@@ -10,5 +10,9 @@
     <string>Program requires GPS to track cars and job orders</string>
     <key>NSFaceIDUsageDescription</key>
     <string>Program requires FaceID to login</string>
+    <key>CFBundleLocalizations</key><array>
+    <string>en</string>
+    <string>ru</string>
+    </array>
 </dict>
 </plist>

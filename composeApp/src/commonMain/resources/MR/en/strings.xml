@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
     <string name="course_in_the_city">Course in the city</string>
+    <string name="buy">Buy</string>
+    <string name="sell">Sell</string>
 </resources>
