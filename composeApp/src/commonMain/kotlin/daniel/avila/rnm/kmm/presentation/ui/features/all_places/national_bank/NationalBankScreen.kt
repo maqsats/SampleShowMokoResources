@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.exchangers
+package daniel.avila.rnm.kmm.presentation.ui.features.all_places.national_bank
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -9,7 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -20,28 +21,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import daniel.avila.rnm.kmm.MR
-import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
+import daniel.avila.rnm.kmm.domain.model.national_bank.NationalBankCurrency
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
-import daniel.avila.rnm.kmm.presentation.state.ManagementResourceUiState
-import daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.AllPlacesContract
-import daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.AllPlacesViewModel
+import daniel.avila.rnm.kmm.presentation.ui.common.LoadingView
 import dev.icerock.moko.resources.compose.painterResource
 
 @Composable
-fun ExchangersScreen(
-    exchangerListUiState: ResourceUiState<List<ExchangeRate>>,
-    allPlacesViewModel: AllPlacesViewModel,
+fun NationalBankScreen(
+    nationalBankCurrencyListUiState: ResourceUiState<List<NationalBankCurrency>>
 ) {
     Column(
         modifier = Modifier.fillMaxWidth().wrapContentHeight()
-            .padding(start = 10.dp, end = 10.dp, top = 40.dp)
+            .padding(horizontal = 10.dp, vertical = 10.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(MR.images.exchange),
+                painter = painterResource(MR.images.bank),
                 modifier = Modifier.width(24.dp).height(24.dp),
                 contentDescription = null
             )
@@ -49,7 +47,7 @@ fun ExchangersScreen(
             Text(
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Start,
-                text = "Пункты обмена",
+                text = "НацБанк РК",
                 style = MaterialTheme.typography.h4
             )
             Spacer(modifier = Modifier.width(10.dp))
@@ -62,31 +60,38 @@ fun ExchangersScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(5.dp))
 
-        ExchangersTab(
+        Row(
             modifier = Modifier.fillMaxWidth(),
-            onTabSelected = {
-
-            }
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        ManagementResourceUiState(
-            modifier = Modifier,
-            resourceUiState = exchangerListUiState,
-            successView = { exchangerList ->
-                LazyColumn {
-                    items(exchangerList) { exchanger ->
-                        ExchangerItem(exchanger, onClick = {
-
-                        })
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            LazyRow(modifier = Modifier.weight(1f).wrapContentHeight()) {
+                when (nationalBankCurrencyListUiState) {
+                    is ResourceUiState.Success -> {
+                        items(nationalBankCurrencyListUiState.data) {
+                            NationalBankCurrencyItem(it)
+                        }
+                    }
+                    else -> {
+                        item {
+                            LoadingView(
+                                modifier = Modifier.fillMaxWidth().height(50.dp),
+                                cornerBorderSize = 5.dp
+                            )
+                        }
                     }
                 }
-            },
-            onTryAgain = { allPlacesViewModel.setEvent(AllPlacesContract.Event.OnTryCheckAgainClick) },
-            onCheckAgain = { allPlacesViewModel.setEvent(AllPlacesContract.Event.OnTryCheckAgainClick) },
-        )
+            }
+            Text(
+                modifier = Modifier.wrapContentWidth().wrapContentHeight()
+                    .padding(horizontal = 10.dp),
+                textAlign = TextAlign.Center,
+                text = "Все",
+                style = MaterialTheme.typography.caption,
+                color = MaterialTheme.colors.surface
+            )
+        }
     }
 }
+

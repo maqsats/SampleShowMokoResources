@@ -20,7 +20,7 @@ class DefaultRemoteExchangeRateRepository(
         param: ExchangeRateParameters
     ): List<ExchangeRate> =
         exchangeRateMapper.map(
-            httpClient.get("$endPoint/exchangers/rate/${param.cityId}/currency/${param.currencyCode}/${param.buyOrSell}/${param.lat}/${param.lng}")
+            httpClient.get("$endPoint/exchangers/locations/${param.cityId}/${param.currencyCode}/${param.lat}/${param.lng}")
                 .body<List<ExchangeRateApiModel>>()
         )
 }

@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.exchangers
+package daniel.avila.rnm.kmm.presentation.ui.features.national_bank_currency.time_period_tab
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,16 +16,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import daniel.avila.rnm.kmm.domain.model.exchanger.ExchangerTab
-import daniel.avila.rnm.kmm.domain.model.exchanger.ExchangerType
+import daniel.avila.rnm.kmm.domain.model.time_period_tab.TimePeriod
+import daniel.avila.rnm.kmm.domain.model.time_period_tab.TimePeriodTab
 import daniel.avila.rnm.kmm.presentation.ui.common.RoundedBackground
 
 @Composable
-fun ExchangersTab(modifier: Modifier, onTabSelected: (ExchangerTab) -> Unit) {
+fun TimePeriodsTab(modifier: Modifier, onTabSelected: (TimePeriodTab) -> Unit) {
     val list = listOf(
-        ExchangerTab("Все", true, exchangerType = ExchangerType.ALL),
-        ExchangerTab("Банки", false, exchangerType = ExchangerType.BANK),
-        ExchangerTab("Обменники", false, exchangerType = ExchangerType.EXCHANGERS),
+        TimePeriodTab("Неделя", true, TimePeriod.WEEK),
+        TimePeriodTab("Месяц", false, TimePeriod.MONTH),
+        TimePeriodTab("3 месяца", false, TimePeriod.THREE_MONTHS),
+        TimePeriodTab("Год", false, TimePeriod.YEAR)
     )
 
     LaunchedEffect(list) {
@@ -37,7 +38,7 @@ fun ExchangersTab(modifier: Modifier, onTabSelected: (ExchangerTab) -> Unit) {
     Row(
         modifier = modifier
             .wrapContentHeight()
-            .padding(horizontal = 5.dp),
+            .padding(horizontal = 15.dp),
     ) {
         list.forEach { tabItem ->
             val isSelected = selectedItem == tabItem

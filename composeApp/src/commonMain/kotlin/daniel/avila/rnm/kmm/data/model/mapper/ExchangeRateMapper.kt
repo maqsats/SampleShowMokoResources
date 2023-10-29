@@ -39,13 +39,11 @@ class ExchangeRateMapper : Mapper<ExchangeRateApiModel, ExchangeRate>() {
     private fun getLocation(location: LocationApiModel): Location {
         return Location(
             address = location.address,
-            cityId = location.city_id,
             latitude = location.latitude,
             longitude = location.longitude,
             name = location.name,
             phone = location.phone,
             distance = location.distance,
-            id = location.id,
             tags = getTags(location.tags)
         )
     }

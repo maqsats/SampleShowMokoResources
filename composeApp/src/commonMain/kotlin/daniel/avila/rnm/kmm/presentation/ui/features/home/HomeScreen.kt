@@ -13,18 +13,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import com.russhwolf.settings.Settings
 import com.seiko.imageloader.rememberImagePainter
 import daniel.avila.rnm.kmm.domain.model.city.City
 import daniel.avila.rnm.kmm.presentation.ui.common.CustomToolbar
+import daniel.avila.rnm.kmm.presentation.ui.features.all_places.ExchangePlaces
 import daniel.avila.rnm.kmm.presentation.ui.features.biometry_check.BiometryCheck
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.Calculator
-import daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.ExchangePlaces
 import daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav.BottomBarNav
 import daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav.BottomBarRoute
 import daniel.avila.rnm.kmm.presentation.ui.features.map_screen.MapScreen
@@ -34,7 +34,7 @@ class HomeScreen : Screen {
     @Composable
     override fun Content() {
 
-        var bottomBarRoute by remember { mutableStateOf(BottomBarRoute.MAIN) }
+        var bottomBarRoute by rememberSaveable { mutableStateOf(BottomBarRoute.MAIN) }
 
         val cityState = remember { mutableStateOf<City?>(null) }
 

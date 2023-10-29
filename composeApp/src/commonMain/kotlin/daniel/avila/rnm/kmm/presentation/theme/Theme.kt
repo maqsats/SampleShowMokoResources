@@ -114,6 +114,11 @@ fun TengeTodayTheme(
             fontWeight = FontWeight.Normal,
             fontSize = 10.sp
         ),
+        h2 = TextStyle(
+            fontFamily = openSansFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 12.sp
+        ),
     )
 
     MaterialTheme(

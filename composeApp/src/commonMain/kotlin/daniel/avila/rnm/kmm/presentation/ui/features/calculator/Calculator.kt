@@ -32,9 +32,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -44,20 +46,20 @@ import daniel.avila.rnm.kmm.MR
 import daniel.avila.rnm.kmm.domain.model.city.City
 import daniel.avila.rnm.kmm.domain.model.currency.Currency
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSell
+import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSellTab
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
 import daniel.avila.rnm.kmm.presentation.ui.common.BottomSheet
 import daniel.avila.rnm.kmm.presentation.ui.common.RoundedBackground
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.currency.CurrencyContract
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.currency.CurrencyViewModel
-import daniel.avila.rnm.kmm.presentation.ui.features.home.buy_sell_tab.BuySellTabBar
-import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSellTab
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.exchange_list_main.ExchangeRateListMain
+import daniel.avila.rnm.kmm.presentation.ui.features.home.buy_sell_tab.BuySellTabBar
 import dev.icerock.moko.resources.compose.painterResource
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun Calculator(modifier: Modifier = Modifier, city: City?) {
 
@@ -66,6 +68,8 @@ fun Calculator(modifier: Modifier = Modifier, city: City?) {
     var openBottomSheet by rememberSaveable { mutableStateOf(false) }
 
     var currencyList by remember { mutableStateOf<List<Currency>>(emptyList()) }
+
+    val controller = LocalSoftwareKeyboardController.current
 
     var inputText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(
@@ -94,7 +98,10 @@ fun Calculator(modifier: Modifier = Modifier, city: City?) {
     }
 
     Column(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth().clickable(
+            interactionSource = MutableInteractionSource(),
+            indication = null
+        ) { controller?.hide() }
     ) {
 
         Spacer(modifier = Modifier.height(6.dp))

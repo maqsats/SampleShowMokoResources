@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.exchangers
+package daniel.avila.rnm.kmm.presentation.ui.features.all_places.exchangers
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

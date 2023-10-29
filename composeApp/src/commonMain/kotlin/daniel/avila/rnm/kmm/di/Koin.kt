@@ -45,7 +45,7 @@ import daniel.avila.rnm.kmm.presentation.ui.features.calculator.exchange_list_ma
 import daniel.avila.rnm.kmm.presentation.ui.features.character_detail.CharacterDetailViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.characters.CharactersViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.characters_favorites.CharactersFavoritesViewModel
-import daniel.avila.rnm.kmm.presentation.ui.features.exchange_places.AllPlacesViewModel
+import daniel.avila.rnm.kmm.presentation.ui.features.all_places.AllPlacesViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT

@@ -1,7 +1,7 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.exchange_places
+package daniel.avila.rnm.kmm.presentation.ui.features.all_places
 
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
-import daniel.avila.rnm.kmm.domain.model.national_bank.NationalBank
+import daniel.avila.rnm.kmm.domain.model.national_bank.NationalBankCurrency
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
 import daniel.avila.rnm.kmm.presentation.mvi.UiEffect
 import daniel.avila.rnm.kmm.presentation.mvi.UiEvent
@@ -14,7 +14,7 @@ interface AllPlacesContract {
     }
 
     data class State(
-        val currencyList: ResourceUiState<List<NationalBank>>,
+        val nationalBankCurrencyList: ResourceUiState<List<NationalBankCurrency>>,
         val exchangerList: ResourceUiState<List<ExchangeRate>>,
     ) : UiState
 

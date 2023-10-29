@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.exchange_places
+package daniel.avila.rnm.kmm.presentation.ui.features.all_places
 
 import cafe.adriel.voyager.core.model.coroutineScope
 import daniel.avila.rnm.kmm.domain.interactors.national_bank.GetNationalBankUseCase
@@ -16,7 +16,7 @@ class AllPlacesViewModel(
     }
 
     override fun createInitialState(): AllPlacesContract.State =
-        AllPlacesContract.State(currencyList = ResourceUiState.Idle, exchangerList = ResourceUiState.Idle)
+        AllPlacesContract.State(nationalBankCurrencyList = ResourceUiState.Idle, exchangerList = ResourceUiState.Idle)
 
     override fun handleEvent(event: AllPlacesContract.Event) {
         when (event) {
@@ -25,19 +25,19 @@ class AllPlacesViewModel(
     }
 
     private fun getCurrencyList() {
-        setState { copy(currencyList = ResourceUiState.Loading) }
+        setState { copy(nationalBankCurrencyList = ResourceUiState.Loading) }
         coroutineScope.launch {
             getNationalBankUseCase(Unit)
                 .onSuccess {
                     setState {
                         copy(
-                            currencyList = if (it.isEmpty())
+                            nationalBankCurrencyList = if (it.isEmpty())
                                 ResourceUiState.Empty
                             else ResourceUiState.Success(it)
                         )
                     }
                 }
-                .onFailure { setState { copy(currencyList = ResourceUiState.Error()) } }
+                .onFailure { setState { copy(nationalBankCurrencyList = ResourceUiState.Error()) } }
         }
     }
 }
