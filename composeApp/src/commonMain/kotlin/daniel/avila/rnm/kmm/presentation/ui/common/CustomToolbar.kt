@@ -31,11 +31,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import daniel.avila.rnm.kmm.MR
 import daniel.avila.rnm.kmm.domain.model.city.City
-import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
+import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityContract
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityScreen
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav.BottomBarRoute
 import dev.icerock.moko.resources.compose.painterResource
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -48,7 +49,7 @@ fun CustomToolbar(
     cityState: MutableState<City?>
 ) {
 
-    var openBottomSheet by rememberSaveable { mutableStateOf(true) }
+    var openBottomSheet by rememberSaveable { mutableStateOf(false) }
 
     val bottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = false
@@ -60,11 +61,20 @@ fun CustomToolbar(
 
     val state by cityViewModel.uiState.collectAsState()
 
-    LaunchedEffect(state.cities) {
-        println("CustomToolbar: LaunchedEffect")
-        println("CustomToolbar: state.cities = ${state.cities}")
-        if (state.cities is ResourceUiState.Success) {
-            cityState.value = (state.cities as ResourceUiState.Success).data.firstOrNull()
+    LaunchedEffect(state.selectedCity) {
+        cityState.value = state.selectedCity
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        cityViewModel.effect.collectLatest { effect ->
+            when (effect) {
+                is CityContract.Effect.OnCitySelected -> {
+                    cityState.value = effect.city
+                }
+                CityContract.Effect.ShowCitySelectionBottomSheet -> {
+                    openBottomSheet = true
+                }
+            }
         }
     }
 
@@ -80,7 +90,7 @@ fun CustomToolbar(
                 state = state,
                 cityViewModel = cityViewModel,
                 onCitySelected = {
-                    cityState.value = it
+                    cityViewModel.setEvent(CityContract.Event.OnCityChosen(it))
                     scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
                         if (!bottomSheetState.isVisible) openBottomSheet = false
                     }
@@ -115,7 +125,7 @@ fun CustomToolbar(
             modifier = Modifier.clickable(
                 interactionSource = MutableInteractionSource(),
                 indication = null
-            ) { openBottomSheet = true },
+            ) { cityViewModel.setEvent(CityContract.Event.OnCityIconClick) },
             color = MaterialTheme.colors.primaryVariant,
             style = MaterialTheme.typography.h3
         )
@@ -126,7 +136,7 @@ fun CustomToolbar(
                     interactionSource = MutableInteractionSource(),
                     indication = null
                 ) {
-                    openBottomSheet = true
+                    cityViewModel.setEvent(CityContract.Event.OnCityIconClick)
                 },
             painter = painterResource(MR.images.location),
             contentDescription = null

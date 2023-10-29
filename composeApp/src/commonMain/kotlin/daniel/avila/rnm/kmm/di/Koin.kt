@@ -8,6 +8,8 @@ import daniel.avila.rnm.kmm.data.model.mapper.CityMapper
 import daniel.avila.rnm.kmm.data.model.mapper.CurrencyMapper
 import daniel.avila.rnm.kmm.data.model.mapper.ExchangeRateMapper
 import daniel.avila.rnm.kmm.data.model.mapper.NationalBankMapper
+import daniel.avila.rnm.kmm.data.preferences.DefaultPreferences
+import daniel.avila.rnm.kmm.data.preferences.Preferences
 import daniel.avila.rnm.kmm.data.repository.ICacheData
 import daniel.avila.rnm.kmm.data.repository.IRemoteData
 import daniel.avila.rnm.kmm.data.repository.city.DefaultCityRepository
@@ -72,6 +74,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             sqlDelightModule,
             mapperModule,
             dispatcherModule,
+            preferencesModule,
             platformModule()
         )
     }
@@ -115,6 +118,10 @@ val repositoryModule = module {
     singleOf(::DefaultRemoteNationalBankRepository).bind(RemoteNationalBankRepository::class)
 
     single<IRemoteData> { RemoteDataImp(get(), get(), get()) }
+}
+
+val preferencesModule = module {
+    singleOf(::DefaultPreferences).bind(Preferences::class)
 }
 
 val ktorModule = module {

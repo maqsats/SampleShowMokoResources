@@ -90,6 +90,7 @@ kotlin {
                 implementation(libs.resources.compose)
                 implementation(libs.compose.material.dialogs.core)
                 implementation(libs.image.loader.extension.moko.resources)
+                implementation(libs.multiplatform.settings.no.arg)
             }
         }
 

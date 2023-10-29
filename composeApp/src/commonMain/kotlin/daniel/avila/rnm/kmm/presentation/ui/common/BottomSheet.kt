@@ -1,11 +1,7 @@
 package daniel.avila.rnm.kmm.presentation.ui.common
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.contentColorFor
@@ -28,7 +24,7 @@ fun BottomSheet(
         skipPartiallyExpanded = false
     ),
     scrimColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.30f),
-    sheetShape: Shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+    sheetShape: Shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
     sheetElevation: Dp = 30.dp,
     sheetBackgroundColor: Color = Color.White,
     sheetContentColor: Color = contentColorFor(sheetBackgroundColor),
@@ -45,17 +41,6 @@ fun BottomSheet(
         contentColor = sheetContentColor,
         onDismissRequest = onDismissRequest,
         content = sheetContent,
-        windowInsets = WindowInsets(0),
-        dragHandle = {
-            Box(
-                modifier = Modifier
-                    .background(
-                        color = Color.LightGray,
-                        shape = RoundedCornerShape(3.dp)
-                    )
-                    .width(100.dp)
-                    .height(6.dp)
-            )
-        }
+        windowInsets = WindowInsets(0)
     )
 }

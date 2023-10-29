@@ -10,13 +10,19 @@ interface CityContract {
 
     sealed interface Event : UiEvent {
         data object OnTryCheckAgainClick : Event
+        data object OnCityIconClick : Event
+        data class OnCityChosen(val city: City) : Event
     }
 
     data class State(
-        val cities: ResourceUiState<List<City>>
+        val cities: ResourceUiState<List<City>>,
+        val selectedCity: City? = null
     ) : UiState
 
-    sealed interface Effect : UiEffect
+    sealed interface Effect : UiEffect {
+        data object ShowCitySelectionBottomSheet : Effect
+        data class OnCitySelected(val city: City) : Effect
+    }
 }
 
 

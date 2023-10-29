@@ -35,7 +35,6 @@ fun Double.formatMoney(inputText: String): String {
 
     if (multiplier == 0) multiplier = 1
 
-    println(multiplier)
     val scaledValue = this * multiplier
     val intValue = scaledValue.toLong()
     val decimalValue = ((scaledValue - intValue) * 100).toInt()

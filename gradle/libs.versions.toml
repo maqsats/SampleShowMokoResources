@@ -10,6 +10,7 @@ androidx-activityCompose = "1.7.2"
 compose-uitooling = "1.6.0-alpha08"
 libres = "1.1.8"
 mapsCompose = "3.1.1"
+multiplatformSettingsNoArg = "1.1.0"
 playServicesMaps = "18.2.0"
 resourcesCompose = "0.23.0"
 uiToolingPreview = "1.5.3"
@@ -33,6 +34,7 @@ biometric = { module = "androidx.biometric:biometric", version.ref = "androidBio
 compose-material-dialogs-core = { module = "ca.gosyer:compose-material-dialogs-core", version.ref = "composeMaterialDialogsCore" }
 image-loader-extension-moko-resources = { module = "io.github.qdsfdhvh:image-loader-extension-moko-resources", version.ref = "composeImageLoader" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
+multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettingsNoArg" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 playServicesLocation = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocationVersion" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
