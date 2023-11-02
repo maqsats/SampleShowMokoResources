@@ -23,7 +23,6 @@ import com.seiko.imageloader.rememberImagePainter
 import daniel.avila.rnm.kmm.domain.model.city.City
 import daniel.avila.rnm.kmm.presentation.ui.common.CustomToolbar
 import daniel.avila.rnm.kmm.presentation.ui.features.all_places.ExchangePlaces
-import daniel.avila.rnm.kmm.presentation.ui.features.biometry_check.BiometryCheck
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.Calculator
 import daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav.BottomBarNav
 import daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav.BottomBarRoute
@@ -46,7 +45,7 @@ class HomeScreen : Screen {
             CustomToolbar(bottomBarRoute = bottomBarRoute, cityState = cityState)
             when (bottomBarRoute) {
                 BottomBarRoute.MAIN -> Calculator(modifier = Modifier.weight(1f), cityState.value)
-                BottomBarRoute.EXCHANGE_PLACES -> ExchangePlaces(modifier = Modifier.weight(1f))
+                BottomBarRoute.EXCHANGE_PLACES -> ExchangePlaces(modifier = Modifier.weight(1f), cityState.value)
                 BottomBarRoute.NEWS -> {
                     MapScreen(modifier = Modifier.weight(1f))
                 }

@@ -29,6 +29,7 @@ import daniel.avila.rnm.kmm.domain.interactors.SwitchCharacterFavoriteUseCase
 import daniel.avila.rnm.kmm.domain.interactors.city.GetCityUseCase
 import daniel.avila.rnm.kmm.domain.interactors.currency.GetCurrencyUseCase
 import daniel.avila.rnm.kmm.domain.interactors.exchange_rate.GetExchangeRateUseCase
+import daniel.avila.rnm.kmm.domain.interactors.exchanger.GetExchangerUseCase
 import daniel.avila.rnm.kmm.domain.interactors.national_bank.GetNBCurrencyByRangeUseCase
 import daniel.avila.rnm.kmm.domain.interactors.national_bank.GetNationalBankCurrencyUseCase
 import daniel.avila.rnm.kmm.domain.repository.RepositoryImp
@@ -103,6 +104,7 @@ val useCasesModule: Module = module {
     factoryOf(::GetNationalBankCurrencyUseCase)
     factoryOf(::GetNBCurrencyByRangeUseCase)
     factoryOf(::GetCityUseCase)
+    factoryOf(::GetExchangerUseCase)
 }
 
 val repositoryModule = module {

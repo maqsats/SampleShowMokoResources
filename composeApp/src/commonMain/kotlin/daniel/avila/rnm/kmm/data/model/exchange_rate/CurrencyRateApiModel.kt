@@ -9,5 +9,5 @@ data class CurrencyRateApiModel(
     val currency_logo: String? = null,
     val quantity: Int,
     val sell: Double,
-    val updated_at: String
+    val updated_at: String ? = null
 )

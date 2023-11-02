@@ -222,7 +222,7 @@ fun Calculator(modifier: Modifier = Modifier, city: City?) {
                     BuyOrSell.BUY -> "Вы потратите".uppercase()
                     BuyOrSell.SELL -> "Вы получите".uppercase()
                 },
-                style = MaterialTheme.typography.h1
+                style = MaterialTheme.typography.subtitle2
             )
         }
 

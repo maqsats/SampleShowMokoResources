@@ -9,30 +9,18 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import daniel.avila.rnm.kmm.domain.model.exchanger.ExchangerTab
-import daniel.avila.rnm.kmm.domain.model.exchanger.ExchangerType
 import daniel.avila.rnm.kmm.presentation.ui.common.RoundedBackground
 
 @Composable
-fun ExchangersTab(modifier: Modifier, onTabSelected: (ExchangerTab) -> Unit) {
-    val list = listOf(
-        ExchangerTab("Все", true, exchangerType = ExchangerType.ALL),
-        ExchangerTab("Банки", false, exchangerType = ExchangerType.BANK),
-        ExchangerTab("Обменники", false, exchangerType = ExchangerType.EXCHANGERS),
-    )
-
-    LaunchedEffect(list) {
-        onTabSelected(list.first())
-    }
-
-    var selectedItem by remember { mutableStateOf(list.first()) }
+fun ExchangersTab(
+    modifier: Modifier,
+    list: List<ExchangerTab>,
+    selectedExchangerTab: MutableState<ExchangerTab>
+) {
 
     Row(
         modifier = modifier
@@ -40,15 +28,14 @@ fun ExchangersTab(modifier: Modifier, onTabSelected: (ExchangerTab) -> Unit) {
             .padding(horizontal = 5.dp),
     ) {
         list.forEach { tabItem ->
-            val isSelected = selectedItem == tabItem
+            val isSelected = selectedExchangerTab.value == tabItem
             RoundedBackground(
                 modifier = Modifier.wrapContentWidth(),
                 backgroundColor = if (isSelected) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.secondary,
                 height = 30.dp,
                 paddingHorizontal = 14.dp,
                 onClick = {
-                    onTabSelected(tabItem)
-                    selectedItem = tabItem
+                    selectedExchangerTab.value = tabItem
                 },
             ) {
                 Text(

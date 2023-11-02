@@ -21,6 +21,7 @@ class ExchangeRateMapper(private val endPoint: String) :
             currencyRateList = model.currency_rates?.map { getCurrencyRate(it) } ?: emptyList(),
             id = model.id,
             location = getLocation(model.location),
+            locationCount = model.locations_count ?: 0,
             logo = endPoint + model.logo.orEmpty(),
             name = model.name,
             openHours = getOpenHours(model.open_hours)
@@ -55,14 +56,14 @@ class ExchangeRateMapper(private val endPoint: String) :
         return tags?.map { Tag.fromValue(it) } ?: emptyList()
     }
 
-    private fun getCurrencyRate(from: CurrencyRateApiModel): CurrencyRate {
+    private fun getCurrencyRate(from: CurrencyRateApiModel?): CurrencyRate {
         return CurrencyRate(
-            buy = from.buy,
-            sell = from.sell,
-            currencyCode = from.currency_code,
-            quantity = from.quantity,
-            currencyLogo = endPoint + from.currency_logo.orEmpty(),
-            updatedAt = from.updated_at
+            buy = from?.buy ?: 0.0,
+            sell = from?.sell ?: 0.0,
+            currencyCode = from?.currency_code.orEmpty(),
+            quantity = from?.quantity ?: 0,
+            currencyLogo = endPoint + from?.currency_logo.orEmpty(),
+            updatedAt = from?.updated_at.orEmpty()
         )
     }
 }

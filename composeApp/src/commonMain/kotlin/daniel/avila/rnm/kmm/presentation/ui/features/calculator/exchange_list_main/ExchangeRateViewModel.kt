@@ -33,7 +33,6 @@ class ExchangeRateViewModel(
                 )
             }
             is ExchangeRateContract.Event.OnFetchData -> {
-                println("hey")
                 param = event.param
                 currencies = event.currencies
                 inputText = event.inputText

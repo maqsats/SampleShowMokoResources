@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,12 +16,16 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import daniel.avila.rnm.kmm.MR
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
+import daniel.avila.rnm.kmm.domain.model.exchanger.ExchangerTab
+import daniel.avila.rnm.kmm.domain.model.exchanger.ExchangerType
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
 import daniel.avila.rnm.kmm.presentation.state.ManagementResourceUiState
 import daniel.avila.rnm.kmm.presentation.ui.features.all_places.AllPlacesContract
@@ -32,6 +37,14 @@ fun ExchangersScreen(
     exchangerListUiState: ResourceUiState<List<ExchangeRate>>,
     allPlacesViewModel: AllPlacesViewModel,
 ) {
+    val list = listOf(
+        ExchangerTab("Все", true, exchangerType = ExchangerType.ALL),
+        ExchangerTab("Банки", false, exchangerType = ExchangerType.BANK),
+        ExchangerTab("Обменники", false, exchangerType = ExchangerType.EXCHANGERS),
+    )
+
+    val selectedExchangerTab = remember { mutableStateOf(list.first()) }
+
     Column(
         modifier = Modifier.fillMaxWidth().wrapContentHeight()
             .padding(start = 10.dp, end = 10.dp, top = 40.dp)
@@ -66,22 +79,24 @@ fun ExchangersScreen(
 
         ExchangersTab(
             modifier = Modifier.fillMaxWidth(),
-            onTabSelected = {
-
-            }
+            list,
+            selectedExchangerTab
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
         ManagementResourceUiState(
-            modifier = Modifier,
+            modifier = Modifier.fillMaxSize(),
             resourceUiState = exchangerListUiState,
             successView = { exchangerList ->
                 LazyColumn {
                     items(exchangerList) { exchanger ->
-                        ExchangerItem(exchanger, onClick = {
+                        ExchangerItem(
+                            exchanger,
+                            isFirst = exchanger == exchangerList.first(),
+                            onClick = {
 
-                        })
+                            })
                     }
                 }
             },

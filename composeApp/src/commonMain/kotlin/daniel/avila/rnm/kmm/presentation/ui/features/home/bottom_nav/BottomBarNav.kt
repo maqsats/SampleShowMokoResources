@@ -47,7 +47,7 @@ fun BottomBarNav(
                     Text(
                         modifier = Modifier.padding(top = 8.dp, end = 2.dp, start = 2.dp),
                         text = item.nameStringRes,
-                        style = MaterialTheme.typography.h1,
+                        style = MaterialTheme.typography.subtitle2,
                         textAlign = TextAlign.Center,
                         softWrap = false
                     )
