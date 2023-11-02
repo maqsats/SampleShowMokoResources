@@ -29,7 +29,8 @@ import daniel.avila.rnm.kmm.domain.interactors.SwitchCharacterFavoriteUseCase
 import daniel.avila.rnm.kmm.domain.interactors.city.GetCityUseCase
 import daniel.avila.rnm.kmm.domain.interactors.currency.GetCurrencyUseCase
 import daniel.avila.rnm.kmm.domain.interactors.exchange_rate.GetExchangeRateUseCase
-import daniel.avila.rnm.kmm.domain.interactors.national_bank.GetNationalBankUseCase
+import daniel.avila.rnm.kmm.domain.interactors.national_bank.GetNBCurrencyByRangeUseCase
+import daniel.avila.rnm.kmm.domain.interactors.national_bank.GetNationalBankCurrencyUseCase
 import daniel.avila.rnm.kmm.domain.repository.RepositoryImp
 import daniel.avila.rnm.kmm.domain.repository.city.CityRepository
 import daniel.avila.rnm.kmm.domain.repository.city.RemoteCityRepository
@@ -39,13 +40,14 @@ import daniel.avila.rnm.kmm.domain.repository.exchange_rate.ExchangeRateReposito
 import daniel.avila.rnm.kmm.domain.repository.exchange_rate.RemoteExchangeRateRepository
 import daniel.avila.rnm.kmm.domain.repository.national_bank.NationalBankRepository
 import daniel.avila.rnm.kmm.domain.repository.national_bank.RemoteNationalBankRepository
+import daniel.avila.rnm.kmm.presentation.ui.features.all_places.AllPlacesViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.currency.CurrencyViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.exchange_list_main.ExchangeRateViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.character_detail.CharacterDetailViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.characters.CharactersViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.characters_favorites.CharactersFavoritesViewModel
-import daniel.avila.rnm.kmm.presentation.ui.features.all_places.AllPlacesViewModel
+import daniel.avila.rnm.kmm.presentation.ui.features.national_bank_currency.NBCurrencyViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
@@ -86,6 +88,7 @@ val viewModelModule = module {
     factoryOf(::CurrencyViewModel)
     factoryOf(::CityViewModel)
     factoryOf(::AllPlacesViewModel)
+    factoryOf(::NBCurrencyViewModel)
     factory { params -> CharacterDetailViewModel(get(), get(), get(), params.get()) }
 }
 
@@ -97,7 +100,8 @@ val useCasesModule: Module = module {
     factory { SwitchCharacterFavoriteUseCase(get(), get()) }
     factoryOf(::GetExchangeRateUseCase)
     factoryOf(::GetCurrencyUseCase)
-    factoryOf(::GetNationalBankUseCase)
+    factoryOf(::GetNationalBankCurrencyUseCase)
+    factoryOf(::GetNBCurrencyByRangeUseCase)
     factoryOf(::GetCityUseCase)
 }
 

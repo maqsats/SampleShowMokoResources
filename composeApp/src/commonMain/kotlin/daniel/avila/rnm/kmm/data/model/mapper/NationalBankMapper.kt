@@ -13,8 +13,9 @@ class NationalBankMapper : Mapper<NationalBankCurrencyApiModel, NationalBankCurr
             currencyId = model.currency_id,
             currencyName = model.currency_name,
             quantity = model.quantity,
+            date = model.date.orEmpty(),
             rate = model.rate,
-            updatedAt = model.updated_at,
+            updatedAt = model.updated_at.orEmpty(),
             change = CurrencyChange.fromValue(model.change)
         )
 }

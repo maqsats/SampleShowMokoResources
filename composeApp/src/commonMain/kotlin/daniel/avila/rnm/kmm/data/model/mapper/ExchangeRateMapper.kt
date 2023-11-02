@@ -11,14 +11,15 @@ import daniel.avila.rnm.kmm.domain.model.exchange_rate.OpenHour
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.Tag
 import daniel.avila.rnm.kmm.domain.model.map.Mapper
 
-class ExchangeRateMapper : Mapper<ExchangeRateApiModel, ExchangeRate>() {
+class ExchangeRateMapper(private val endPoint: String) :
+    Mapper<ExchangeRateApiModel, ExchangeRate>() {
     override fun map(model: ExchangeRateApiModel): ExchangeRate {
         return ExchangeRate(
             categoryId = model.category_id,
             currencyRate = getCurrencyRate(model.currency_rate),
             id = model.id,
             location = getLocation(model.location),
-            logo = model.logo.orEmpty(),
+            logo = endPoint + model.logo.orEmpty(),
             name = model.name,
             openHours = getOpenHours(model.open_hours)
         )

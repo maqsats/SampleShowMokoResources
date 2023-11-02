@@ -1,13 +1,13 @@
 package daniel.avila.rnm.kmm.presentation.ui.features.all_places
 
 import cafe.adriel.voyager.core.model.coroutineScope
-import daniel.avila.rnm.kmm.domain.interactors.national_bank.GetNationalBankUseCase
+import daniel.avila.rnm.kmm.domain.interactors.national_bank.GetNationalBankCurrencyUseCase
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
 import daniel.avila.rnm.kmm.presentation.mvi.BaseViewModel
 import kotlinx.coroutines.launch
 
 class AllPlacesViewModel(
-    private val getNationalBankUseCase: GetNationalBankUseCase
+    private val getNationalBankCurrencyUseCase: GetNationalBankCurrencyUseCase
 ) : BaseViewModel<AllPlacesContract.Event, AllPlacesContract.State, AllPlacesContract.Effect>() {
 
 
@@ -27,8 +27,9 @@ class AllPlacesViewModel(
     private fun getCurrencyList() {
         setState { copy(nationalBankCurrencyList = ResourceUiState.Loading) }
         coroutineScope.launch {
-            getNationalBankUseCase(Unit)
+            getNationalBankCurrencyUseCase(Unit)
                 .onSuccess {
+                    println(it)
                     setState {
                         copy(
                             nationalBankCurrencyList = if (it.isEmpty())

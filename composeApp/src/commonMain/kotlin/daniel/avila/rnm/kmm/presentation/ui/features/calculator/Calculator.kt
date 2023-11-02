@@ -171,11 +171,11 @@ fun Calculator(modifier: Modifier = Modifier, city: City?) {
                             .height(15.dp)
                     )
                     Spacer(modifier = Modifier.width(5.dp))
-                    when (val currencyList = state.currencies) {
+                    when (val currencyListUIState = state.currencies) {
                         is ResourceUiState.Success -> {
-                            LaunchedEffect(currencyList.data) {
-                                println("hey we are updating currency list")
-                                currencies = Pair(currencyList.data[0], currencyList.data[1])
+                            LaunchedEffect(currencyListUIState.data) {
+                                currencies =
+                                    Pair(currencyListUIState.data[0], currencyListUIState.data[1])
                             }
 
                             Text(

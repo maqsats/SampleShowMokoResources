@@ -26,7 +26,7 @@ import com.seiko.imageloader.rememberImagePainter
 import daniel.avila.rnm.kmm.MR
 import daniel.avila.rnm.kmm.domain.model.national_bank.CurrencyChange
 import daniel.avila.rnm.kmm.domain.model.national_bank.NationalBankCurrency
-import daniel.avila.rnm.kmm.presentation.ui.features.national_bank_currency.NationalBankCurrencyItemScreen
+import daniel.avila.rnm.kmm.presentation.ui.features.national_bank_currency.NBCurrencyItemScreen
 import daniel.avila.rnm.kmm.utils.extension.formatMoney
 import daniel.avila.rnm.kmm.utils.navigation.LocalNavigator
 import daniel.avila.rnm.kmm.utils.navigation.currentOrThrow
@@ -42,7 +42,7 @@ fun NationalBankCurrencyItem(it: NationalBankCurrency) {
                 indication = null,
                 interactionSource = MutableInteractionSource()
             ) {
-                navigator.push(NationalBankCurrencyItemScreen(it))
+                navigator.push(NBCurrencyItemScreen(it))
             },
         verticalAlignment = Alignment.CenterVertically
     ) {

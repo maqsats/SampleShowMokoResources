@@ -5,6 +5,7 @@ data class NationalBankCurrency(
     val currencyCode: String,
     val currencyId: Int,
     val currencyName: String,
+    val date: String,
     val quantity: Int,
     val rate: Double,
     val updatedAt: String

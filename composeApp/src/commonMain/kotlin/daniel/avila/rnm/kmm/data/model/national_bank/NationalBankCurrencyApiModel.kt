@@ -8,7 +8,8 @@ data class NationalBankCurrencyApiModel(
     val currency_code: String,
     val currency_id: Int,
     val currency_name: String,
+    val date: String? = null,
     val quantity: Int,
     val rate: Double,
-    val updated_at: String
+    val updated_at: String? = null
 )

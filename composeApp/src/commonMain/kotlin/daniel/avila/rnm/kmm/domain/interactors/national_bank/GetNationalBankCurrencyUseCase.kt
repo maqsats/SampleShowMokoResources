@@ -5,7 +5,7 @@ import daniel.avila.rnm.kmm.domain.model.national_bank.NationalBankCurrency
 import daniel.avila.rnm.kmm.domain.repository.national_bank.NationalBankRepository
 import kotlinx.coroutines.CoroutineDispatcher
 
-class GetNationalBankUseCase(
+class GetNationalBankCurrencyUseCase(
     private val repository: NationalBankRepository,
     dispatcher: CoroutineDispatcher,
 ) : BaseUseCase<Unit, List<NationalBankCurrency>>(dispatcher) {
