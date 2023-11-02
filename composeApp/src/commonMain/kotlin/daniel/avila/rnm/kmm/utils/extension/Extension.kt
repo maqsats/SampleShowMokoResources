@@ -6,6 +6,11 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.months
+import com.soywiz.klock.weeks
+import com.soywiz.klock.years
+import daniel.avila.rnm.kmm.domain.model.time_period_tab.TimePeriod
 
 fun Modifier.shimmerLoadingAnimation(): Modifier {
     return composed {
@@ -82,4 +87,20 @@ fun Double.formatDistance(): String {
             "$formattedKm km"
         }
     }
+}
+
+fun convertTimePeriodDateStyle(timePeriod: TimePeriod): String {
+    val now = DateTime.nowLocal()
+    val startDate = when (timePeriod) {
+        TimePeriod.WEEK -> now.minus(1.weeks)
+        TimePeriod.MONTH -> now.minus(1.months)
+        TimePeriod.THREE_MONTHS -> now - 3.months
+        TimePeriod.YEAR -> now - 1.years
+    }
+
+    val startDay = startDate.dayOfMonth
+    val endDay = now.dayOfMonth
+    val monthName = startDate.format("MMMM")
+
+    return "$startDay $monthName - $endDay $monthName"
 }

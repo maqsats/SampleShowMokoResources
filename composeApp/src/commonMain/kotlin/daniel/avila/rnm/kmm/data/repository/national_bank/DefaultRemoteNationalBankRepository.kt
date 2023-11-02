@@ -1,7 +1,7 @@
 package daniel.avila.rnm.kmm.data.repository.national_bank
 
 import daniel.avila.rnm.kmm.data.model.mapper.NationalBankMapper
-import daniel.avila.rnm.kmm.data.model.national_bank.NationalBankCurrencyApiModel
+import daniel.avila.rnm.kmm.data.model.national_bank.NationalBankCurrencyRateApiModel
 import daniel.avila.rnm.kmm.domain.model.national_bank.NationalBankCurrency
 import daniel.avila.rnm.kmm.domain.model.time_period_tab.TimePeriod
 import daniel.avila.rnm.kmm.domain.params.CurrencyCode
@@ -21,7 +21,7 @@ class DefaultRemoteNationalBankRepository(
     override suspend fun getNationalBankCurrency(): List<NationalBankCurrency> =
         nationalBankMapper.map(
             httpClient.get("$endPoint/exchanger/nb/rates/today")
-                .body<List<NationalBankCurrencyApiModel>>()
+                .body<List<NationalBankCurrencyRateApiModel>>()
         )
 
     override suspend fun getNationalBankCurrency(
@@ -30,6 +30,6 @@ class DefaultRemoteNationalBankRepository(
         nationalBankMapper.map(
             httpClient.get("$endPoint/exchanger/nb/${param.second}/rates") {
                 parameter("range", param.first.value)
-            }.body<List<NationalBankCurrencyApiModel>>()
+            }.body<List<NationalBankCurrencyRateApiModel>>()
         )
 }

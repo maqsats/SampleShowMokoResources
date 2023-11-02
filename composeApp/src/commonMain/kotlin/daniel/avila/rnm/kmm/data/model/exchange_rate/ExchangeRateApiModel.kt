@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 data class ExchangeRateApiModel(
     val category_id: Int,
     val currency_rate: CurrencyRateApiModel,
+    val currency_rates: List<CurrencyRateApiModel>? = null,
     val id: Int,
     val location: LocationApiModel,
     val logo: String? = null,

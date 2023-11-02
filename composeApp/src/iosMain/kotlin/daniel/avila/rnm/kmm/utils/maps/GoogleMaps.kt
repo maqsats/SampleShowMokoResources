@@ -24,12 +24,14 @@ import cocoapods.GoogleMaps.GMSPolyline
 import cocoapods.GoogleMaps.animateWithCameraUpdate
 import cocoapods.GoogleMaps.kGMSTypeNormal
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.readValue
+import platform.CoreGraphics.CGRectZero
 import platform.CoreLocation.CLLocationCoordinate2DMake
 import platform.MapKit.MKMapCamera
 import platform.MapKit.MKMapView
-import platform.MapKit.MKMapViewDelegateProtocol
-import platform.MapKit.MKPointAnnotation
+import platform.UIKit.UIColor
 import platform.UIKit.UIEdgeInsetsMake
+import platform.UIKit.UIView
 import platform.darwin.NSObject
 
 
@@ -59,7 +61,7 @@ actual fun GoogleMaps(
     }
     val mkMapCamera = remember {
         MKMapCamera().apply {
-            setCenterCoordinate(CLLocationCoordinate2DMake(18.982579225106615, -99.09380710785197))
+            setCenterCoordinate(CLLocationCoordinate2DMake(43.238949, 76.889709))
             setAltitude(50000.0)
         }
     }
@@ -87,114 +89,120 @@ actual fun GoogleMaps(
             }
         }
     ) {
-
-        // MapKit
-        if (true) {
-            UIKitView(
-                modifier = modifier.fillMaxSize(),
-                interactive = true,
-                factory = {
-                    mkMapView.delegate = object : NSObject(), MKMapViewDelegateProtocol {
-                        // NOTE: Delegates are not currently supported in Kotlin/Native
-
-//                    override fun mapView(mapView: MKMapView, didSelectAnnotationView: MKAnnotationView) {
-//                        showSomething = true
-//                    }
-//                    override fun mapView(mapView: MKMapView, didDeselectAnnotationView: MKAnnotationView) {
-//                        showSomething = false
-//                    }
-
-//                    override fun mapView(mapView: MKMapView, didSelectAnnotation: MKAnnotationProtocol) {
-//                        showSomething = true
-//                    }
-//                    override fun mapView(mapView: MKMapView, didDeselectAnnotation: MKAnnotationProtocol) {
-//                        showSomething = false
-//                    }
-
-//                    override fun mapView(mapView: MKMapView, didUpdateUserLocation: MKUserLocation) {
-//                        showSomething = true
-//                    }
-//                    override fun mapViewDidFinishLoadingMap(mapView: MKMapView) {
-//                        showSomething = true
-//                    }
-
-//                    override fun mapView(mapView: MKMapView, viewForAnnotation: MKAnnotationProtocol): MKAnnotationView {
-//                        showSomething = true
+//        // MapKit
+//        UIKitView(
+//            modifier = modifier.fillMaxSize(),
+//            interactive = true,
+//            factory = {
+//                mkMapView.delegate = object : NSObject(), MKMapViewDelegateProtocol {
+//                    // NOTE: Delegates are not currently supported in Kotlin/Native
 //
-//                        return MKAnnotationView().apply {
-//                            canShowCallout = true
-//                            rightCalloutAccessoryView = UIButton.buttonWithType(UIButtonTypeDetailDisclosure).apply {
-//                                addTarget(
-//                                    this,
-//                                    NSSelectorFromString("showDetails"),
-//                                    UIControlEventTouchUpInside
-//                                )
-//                            }
-//                            annotation = viewForAnnotation
-//                            draggable = true
-//                            enabled = true
+////                    override fun mapView(mapView: MKMapView, didSelectAnnotationView: MKAnnotationView) {
+////                        showSomething = true
+////                    }
+////                    override fun mapView(mapView: MKMapView, didDeselectAnnotationView: MKAnnotationView) {
+////                        showSomething = false
+////                    }
+//
+////                    override fun mapView(mapView: MKMapView, didSelectAnnotation: MKAnnotationProtocol) {
+////                        showSomething = true
+////                    }
+////                    override fun mapView(mapView: MKMapView, didDeselectAnnotation: MKAnnotationProtocol) {
+////                        showSomething = false
+////                    }
+//
+////                    override fun mapView(mapView: MKMapView, didUpdateUserLocation: MKUserLocation) {
+////                        showSomething = true
+////                    }
+////                    override fun mapViewDidFinishLoadingMap(mapView: MKMapView) {
+////                        showSomething = true
+////                    }
+//
+////                    override fun mapView(mapView: MKMapView, viewForAnnotation: MKAnnotationProtocol): MKAnnotationView {
+////                        showSomething = true
+////
+////                        return MKAnnotationView().apply {
+////                            canShowCallout = true
+////                            rightCalloutAccessoryView = UIButton.buttonWithType(UIButtonTypeDetailDisclosure).apply {
+////                                addTarget(
+////                                    this,
+////                                    NSSelectorFromString("showDetails"),
+////                                    UIControlEventTouchUpInside
+////                                )
+////                            }
+////                            annotation = viewForAnnotation
+////                            draggable = true
+////                            enabled = true
+////                        }
+////                    }
+////
+////                    override fun mapViewAnnotationViewDidChangeDragState(mapView: MKMapView, view: MKAnnotationView, newState: MK
+//                }
+//
+//                mkMapView
+//            },
+//            update = { view ->
+//                cameraPosition?.let {
+//                    view.setCamera(MKMapCamera().apply {
+//                        setCenterCoordinate(
+//                            CLLocationCoordinate2DMake(
+//                                it.target.latitude,
+//                                it.target.longitude
+//                            )
+//                        )
+//                        setAltitude(50000.0)
+//                    }, true)
+//                }
+//
+//                markers?.forEach { marker ->
+//                    val annotation = object : NSObject(), MKAnnotationProtocol {
+//                        override fun coordinate(): CValue<CLLocationCoordinate2D> {
+//                            return CLLocationCoordinate2DMake(
+//                                marker.position.latitude,
+//                                marker.position.longitude
+//                            )
+//                        }
+//
+//                        override fun title(): String {
+//                            return marker.title
+//                        }
+//
+//                        override fun subtitle(): String {
+//                            return "Your mom"
 //                        }
 //                    }
-//
-//                    override fun mapViewAnnotationViewDidChangeDragState(mapView: MKMapView, view: MKAnnotationView, newState: MK
-                    }
-
-                    mkMapView
-                },
-                update = { view ->
-                    cameraPosition?.let {
-                        view.setCamera(mkMapCamera, true)
-                    }
-
-                    markers?.forEach { marker ->
-//                         val annotation = object : NSObject(), MKAnnotationProtocol {
-//                             override fun coordinate(): CValue<CLLocationCoordinate2D> {
-//                                 return CLLocationCoordinate2DMake(
-//                                     marker.position.latitude,
-//                                     marker.position.longitude
-//                                 )
-//                             }
-//
-//                             override fun title(): String {
-//                                 return marker.title
-//                             }
-//
-//                             override fun subtitle(): String {
-//                                 return "Your mom"
-//                             }
-//                         }
-//                    annotation.setCoordinate(CLLocationCoordinate2DMake(
-//                        marker.position.latitude,
-//                        marker.position.longitude
-//                    ))
+//                    annotation.setCoordinate(
+//                        CLLocationCoordinate2DMake(
+//                            marker.position.latitude,
+//                            marker.position.longitude
+//                        )
+//                    )
 //                    view.addAnnotation(annotation)
 //                    view.selectAnnotation(annotation, true)
-
-                        val markerPoint = MKPointAnnotation()
-                        markerPoint.setCoordinate(
-                            CLLocationCoordinate2DMake(
-                                marker.position.latitude,
-                                marker.position.longitude
-                            )
-                        )
-                        markerPoint.setTitle(marker.title)
-                        markerPoint.setSubtitle("Your mom")
-                        view.addAnnotation(markerPoint)
+//
+//                    val markerPoint = MKPointAnnotation()
+//                    markerPoint.setCoordinate(
+//                        CLLocationCoordinate2DMake(
+//                            marker.position.latitude,
+//                            marker.position.longitude
+//                        )
+//                    )
+//                    markerPoint.setTitle(marker.title)
+//                    markerPoint.setSubtitle("Your mom")
+//                    view.addAnnotation(markerPoint)
 //                    view.selectAnnotation(markerPoint, true)
-                    }
-                },
-
-                )
-        }
+//                }
+//            },
+//
+//            )
 
         // Google Maps
-        if (false) {
-            UIKitView(
-                modifier = modifier.fillMaxSize(),
-                interactive = true,
-                factory = {
-                    googleMapView.delegate = object : NSObject(), GMSMapViewDelegateProtocol {
-                        // NOTE: Delegates are not currently supported in Kotlin/Native for iOS
+        UIKitView(
+            modifier = modifier.fillMaxSize(),
+            interactive = true,
+            factory = {
+                googleMapView.delegate = object : NSObject(), GMSMapViewDelegateProtocol {
+                    // NOTE: Delegates are not currently supported in Kotlin/Native for iOS
 
 //                        override fun mapView(mapView: GMSMapView, didLongPressAtCoordinate: CValue<CLLocationCoordinate2D>) {
 //                            showSomething = true
@@ -217,79 +225,87 @@ actual fun GoogleMaps(
 //                        override fun mapView(mapView: GMSMapView, didTapAtCoordinate: CValue<CLLocationCoordinate2D>) {
 //                            println("didTapAtCoordinate")
 //                        }
-                    }
+                }
 
-                    googleMapView
-                },
-                update = { view ->
-                    cameraPosition?.let {
-                        view.setCamera(
-                            GMSCameraPosition.cameraWithLatitude(
-                                it.target.latitude,
-                                it.target.longitude,
-                                it.zoom
+                googleMapView
+            },
+            update = { view ->
+                cameraPosition?.let {
+                    view.setCamera(
+                        GMSCameraPosition.cameraWithLatitude(
+                            it.target.latitude,
+                            it.target.longitude,
+                            it.zoom
+                        )
+                    )
+                }
+
+                cameraPositionLatLongBounds?.let { cameraPositionLatLongBounds ->
+
+                    val bounds = GMSCoordinateBounds()
+                    cameraPositionLatLongBounds.coordinates.forEach { latLong ->
+                        bounds.includingCoordinate(
+                            CLLocationCoordinate2DMake(
+                                latitude = latLong.latitude,
+                                longitude = latLong.longitude
                             )
                         )
                     }
+                    GMSCameraUpdate().apply {
+                        fitBounds(bounds, cameraPositionLatLongBounds.padding.toDouble())
+                        view.animateWithCameraUpdate(this)
+                    }
+                }
 
-                    cameraPositionLatLongBounds?.let { cameraPositionLatLongBounds ->
+                markers?.forEach { marker ->
+                    val gmsMarker = GMSMarker()
 
-                        val bounds = GMSCoordinateBounds()
-                        cameraPositionLatLongBounds.coordinates.forEach { latLong ->
-                            bounds.includingCoordinate(
-                                CLLocationCoordinate2DMake(
-                                    latitude = latLong.latitude,
-                                    longitude = latLong.longitude
-                                )
-                            )
+                    gmsMarker.apply {
+                        position = CLLocationCoordinate2DMake(
+                            marker.position.latitude,
+                            marker.position.longitude
+                        )
+                        title = marker.title
+                        map = view
+                        iconView = UIView(frame = CGRectZero.readValue()).apply {
+                            translatesAutoresizingMaskIntoConstraints = false
+
+                            layer.cornerRadius = 10.0
+                            clipsToBounds = true
+                            backgroundColor =
+                                UIColor(red = 0.8, green = 0.8, blue = 0.8, alpha = 0.8)
                         }
-                        GMSCameraUpdate().apply {
-                            fitBounds(bounds, cameraPositionLatLongBounds.padding.toDouble())
-                            view.animateWithCameraUpdate(this)
+                    }
+                }
+
+                polyLine?.let { polyLine ->
+                    val points = polyLine.map {
+                        CLLocationCoordinate2DMake(it.latitude, it.longitude)
+                    }
+                    val path = GMSMutablePath().apply {
+                        points.forEach { point ->
+                            addCoordinate(point)
                         }
                     }
 
-                    markers?.forEach { marker ->
-                        GMSMarker().apply {
-                            position = CLLocationCoordinate2DMake(
-                                marker.position.latitude,
-                                marker.position.longitude
-                            )
-                            title = marker.title
-                            map = view
-                        }
+                    GMSPolyline().apply {
+                        this.path = path
+                        this.map = view
                     }
+                }
 
-                    polyLine?.let { polyLine ->
-                        val points = polyLine.map {
-                            CLLocationCoordinate2DMake(it.latitude, it.longitude)
-                        }
-                        val path = GMSMutablePath().apply {
-                            points.forEach { point ->
-                                addCoordinate(point)
-                            }
-                        }
+                view.settings.setZoomGestures(true)
+                view.settings.setCompassButton(true)
 
-                        GMSPolyline().apply {
-                            this.path = path
-                            this.map = view
-                        }
-                    }
+                view.myLocationEnabled = isMyLocationEnabled
+                view.settings.myLocationButton = isMyLocationEnabled
+                view.mapType = gsmMapViewType
+                view.padding = UIEdgeInsetsMake(0.0, 0.0, 100.0, 0.0)
 
-                    view.settings.setZoomGestures(true)
-                    view.settings.setCompassButton(true)
-
-                    view.myLocationEnabled = isMyLocationEnabled
-                    view.settings.myLocationButton = isMyLocationEnabled
-                    view.mapType = gsmMapViewType
-                    view.padding = UIEdgeInsetsMake(0.0, 0.0, 100.0, 0.0)
-
-                    // get the bounds of this UI view and set the padding to the bottom of the view
-                    // so that the bottom controls are not covered by the map
-                    view.padding = UIEdgeInsetsMake(0.0, 0.0, componentHeight.value - 80.0, 0.0)
-                },
-
-                )
-        }
+                // get the bounds of this UI view and set the padding to the bottom of the view
+                // so that the bottom controls are not covered by the map
+                view.padding = UIEdgeInsetsMake(0.0, 0.0, componentHeight.value - 80.0, 0.0)
+            },
+        )
     }
 }

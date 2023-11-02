@@ -13,10 +13,12 @@ import daniel.avila.rnm.kmm.domain.model.map.Mapper
 
 class ExchangeRateMapper(private val endPoint: String) :
     Mapper<ExchangeRateApiModel, ExchangeRate>() {
+
     override fun map(model: ExchangeRateApiModel): ExchangeRate {
         return ExchangeRate(
             categoryId = model.category_id,
             currencyRate = getCurrencyRate(model.currency_rate),
+            currencyRateList = model.currency_rates?.map { getCurrencyRate(it) } ?: emptyList(),
             id = model.id,
             location = getLocation(model.location),
             logo = endPoint + model.logo.orEmpty(),
@@ -44,7 +46,7 @@ class ExchangeRateMapper(private val endPoint: String) :
             longitude = location.longitude,
             name = location.name,
             phone = location.phone,
-            distance = location.distance,
+            distance = location.distance ?: 0.0,
             tags = getTags(location.tags)
         )
     }
@@ -59,8 +61,8 @@ class ExchangeRateMapper(private val endPoint: String) :
             sell = from.sell,
             currencyCode = from.currency_code,
             quantity = from.quantity,
+            currencyLogo = endPoint + from.currency_logo.orEmpty(),
             updatedAt = from.updated_at
         )
     }
-
 }

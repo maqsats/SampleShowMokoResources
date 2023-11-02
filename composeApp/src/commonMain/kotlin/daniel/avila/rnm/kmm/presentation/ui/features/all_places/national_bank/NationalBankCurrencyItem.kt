@@ -47,7 +47,7 @@ fun NationalBankCurrencyItem(it: NationalBankCurrency) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = rememberImagePainter("https://stakingcrypto.info/static/assets/coins/euro-logo.png"),
+            painter = rememberImagePainter(it.currencyLogo),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier

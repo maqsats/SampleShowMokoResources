@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.features.national_bank_currency.line_chart
+package daniel.avila.rnm.kmm.presentation.ui.features.national_bank_currency.currency_rate_line_chart
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -38,7 +38,6 @@ fun CurrencyRateLineChart(timePeriod: TimePeriod, currencyCode: String) {
     val state by currencyViewModel.uiState.collectAsState()
 
     LaunchedEffect(timePeriod) {
-        println("TimePeriod $timePeriod")
         currencyViewModel.setEvent(
             NBCurrencyContract.Event.OnFetchData(
                 Pair(

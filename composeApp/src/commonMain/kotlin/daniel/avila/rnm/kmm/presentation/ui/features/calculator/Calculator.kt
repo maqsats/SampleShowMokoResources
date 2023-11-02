@@ -42,6 +42,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.seiko.imageloader.rememberImagePainter
 import daniel.avila.rnm.kmm.MR
 import daniel.avila.rnm.kmm.domain.model.city.City
 import daniel.avila.rnm.kmm.domain.model.currency.Currency
@@ -164,7 +165,7 @@ fun Calculator(modifier: Modifier = Modifier, city: City?) {
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        painter = painterResource(MR.images.ic_usa_flag),
+                        painter = rememberImagePainter(currencies?.second?.currencyLogo.orEmpty()),
                         contentDescription = null,
                         modifier = Modifier
                             .width(20.dp)

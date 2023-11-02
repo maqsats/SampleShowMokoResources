@@ -6,4 +6,4 @@ import androidx.compose.runtime.Composable
 internal actual fun BackHandler(enabled: Boolean, onBack: () -> Unit) =
     androidx.activity.compose.BackHandler(enabled, onBack)
 
-actual val shouldUseSwipeBack: Boolean = true
+actual val shouldUseSwipeBack: Boolean = false

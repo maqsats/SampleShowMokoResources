@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,7 +18,9 @@ import cafe.adriel.voyager.core.screen.Screen
 import daniel.avila.rnm.kmm.domain.model.national_bank.NationalBankCurrency
 import daniel.avila.rnm.kmm.domain.model.time_period_tab.TimePeriod
 import daniel.avila.rnm.kmm.domain.model.time_period_tab.TimePeriodTab
-import daniel.avila.rnm.kmm.presentation.ui.features.national_bank_currency.line_chart.CurrencyRateLineChart
+import daniel.avila.rnm.kmm.presentation.ui.common.ButtonBlue
+import daniel.avila.rnm.kmm.presentation.ui.features.national_bank_currency.currency_rate_line_chart.CurrencyRateLineChart
+import daniel.avila.rnm.kmm.presentation.ui.features.national_bank_currency.map_screen.NBCurrencyMapScreen
 import daniel.avila.rnm.kmm.presentation.ui.features.national_bank_currency.time_period_tab.TimePeriodsTab
 import daniel.avila.rnm.kmm.presentation.ui.features.toolbar.Toolbar
 import daniel.avila.rnm.kmm.utils.navigation.LocalNavigator
@@ -58,6 +61,14 @@ class NBCurrencyItemScreen(private val nbCurrency: NationalBankCurrency) :
             TimePeriodsTab(modifier = Modifier.fillMaxWidth(), list, selectedTab)
 
             CurrencyRateLineChart(selectedTab.value.timePeriod, nbCurrency.currencyCode)
+
+            ButtonBlue(
+                modifier = Modifier.padding(horizontal = 10.dp),
+                buttonText = "Курс обмена по городу на карте"
+            ) {
+                navigator.push(NBCurrencyMapScreen(nbCurrency, selectedTab.value.timePeriod))
+            }
+
         }
     }
 }
