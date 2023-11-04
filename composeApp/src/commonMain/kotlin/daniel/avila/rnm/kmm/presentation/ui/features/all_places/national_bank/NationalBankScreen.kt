@@ -1,6 +1,7 @@
 package daniel.avila.rnm.kmm.presentation.ui.features.all_places.national_bank
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,10 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.valentinilk.shimmer.shimmer
 import daniel.avila.rnm.kmm.MR
 import daniel.avila.rnm.kmm.domain.model.national_bank.NationalBankCurrency
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
-import daniel.avila.rnm.kmm.presentation.ui.common.LoadingView
 import dev.icerock.moko.resources.compose.painterResource
 
 @Composable
@@ -66,23 +67,19 @@ fun NationalBankScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            LazyRow(modifier = Modifier.weight(1f).wrapContentHeight()) {
-                when (nationalBankCurrencyListUiState) {
-                    is ResourceUiState.Success -> {
+            when (nationalBankCurrencyListUiState) {
+                is ResourceUiState.Success -> {
+                    LazyRow(modifier = Modifier.weight(1f).wrapContentHeight()) {
                         items(nationalBankCurrencyListUiState.data) {
                             NationalBankCurrencyItem(it)
                         }
                     }
-                    else -> {
-                        item {
-                            LoadingView(
-                                modifier = Modifier.fillMaxWidth().height(50.dp),
-                                cornerBorderSize = 5.dp
-                            )
-                        }
-                    }
+                }
+                else -> {
+
                 }
             }
+
             Text(
                 modifier = Modifier.wrapContentWidth().wrapContentHeight()
                     .padding(horizontal = 10.dp),

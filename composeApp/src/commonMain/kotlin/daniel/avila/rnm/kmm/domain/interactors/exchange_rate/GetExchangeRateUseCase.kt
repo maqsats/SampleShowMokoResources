@@ -10,6 +10,7 @@ class GetExchangeRateUseCase(
     private val repository: ExchangeRateRepository,
     dispatcher: CoroutineDispatcher,
 ) : BaseUseCase<ExchangeRateParameters, List<ExchangeRate>>(dispatcher) {
+
     override suspend fun block(param: ExchangeRateParameters): List<ExchangeRate> =
         repository.getExchangeRateList(param)
 }

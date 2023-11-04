@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -59,7 +60,10 @@ fun ExchangeRateItem(
                         }
                     ),
                     shape = RoundedCornerShape(5.dp)
-                ).clickable {
+                ).clickable(
+                    indication = null,
+                    interactionSource = MutableInteractionSource()
+                ) {
                     onClick()
                 }
                 .padding(start = 5.dp, end = 5.dp, top = 15.dp, bottom = 15.dp)

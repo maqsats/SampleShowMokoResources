@@ -1,7 +1,7 @@
 package daniel.avila.rnm.kmm.presentation.ui.features.all_places
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -36,10 +36,12 @@ fun ExchangePlaces(modifier: Modifier = Modifier, city: City?) {
         )
     }
 
-    Column(modifier = modifier.fillMaxSize()) {
-
-        NationalBankScreen(state.nationalBankCurrencyList)
-
-        ExchangersScreen(state.exchangerList, allPlacesViewModel)
+    LazyColumn(modifier = modifier.fillMaxSize()) {
+        item {
+            NationalBankScreen(state.nationalBankCurrencyList)
+        }
+        item {
+            ExchangersScreen(state.exchangerList, allPlacesViewModel)
+        }
     }
 }

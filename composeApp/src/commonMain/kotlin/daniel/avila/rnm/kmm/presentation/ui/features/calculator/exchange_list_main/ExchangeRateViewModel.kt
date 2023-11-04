@@ -18,7 +18,6 @@ class ExchangeRateViewModel(
     private lateinit var inputText: String
     private lateinit var param: ExchangeRateParameters
 
-
     override fun createInitialState(): ExchangeRateContract.State =
         ExchangeRateContract.State(ResourceUiState.Idle)
 
@@ -33,6 +32,7 @@ class ExchangeRateViewModel(
                 )
             }
             is ExchangeRateContract.Event.OnFetchData -> {
+                if (::param.isInitialized && param == event.param) return
                 param = event.param
                 currencies = event.currencies
                 inputText = event.inputText

@@ -4,6 +4,7 @@ import daniel.avila.rnm.kmm.data.model.national_bank.NationalBankCurrencyRateApi
 import daniel.avila.rnm.kmm.domain.model.map.Mapper
 import daniel.avila.rnm.kmm.domain.model.national_bank.CurrencyChange
 import daniel.avila.rnm.kmm.domain.model.national_bank.NationalBankCurrency
+import daniel.avila.rnm.kmm.utils.extension.defaultIfNull
 
 class NationalBankMapper(private val endPoint: String) :
     Mapper<NationalBankCurrencyRateApiModel, NationalBankCurrency>() {
@@ -16,7 +17,7 @@ class NationalBankMapper(private val endPoint: String) :
             quantity = model.quantity,
             date = model.date.orEmpty(),
             rate = model.rate,
-            currencyLogo = endPoint + model.currency_logo.orEmpty(),
+            currencyLogo = model.currency_logo.defaultIfNull(endPoint),
             updatedAt = model.updated_at.orEmpty(),
             change = CurrencyChange.fromValue(model.change)
         )

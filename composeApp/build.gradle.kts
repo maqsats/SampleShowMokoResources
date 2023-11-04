@@ -92,6 +92,7 @@ kotlin {
                 implementation(libs.image.loader.extension.moko.resources)
                 implementation(libs.multiplatform.settings.no.arg)
                 implementation(libs.time.klock)
+                implementation(libs.compose.shimmer)
             }
         }
 

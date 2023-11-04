@@ -56,7 +56,7 @@ class AllPlacesViewModel(
     }
 
     private fun getExchangerList() {
-        setState { copy(nationalBankCurrencyList = ResourceUiState.Loading) }
+        setState { copy(exchangerList = ResourceUiState.Loading) }
         coroutineScope.launch {
             getExchangerUseCase(exchangerParameters)
                 .onSuccess {
@@ -68,7 +68,7 @@ class AllPlacesViewModel(
                         )
                     }
                 }
-                .onFailure { setState { copy(nationalBankCurrencyList = ResourceUiState.Error()) } }
+                .onFailure { setState { copy(exchangerList = ResourceUiState.Error()) } }
         }
     }
 }

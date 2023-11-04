@@ -44,8 +44,14 @@ class HomeScreen : Screen {
         ) {
             CustomToolbar(bottomBarRoute = bottomBarRoute, cityState = cityState)
             when (bottomBarRoute) {
-                BottomBarRoute.MAIN -> Calculator(modifier = Modifier.weight(1f), cityState.value)
-                BottomBarRoute.EXCHANGE_PLACES -> ExchangePlaces(modifier = Modifier.weight(1f), cityState.value)
+                BottomBarRoute.MAIN -> Calculator(
+                    modifier = Modifier.weight(1f),
+                    cityState.value
+                ).Content()
+                BottomBarRoute.EXCHANGE_PLACES -> ExchangePlaces(
+                    modifier = Modifier.weight(1f),
+                    cityState.value
+                )
                 BottomBarRoute.NEWS -> {
                     MapScreen(modifier = Modifier.weight(1f))
                 }

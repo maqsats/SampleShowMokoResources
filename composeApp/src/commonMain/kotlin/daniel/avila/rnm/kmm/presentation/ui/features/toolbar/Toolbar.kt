@@ -1,6 +1,7 @@
 package daniel.avila.rnm.kmm.presentation.ui.features.toolbar
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,9 +35,12 @@ fun Toolbar(
         Icon(
             painter = painterResource(MR.images.arrow_back),
             contentDescription = null,
-            modifier = Modifier.size(30.dp).clickable {
+            modifier = Modifier.size(25.dp).clickable(
+                indication = null,
+                interactionSource = MutableInteractionSource()
+            ) {
                 onBackClick()
-            }.padding(start = 10.dp)
+            }
         )
         Spacer(modifier = Modifier.width(15.dp))
         Text(

@@ -2,6 +2,7 @@
 
 accompanistSystemuicontroller = "0.27.0"
 composeMaterialDialogsCore = "0.9.4"
+composeShimmer = "1.2.0"
 kotlin = "1.9.10"
 agp = "8.1.0"
 compose = "1.5.10-rc02"
@@ -19,7 +20,7 @@ composeImageLoader = "1.6.8"
 napier = "2.6.1"
 kotlinx-coroutines = "1.7.3"
 insetsx = "0.1.0-alpha07"
-ktor = "2.3.2"
+ktor = "2.3.5"
 kotlinx-serialization = "1.5.1"
 koin = "3.4.3"
 koinCompose = "1.0.4"
@@ -33,6 +34,7 @@ klock = "2.4.13"
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 biometric = { module = "androidx.biometric:biometric", version.ref = "androidBiometricVersion" }
 compose-material-dialogs-core = { module = "ca.gosyer:compose-material-dialogs-core", version.ref = "composeMaterialDialogsCore" }
+compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "composeShimmer" }
 image-loader-extension-moko-resources = { module = "io.github.qdsfdhvh:image-loader-extension-moko-resources", version.ref = "composeImageLoader" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettingsNoArg" }

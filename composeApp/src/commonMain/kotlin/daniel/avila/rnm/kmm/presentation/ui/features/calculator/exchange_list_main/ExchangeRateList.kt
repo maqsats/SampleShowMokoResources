@@ -10,6 +10,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import daniel.avila.rnm.kmm.domain.model.city.City
 import daniel.avila.rnm.kmm.domain.model.currency.Currency
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSell
@@ -26,31 +28,34 @@ import daniel.avila.rnm.kmm.utils.permissions.compose.BindEffect
 import daniel.avila.rnm.kmm.utils.permissions.compose.PermissionsControllerFactory
 import daniel.avila.rnm.kmm.utils.permissions.compose.rememberPermissionsControllerFactory
 import kotlinx.coroutines.flow.collectLatest
-import org.koin.compose.koinInject
 
-@Composable
-fun ExchangeRateListMain(
-    modifier: Modifier,
-    buyOrSell: BuyOrSell,
-    text: String,
-    currencies: Pair<Currency, Currency>?,
-    city: City?
-) {
-    val exchangeRateViewModel = koinInject<ExchangeRateViewModel>()
 
-    val state by exchangeRateViewModel.uiState.collectAsState()
+class ExchangeRateListMain(
+    val modifier: Modifier,
+    private val buyOrSell: BuyOrSell,
+    val text: String,
+    private val currencies: Pair<Currency, Currency>?,
+    val city: City?
+) : Screen {
 
-    val navigator = LocalNavigator.currentOrThrow
+    @Composable
+    override fun Content() {
+        val exchangeRateViewModel = getScreenModel<ExchangeRateViewModel>()
 
-    val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
-    val controller: PermissionsController =
-        remember(factory) { factory.createPermissionsController() }
-    BindEffect(controller)
+        val state by exchangeRateViewModel.uiState.collectAsState()
 
-    val locationTracker = rememberLocationTrackerFactory(accuracy = LocationTrackerAccuracy.Best)
-        .createLocationTracker(controller)
+        val navigator = LocalNavigator.currentOrThrow
 
-    BindLocationTrackerEffect(locationTracker)
+        val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
+        val controller: PermissionsController =
+            remember(factory) { factory.createPermissionsController() }
+        BindEffect(controller)
+
+        val locationTracker =
+            rememberLocationTrackerFactory(accuracy = LocationTrackerAccuracy.Best)
+                .createLocationTracker(controller)
+
+        BindLocationTrackerEffect(locationTracker)
 //
 //    LaunchedEffect(key1 = null) {
 //        scope.launch {
@@ -79,73 +84,73 @@ fun ExchangeRateListMain(
 //        }
 //    }
 
-    LaunchedEffect(city, currencies) {
-        println("city = $city")
-        println("currencies = $currencies")
-        if (currencies == null || city == null) return@LaunchedEffect
+        LaunchedEffect(city, currencies) {
+            println("city = $city")
+            println("currencies = $currencies")
+            if (currencies == null || city == null) return@LaunchedEffect
 
-        exchangeRateViewModel.setEvent(
-            ExchangeRateContract.Event.OnFetchData(
-                param = ExchangeRateParameters(
-                    cityId = city.id,
-                    lat = 43.238949,
-                    lng = 76.889709,
-                    buyOrSell = buyOrSell.value,
-                    currencyCode = currencies.second.code
-                ),
-                inputText = text,
-                currencies = currencies
+            exchangeRateViewModel.setEvent(
+                ExchangeRateContract.Event.OnFetchData(
+                    param = ExchangeRateParameters(
+                        cityId = city.id,
+                        lat = 43.238949,
+                        lng = 76.889709,
+                        currencyCode = currencies.second.code
+                    ),
+                    inputText = text,
+                    currencies = currencies
+                )
             )
-        )
-    }
+        }
 
-    LaunchedEffect(text) {
-        if (text.isEmpty()) return@LaunchedEffect
-        exchangeRateViewModel.setEvent(
-            ExchangeRateContract.Event.OnInputValueChange(
-                inputText = text
+        LaunchedEffect(text) {
+            if (text.isEmpty()) return@LaunchedEffect
+            exchangeRateViewModel.setEvent(
+                ExchangeRateContract.Event.OnInputValueChange(
+                    inputText = text
+                )
             )
-        )
-    }
+        }
 
-    LaunchedEffect(key1 = Unit) {
-        exchangeRateViewModel.effect.collectLatest { effect ->
-            when (effect) {
-                is ExchangeRateContract.Effect.NavigateToDetailExchangeRate -> {
-                    navigator.push(Screen2())
+        LaunchedEffect(key1 = Unit) {
+            exchangeRateViewModel.effect.collectLatest { effect ->
+                when (effect) {
+                    is ExchangeRateContract.Effect.NavigateToDetailExchangeRate -> {
+                        navigator.push(Screen2())
+                    }
                 }
             }
         }
-    }
 
-    ManagementResourceUiState(
-        modifier = modifier
-            .fillMaxSize(),
-        resourceUiState = state.exchangeRateState,
-        successView = { exchangeRateState ->
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Top
-            ) {
-                items(exchangeRateState.exchangeRateList) { exchangeRate ->
-                    ExchangeRateItem(
-                        item = exchangeRate,
-                        isFirst = exchangeRateState.exchangeRateList.first() == exchangeRate,
-                        buyOrSell = buyOrSell,
-                        inputText = exchangeRateState.inputText,
-                        currencies = exchangeRateState.currencies,
-                        onClick = {
-                            exchangeRateViewModel.setEvent(
-                                ExchangeRateContract.Event.OnExchangeClick(
-                                    exchangeRate.id
+        ManagementResourceUiState(
+            modifier = modifier
+                .fillMaxSize(),
+            resourceUiState = state.exchangeRateState,
+            successView = { exchangeRateState ->
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Top
+                ) {
+                    items(exchangeRateState.exchangeRateList) { exchangeRate ->
+                        ExchangeRateItem(
+                            item = exchangeRate,
+                            isFirst = exchangeRateState.exchangeRateList.first() == exchangeRate,
+                            buyOrSell = buyOrSell,
+                            inputText = exchangeRateState.inputText,
+                            currencies = exchangeRateState.currencies,
+                            onClick = {
+                                exchangeRateViewModel.setEvent(
+                                    ExchangeRateContract.Event.OnExchangeClick(
+                                        exchangeRate.id
+                                    )
                                 )
-                            )
-                        }
-                    )
+                            }
+                        )
+                    }
                 }
-            }
-        },
-        onTryAgain = { exchangeRateViewModel.setEvent(ExchangeRateContract.Event.OnTryCheckAgainClick) },
-        onCheckAgain = { exchangeRateViewModel.setEvent(ExchangeRateContract.Event.OnTryCheckAgainClick) },
-    )
+            },
+            onTryAgain = { exchangeRateViewModel.setEvent(ExchangeRateContract.Event.OnTryCheckAgainClick) },
+            onCheckAgain = { exchangeRateViewModel.setEvent(ExchangeRateContract.Event.OnTryCheckAgainClick) },
+        )
+    }
 }

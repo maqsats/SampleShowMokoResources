@@ -10,6 +10,7 @@ import daniel.avila.rnm.kmm.domain.model.exchange_rate.Location
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.OpenHour
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.Tag
 import daniel.avila.rnm.kmm.domain.model.map.Mapper
+import daniel.avila.rnm.kmm.utils.extension.defaultIfNull
 
 class ExchangeRateMapper(private val endPoint: String) :
     Mapper<ExchangeRateApiModel, ExchangeRate>() {
@@ -22,7 +23,7 @@ class ExchangeRateMapper(private val endPoint: String) :
             id = model.id,
             location = getLocation(model.location),
             locationCount = model.locations_count ?: 0,
-            logo = endPoint + model.logo.orEmpty(),
+            logo = model.logo.defaultIfNull(endPoint),
             name = model.name,
             openHours = getOpenHours(model.open_hours)
         )

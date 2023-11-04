@@ -104,3 +104,8 @@ fun convertTimePeriodDateStyle(timePeriod: TimePeriod): String {
 
     return "$startDay $monthName - $endDay $monthName"
 }
+
+fun String?.defaultIfNull(default: String): String {
+    if (this == null) return ""
+    return default + this
+}

@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,12 +19,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,6 +46,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import com.seiko.imageloader.rememberImagePainter
 import daniel.avila.rnm.kmm.MR
 import daniel.avila.rnm.kmm.domain.model.city.City
@@ -58,205 +64,249 @@ import daniel.avila.rnm.kmm.presentation.ui.features.home.buy_sell_tab.BuySellTa
 import dev.icerock.moko.resources.compose.painterResource
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
-@Composable
-fun Calculator(modifier: Modifier = Modifier, city: City?) {
 
-    var selectedTab by remember { mutableStateOf(BuyOrSellTab("", false)) }
+class Calculator(val modifier: Modifier = Modifier, val city: City?) : Screen {
 
-    var openBottomSheet by rememberSaveable { mutableStateOf(false) }
+    @Composable
+    override fun Content() {
+        var selectedTab by remember { mutableStateOf(BuyOrSellTab("", false)) }
 
-    var currencyList by remember { mutableStateOf<List<Currency>>(emptyList()) }
+        val openBottomSheet = rememberSaveable { mutableStateOf(false) }
 
-    val controller = LocalSoftwareKeyboardController.current
+        var currencyList by remember { mutableStateOf<List<Currency>>(emptyList()) }
 
-    var inputText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(
-            TextFieldValue(
-                "100",
-                TextRange(3)
+        val controller = LocalSoftwareKeyboardController.current
+
+        var inputText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+            mutableStateOf(
+                TextFieldValue(
+                    "100",
+                    TextRange(3)
+                )
             )
-        )
-    }
+        }
 
-    var currencies by remember { mutableStateOf<Pair<Currency, Currency>?>(null) }
+        val currencies = remember { mutableStateOf<Pair<Currency, Currency>?>(null) }
 
-    val currencyViewModel = koinInject<CurrencyViewModel>()
+        val currencyViewModel = getScreenModel<CurrencyViewModel>()
 
-    val state by currencyViewModel.uiState.collectAsState()
+        val state by currencyViewModel.uiState.collectAsState()
 
-    LaunchedEffect(key1 = Unit) {
-        currencyViewModel.effect.collectLatest { effect ->
-            when (effect) {
-                is CurrencyContract.Effect.NavigateToCurrencyDialog -> {
-                    currencyList = effect.currencies
-                    openBottomSheet = true
+        LaunchedEffect(key1 = Unit) {
+            currencyViewModel.effect.collectLatest { effect ->
+                when (effect) {
+                    is CurrencyContract.Effect.NavigateToCurrencyDialog -> {
+                        currencyList = effect.currencies
+                        openBottomSheet.value = true
+                    }
                 }
             }
         }
-    }
 
-    Column(
-        modifier = modifier.fillMaxWidth().clickable(
-            interactionSource = MutableInteractionSource(),
-            indication = null
-        ) { controller?.hide() }
-    ) {
+        Column(
+            modifier = modifier.fillMaxWidth().clickable(
+                interactionSource = MutableInteractionSource(),
+                indication = null
+            ) { controller?.hide() }
+        ) {
 
-        Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
-        BuySellTabBar(modifier = Modifier.fillMaxWidth()) {
-            selectedTab = it
+            BuySellTabBar(modifier = Modifier.fillMaxWidth()) {
+                selectedTab = it
+            }
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 15.dp)
+                    .wrapContentHeight(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BasicTextField(
+                    modifier = Modifier
+                        .weight(1f)
+                        .wrapContentHeight(),
+                    value = inputText,
+                    onValueChange = { input ->
+                        when {
+                            input.text.length > 10 -> {
+
+                            }
+                            input.text.isEmpty() || input.text == "00" -> {
+                                inputText = input.copy(text = "0", TextRange(1))
+                            }
+                            else -> inputText =
+                                input.copy(input.text.filter { it.isDigit() }.trimStart('0'))
+                        }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        autoCorrect = false
+                    ),
+                    cursorBrush = Brush.verticalGradient(
+                        0.0f to Color.Transparent,
+                        0.15f to Color.Transparent,
+                        0.15f to Color.Black,
+                        0.85f to Color.Black,
+                        0.85f to Color.Transparent,
+                        1.00f to Color.Transparent
+                    ),
+                    maxLines = 1,
+                    textStyle = MaterialTheme.typography.body2.copy(textAlign = TextAlign.End),
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                RoundedBackground(
+                    modifier = Modifier.wrapContentWidth(),
+                    height = 36.dp,
+                    paddingHorizontal = 8.dp,
+                    onClick = {
+                        currencyViewModel.setEvent(CurrencyContract.Event.OnCurrencyClick)
+                    }
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = rememberImagePainter(currencies.value?.second?.currencyLogo.orEmpty()),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .width(20.dp)
+                                .height(15.dp)
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        when (val currencyListUIState = state.currencies) {
+                            is ResourceUiState.Success -> {
+                                LaunchedEffect(key1 = Unit) {
+                                    currencies.value =
+                                        Pair(
+                                            currencyListUIState.data[0],
+                                            currencyListUIState.data[1]
+                                        )
+                                }
+
+                                Text(
+                                    text = currencies.value?.second?.code.orEmpty(),
+                                    style = MaterialTheme.typography.h6
+                                )
+                            }
+                            else -> {
+
+                            }
+                        }
+                        Image(
+                            painter = painterResource(MR.images.expand_more),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .width(14.dp)
+                                .height(8.dp)
+                        )
+                    }
+                }
+            }
+
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 15.dp)
+                    .wrapContentHeight(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier.weight(1f).height(1.dp)
+                        .background(MaterialTheme.colors.secondary)
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Text(
+                    text = when (selectedTab.buyOrSell) {
+                        BuyOrSell.BUY -> "Вы потратите".uppercase()
+                        BuyOrSell.SELL -> "Вы получите".uppercase()
+                    },
+                    style = MaterialTheme.typography.subtitle2
+                )
+            }
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            ExchangeRateListMain(
+                modifier = Modifier.weight(1f),
+                selectedTab.buyOrSell,
+                inputText.text,
+                currencies.value,
+                city
+            ).Content()
         }
 
-        Spacer(modifier = Modifier.height(5.dp))
+        val bottomSheetState = rememberModalBottomSheetState(
+            skipPartiallyExpanded = false
+        )
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 15.dp)
-                .wrapContentHeight(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            BasicTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .wrapContentHeight(),
-                value = inputText,
-                onValueChange = { input ->
-                    when {
-                        input.text.length > 10 -> {
-
-                        }
-                        input.text.isEmpty() || input.text == "00" -> {
-                            inputText = input.copy(text = "0", TextRange(1))
-                        }
-                        else -> inputText =
-                            input.copy(input.text.filter { it.isDigit() }.trimStart('0'))
-                    }
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    autoCorrect = false
-                ),
-                cursorBrush = Brush.verticalGradient(
-                    0.0f to Color.Transparent,
-                    0.15f to Color.Transparent,
-                    0.15f to Color.Black,
-                    0.85f to Color.Black,
-                    0.85f to Color.Transparent,
-                    1.00f to Color.Transparent
-                ),
-                maxLines = 1,
-                textStyle = MaterialTheme.typography.body2.copy(textAlign = TextAlign.End),
-            )
-
-            Spacer(modifier = Modifier.width(10.dp))
-
-            RoundedBackground(
-                modifier = Modifier.wrapContentWidth(),
-                height = 36.dp,
-                paddingHorizontal = 8.dp,
-                onClick = {
-                    currencyViewModel.setEvent(CurrencyContract.Event.OnCurrencyClick)
-                }
+        if (openBottomSheet.value) {
+            BottomSheet(
+                sheetState = bottomSheetState,
+                onDismissRequest = { openBottomSheet.value = false }
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                CurrencyBottomSheet(currencyList, bottomSheetState, currencies, openBottomSheet)
+            }
+        }
+
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CurrencyBottomSheet(
+    currencyList: List<Currency>,
+    bottomSheetState: SheetState,
+    currencies: MutableState<Pair<Currency, Currency>?>,
+    openBottomSheet: MutableState<Boolean>
+) {
+    val scope = rememberCoroutineScope()
+
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth().wrapContentHeight().background(Color.White)
+            .padding(horizontal = 20.dp)
+    ) {
+        items(currencyList) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clickable(
+                    interactionSource = MutableInteractionSource(),
+                    indication = null,
+                    onClick = {
+                        currencies.value = Pair(currencies.value?.first ?: it, it)
+                        scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+                            if (!bottomSheetState.isVisible) openBottomSheet.value = false
+                        }
+                    }
+                )) {
+                Divider(color = MaterialTheme.colors.secondary, thickness = 1.dp)
+                Row(
+                    modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(vertical = 5.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Image(
-                        painter = rememberImagePainter(currencies?.second?.currencyLogo.orEmpty()),
+                        painter = rememberImagePainter(it.currencyLogo),
                         contentDescription = null,
                         modifier = Modifier
                             .width(20.dp)
                             .height(15.dp)
                     )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    when (val currencyListUIState = state.currencies) {
-                        is ResourceUiState.Success -> {
-                            LaunchedEffect(currencyListUIState.data) {
-                                currencies =
-                                    Pair(currencyListUIState.data[0], currencyListUIState.data[1])
-                            }
-
-                            Text(
-                                text = currencies?.second?.code.orEmpty(),
-                                style = MaterialTheme.typography.h6
-                            )
-                        }
-                        else -> {
-
-                        }
-                    }
-                    Image(
-                        painter = painterResource(MR.images.expand_more),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .width(14.dp)
-                            .height(8.dp)
-                    )
-                }
-            }
-        }
-
-
-        Spacer(modifier = Modifier.height(5.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 15.dp)
-                .wrapContentHeight(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier.weight(1f).height(1.dp)
-                    .background(MaterialTheme.colors.secondary)
-            )
-
-            Spacer(modifier = Modifier.width(10.dp))
-
-            Text(
-                text = when (selectedTab.buyOrSell) {
-                    BuyOrSell.BUY -> "Вы потратите".uppercase()
-                    BuyOrSell.SELL -> "Вы получите".uppercase()
-                },
-                style = MaterialTheme.typography.subtitle2
-            )
-        }
-
-        Spacer(modifier = Modifier.height(5.dp))
-
-        ExchangeRateListMain(
-            modifier = Modifier.weight(1f), selectedTab.buyOrSell, inputText.text, currencies, city
-        )
-    }
-
-    val bottomSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = false
-    )
-    val scope = rememberCoroutineScope()
-
-    if (openBottomSheet) {
-        BottomSheet(
-            sheetState = bottomSheetState,
-            onDismissRequest = { openBottomSheet = false }
-        ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(10.dp)
-            ) {
-                items(currencyList) {
-                    Box(modifier = Modifier.fillMaxWidth().height(50.dp).padding(10.dp).clickable(
-                        interactionSource = MutableInteractionSource(),
-                        indication = null,
-                    ) {
-                        currencies = Pair(currencies?.first ?: it, it)
-                        scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
-                            if (!bottomSheetState.isVisible) openBottomSheet = false
-                        }
-                    }) {
+                    Spacer(modifier = Modifier.width(15.dp))
+                    Column(verticalArrangement = Arrangement.Center) {
                         Text(text = it.name, style = MaterialTheme.typography.button)
+                        Text(text = it.code, style = MaterialTheme.typography.h6)
                     }
                 }
             }
