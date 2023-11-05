@@ -10,6 +10,7 @@ interface CurrencyContract {
 
     sealed interface Event : UiEvent {
         data object OnCurrencyClick : Event
+        data object OnTryCheckAgainClick : Event
     }
 
     data class State(

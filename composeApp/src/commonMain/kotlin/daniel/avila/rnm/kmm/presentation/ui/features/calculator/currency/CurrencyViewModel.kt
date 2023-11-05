@@ -30,6 +30,9 @@ class CurrencyViewModel(
                     )
                 }
             }
+            CurrencyContract.Event.OnTryCheckAgainClick -> {
+                getCurrencies()
+            }
         }
     }
 

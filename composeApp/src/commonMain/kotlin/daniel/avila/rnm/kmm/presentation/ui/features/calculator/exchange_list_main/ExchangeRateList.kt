@@ -34,7 +34,7 @@ class ExchangeRateListMain(
     val modifier: Modifier,
     private val buyOrSell: BuyOrSell,
     val text: String,
-    private val currencies: Pair<Currency, Currency>?,
+    private val currencyPair: Pair<Currency, Currency>,
     val city: City?
 ) : Screen {
 
@@ -56,38 +56,9 @@ class ExchangeRateListMain(
                 .createLocationTracker(controller)
 
         BindLocationTrackerEffect(locationTracker)
-//
-//    LaunchedEffect(key1 = null) {
-//        scope.launch {
-//            try {
-//                controller.providePermission(Permission.LOCATION)
-//                locationTracker.startTracking()
-//                locationTracker.getLocationsFlow().collect {
-//                    exchangeRateViewModel.setEvent(
-//                        ExchangeRateContract.Event.OnFetchData(
-//                            param = ExchangeRateParameters(
-//                                cityId = 1,
-//                                lat = 43.238949,
-//                                lng = 76.889709,
-//                                buyOrSell = buyOrSell.value,
-//                                currencyCode = "USD"
-//                            )
-//                        )
-//                    )
-//                    locationTracker.stopTracking()
-//                }
-//            } catch (deniedAlways: DeniedAlwaysException) {
-//                println("permissions denied always")
-//            } catch (denied: DeniedException) {
-//                println("permissions denied")
-//            }
-//        }
-//    }
 
-        LaunchedEffect(city, currencies) {
-            println("city = $city")
-            println("currencies = $currencies")
-            if (currencies == null || city == null) return@LaunchedEffect
+        LaunchedEffect(city, currencyPair) {
+            if (city == null) return@LaunchedEffect
 
             exchangeRateViewModel.setEvent(
                 ExchangeRateContract.Event.OnFetchData(
@@ -95,10 +66,10 @@ class ExchangeRateListMain(
                         cityId = city.id,
                         lat = 43.238949,
                         lng = 76.889709,
-                        currencyCode = currencies.second.code
+                        currencyCode = currencyPair.second.code
                     ),
                     inputText = text,
-                    currencies = currencies
+                    currencies = currencyPair
                 )
             )
         }
