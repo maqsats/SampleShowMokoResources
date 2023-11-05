@@ -32,6 +32,7 @@ class AllPlacesViewModel(
                 if (::exchangerParameters.isInitialized) getExchangerList()
             }
             is AllPlacesContract.Event.OnFetchData -> {
+                if (::exchangerParameters.isInitialized && exchangerParameters == event.param) return
                 exchangerParameters = event.param
                 getExchangerList()
             }

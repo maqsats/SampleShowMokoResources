@@ -12,11 +12,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import daniel.avila.rnm.kmm.domain.model.city.City
 import daniel.avila.rnm.kmm.domain.model.currency.Currency
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSell
 import daniel.avila.rnm.kmm.domain.params.ExchangeRateParameters
 import daniel.avila.rnm.kmm.presentation.state.ManagementResourceUiState
+import daniel.avila.rnm.kmm.presentation.ui.common.LocalSelectedCity
 import daniel.avila.rnm.kmm.presentation.ui.features.screen2.Screen2
 import daniel.avila.rnm.kmm.utils.maps.geo.BindLocationTrackerEffect
 import daniel.avila.rnm.kmm.utils.maps.geo.LocationTrackerAccuracy
@@ -34,8 +34,7 @@ class ExchangeRateListMain(
     val modifier: Modifier,
     private val buyOrSell: BuyOrSell,
     val text: String,
-    private val currencyPair: Pair<Currency, Currency>,
-    val city: City?
+    private val currencyPair: Pair<Currency, Currency>
 ) : Screen {
 
     @Composable
@@ -55,15 +54,17 @@ class ExchangeRateListMain(
             rememberLocationTrackerFactory(accuracy = LocationTrackerAccuracy.Best)
                 .createLocationTracker(controller)
 
+        val selectedCity = LocalSelectedCity.current
+
         BindLocationTrackerEffect(locationTracker)
 
-        LaunchedEffect(city, currencyPair) {
-            if (city == null) return@LaunchedEffect
+        LaunchedEffect(selectedCity, currencyPair) {
+            if (selectedCity == null) return@LaunchedEffect
 
             exchangeRateViewModel.setEvent(
                 ExchangeRateContract.Event.OnFetchData(
                     param = ExchangeRateParameters(
-                        cityId = city.id,
+                        cityId = selectedCity.id,
                         lat = 43.238949,
                         lng = 76.889709,
                         currencyCode = currencyPair.second.code

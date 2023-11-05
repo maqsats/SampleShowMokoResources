@@ -7,41 +7,46 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import daniel.avila.rnm.kmm.domain.model.city.City
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import daniel.avila.rnm.kmm.domain.params.ExchangerParameters
+import daniel.avila.rnm.kmm.presentation.ui.common.LocalSelectedCity
 import daniel.avila.rnm.kmm.presentation.ui.features.all_places.exchangers.ExchangersScreen
 import daniel.avila.rnm.kmm.presentation.ui.features.all_places.national_bank.NationalBankScreen
-import org.koin.compose.koinInject
 
-@Composable
-fun ExchangePlaces(modifier: Modifier = Modifier, city: City?) {
+class ExchangePlaces(val modifier: Modifier = Modifier) : Screen {
 
+    @Composable
+    override fun Content() {
 
-    val allPlacesViewModel = koinInject<AllPlacesViewModel>()
+        val allPlacesViewModel = getScreenModel<AllPlacesViewModel>()
 
-    val state by allPlacesViewModel.uiState.collectAsState()
+        val state by allPlacesViewModel.uiState.collectAsState()
 
-    LaunchedEffect(city) {
-        println("city = $city")
-        if (city == null) return@LaunchedEffect
+        val selectedCity = LocalSelectedCity.current
 
-        allPlacesViewModel.setEvent(
-            AllPlacesContract.Event.OnFetchData(
-                param = ExchangerParameters(
-                    cityId = city.id,
-                    lat = 43.238949,
-                    lng = 76.889709
+        LaunchedEffect(selectedCity) {
+
+            if (selectedCity == null) return@LaunchedEffect
+            if (allPlacesViewModel.effect is AllPlacesContract.Effect) return@LaunchedEffect
+            allPlacesViewModel.setEvent(
+                AllPlacesContract.Event.OnFetchData(
+                    param = ExchangerParameters(
+                        cityId = selectedCity.id,
+                        lat = 43.238949,
+                        lng = 76.889709
+                    )
                 )
             )
-        )
-    }
-
-    LazyColumn(modifier = modifier.fillMaxSize()) {
-        item {
-            NationalBankScreen(state.nationalBankCurrencyList)
         }
-        item {
-            ExchangersScreen(state.exchangerList, allPlacesViewModel)
+
+        LazyColumn(modifier = modifier.fillMaxSize()) {
+            item {
+                NationalBankScreen(state.nationalBankCurrencyList)
+            }
+            item {
+                ExchangersScreen(state.exchangerList, allPlacesViewModel)
+            }
         }
     }
 }

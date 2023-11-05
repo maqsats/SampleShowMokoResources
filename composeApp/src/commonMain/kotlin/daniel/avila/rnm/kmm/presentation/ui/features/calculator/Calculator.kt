@@ -35,7 +35,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.sourceInformation
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -51,7 +50,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.seiko.imageloader.rememberImagePainter
 import daniel.avila.rnm.kmm.MR
-import daniel.avila.rnm.kmm.domain.model.city.City
 import daniel.avila.rnm.kmm.domain.model.currency.Currency
 import daniel.avila.rnm.kmm.domain.model.currency.CurrencyHelper.getDefaultCurrencyPair
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSell
@@ -70,7 +68,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 
-class Calculator(val modifier: Modifier = Modifier, val city: City?) : Screen {
+class Calculator(val modifier: Modifier = Modifier) : Screen {
 
     @Composable
     override fun Content() {
@@ -158,8 +156,7 @@ class Calculator(val modifier: Modifier = Modifier, val city: City?) : Screen {
                 modifier = Modifier.weight(1f),
                 selectedTab.buyOrSell,
                 inputText.value.text,
-                currencyPair.value,
-                city
+                currencyPair.value
             ).Content()
         }
 
