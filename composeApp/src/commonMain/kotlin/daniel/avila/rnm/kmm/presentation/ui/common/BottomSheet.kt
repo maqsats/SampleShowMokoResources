@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 fun BottomSheet(
     modifier: Modifier = Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = false
+        skipPartiallyExpanded = true
     ),
     scrimColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.30f),
     sheetShape: Shape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp),
