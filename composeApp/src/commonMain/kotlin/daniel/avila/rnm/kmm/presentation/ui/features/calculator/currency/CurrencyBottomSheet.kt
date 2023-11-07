@@ -45,29 +45,23 @@ fun CurrencyBottomSheet(
     val scope = rememberCoroutineScope()
 
     ManagementResourceUiState(
-        modifier = Modifier.fillMaxWidth().wrapContentHeight().background(Color.White)
-            .padding(horizontal = 20.dp),
+        modifier = Modifier.fillMaxWidth().wrapContentHeight().background(Color.White),
         resourceUiState = state.currencies,
         successView = { currencyList ->
             LazyColumn(
-                modifier = Modifier.fillMaxWidth().wrapContentHeight().background(Color.White)
-                    .padding(horizontal = 20.dp)
+                modifier = Modifier.padding(horizontal = 20.dp)
             ) {
                 items(currencyList) {
-
-                    Column(modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .clickable(
-                            interactionSource = MutableInteractionSource(),
-                            indication = null,
-                            onClick = {
-                                currencyPair.value = Pair(currencyPair.value.first, it)
-                                scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
-                                    if (!bottomSheetState.isVisible) openBottomSheet.value = false
-                                }
+                    Column(modifier = Modifier.clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = null,
+                        onClick = {
+                            currencyPair.value = Pair(currencyPair.value.first, it)
+                            scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+                                if (!bottomSheetState.isVisible) openBottomSheet.value = false
                             }
-                        )) {
+                        }
+                    )) {
                         Divider(color = MaterialTheme.colors.secondary, thickness = 1.dp)
                         Row(
                             modifier = Modifier.fillMaxWidth().wrapContentHeight()
