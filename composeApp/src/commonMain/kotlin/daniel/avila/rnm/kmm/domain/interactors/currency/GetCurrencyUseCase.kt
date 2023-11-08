@@ -10,6 +10,12 @@ class GetCurrencyUseCase(
     dispatcher: CoroutineDispatcher,
 ) : BaseUseCase<Unit, List<Currency>>(dispatcher) {
 
-    override suspend fun block(param: Unit): List<Currency> =
-        repository.getCurrencies()
+    override suspend fun block(param: Unit): List<Currency> {
+        if (repository.getCachedCurrencies().isNotEmpty())
+            return repository.getCachedCurrencies()
+
+        return repository.getCurrencies().also {
+            repository.saveCurrenciesToCache(it)
+        }
+    }
 }

@@ -12,14 +12,26 @@ CREATE TABLE CharacterFavorite(
     image TEXT NOT NULL
 );
 
+CREATE TABLE Currency(
+    code TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    currencyLogo TEXT NOT NULL
+);
+
 insertCharacterFavorite:
 INSERT INTO CharacterFavorite(id, name, status, species, gender, origin, location, image) VALUES (?,?,?,?,?,?,?,?);
+
+insertCurrency:
+INSERT INTO Currency(code, name, currencyLogo) VALUES (?,?,?);
 
 removeCharacterFavorite:
 DELETE FROM CharacterFavorite WHERE id = ?;
 
 selectAllCharacterFavorite:
 SELECT * FROM CharacterFavorite;
+
+selectAllCurrency:
+SELECT * FROM Currency;
 
 selectCharacterFavoriteById:
 -- SELECT * FROM CharacterFavorite WHERE id = ?;

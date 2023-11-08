@@ -14,6 +14,7 @@ import daniel.avila.rnm.kmm.data.repository.ICacheData
 import daniel.avila.rnm.kmm.data.repository.IRemoteData
 import daniel.avila.rnm.kmm.data.repository.city.DefaultCityRepository
 import daniel.avila.rnm.kmm.data.repository.city.DefaultRemoteCityRepository
+import daniel.avila.rnm.kmm.data.repository.currency.DefaultCacheCurrencyRepository
 import daniel.avila.rnm.kmm.data.repository.currency.DefaultCurrencyRepository
 import daniel.avila.rnm.kmm.data.repository.currency.DefaultRemoteCurrencyRepository
 import daniel.avila.rnm.kmm.data.repository.exchange_rate.DefaultExchangeRateRepository
@@ -35,6 +36,7 @@ import daniel.avila.rnm.kmm.domain.interactors.national_bank.GetNationalBankCurr
 import daniel.avila.rnm.kmm.domain.repository.RepositoryImp
 import daniel.avila.rnm.kmm.domain.repository.city.CityRepository
 import daniel.avila.rnm.kmm.domain.repository.city.RemoteCityRepository
+import daniel.avila.rnm.kmm.domain.repository.currency.CacheCurrencyRepository
 import daniel.avila.rnm.kmm.domain.repository.currency.CurrencyRepository
 import daniel.avila.rnm.kmm.domain.repository.currency.RemoteCurrencyRepository
 import daniel.avila.rnm.kmm.domain.repository.exchange_rate.ExchangeRateRepository
@@ -115,6 +117,7 @@ val repositoryModule = module {
     singleOf(::DefaultRemoteExchangeRateRepository).bind(RemoteExchangeRateRepository::class)
 
     singleOf(::DefaultCurrencyRepository).bind(CurrencyRepository::class)
+    singleOf(::DefaultCacheCurrencyRepository).bind(CacheCurrencyRepository::class)
     singleOf(::DefaultRemoteCurrencyRepository).bind(RemoteCurrencyRepository::class)
 
     singleOf(::DefaultCityRepository).bind(CityRepository::class)
