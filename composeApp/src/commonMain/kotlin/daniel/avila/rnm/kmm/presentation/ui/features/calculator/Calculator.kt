@@ -39,7 +39,6 @@ import daniel.avila.rnm.kmm.presentation.ui.features.home.buy_sell_tab.BuySellTa
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
-
 class Calculator(val modifier: Modifier = Modifier) : Screen {
 
     @Composable

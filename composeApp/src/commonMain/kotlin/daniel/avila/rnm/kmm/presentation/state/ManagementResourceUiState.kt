@@ -1,9 +1,11 @@
 package daniel.avila.rnm.kmm.presentation.state
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
 
 @Composable
@@ -22,8 +24,16 @@ fun <T> ManagementResourceUiState(
         contentAlignment = Alignment.Center,
     ) {
         when (resourceUiState) {
-            is ResourceUiState.Empty -> Empty(modifier = modifier, onCheckAgain = onCheckAgain, msg = msgCheckAgain)
-            is ResourceUiState.Error -> Error(modifier = modifier, onTryAgain = onTryAgain, msg = msgTryAgain)
+            is ResourceUiState.Empty -> Empty(
+                modifier = modifier,
+                onCheckAgain = onCheckAgain,
+                msg = msgCheckAgain
+            )
+            is ResourceUiState.Error -> Error(
+                modifier = modifier,
+                onTryAgain = onTryAgain,
+                msg = msgTryAgain
+            )
             ResourceUiState.Loading -> loadingView()
             is ResourceUiState.Success -> successView(resourceUiState.data)
             ResourceUiState.Idle -> Unit

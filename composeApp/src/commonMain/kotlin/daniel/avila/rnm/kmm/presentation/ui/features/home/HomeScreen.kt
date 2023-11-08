@@ -35,8 +35,9 @@ class HomeScreen : Screen {
 
         val cityState = remember { mutableStateOf<City?>(null) }
 
-        CompositionLocalProvider(LocalSelectedCity provides cityState.value) {
-
+        CompositionLocalProvider(
+            LocalSelectedCity provides cityState.value
+        ) {
             Column(
                 verticalArrangement = Arrangement.Bottom,
                 modifier = Modifier.background(Color.White)

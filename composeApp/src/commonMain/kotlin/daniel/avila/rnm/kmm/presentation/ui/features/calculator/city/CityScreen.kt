@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,6 +23,7 @@ import daniel.avila.rnm.kmm.presentation.ui.common.ButtonBlue
 fun CityScreen(
     modifier: Modifier = Modifier,
     state: CityContract.State,
+    city: City?,
     cityViewModel: CityViewModel,
     onCitySelected: (City) -> Unit
 ) {
@@ -31,8 +31,8 @@ fun CityScreen(
         modifier = modifier,
         resourceUiState = state.cities,
         successView = { cities ->
-            val selectedOptionCity = remember { mutableStateOf(cities.first()) }
-
+            val selectedOptionCity =
+                remember { mutableStateOf(cities.find { it.id == city?.id } ?: cities.first()) }
             Column(
                 verticalArrangement = Arrangement.Top,
                 modifier = Modifier.background(Color.White)

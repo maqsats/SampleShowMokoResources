@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -36,6 +37,14 @@ import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityContrac
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityScreen
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityViewModel
 import daniel.avila.rnm.kmm.presentation.ui.features.home.bottom_nav.BottomBarRoute
+import daniel.avila.rnm.kmm.utils.maps.geo.BindLocationTrackerEffect
+import daniel.avila.rnm.kmm.utils.maps.geo.LocationTrackerAccuracy
+import daniel.avila.rnm.kmm.utils.maps.geo.rememberLocationTrackerFactory
+import daniel.avila.rnm.kmm.utils.permissions.Permission
+import daniel.avila.rnm.kmm.utils.permissions.PermissionsController
+import daniel.avila.rnm.kmm.utils.permissions.compose.BindEffect
+import daniel.avila.rnm.kmm.utils.permissions.compose.PermissionsControllerFactory
+import daniel.avila.rnm.kmm.utils.permissions.compose.rememberPermissionsControllerFactory
 import dev.icerock.moko.resources.compose.painterResource
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -65,8 +74,37 @@ fun CustomToolbar(
 
     val state by cityViewModel.uiState.collectAsState()
 
-    LaunchedEffect(state.selectedCity) {
-        cityState.value = state.selectedCity
+    //Permission controller
+    val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
+    val controller: PermissionsController =
+        remember(factory) { factory.createPermissionsController() }
+    BindEffect(controller)
+
+    //Location tracker
+    val locationTracker =
+        rememberLocationTrackerFactory(accuracy = LocationTrackerAccuracy.Best)
+            .createLocationTracker(controller)
+    BindLocationTrackerEffect(locationTracker)
+
+    LaunchedEffect(controller, state.selectedCity) {
+ 
+        if (state.selectedCity == null) return@LaunchedEffect
+
+        try {
+            controller.providePermission(Permission.COARSE_LOCATION)
+            if (controller.isPermissionGranted(Permission.COARSE_LOCATION)) {
+                locationTracker.startTracking()
+                locationTracker.getLocationsFlow().collectLatest { location ->
+                    cityState.value = state.selectedCity?.copy(
+                        latitude = location.latitude,
+                        longitude = location.longitude
+                    )
+                    locationTracker.stopTracking()
+                }
+            }
+        } catch (e: Exception) {
+            cityState.value = state.selectedCity
+        }
     }
 
     LaunchedEffect(key1 = Unit) {
@@ -93,6 +131,7 @@ fun CustomToolbar(
                     .wrapContentHeight(),
                 state = state,
                 cityViewModel = cityViewModel,
+                city = cityState.value,
                 onCitySelected = {
                     cityViewModel.setEvent(CityContract.Event.OnCityChosen(it))
                     scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
