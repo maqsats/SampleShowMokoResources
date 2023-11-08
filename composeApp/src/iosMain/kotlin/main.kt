@@ -1,5 +1,5 @@
 import androidx.compose.ui.window.ComposeUIViewController
-import daniel.avila.rnm.kmm.App
+import com.dna.payments.kmm.App
 import platform.UIKit.UIViewController
 
 fun MainViewController(): UIViewController {

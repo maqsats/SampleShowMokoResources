@@ -1,4 +1,4 @@
-package daniel.avila.rnm.kmm.presentation.ui.common
+package com.dna.payments.kmm.presentation.ui.common
 
 import androidx.compose.runtime.Composable
 

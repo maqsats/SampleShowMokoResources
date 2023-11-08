@@ -160,7 +160,7 @@ kotlin {
 }
 
 android {
-    namespace = "daniel.avila.rnm.kmm"
+    namespace = "com.dna.payments.kmm"
     compileSdk = 34
 
     defaultConfig {
@@ -190,7 +190,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "daniel.avila.rnm.kmm.desktopApp"
+            packageName = "com.dna.payments.kmm.desktopApp"
             packageVersion = "1.0.0"
         }
     }
@@ -212,13 +212,13 @@ sqldelight {
         create("AppDatabase") {
             // Database configuration here.
             // https://cashapp.github.io/sqldelight
-            packageName.set("daniel.avila.rnm.kmm.data_cache.sqldelight")
+            packageName.set("com.dna.payments.kmm.data_cache.sqldelight")
             sourceFolders.set(listOf("kotlin"))
         }
     }
 }
 
 multiplatformResources {
-    multiplatformResourcesPackage = "daniel.avila.rnm.kmm" // required
+    multiplatformResourcesPackage = "com.dna.payments.kmm" // required
     iosBaseLocalizationRegion = "ru" // optional, default "en"
 }

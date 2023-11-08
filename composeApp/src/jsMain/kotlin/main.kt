@@ -1,5 +1,5 @@
-import daniel.avila.rnm.kmm.App
-import daniel.avila.rnm.kmm.di.initKoin
+import com.dna.payments.kmm.App
+import com.dna.payments.kmm.di.initKoin
 import org.jetbrains.skiko.wasm.onWasmReady
 
 fun main() {
