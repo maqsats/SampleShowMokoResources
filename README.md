@@ -12,8 +12,6 @@
 
 ## Android, iOS, Desktop
 
-![alt text](./result.jpg)
-
 ## Architecture
 
 <p align="center">    
