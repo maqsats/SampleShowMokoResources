@@ -10,7 +10,7 @@
 * [Ktor]
 * [Koin]
 
-## Android, iOS, Desktop, Web
+## Android, iOS, Desktop
 
 ![alt text](./result.jpg)
 
