@@ -38,7 +38,7 @@ import kotlinx.coroutines.launch
 fun CurrencyBottomSheet(
     currencyViewModel: CurrencyViewModel,
     bottomSheetState: SheetState,
-    currencyPair: MutableState<Pair<Currency, Currency>>,
+    currencyPair: MutableState<Pair<Currency, Currency>?>,
     state: CurrencyContract.State,
     openBottomSheet: MutableState<Boolean>
 ) {
@@ -56,7 +56,7 @@ fun CurrencyBottomSheet(
                         interactionSource = MutableInteractionSource(),
                         indication = null,
                         onClick = {
-                            currencyPair.value = Pair(currencyPair.value.first, it)
+                            currencyPair.value = Pair(currencyPair.value?.first ?: it, it)
                             scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
                                 if (!bottomSheetState.isVisible) openBottomSheet.value = false
                             }

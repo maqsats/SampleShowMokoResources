@@ -7,12 +7,14 @@ import daniel.avila.rnm.kmm.domain.model.exchange_rate.ExchangeRate
 import daniel.avila.rnm.kmm.domain.params.ExchangeRateParameters
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
 import daniel.avila.rnm.kmm.presentation.mvi.BaseViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ExchangeRateViewModel(
     private val getExchangeRateUseCase: GetExchangeRateUseCase
 ) : BaseViewModel<ExchangeRateContract.Event, ExchangeRateContract.State, ExchangeRateContract.Effect>() {
 
+    private var job: Job? = null
     private lateinit var localList: List<ExchangeRate>
     private lateinit var currencies: Pair<Currency, Currency>
     private lateinit var inputText: String
@@ -59,7 +61,8 @@ class ExchangeRateViewModel(
         param: ExchangeRateParameters
     ) {
         setState { copy(exchangeRateState = ResourceUiState.Loading) }
-        coroutineScope.launch {
+        job?.cancel()
+        job = coroutineScope.launch {
             getExchangeRateUseCase(param)
                 .onSuccess {
                     setState {

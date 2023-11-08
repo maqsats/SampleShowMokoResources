@@ -26,7 +26,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import daniel.avila.rnm.kmm.domain.model.currency.CurrencyHelper.getDefaultCurrencyPair
+import daniel.avila.rnm.kmm.domain.model.currency.Currency
 import daniel.avila.rnm.kmm.domain.model.exchange_rate.BuyOrSellTab
 import daniel.avila.rnm.kmm.presentation.model.ResourceUiState
 import daniel.avila.rnm.kmm.presentation.ui.common.BottomSheet
@@ -62,7 +62,7 @@ class Calculator(val modifier: Modifier = Modifier) : Screen {
             skipPartiallyExpanded = false
         )
 
-        val currencyPair = rememberSaveable { mutableStateOf(getDefaultCurrencyPair()) }
+        val currencyPair = rememberSaveable { mutableStateOf<Pair<Currency, Currency>?>(null) }
 
         val currencyViewModel = getScreenModel<CurrencyViewModel>()
 
@@ -77,7 +77,7 @@ class Calculator(val modifier: Modifier = Modifier) : Screen {
                     if (currencyList.data.size < 2)
                         return@LaunchedEffect
                     currencyPair.value =
-                        currencyPair.value.copy(currencyList.data[0], currencyList.data[1])
+                        Pair(currencyList.data[0], currencyList.data[1])
                     alreadyUpdatedCurrencyPair = false
                 }
                 else -> {}

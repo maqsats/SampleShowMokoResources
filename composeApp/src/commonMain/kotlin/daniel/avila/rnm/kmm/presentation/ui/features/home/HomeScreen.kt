@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -33,7 +32,7 @@ class HomeScreen : Screen {
 
         var bottomBarRoute by rememberSaveable { mutableStateOf(BottomBarRoute.MAIN) }
 
-        val cityState = remember { mutableStateOf<City?>(null) }
+        val cityState = rememberSaveable { mutableStateOf<City?>(null) }
 
         CompositionLocalProvider(
             LocalSelectedCity provides cityState.value
@@ -42,7 +41,7 @@ class HomeScreen : Screen {
                 verticalArrangement = Arrangement.Bottom,
                 modifier = Modifier.background(Color.White)
             ) {
-                CustomToolbar(bottomBarRoute = bottomBarRoute, cityState = cityState)
+                CustomToolbar(bottomBarRoute = bottomBarRoute, cityState = cityState).Content()
                 when (bottomBarRoute) {
                     BottomBarRoute.MAIN -> Calculator(
                         modifier = Modifier.weight(1f)

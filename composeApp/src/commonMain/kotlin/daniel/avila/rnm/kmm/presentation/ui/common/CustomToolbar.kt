@@ -31,6 +31,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import daniel.avila.rnm.kmm.MR
 import daniel.avila.rnm.kmm.domain.model.city.City
 import daniel.avila.rnm.kmm.presentation.ui.features.calculator.city.CityContract
@@ -47,143 +49,177 @@ import daniel.avila.rnm.kmm.utils.permissions.compose.PermissionsControllerFacto
 import daniel.avila.rnm.kmm.utils.permissions.compose.rememberPermissionsControllerFactory
 import dev.icerock.moko.resources.compose.painterResource
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 
 
 val LocalSelectedCity = compositionLocalOf<City?> { null }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CustomToolbar(
-    modifier: Modifier = Modifier,
-    bottomBarRoute: BottomBarRoute,
-    cityState: MutableState<City?>
-) {
+class CustomToolbar(
+    val modifier: Modifier = Modifier,
+    val bottomBarRoute: BottomBarRoute,
+    val cityState: MutableState<City?>
+) : Screen {
 
-    var openBottomSheet by rememberSaveable { mutableStateOf(false) }
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    override fun Content() {
+        var openBottomSheet by rememberSaveable { mutableStateOf(false) }
 
-    val bottomSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = false
-    )
+        val bottomSheetState = rememberModalBottomSheetState(
+            skipPartiallyExpanded = false
+        )
 
-    val scope = rememberCoroutineScope()
+        val scope = rememberCoroutineScope()
 
-    val cityViewModel = koinInject<CityViewModel>()
+        val cityViewModel = getScreenModel<CityViewModel>()
 
-    val state by cityViewModel.uiState.collectAsState()
+        val state by cityViewModel.uiState.collectAsState()
 
-    //Permission controller
-    val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
-    val controller: PermissionsController =
-        remember(factory) { factory.createPermissionsController() }
-    BindEffect(controller)
+        //Permission controller
+        val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
+        val controller: PermissionsController =
+            remember(factory) { factory.createPermissionsController() }
+        BindEffect(controller)
 
-    //Location tracker
-    val locationTracker =
-        rememberLocationTrackerFactory(accuracy = LocationTrackerAccuracy.Best)
-            .createLocationTracker(controller)
-    BindLocationTrackerEffect(locationTracker)
+        //Location tracker
+        val locationTracker =
+            rememberLocationTrackerFactory(accuracy = LocationTrackerAccuracy.Best)
+                .createLocationTracker(controller)
+        BindLocationTrackerEffect(locationTracker)
 
-    LaunchedEffect(controller, state.selectedCity) {
- 
-        if (state.selectedCity == null) return@LaunchedEffect
+        LaunchedEffect(state.selectedCity) {
+            if (state.selectedCity == null) return@LaunchedEffect
 
-        try {
-            controller.providePermission(Permission.COARSE_LOCATION)
-            if (controller.isPermissionGranted(Permission.COARSE_LOCATION)) {
-                locationTracker.startTracking()
-                locationTracker.getLocationsFlow().collectLatest { location ->
-                    cityState.value = state.selectedCity?.copy(
-                        latitude = location.latitude,
-                        longitude = location.longitude
+            val city = state.selectedCity
+
+            if (cityState.value?.id == city?.id) return@LaunchedEffect
+
+            when {
+                city == null || !city.isUserLocationUsing -> cityState.value =
+                    state.selectedCity
+                else -> {
+                    cityState.value = city.copy(
+                        name = city.name,
+                        id = city.id
                     )
-                    locationTracker.stopTracking()
-                }
-            }
-        } catch (e: Exception) {
-            cityState.value = state.selectedCity
-        }
-    }
-
-    LaunchedEffect(key1 = Unit) {
-        cityViewModel.effect.collectLatest { effect ->
-            when (effect) {
-                is CityContract.Effect.OnCitySelected -> {
-                    cityState.value = effect.city
-                }
-                CityContract.Effect.ShowCitySelectionBottomSheet -> {
-                    openBottomSheet = true
                 }
             }
         }
-    }
 
-    if (openBottomSheet) {
-        BottomSheet(
-            sheetState = bottomSheetState,
-            onDismissRequest = { openBottomSheet = false }
-        ) {
-            CityScreen(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                state = state,
-                cityViewModel = cityViewModel,
-                city = cityState.value,
-                onCitySelected = {
-                    cityViewModel.setEvent(CityContract.Event.OnCityChosen(it))
-                    scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
-                        if (!bottomSheetState.isVisible) openBottomSheet = false
+        LaunchedEffect(key1 = Unit) {
+            scope.launch {
+                cityViewModel.effect.collectLatest { effect ->
+                    when (effect) {
+                        is CityContract.Effect.OnCitySelected -> {
+                            val city = cityState.value
+                            when {
+                                city == null || !city.isUserLocationUsing -> cityState.value =
+                                    effect.city
+                                else -> {
+                                    cityState.value = city.copy(
+                                        name = effect.city.name,
+                                        id = effect.city.id
+                                    )
+                                }
+                            }
+                        }
+                        CityContract.Effect.ShowCitySelectionBottomSheet -> {
+                            openBottomSheet = true
+                        }
                     }
                 }
-            )
-        }
-    }
+            }
 
-    Row(
-        modifier = modifier.fillMaxWidth().height(IntrinsicSize.Min)
-            .padding(vertical = 15.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Spacer(modifier = Modifier.width(16.dp))
-        Icon(
-            modifier = Modifier.wrapContentWidth(),
-            painter = painterResource(MR.images.tenge_today_logo),
-            contentDescription = null,
-            tint = Color.Unspecified
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        if (bottomBarRoute == BottomBarRoute.EXCHANGE_PLACES) {
+            scope.launch {
+                try {
+                    println("here")
+                    controller.providePermission(Permission.COARSE_LOCATION)
+                    if (controller.isPermissionGranted(Permission.COARSE_LOCATION)) {
+                        locationTracker.startTracking()
+                        locationTracker.getLocationsFlow().distinctUntilChanged()
+                            .collect { location ->
+                                cityState.value = cityState.value?.copy(
+                                    latitude = location.latitude,
+                                    longitude = location.longitude,
+                                    isUserLocationUsing = true
+                                )
+                                locationTracker.stopTracking()
+                            }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    cityState.value = state.selectedCity
+                }
+            }
+        }
+
+        if (openBottomSheet) {
+            BottomSheet(
+                sheetState = bottomSheetState,
+                onDismissRequest = { openBottomSheet = false }
+            ) {
+                CityScreen(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    state = state,
+                    cityViewModel = cityViewModel,
+                    city = cityState.value,
+                    onCitySelected = {
+                        cityViewModel.setEvent(CityContract.Event.OnCityChosen(it))
+                        scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+                            if (!bottomSheetState.isVisible) openBottomSheet = false
+                        }
+                    }
+                )
+            }
+        }
+
+        Row(
+            modifier = modifier.fillMaxWidth().height(IntrinsicSize.Min)
+                .padding(vertical = 15.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(modifier = Modifier.width(16.dp))
             Icon(
                 modifier = Modifier.wrapContentWidth(),
-                painter = painterResource(MR.images.search),
-                contentDescription = null
+                painter = painterResource(MR.images.tenge_today_logo),
+                contentDescription = null,
+                tint = Color.Unspecified
             )
-            Spacer(modifier = Modifier.width(19.dp))
-        }
-        Text(
-            text = cityState.value?.name.orEmpty(),
-            modifier = Modifier.clickable(
-                interactionSource = MutableInteractionSource(),
-                indication = null
-            ) { cityViewModel.setEvent(CityContract.Event.OnCityIconClick) },
-            color = MaterialTheme.colors.primaryVariant,
-            style = MaterialTheme.typography.h3
-        )
-        Spacer(modifier = Modifier.width(6.dp))
-        Icon(
-            modifier = Modifier.wrapContentWidth()
-                .clickable(
+            Spacer(modifier = Modifier.weight(1f))
+            if (bottomBarRoute == BottomBarRoute.EXCHANGE_PLACES) {
+                Icon(
+                    modifier = Modifier.wrapContentWidth(),
+                    painter = painterResource(MR.images.search),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.width(19.dp))
+            }
+            Text(
+                text = cityState.value?.name.orEmpty(),
+                modifier = Modifier.clickable(
                     interactionSource = MutableInteractionSource(),
                     indication = null
-                ) {
-                    cityViewModel.setEvent(CityContract.Event.OnCityIconClick)
-                },
-            painter = painterResource(MR.images.location),
-            contentDescription = null
-        )
-        Spacer(modifier = Modifier.width(16.dp))
+                ) { cityViewModel.setEvent(CityContract.Event.OnCityIconClick) },
+                color = MaterialTheme.colors.primaryVariant,
+                style = MaterialTheme.typography.h3
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+            Icon(
+                modifier = Modifier.wrapContentWidth()
+                    .clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = null
+                    ) {
+                        cityViewModel.setEvent(CityContract.Event.OnCityIconClick)
+                    },
+                painter = painterResource(MR.images.location),
+                contentDescription = null
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+        }
     }
 }

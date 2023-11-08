@@ -40,7 +40,7 @@ fun CurrencyTextField(
     modifier: Modifier = Modifier,
     inputText: MutableState<TextFieldValue>,
     currencyViewModel: CurrencyViewModel,
-    currencyPair: MutableState<Pair<Currency, Currency>>,
+    currencyPair: MutableState<Pair<Currency, Currency>?>,
     buyOrSell: BuyOrSell
 ) {
 
@@ -93,7 +93,7 @@ fun CurrencyTextField(
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
-                    painter = rememberImagePainter(currencyPair.value.second.currencyLogo),
+                    painter = rememberImagePainter(currencyPair.value?.second?.currencyLogo.orEmpty()),
                     contentDescription = null,
                     modifier = Modifier
                         .width(20.dp)
@@ -102,7 +102,7 @@ fun CurrencyTextField(
                 Spacer(modifier = Modifier.width(5.dp))
 
                 Text(
-                    text = currencyPair.value.second.code,
+                    text = currencyPair.value?.second?.code.orEmpty(),
                     style = MaterialTheme.typography.h6
                 )
 

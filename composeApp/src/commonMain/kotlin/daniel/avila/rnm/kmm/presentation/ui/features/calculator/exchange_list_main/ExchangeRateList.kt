@@ -26,7 +26,7 @@ class ExchangeRateListMain(
     val modifier: Modifier,
     private val buyOrSell: BuyOrSell,
     val text: String,
-    private val currencyPair: Pair<Currency, Currency>
+    private val currencyPair: Pair<Currency, Currency>?
 ) : Screen {
 
     @Composable
@@ -41,8 +41,7 @@ class ExchangeRateListMain(
 
 
         LaunchedEffect(selectedCity, currencyPair) {
-            if (selectedCity == null) return@LaunchedEffect
-
+            if (selectedCity == null || currencyPair == null) return@LaunchedEffect
             exchangeRateViewModel.setEvent(
                 ExchangeRateContract.Event.OnFetchData(
                     param = ExchangeRateParameters(
