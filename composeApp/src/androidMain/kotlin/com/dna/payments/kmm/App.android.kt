@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
+import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.dna.payments.kmm.di.initKoin
 import org.koin.android.ext.koin.androidContext
@@ -32,10 +33,10 @@ class AppActivity : AppCompatActivity() {
             val systemUiController = rememberSystemUiController()
 
             systemUiController.setStatusBarColor(
-                color = MaterialTheme.colors.background
+                color = Color.DarkGray
             )
             systemUiController.setNavigationBarColor(
-                color = MaterialTheme.colors.background
+                color = Color.DarkGray
             )
             App()
         }

@@ -80,7 +80,7 @@ fun ActionAppBar(
     onClickFavorite: () -> Unit,
 ) {
     TopAppBar(
-        title = { Text(text = "Rick & Morty KMM") },
+        title = { Text(text = "DNA Payments KMP") },
         actions = {
             ActionBarIcon(
                 onClick = onClickFavorite,

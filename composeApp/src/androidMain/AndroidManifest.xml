@@ -10,7 +10,7 @@
     <application
         android:name=".AndroidApp"
         android:enableOnBackInvokedCallback="true"
-        android:icon="@android:drawable/ic_menu_compass"
+        android:icon="@drawable/splash_logo"
         android:label="DNAPaymentsKMP"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
