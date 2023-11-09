@@ -5,7 +5,7 @@ import org.jetbrains.skiko.wasm.onWasmReady
 fun main() {
     initKoin {}
     onWasmReady {
-        BrowserViewportWindow("Rick N Morty KMM") {
+        BrowserViewportWindow("DNAPaymentsKMP") {
             App()
         }
     }

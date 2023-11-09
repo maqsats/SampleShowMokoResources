@@ -1,4 +1,4 @@
-rootProject.name = "DNA Payments KMP"
+rootProject.name = "DNAPaymentsKMP"
 include(":composeApp")
 
 pluginManagement {

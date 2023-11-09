@@ -167,7 +167,7 @@ android {
         minSdk = 21
         targetSdk = 34
 
-        applicationId = "today.tenge"
+        applicationId = "com.dna.payments.kmm"
         versionCode = 1
         versionName = "1.0.0"
     }

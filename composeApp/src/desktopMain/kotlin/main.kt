@@ -8,7 +8,7 @@ import com.dna.payments.kmm.di.initKoin
 fun main() = application {
     initKoin {}
     Window(
-        title = "Rick N Morty KMM",
+        title = "DNAPaymentsKMP",
         state = rememberWindowState(width = 400.dp, height = 800.dp),
         onCloseRequest = ::exitApplication,
     ) { App() }
