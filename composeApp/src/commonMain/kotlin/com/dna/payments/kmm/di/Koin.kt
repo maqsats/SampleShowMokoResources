@@ -18,6 +18,7 @@ import com.dna.payments.kmm.domain.repository.RepositoryImp
 import com.dna.payments.kmm.presentation.ui.features.character_detail.CharacterDetailViewModel
 import com.dna.payments.kmm.presentation.ui.features.characters.CharactersViewModel
 import com.dna.payments.kmm.presentation.ui.features.characters_favorites.CharactersFavoritesViewModel
+import com.dna.payments.kmm.presentation.ui.features.login.LoginViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
@@ -52,6 +53,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
 
 val viewModelModule = module {
     factory { CharactersViewModel(get()) }
+    factory { LoginViewModel() }
     factory { CharactersFavoritesViewModel(get()) }
     factory { params -> CharacterDetailViewModel(get(), get(), get(), params.get()) }
 }
