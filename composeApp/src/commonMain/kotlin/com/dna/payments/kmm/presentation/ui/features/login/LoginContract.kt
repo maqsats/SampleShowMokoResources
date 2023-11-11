@@ -14,7 +14,9 @@ interface LoginContract {
     }
 
     data class State(
-        val characters: ResourceUiState<List<Character>>
+        val characters: ResourceUiState<List<Character>>,
+        val email: String,
+        val password: String
     ) : UiState
 
     sealed interface Effect : UiEffect {

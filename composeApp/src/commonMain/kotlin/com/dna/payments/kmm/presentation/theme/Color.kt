@@ -123,8 +123,18 @@ internal val orange = Color(0xFFFE6531)
 internal val orangeAlpha8 = Color(0xFFFFF3EF)
 internal val orangeAlpha15 = Color(0xFFFFE8E0)
 internal val backgroundBtn = Color(0xFF1FB760)
-internal val backgroundBtnNotEnabled = Color(0xFF9980D2AA)
+internal val backgroundBtnNotEnabled = Color(0xFFDADBDC)
 internal val notEditableEditView = Color(0xFF898B9A)
+internal val greyColor = Color(0xFFC3C5C7)
+
+
+internal val yellowButton = Color(0xFFFACF1A)
+internal val greyButton = Color(0xFFDADBDC)
+internal val blackButton = Color(0xFF1D1737)
+internal val greenBorderButtonNotFilled = Color(0xFF69B6AA)
+internal val greenBorderButtonNotFilledAlpha50 = Color(0xFF3369B6AA)
+internal val greyEditTextBorder = Color(0xFFB3B3B3)
+internal val dividerColor = Color(0xFFD7DDE3)
 internal val greenButtonNotFilled = Color(0xFF317E72)
 
 

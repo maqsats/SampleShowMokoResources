@@ -11,9 +11,22 @@ class LoginViewModel(
     }
 
     override fun createInitialState(): LoginContract.State =
-        LoginContract.State(characters = ResourceUiState.Idle)
+        LoginContract.State(
+            characters = ResourceUiState.Loading,
+            email = "",
+            password = ""
+        )
 
     override fun handleEvent(event: LoginContract.Event) {
 
+        }
+
+    fun onLoginClicked(email: String, password: String) {
+        setState {
+            copy(
+                email = email,
+                password = password
+            )
+        }
     }
 }
