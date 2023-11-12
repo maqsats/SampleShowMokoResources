@@ -48,6 +48,7 @@ import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
 class LoginScreen : Screen {
@@ -99,7 +100,7 @@ class LoginScreen : Screen {
         ) {
             Spacer(modifier = Modifier.height(32.dp))
             Text(
-                text = "Login",
+                text = stringResource(MR.strings.login),
                 style = DnaTextStyle.SemiBold20
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -124,7 +125,7 @@ class LoginScreen : Screen {
     @Composable
     private fun ForgotPasswordButton(onForgotPasswordClicked: () -> Unit) {
         Text(
-            text = "Restore password",
+            text = stringResource(MR.strings.restore_password),
             style = DnaTextStyle.Green16,
             modifier = Modifier.fillMaxWidth().noRippleClickable { onForgotPasswordClicked() }
         )
@@ -144,7 +145,7 @@ class LoginScreen : Screen {
             shape = RoundedCornerShape(12.dp)
         ) {
             Text(
-                text = "Log In",
+                text = stringResource(MR.strings.login),
                 style = DnaTextStyle.SemiBold18,
                 modifier = Modifier.padding(vertical = 4.dp)
             )
@@ -172,7 +173,7 @@ class LoginScreen : Screen {
     @Composable
     private fun PasswordField(password: Any, onPasswordChanged: () -> Any) {
         Text(
-            text = "Password",
+            text = stringResource(MR.strings.password),
             style = DnaTextStyle.Medium16
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -192,7 +193,12 @@ class LoginScreen : Screen {
                 modifier = Modifier.fillMaxWidth()
                     .border(1.dp, greyColor, shape = RoundedCornerShape(10.dp)),
                 value = textState,
-                placeholder = { Text("Password", style = DnaTextStyle.WithAlpha16) },
+                placeholder = {
+                    Text(
+                        stringResource(MR.strings.password),
+                        style = DnaTextStyle.WithAlpha16
+                    )
+                },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = lightBlue,
                     cursorColor = greyColor,
@@ -223,7 +229,7 @@ class LoginScreen : Screen {
     @Composable
     private fun EmailField(email: Any, onEmailChanged: () -> Any) {
         Text(
-            text = "Email address",
+            text = stringResource(MR.strings.email),
             style = DnaTextStyle.Medium16
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -243,7 +249,12 @@ class LoginScreen : Screen {
                 modifier = Modifier.fillMaxWidth()
                     .border(1.dp, greyColor, shape = RoundedCornerShape(10.dp)),
                 value = textState,
-                placeholder = { Text("Email address", style = DnaTextStyle.WithAlpha16) },
+                placeholder = {
+                    Text(
+                        stringResource(MR.strings.email),
+                        style = DnaTextStyle.WithAlpha16
+                    )
+                },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = lightBlue,
                     cursorColor = greyColor,

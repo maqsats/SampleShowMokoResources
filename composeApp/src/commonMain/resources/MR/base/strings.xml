@@ -4,5 +4,8 @@
     <string name="buy">Купить</string>
     <string name="sell">Продать</string>
     <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="email">Email address</string>
+    <string name="restore_password">Restore password</string>
     <string name="something_went_wrong">Что-то пошло не так</string>
 </resources>
