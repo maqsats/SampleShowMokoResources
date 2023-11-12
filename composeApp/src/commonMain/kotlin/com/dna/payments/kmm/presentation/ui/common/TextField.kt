@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +21,7 @@ import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.greenButtonNotFilled
 import com.dna.payments.kmm.presentation.theme.greyColor
+import com.dna.payments.kmm.presentation.theme.poppinsFontFamily
 import com.dna.payments.kmm.presentation.theme.white
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
@@ -39,9 +39,11 @@ fun DnaTextField(
         modifier = modifier.fillMaxWidth().height(50.dp),
         value = textState,
         shape = RoundedCornerShape(8.dp),
-        textStyle = DnaTextStyle.Normal16,
+        textStyle = DnaTextStyle.Normal16.copy(
+            fontFamily = poppinsFontFamily()
+        ),
         placeholder = {
-            Text(
+            DNAText(
                 placeholder,
                 style = DnaTextStyle.WithAlpha16
             )

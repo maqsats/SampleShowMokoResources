@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,6 +28,7 @@ import com.dna.payments.kmm.presentation.theme.black
 import com.dna.payments.kmm.presentation.theme.yellowButton
 import com.dna.payments.kmm.presentation.ui.common.DNAEmailTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAPasswordTextField
+import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -83,7 +83,7 @@ class LoginScreen : Screen {
             verticalArrangement = Arrangement.Top
         ) {
             Spacer(modifier = Modifier.height(32.dp))
-            Text(
+            DNAText(
                 text = stringResource(MR.strings.login),
                 style = DnaTextStyle.SemiBold20
             )
@@ -108,7 +108,7 @@ class LoginScreen : Screen {
 
     @Composable
     private fun ForgotPasswordButton(onForgotPasswordClicked: () -> Unit) {
-        Text(
+        DNAText(
             text = stringResource(MR.strings.restore_password),
             style = DnaTextStyle.Green16,
             modifier = Modifier.fillMaxWidth().noRippleClickable { onForgotPasswordClicked() }
@@ -128,7 +128,7 @@ class LoginScreen : Screen {
             ),
             shape = RoundedCornerShape(12.dp)
         ) {
-            Text(
+            DNAText(
                 text = stringResource(MR.strings.login),
                 style = DnaTextStyle.SemiBold18,
                 modifier = Modifier.padding(vertical = 4.dp)
@@ -156,7 +156,7 @@ class LoginScreen : Screen {
 
     @Composable
     private fun PasswordField(password: Any, onPasswordChanged: () -> Any) {
-        Text(
+        DNAText(
             text = stringResource(MR.strings.password),
             style = DnaTextStyle.Medium16
         )
@@ -166,7 +166,7 @@ class LoginScreen : Screen {
 
     @Composable
     private fun EmailField(email: Any, onEmailChanged: () -> Any) {
-        Text(
+        DNAText(
             text = stringResource(MR.strings.email),
             style = DnaTextStyle.Medium16
         )

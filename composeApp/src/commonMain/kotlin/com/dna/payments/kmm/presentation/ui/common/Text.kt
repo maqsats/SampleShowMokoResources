@@ -5,17 +5,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
+import com.dna.payments.kmm.presentation.theme.poppinsFontFamily
 
 @Composable
 fun DNAText(
     text: String,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = DnaTextStyle.Normal16
+    style: TextStyle = DnaTextStyle.Normal16
 ) {
     Text(
         text = text,
-        style = DnaTextStyle.Normal16,
+        style = style,
         modifier = modifier,
-//        fontFamily = updatedFontFamily,
+        fontFamily = poppinsFontFamily()
     )
 }
