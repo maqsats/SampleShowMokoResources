@@ -165,7 +165,7 @@ android {
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 33
 
         applicationId = "com.dna.payments.kmm"
         versionCode = 1
@@ -205,6 +205,9 @@ libres {
 }
 tasks.getByPath("desktopProcessResources").dependsOn("libresGenerateResources")
 tasks.getByPath("desktopSourcesJar").dependsOn("libresGenerateResources")
+dependencies {
+    implementation(libs.play.services.wallet)
+}
 //tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
 
 sqldelight {

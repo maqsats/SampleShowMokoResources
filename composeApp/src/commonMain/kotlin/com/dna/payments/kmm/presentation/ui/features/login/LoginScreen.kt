@@ -2,6 +2,7 @@ package com.dna.payments.kmm.presentation.ui.features.login
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,11 +30,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
+import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.backgroundBtnNotEnabled
 import com.dna.payments.kmm.presentation.theme.black
@@ -42,6 +46,7 @@ import com.dna.payments.kmm.presentation.theme.white
 import com.dna.payments.kmm.presentation.theme.yellowButton
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
+import dev.icerock.moko.resources.compose.painterResource
 import kotlinx.coroutines.flow.collectLatest
 
 class LoginScreen : Screen {
@@ -180,8 +185,8 @@ class LoginScreen : Screen {
     private fun PasswordInput(password: Any, onPasswordChanged: () -> Any) {
         Column {
             var textState by remember { mutableStateOf("") }
+            var passwordVisibility by remember { mutableStateOf(false) }
             val lightBlue = white
-            val blue = greyColor
             TextField(
                 modifier = Modifier.fillMaxWidth()
                     .border(1.dp, greyColor, shape = RoundedCornerShape(10.dp)),
@@ -189,7 +194,7 @@ class LoginScreen : Screen {
                 placeholder = { Text("Password", style = DnaTextStyle.WithAlpha16) },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = lightBlue,
-                    cursorColor = Color.Black,
+                    cursorColor = greyColor,
                     disabledLabelColor = lightBlue,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
@@ -199,15 +204,17 @@ class LoginScreen : Screen {
                 },
                 singleLine = true,
                 trailingIcon = {
-                    if (textState.isNotEmpty()) {
-                        IconButton(onClick = { textState = "" }) {
-                            Icon(
-                                imageVector = Icons.Outlined.Close,
-                                contentDescription = null
-                            )
-                        }
-                    }
-                }
+                    Icon(
+                        painter = painterResource(MR.images.ic_visibility),
+                        contentDescription = null,
+                        modifier = Modifier.clickable(
+                            indication = null,
+                            interactionSource = MutableInteractionSource(),
+                            onClick = { passwordVisibility = !passwordVisibility }
+                        )
+                    )
+                },
+                visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
             )
         }
     }
@@ -238,7 +245,7 @@ class LoginScreen : Screen {
                 placeholder = { Text("Email address", style = DnaTextStyle.WithAlpha16) },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = lightBlue,
-                    cursorColor = Color.Black,
+                    cursorColor = greyColor,
                     disabledLabelColor = lightBlue,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
