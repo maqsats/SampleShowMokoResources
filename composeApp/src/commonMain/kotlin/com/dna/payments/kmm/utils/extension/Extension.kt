@@ -1,5 +1,10 @@
 package com.dna.payments.kmm.utils.extension
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.data.model.Error
 import com.dna.payments.kmm.domain.network.Response
@@ -43,5 +48,12 @@ fun <T> Throwable.catchError(): Response<T> {
         else -> {
             Response.Error(UiText.StringResource(MR.strings.something_went_wrong))
         }
+    }
+}
+
+fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
+    clickable(indication = null,
+        interactionSource = remember { MutableInteractionSource() }) {
+        onClick()
     }
 }

@@ -44,6 +44,7 @@ import com.dna.payments.kmm.presentation.theme.black
 import com.dna.payments.kmm.presentation.theme.greyColor
 import com.dna.payments.kmm.presentation.theme.white
 import com.dna.payments.kmm.presentation.theme.yellowButton
+import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
@@ -125,7 +126,7 @@ class LoginScreen : Screen {
         Text(
             text = "Restore password",
             style = DnaTextStyle.Green16,
-            modifier = Modifier.fillMaxWidth().clickable { onForgotPasswordClicked() }
+            modifier = Modifier.fillMaxWidth().noRippleClickable { onForgotPasswordClicked() }
         )
     }
 
