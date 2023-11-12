@@ -4,9 +4,9 @@ import com.dna.payments.kmm.data.model.ApiCharacter
 import com.dna.payments.kmm.domain.model.Character
 import com.dna.payments.kmm.domain.model.Gender
 import com.dna.payments.kmm.domain.model.Status
-import daniel.avila.rnm.kmm.domain.model.map.Mapper
+import com.dna.payments.kmm.domain.model.map.MapperOld
 
-class ApiCharacterMapper : Mapper<ApiCharacter, Character>() {
+class ApiCharacterMapperOld : MapperOld<ApiCharacter, Character>() {
     override fun map(model: ApiCharacter): Character = model.run {
         Character(
             id, name, when (status) {

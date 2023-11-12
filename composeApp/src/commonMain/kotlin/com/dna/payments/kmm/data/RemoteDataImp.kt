@@ -2,7 +2,7 @@ package com.dna.payments.kmm.data
 
 import com.dna.payments.kmm.data.model.ApiCharacter
 import com.dna.payments.kmm.data.model.ApiCharactersResponse
-import com.dna.payments.kmm.data.model.mapper.ApiCharacterMapper
+import com.dna.payments.kmm.data.model.mapper.ApiCharacterMapperOld
 import com.dna.payments.kmm.domain.model.Character
 import com.dna.payments.kmm.data.repository.IRemoteData
 import io.ktor.client.HttpClient
@@ -13,7 +13,7 @@ import io.ktor.client.request.post
 class RemoteDataImp(
     private val endPoint: String,
     private val httpClient: HttpClient,
-    private val apiCharacterMapper: ApiCharacterMapper,
+    private val apiCharacterMapper: ApiCharacterMapperOld,
 ) : IRemoteData {
     override suspend fun getCharactersFromApi(): List<Character> =
         apiCharacterMapper.map(
