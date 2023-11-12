@@ -3,7 +3,6 @@ package com.dna.payments.kmm.presentation.ui.features.login
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.dna.payments.kmm.data.preferences.Preferences
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
-import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
 import kotlinx.coroutines.launch
 
@@ -21,7 +20,6 @@ class LoginViewModel(
 
     override fun createInitialState(): LoginContract.State =
         LoginContract.State(
-            characters = ResourceUiState.Loading,
             email = "",
             password = ""
         )
