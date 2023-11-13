@@ -52,6 +52,7 @@
 				A93A953829CC810C00F8E227 /* Products */,
 				979913F6AE5D271756D4649D /* Pods */,
 				C4127409AE3703430489E7BC /* Frameworks */,
+				BF8C3F8758923DDDE118D4A5 /* xcschemes */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,6 +81,14 @@
 				A93A954129CC810D00F8E227 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		BF8C3F8758923DDDE118D4A5 /* xcschemes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = xcschemes;
+			path = iosApp.xcworkspace/xcuserdata/maqsat.xcuserdatad/xcschemes;
 			sourceTree = "<group>";
 		};
 		C4127409AE3703430489E7BC /* Frameworks */ = {
