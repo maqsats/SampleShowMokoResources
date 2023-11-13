@@ -26,10 +26,10 @@ kotlin {
 
     jvm("desktop")
 
-//    js {
-//        browser()
-//        binaries.executable()
-//    }
+    js {
+        browser()
+        binaries.executable()
+    }
 
     iosX64()
     iosArm64()
@@ -88,7 +88,6 @@ kotlin {
                 implementation(libs.koin.compose)
                 implementation(libs.sqlDelight.extensions)
                 implementation(libs.resources.compose)
-                implementation(libs.compose.material.dialogs.core)
                 implementation(libs.image.loader.extension.moko.resources)
                 implementation(libs.multiplatform.settings.no.arg)
                 implementation(libs.time.klock)
@@ -132,15 +131,15 @@ kotlin {
             }
         }
 
-//        val jsMain by getting {
-//            dependsOn(commonMain)
-//            dependencies {
-//                implementation(compose.html.core)
-//                implementation(libs.sqlDelight.driver.sqljs)
-//                implementation(npm("sql.js", "1.6.2"))
-//                implementation(devNpm("copy-webpack-plugin", "9.1.0"))
-//            }
-//        }
+        val jsMain by getting {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(compose.html.core)
+                implementation(libs.sqlDelight.driver.sqljs)
+                implementation(npm("sql.js", "1.6.2"))
+                implementation(devNpm("copy-webpack-plugin", "9.1.0"))
+            }
+        }
 
         val iosX64Main by getting
         val iosArm64Main by getting
@@ -208,7 +207,7 @@ tasks.getByPath("desktopSourcesJar").dependsOn("libresGenerateResources")
 dependencies {
     implementation(libs.play.services.wallet)
 }
-//tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
+tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
 
 sqldelight {
     databases {
