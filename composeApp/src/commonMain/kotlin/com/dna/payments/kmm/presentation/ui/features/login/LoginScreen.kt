@@ -70,19 +70,23 @@ class LoginScreen : Screen {
                     loadingText = "Success"
 
                 }
+
                 is ResourceUiState.Error -> {
                     println("Error")
                     loadingText = "Error"
 
                 }
+
                 is ResourceUiState.Loading -> {
                     openDialog.value = true
                     loadingText = "Loading"
                     println("Loading")
                 }
+
                 is ResourceUiState.Idle -> {
                     println("Idle")
                 }
+
                 ResourceUiState.Empty -> {
                     println("Empty")
                     loadingText = "Empty"
@@ -127,6 +131,7 @@ class LoginScreen : Screen {
                 LoginContent(
                     state = state,
                     onLoginClicked = { loginViewModel.setEvent(LoginContract.Event.OnLoginClicked) },
+                    onFieldChanged = { loginViewModel.setEvent(LoginContract.Event.OnFieldChanged) },
                     onForgotPasswordClicked = {
 //                        navigator.push(ForgotPasswordScreen())
                     }
@@ -139,6 +144,7 @@ class LoginScreen : Screen {
     private fun LoginContent(
         state: LoginContract.State,
         onLoginClicked: () -> Unit,
+        onFieldChanged: () -> Unit,
         onForgotPasswordClicked: () -> Unit
     ) {
         Column(
@@ -156,6 +162,7 @@ class LoginScreen : Screen {
             LoginFields(
                 email = state.email,
                 password = state.password,
+                onFieldChanged = onFieldChanged
             )
             Spacer(modifier = Modifier.height(24.dp))
             ForgotPasswordButton(
@@ -163,7 +170,8 @@ class LoginScreen : Screen {
             )
             Spacer(modifier = Modifier.height(32.dp))
             LoginButton(
-                onLoginClicked = onLoginClicked
+                onLoginClicked = onLoginClicked,
+                state
             )
         }
     }
@@ -178,10 +186,10 @@ class LoginScreen : Screen {
     }
 
     @Composable
-    private fun LoginButton(onLoginClicked: () -> Unit) {
+    private fun LoginButton(onLoginClicked: () -> Unit, state: LoginContract.State) {
         Button(
             onClick = onLoginClicked,
-            enabled = true,
+            enabled = state.isLoginEnabled.value,
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = yellowButton,
@@ -201,38 +209,44 @@ class LoginScreen : Screen {
     @Composable
     private fun LoginFields(
         email: TextFieldUiState,
-        password: TextFieldUiState
-    ) {
+        onFieldChanged: () -> Unit,
+        password: TextFieldUiState,
+
+        ) {
         EmailField(
-            email = email
+            email = email,
+            onFieldChanged
         )
         Spacer(modifier = Modifier.height(32.dp))
         PasswordField(
-            password = password
+            password = password,
+            onFieldChanged
         )
     }
 
     @Composable
     private fun PasswordField(
-        password: TextFieldUiState
+        password: TextFieldUiState,
+        onPasswordChanged: () -> Unit,
     ) {
         DNAText(
             text = stringResource(MR.strings.password),
             style = DnaTextStyle.Medium16
         )
         Spacer(modifier = Modifier.height(8.dp))
-        DNAPasswordTextField(password)
+        DNAPasswordTextField(password, onPasswordChanged)
     }
 
     @Composable
     private fun EmailField(
-        email: TextFieldUiState
+        email: TextFieldUiState,
+        onEmailChanged: () -> Unit,
     ) {
         DNAText(
             text = stringResource(MR.strings.email),
-            style = DnaTextStyle.Medium16
+            style = DnaTextStyle.Medium16,
         )
         Spacer(modifier = Modifier.height(8.dp))
-        DNAEmailTextField(email)
+        DNAEmailTextField(email, onEmailChanged)
     }
 }

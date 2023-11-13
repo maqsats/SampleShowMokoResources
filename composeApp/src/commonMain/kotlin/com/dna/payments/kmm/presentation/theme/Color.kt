@@ -126,6 +126,7 @@ internal val backgroundBtn = Color(0xFF1FB760)
 internal val backgroundBtnNotEnabled = Color(0xFFDADBDC)
 internal val notEditableEditView = Color(0xFF898B9A)
 internal val greyColor = Color(0xFFC3C5C7)
+internal val outlineGreenColor = Color(0xFF317E72)
 
 
 internal val yellowButton = Color(0xFFFACF1A)

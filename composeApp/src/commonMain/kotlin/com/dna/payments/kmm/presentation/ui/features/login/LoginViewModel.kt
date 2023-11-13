@@ -31,7 +31,8 @@ class LoginViewModel(
                 textInput = TextInput.PASSWORD,
                 validationResult = mutableStateOf(ValidationResult(successful = true))
             ),
-            authorization = ResourceUiState.Idle
+            authorization = ResourceUiState.Idle,
+            isLoginEnabled = mutableStateOf(true)
         )
 
     override fun handleEvent(event: LoginContract.Event) {
@@ -48,6 +49,18 @@ class LoginViewModel(
                     if (validateEmailResult.successful && validatePasswordResult.successful) {
                         authorize(email.input.value, password.input.value)
                     }
+                }
+            }
+
+            LoginContract.Event.OnFieldChanged -> {
+                with(currentState) {
+                    val validateEmailResult = validateEmail(email.input.value, email.textInput)
+                    val validatePasswordResult = validatePassword(
+                        password.input.value,
+                        password.textInput
+                    )
+                    email.validationResult.value = validateEmailResult
+                    password.validationResult.value = validatePasswordResult
                 }
             }
         }
@@ -67,6 +80,7 @@ class LoginViewModel(
                             is Response.Success -> {
                                 ResourceUiState.Success(result.data)
                             }
+
                             else -> {
                                 ResourceUiState.Error("result.exception")
                             }
