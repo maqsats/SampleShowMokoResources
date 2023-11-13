@@ -16,6 +16,8 @@ import com.dna.payments.kmm.domain.interactors.GetCharactersUseCase
 import com.dna.payments.kmm.domain.interactors.IsCharacterFavoriteUseCase
 import com.dna.payments.kmm.domain.interactors.SwitchCharacterFavoriteUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
+import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
+import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
 import com.dna.payments.kmm.domain.repository.AuthorizationRepository
 import com.dna.payments.kmm.domain.repository.RepositoryImp
 import com.dna.payments.kmm.presentation.ui.features.character_detail.CharacterDetailViewModel
@@ -69,6 +71,10 @@ val useCasesModule: Module = module {
     factory { IsCharacterFavoriteUseCase(get(), get()) }
     factory { SwitchCharacterFavoriteUseCase(get(), get()) }
     factoryOf(::AuthorizationUseCase)
+
+    //validation
+    factoryOf(::ValidatePassword)
+    factoryOf(::ValidateEmail)
 }
 
 val repositoryModule = module {

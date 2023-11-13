@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <string name="course_in_the_city">Курс в городе</string>
-    <string name="buy">Купить</string>
-    <string name="sell">Продать</string>
     <string name="login">Log In</string>
     <string name="password">Password</string>
     <string name="email">Email address</string>
+    <string name="reset_password">Reset password</string>
     <string name="restore_password">Restore password</string>
-    <string name="something_went_wrong">Что-то пошло не так</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="login_uppercase">Login</string>
+
+
+    <string name="email_is_blank">Email is blank</string>
+    <string name="at_least_8_length_char">The password needs to consist of at least 8 characters
+    </string>
+    <string name="verification_at_least_6">The verification code needs to consist of at least 6
+        characters
+    </string>
+    <string name="at_one_digit_or_letter">The password needs to contain at least one letter and
+        digit
+    </string>
+
+    <string name="at_least_1_special_char">At least 1 special character e.g. !@#</string>
+    <string name="at_least_1_uppercase">At least 1 uppercase letter</string>
+    <string name="at_least_1_lowercase">" At least 1 lowercase letter"</string>
+
+
 </resources>

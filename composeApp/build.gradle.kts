@@ -223,5 +223,4 @@ sqldelight {
 
 multiplatformResources {
     multiplatformResourcesPackage = "com.dna.payments.kmm" // required
-    iosBaseLocalizationRegion = "ru" // optional, default "en"
 }
