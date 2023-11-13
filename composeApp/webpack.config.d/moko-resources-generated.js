@@ -3,7 +3,7 @@
     const path = require('path');
     const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-    const mokoResourcePath = path.resolve("/Users/maqsat/StudioProjects/RickAndMorty/composeApp/build/generated/moko/jsMain/danielavilarnmkmm/res");
+    const mokoResourcePath = path.resolve("/Users/maqsat/StudioProjects/dna-payments-kmp-android/composeApp/build/generated/moko/jsMain/comdnapaymentskmm/res");
 
     config.module.rules.push(
         {

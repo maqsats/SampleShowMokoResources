@@ -37,8 +37,7 @@ fun CharacterItem(
         Text(
             text = character.name,
             modifier = Modifier
-                .fillMaxWidth(),
-            fontFamily = fontFamilyResource(MR.fonts.Opensans.extrabold)
+                .fillMaxWidth()
         )
     }
 }
