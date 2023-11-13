@@ -41,16 +41,15 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
-fun DNAEmailTextField(textState: TextFieldUiState, onTextFieldChanged: () -> Unit) {
+fun DNAEmailTextField(textState: TextFieldUiState) {
     DnaTextField(
         textState = textState,
-        placeholder = stringResource(MR.strings.email),
-        onTextFieldChanged = onTextFieldChanged
+        placeholder = stringResource(MR.strings.email)
     )
 }
 
 @Composable
-fun DNAPasswordTextField(textState: TextFieldUiState, onTextFieldChanged: () -> Unit) {
+fun DNAPasswordTextField(textState: TextFieldUiState) {
     var passwordVisibility by remember { mutableStateOf(false) }
 
     DnaTextField(
@@ -67,15 +66,13 @@ fun DNAPasswordTextField(textState: TextFieldUiState, onTextFieldChanged: () -> 
                 )
             )
         },
-        visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-        onTextFieldChanged = onTextFieldChanged
+        visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
     )
 }
 
 @Composable
 fun DnaTextField(
     textState: TextFieldUiState,
-    onTextFieldChanged: () -> Unit,
     placeholder: String,
     modifier: Modifier = Modifier,
     trailingIcon: (@Composable () -> Unit)? = null,
@@ -85,7 +82,7 @@ fun DnaTextField(
         value = textState.input.value,
         onValueChange = {
             textState.input.value = it
-            onTextFieldChanged()
+            textState.onFieldChanged()
         },
         modifier = modifier,
         shape = RoundedCornerShape(10.dp),

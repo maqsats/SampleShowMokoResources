@@ -131,7 +131,6 @@ class LoginScreen : Screen {
                 LoginContent(
                     state = state,
                     onLoginClicked = { loginViewModel.setEvent(LoginContract.Event.OnLoginClicked) },
-                    onFieldChanged = { loginViewModel.setEvent(LoginContract.Event.OnFieldChanged) },
                     onForgotPasswordClicked = {
 //                        navigator.push(ForgotPasswordScreen())
                     }
@@ -144,7 +143,6 @@ class LoginScreen : Screen {
     private fun LoginContent(
         state: LoginContract.State,
         onLoginClicked: () -> Unit,
-        onFieldChanged: () -> Unit,
         onForgotPasswordClicked: () -> Unit
     ) {
         Column(
@@ -161,10 +159,9 @@ class LoginScreen : Screen {
             Spacer(modifier = Modifier.height(32.dp))
             LoginFields(
                 email = state.email,
-                password = state.password,
-                onFieldChanged = onFieldChanged
+                password = state.password
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             ForgotPasswordButton(
                 onForgotPasswordClicked = onForgotPasswordClicked
             )
@@ -209,44 +206,39 @@ class LoginScreen : Screen {
     @Composable
     private fun LoginFields(
         email: TextFieldUiState,
-        onFieldChanged: () -> Unit,
         password: TextFieldUiState,
 
         ) {
         EmailField(
-            email = email,
-            onFieldChanged
+            email = email
         )
         Spacer(modifier = Modifier.height(32.dp))
         PasswordField(
-            password = password,
-            onFieldChanged
+            password = password
         )
     }
 
     @Composable
     private fun PasswordField(
-        password: TextFieldUiState,
-        onPasswordChanged: () -> Unit,
+        password: TextFieldUiState
     ) {
         DNAText(
             text = stringResource(MR.strings.password),
             style = DnaTextStyle.Medium16
         )
         Spacer(modifier = Modifier.height(8.dp))
-        DNAPasswordTextField(password, onPasswordChanged)
+        DNAPasswordTextField(password)
     }
 
     @Composable
     private fun EmailField(
-        email: TextFieldUiState,
-        onEmailChanged: () -> Unit,
+        email: TextFieldUiState
     ) {
         DNAText(
             text = stringResource(MR.strings.email),
             style = DnaTextStyle.Medium16,
         )
         Spacer(modifier = Modifier.height(8.dp))
-        DNAEmailTextField(email, onEmailChanged)
+        DNAEmailTextField(email)
     }
 }

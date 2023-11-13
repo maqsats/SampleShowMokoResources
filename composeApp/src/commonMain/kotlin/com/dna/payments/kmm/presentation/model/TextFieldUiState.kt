@@ -8,4 +8,5 @@ data class TextFieldUiState(
     var input: MutableState<String>,
     val textInput: TextInput,
     var validationResult: MutableState<ValidationResult>,
+    val onFieldChanged: () -> Unit? = {}
 )

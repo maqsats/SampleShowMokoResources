@@ -4,7 +4,7 @@
     <string name="password">Password</string>
     <string name="email">Email address</string>
     <string name="reset_password">Reset password</string>
-    <string name="restore_password">Restore password</string>
+    <string name="restore_password">Forgot password? </string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="login_uppercase">Login</string>
 

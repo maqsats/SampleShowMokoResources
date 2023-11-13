@@ -10,7 +10,8 @@ import com.dna.payments.kmm.presentation.mvi.UiState
 interface LoginContract {
     sealed interface Event : UiEvent {
         data object OnLoginClicked : Event
-        data object OnFieldChanged : Event
+        data object OnEmailFieldChanged : Event
+        data object OnPasswordFieldChanged : Event
     }
 
     data class State(

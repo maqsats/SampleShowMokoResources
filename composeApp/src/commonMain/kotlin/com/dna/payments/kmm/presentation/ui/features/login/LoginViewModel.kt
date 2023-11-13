@@ -24,15 +24,17 @@ class LoginViewModel(
             email = TextFieldUiState(
                 input = mutableStateOf(""),
                 textInput = TextInput.EMAIL_ADDRESS,
-                validationResult = mutableStateOf(ValidationResult(successful = true))
+                validationResult = mutableStateOf(ValidationResult(successful = true)),
+                onFieldChanged = { this.setEvent(LoginContract.Event.OnEmailFieldChanged) }
             ),
             password = TextFieldUiState(
                 input = mutableStateOf(""),
                 textInput = TextInput.PASSWORD,
-                validationResult = mutableStateOf(ValidationResult(successful = true))
+                validationResult = mutableStateOf(ValidationResult(successful = true)),
+                onFieldChanged = { this.setEvent(LoginContract.Event.OnPasswordFieldChanged) }
             ),
             authorization = ResourceUiState.Idle,
-            isLoginEnabled = mutableStateOf(true)
+            isLoginEnabled = mutableStateOf(false)
         )
 
     override fun handleEvent(event: LoginContract.Event) {
@@ -52,7 +54,7 @@ class LoginViewModel(
                 }
             }
 
-            LoginContract.Event.OnFieldChanged -> {
+            LoginContract.Event.OnEmailFieldChanged -> {
                 with(currentState) {
                     val validateEmailResult = validateEmail(email.input.value, email.textInput)
                     val validatePasswordResult = validatePassword(
@@ -60,8 +62,23 @@ class LoginViewModel(
                         password.textInput
                     )
                     email.validationResult.value = validateEmailResult
-                    password.validationResult.value = validatePasswordResult
+                    isLoginEnabled.value =
+                        validateEmailResult.successful && validatePasswordResult.successful
                 }
+            }
+
+            LoginContract.Event.OnPasswordFieldChanged -> {
+                with(currentState) {
+                    val validateEmailResult = validateEmail(email.input.value, email.textInput)
+                    val validatePasswordResult = validatePassword(
+                        password.input.value,
+                        password.textInput
+                    )
+                    password.validationResult.value = validatePasswordResult
+                    isLoginEnabled.value =
+                        validateEmailResult.successful && validatePasswordResult.successful
+                }
+
             }
         }
     }
