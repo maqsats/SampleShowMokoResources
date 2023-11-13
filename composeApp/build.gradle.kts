@@ -224,3 +224,9 @@ sqldelight {
 multiplatformResources {
     multiplatformResourcesPackage = "com.dna.payments.kmm" // required
 }
+
+configurations.all {
+    resolutionStrategy {
+        force("org.jetbrains.skiko:skiko:0.7.88")
+    }
+}

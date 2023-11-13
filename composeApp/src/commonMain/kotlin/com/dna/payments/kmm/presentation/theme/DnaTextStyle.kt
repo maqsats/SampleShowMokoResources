@@ -41,7 +41,8 @@ object DnaTextStyle {
     )
 
     val Normal16 = TextStyle(
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Normal
     )
 
     val Bold = TextStyle(
@@ -108,6 +109,7 @@ object DnaTextStyle {
     )
 
     val Red16 = TextStyle(
+        fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
         color = red
     )
