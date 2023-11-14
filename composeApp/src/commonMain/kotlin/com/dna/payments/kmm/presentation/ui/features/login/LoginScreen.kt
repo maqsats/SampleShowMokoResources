@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,12 +35,10 @@ import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.model.TextFieldUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
-import com.dna.payments.kmm.presentation.theme.backgroundBtnNotEnabled
-import com.dna.payments.kmm.presentation.theme.black
-import com.dna.payments.kmm.presentation.theme.yellowButton
 import com.dna.payments.kmm.presentation.ui.common.DNAEmailTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAPasswordTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAText
+import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -184,23 +180,11 @@ class LoginScreen : Screen {
 
     @Composable
     private fun LoginButton(onLoginClicked: () -> Unit, state: LoginContract.State) {
-        Button(
+        DNAYellowButton(
+            text = stringResource(MR.strings.login),
             onClick = onLoginClicked,
-            enabled = state.isLoginEnabled.value,
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = yellowButton,
-                contentColor = black,
-                disabledBackgroundColor = backgroundBtnNotEnabled
-            ),
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            DNAText(
-                text = stringResource(MR.strings.login),
-                style = DnaTextStyle.SemiBold18,
-                modifier = Modifier.padding(vertical = 4.dp)
-            )
-        }
+            enabled = state.isLoginEnabled.value
+        )
     }
 
     @Composable
