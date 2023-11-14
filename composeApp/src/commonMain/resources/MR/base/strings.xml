@@ -22,6 +22,6 @@
     <string name="at_least_1_special_char">At least 1 special character e.g. !@#</string>
     <string name="at_least_1_uppercase">At least 1 uppercase letter</string>
     <string name="at_least_1_lowercase">" At least 1 lowercase letter"</string>
-
-
+    <string name="our_support_team_to_help">Our support team is here to help:</string>
+    <string name="support">Support</string>
 </resources>

@@ -11,6 +11,7 @@ import com.dna.payments.kmm.presentation.model.TextFieldUiState
 import com.dna.payments.kmm.presentation.model.text_input.TextInput
 import com.dna.payments.kmm.presentation.model.validation_result.ValidationResult
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
+import com.dna.payments.kmm.utils.UiText
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -97,9 +98,14 @@ class LoginViewModel(
                             is Response.Success -> {
                                 ResourceUiState.Success(result.data)
                             }
-
-                            else -> {
-                                ResourceUiState.Error("result.exception")
+                            is Response.Error -> {
+                                ResourceUiState.Error(result.error)
+                            }
+                            is Response.NetworkError -> {
+                                ResourceUiState.Error(UiText.DynamicString("Network error"))
+                            }
+                            is Response.TokenExpire -> {
+                                ResourceUiState.Error(UiText.DynamicString("Token expired"))
                             }
                         }
                     )
