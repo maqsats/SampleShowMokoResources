@@ -28,7 +28,10 @@ import com.dna.payments.kmm.presentation.ui.common.DNAPasswordTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
+import com.dna.payments.kmm.presentation.ui.features.forgot_password.ForgotPasswordScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
+import com.dna.payments.kmm.utils.navigation.LocalNavigator
+import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
@@ -43,7 +46,7 @@ class LoginScreen : Screen {
         val state by loginViewModel.uiState.collectAsState()
 
         val controller = LocalSoftwareKeyboardController.current
-
+        val navigator = LocalNavigator.currentOrThrow
 
         UiStateController(state.authorization) {
             //navigate to other menu
@@ -69,7 +72,7 @@ class LoginScreen : Screen {
                 state = state,
                 onLoginClicked = { loginViewModel.setEvent(LoginContract.Event.OnLoginClicked) },
                 onForgotPasswordClicked = {
-//                        navigator.push(ForgotPasswordScreen())
+                    navigator.push(ForgotPasswordScreen())
                 }
             )
             Spacer(modifier = Modifier.weight(0.5f))

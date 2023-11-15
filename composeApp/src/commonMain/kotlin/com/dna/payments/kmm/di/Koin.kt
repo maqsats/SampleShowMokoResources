@@ -8,6 +8,7 @@ import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
 import com.dna.payments.kmm.domain.repository.AuthorizationRepository
 import com.dna.payments.kmm.presentation.ui.features.login.LoginViewModel
+import com.dna.payments.kmm.presentation.ui.features.forgot_password.ForgotPasswordViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -43,6 +44,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
 
 val viewModelModule = module {
     factoryOf(::LoginViewModel)
+    factoryOf(::ForgotPasswordViewModel)
 }
 
 val useCasesModule: Module = module {

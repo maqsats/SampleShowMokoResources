@@ -51,13 +51,17 @@ fun DNAEmailTextField(textState: TextFieldUiState) {
 @Composable
 fun DNAPasswordTextField(textState: TextFieldUiState) {
     var passwordVisibility by remember { mutableStateOf(false) }
+    val icon = if (passwordVisibility)
+        painterResource(MR.images.ic_visibility)
+    else
+        painterResource(MR.images.ic_invisibility)
 
     DnaTextField(
         textState = textState,
         placeholder = stringResource(MR.strings.password),
         trailingIcon = {
             Icon(
-                painter = painterResource(MR.images.ic_visibility),
+                painter = icon,
                 contentDescription = null,
                 modifier = Modifier.size(20.dp).clickable(
                     indication = null,
@@ -91,7 +95,6 @@ fun DnaTextField(
         ),
         supportingText = {
             if (!textState.validationResult.value.successful) {
-                println(textState.validationResult.value.errorMessage?.getText() ?: "")
                 DNAText(
                     textState.validationResult.value.errorMessage?.getText() ?: "",
                     style = DnaTextStyle.Red16
