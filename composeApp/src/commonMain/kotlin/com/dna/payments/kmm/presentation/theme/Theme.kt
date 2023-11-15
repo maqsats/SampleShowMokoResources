@@ -24,7 +24,7 @@ private val LightColorScheme = lightColorScheme(
     onError = md_theme_light_onError,
     background = md_theme_light_background,
     onBackground = md_theme_light_onBackground,
-    surface = md_theme_light_surface,
+    surface = white,
     onSurface = md_theme_light_onSurface,
 )
 
@@ -37,7 +37,7 @@ private val DarkColorScheme = darkColorScheme(
     onError = md_theme_dark_onError,
     background = md_theme_dark_background,
     onBackground = md_theme_dark_onBackground,
-    surface = md_theme_dark_surface,
+    surface = white,
     onSurface = md_theme_dark_onSurface,
 )
 
