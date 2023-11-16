@@ -4,10 +4,13 @@ import com.dna.payments.kmm.data.preferences.DefaultPreferences
 import com.dna.payments.kmm.data.preferences.Preferences
 import com.dna.payments.kmm.data.repository.DefaultAuthorizationRepository
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
 import com.dna.payments.kmm.domain.repository.AuthorizationRepository
 import com.dna.payments.kmm.presentation.ui.features.login.LoginViewModel
+import com.dna.payments.kmm.presentation.ui.features.nav_auth.NavAuthViewModel
+import com.dna.payments.kmm.presentation.ui.features.pincode.PinViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -43,10 +46,13 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
 
 val viewModelModule = module {
     factoryOf(::LoginViewModel)
+    factoryOf(::PinViewModel)
+    factoryOf(::NavAuthViewModel)
 }
 
 val useCasesModule: Module = module {
     factoryOf(::AuthorizationUseCase)
+    factoryOf(::PinUseCase)
 
     //validation
     factoryOf(::ValidatePassword)

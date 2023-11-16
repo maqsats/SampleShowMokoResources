@@ -75,7 +75,6 @@ internal class ResolverFragment : Fragment() {
                 }
 
                 permissionCallback = PermissionCallback(permission, callback)
-                println("here")
                 requestPermissionLauncher.launch(toRequest.toTypedArray())
             }
         }

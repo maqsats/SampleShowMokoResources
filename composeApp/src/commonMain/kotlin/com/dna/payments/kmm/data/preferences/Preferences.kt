@@ -25,4 +25,7 @@ interface Preferences {
     fun setSectionAccessLevel(sectionLevelMap: MutableMap<Section, MutableList<AccessLevel>>)
 
     fun getSectionAccessLevel(): MutableMap<Section, MutableList<AccessLevel>>
+
+    fun getPinCode(): String
+    fun setPinCode(pinCode: String)
 }

@@ -8,8 +8,7 @@ import com.dna.payments.kmm.utils.UiText
 
 @Composable
 fun UiStateController(
-    resourceUiState: ResourceUiState<*>,
-    success: () -> Unit = {}
+    resourceUiState: ResourceUiState<*>
 ) {
     //LoadingPopup
     val loadingPopup = remember { mutableStateOf(false) }

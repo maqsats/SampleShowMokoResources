@@ -12,6 +12,7 @@ class DefaultPreferences : Preferences {
 
     companion object {
         private const val AUTH_TOKEN = "AUTH_TOKEN"
+        private const val PIN_CODE = "PIN_CODE"
         private const val REFRESH_TOKEN = "REFRESH_TOKEN"
         private const val UPDATE_PAY_BY_LINK_LIST = "UPDATE_PAY_BY_LINK_LIST"
         private const val MERCHANT_NAME = "MERCHANT_NAME"
@@ -77,5 +78,12 @@ class DefaultPreferences : Preferences {
         }
 
         return Json.decodeFromString(json) ?: mutableMapOf()
+    }
+
+    override fun getPinCode(): String =
+        settings.getString(PIN_CODE, "")
+
+    override fun setPinCode(pinCode: String) {
+        settings.putString(PIN_CODE, pinCode)
     }
 }

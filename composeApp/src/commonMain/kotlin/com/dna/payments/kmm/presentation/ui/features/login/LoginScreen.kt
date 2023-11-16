@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
@@ -28,7 +29,10 @@ import com.dna.payments.kmm.presentation.ui.common.DNAPasswordTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
+import com.dna.payments.kmm.presentation.ui.features.pincode.PinScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
+import com.dna.payments.kmm.utils.navigation.LocalNavigator
+import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
@@ -44,14 +48,17 @@ class LoginScreen : Screen {
 
         val controller = LocalSoftwareKeyboardController.current
 
+        val navigator = LocalNavigator.currentOrThrow
 
-        UiStateController(state.authorization) {
-            //navigate to other menu
-        }
+        UiStateController(state.authorization)
 
         LaunchedEffect(key1 = Unit) {
-            loginViewModel.effect.collectLatest {
-
+            loginViewModel.effect.collectLatest { effect ->
+                when (effect) {
+                    LoginContract.Effect.OnLoginSuccess -> {
+                        navigator.push(PinScreen())
+                    }
+                }
             }
         }
 
