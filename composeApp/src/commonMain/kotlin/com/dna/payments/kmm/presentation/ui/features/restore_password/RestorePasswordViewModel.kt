@@ -1,4 +1,4 @@
-package com.dna.payments.kmm.presentation.ui.features.forgot_password
+package com.dna.payments.kmm.presentation.ui.features.restore_password
 
 import androidx.compose.runtime.mutableStateOf
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
@@ -7,24 +7,24 @@ import com.dna.payments.kmm.presentation.model.text_input.TextInput
 import com.dna.payments.kmm.presentation.model.validation_result.ValidationResult
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
 
-class ForgotPasswordViewModel(
+class RestorePasswordViewModel(
     private val validateEmail: ValidateEmail
-) : BaseViewModel<ForgotPasswordContract.Event, ForgotPasswordContract.State, ForgotPasswordContract.Effect>() {
+) : BaseViewModel<RestorePasswordContract.Event, RestorePasswordContract.State, RestorePasswordContract.Effect>() {
 
-    override fun createInitialState(): ForgotPasswordContract.State =
-        ForgotPasswordContract.State(
+    override fun createInitialState(): RestorePasswordContract.State =
+        RestorePasswordContract.State(
             email = TextFieldUiState(
                 input = mutableStateOf(""),
                 textInput = TextInput.EMAIL_ADDRESS,
                 validationResult = mutableStateOf(ValidationResult(successful = true)),
-                onFieldChanged = { this.setEvent(ForgotPasswordContract.Event.OnEmailFieldChanged) }
+                onFieldChanged = { this.setEvent(RestorePasswordContract.Event.OnEmailFieldChanged) }
             ),
             isButtonEnabled = mutableStateOf(false)
         )
 
-    override fun handleEvent(event: ForgotPasswordContract.Event) {
+    override fun handleEvent(event: RestorePasswordContract.Event) {
         when (event) {
-            ForgotPasswordContract.Event.OnButtonClicked -> {
+            RestorePasswordContract.Event.OnButtonClicked -> {
                 with(currentState) {
                     val validateEmailResult = validateEmail(email.input.value, email.textInput)
                     email.validationResult.value = validateEmailResult
@@ -35,7 +35,7 @@ class ForgotPasswordViewModel(
                 }
             }
 
-            ForgotPasswordContract.Event.OnEmailFieldChanged -> {
+            RestorePasswordContract.Event.OnEmailFieldChanged -> {
                 with(currentState) {
                     val validateEmailResult = validateEmail(email.input.value, email.textInput)
 

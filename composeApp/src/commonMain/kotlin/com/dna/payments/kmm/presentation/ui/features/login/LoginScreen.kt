@@ -28,7 +28,7 @@ import com.dna.payments.kmm.presentation.ui.common.DNAPasswordTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
-import com.dna.payments.kmm.presentation.ui.features.forgot_password.ForgotPasswordScreen
+import com.dna.payments.kmm.presentation.ui.features.restore_password.RestorePasswordScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -72,7 +72,7 @@ class LoginScreen : Screen {
                 state = state,
                 onLoginClicked = { loginViewModel.setEvent(LoginContract.Event.OnLoginClicked) },
                 onForgotPasswordClicked = {
-                    navigator.push(ForgotPasswordScreen())
+                    navigator.push(RestorePasswordScreen())
                 }
             )
             Spacer(modifier = Modifier.weight(0.5f))
@@ -163,7 +163,7 @@ class LoginScreen : Screen {
         email: TextFieldUiState
     ) {
         DNAText(
-            text = stringResource(MR.strings.email),
+            text = "email",
             style = DnaTextStyle.Medium16,
         )
         Spacer(modifier = Modifier.height(8.dp))
