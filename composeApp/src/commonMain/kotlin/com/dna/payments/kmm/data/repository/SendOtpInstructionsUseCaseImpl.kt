@@ -8,7 +8,7 @@ import com.dna.payments.kmm.domain.repository.SendOtpInstructionsUseCase
 class SendOtpInstructionsUseCaseImpl(private val resetPasswordRepository: ResetPasswordRepository) :
     SendOtpInstructionsUseCase {
 
-    override suspend fun sendInstructions(email: String): Response<Unit> {
+    override suspend operator fun invoke(email: String): Response<Unit> {
         return resetPasswordRepository.sendInstructions(SendInstructionRequest(email))
     }
 }

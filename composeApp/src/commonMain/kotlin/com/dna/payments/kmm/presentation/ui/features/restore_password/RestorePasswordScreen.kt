@@ -25,6 +25,7 @@ import com.dna.payments.kmm.presentation.ui.common.DNAEmailTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
+import com.dna.payments.kmm.presentation.ui.common.UiStateController
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -45,9 +46,9 @@ class RestorePasswordScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
 
 
-//        UiStateController(state.authorization) {
-//            //navigate to other menu
-//        }
+        UiStateController(state.sendInstruction) {
+            //navigate to other menu
+        }
 
         LaunchedEffect(key1 = Unit) {
             restorePasswordViewModel.effect.collectLatest {
@@ -57,7 +58,7 @@ class RestorePasswordScreen : Screen {
 
         Column(
             modifier = Modifier
-                .fillMaxSize().padding(horizontal = 16.dp)
+                .fillMaxSize()
                 .noRippleClickable {
                     controller?.hide()
                 },
@@ -68,7 +69,7 @@ class RestorePasswordScreen : Screen {
                 state = state,
                 onBackToLoginClicked = { navigator.pop() },
                 onSendClicked = {
-//                        navigator.push(RestorePasswordScreen())
+                    restorePasswordViewModel.setEvent(RestorePasswordContract.Event.OnButtonClicked)
                 }
             )
             Spacer(modifier = Modifier.weight(0.5f))
@@ -82,10 +83,14 @@ class RestorePasswordScreen : Screen {
         onBackToLoginClicked: () -> Unit,
         onSendClicked: () -> Unit
     ) {
-        Column {
+        Column(
+            modifier = modifier.padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.Top
+        ) {
             DNAGreenBackButton(
                 text = stringResource(MR.strings.back_to_login),
-                onClick = onBackToLoginClicked
+                onClick = onBackToLoginClicked,
+                modifier = Modifier.padding(horizontal = 0.dp)
             )
             Spacer(modifier = modifier.height(16.dp))
             DNAText(

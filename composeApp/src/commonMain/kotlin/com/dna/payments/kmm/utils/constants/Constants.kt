@@ -9,6 +9,7 @@ object Constants {
     const val SCOPE =
         "webapi usermanagement email_send verification statement statistics payment virtual_terminal"
     const val BASE_AUTH_URL = "https://test-oauth.dnapayments.com/"
+    const val BASE_RESTORE_URL = "https://test-portal.dnapayments.com/oppapi/client/"
     const val BASE_URL = "https://test-api.dnapayments.com/"
     const val URL_HELP = "https://dnapayments.com/faq/"
     const val emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\$"

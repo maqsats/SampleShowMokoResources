@@ -4,5 +4,5 @@ import com.dna.payments.kmm.domain.network.Response
 
 interface SendOtpInstructionsUseCase {
 
-    suspend fun sendInstructions(email: String): Response<Unit>
+    suspend operator fun invoke(email: String): Response<Unit>
 }

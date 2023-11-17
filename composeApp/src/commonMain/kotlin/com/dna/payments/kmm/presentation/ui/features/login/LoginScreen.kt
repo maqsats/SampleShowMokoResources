@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -118,7 +118,7 @@ class LoginScreen : Screen {
         DNAText(
             text = stringResource(MR.strings.restore_password),
             style = DnaTextStyle.Green16,
-            modifier = Modifier.fillMaxWidth().noRippleClickable { onForgotPasswordClicked() }
+            modifier = Modifier.wrapContentWidth().noRippleClickable { onForgotPasswordClicked() }
         )
     }
 
@@ -163,7 +163,7 @@ class LoginScreen : Screen {
         email: TextFieldUiState
     ) {
         DNAText(
-            text = "email",
+            text = stringResource(MR.strings.email),
             style = DnaTextStyle.Medium16,
         )
         Spacer(modifier = Modifier.height(8.dp))

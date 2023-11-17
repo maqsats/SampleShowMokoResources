@@ -1,6 +1,5 @@
 package com.dna.payments.kmm.presentation.ui.common
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +18,7 @@ import com.dna.payments.kmm.presentation.theme.backgroundBtnNotEnabled
 import com.dna.payments.kmm.presentation.theme.black
 import com.dna.payments.kmm.presentation.theme.greenButtonNotFilled
 import com.dna.payments.kmm.presentation.theme.yellowButton
+import com.dna.payments.kmm.utils.extension.noRippleClickable
 import dev.icerock.moko.resources.compose.painterResource
 
 @Composable
@@ -53,7 +53,7 @@ fun DNAGreenBackButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    Row(modifier = modifier.clickable {
+    Row(modifier = modifier.noRippleClickable {
         onClick()
     }, horizontalArrangement = Arrangement.Center) {
         Icon(
