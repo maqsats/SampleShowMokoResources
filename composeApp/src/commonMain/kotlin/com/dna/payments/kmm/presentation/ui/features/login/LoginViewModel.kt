@@ -42,16 +42,7 @@ class LoginViewModel(
         when (event) {
             LoginContract.Event.OnLoginClicked -> {
                 with(currentState) {
-                    val validateEmailResult = validateEmail(email.input.value, email.textInput)
-                    val validatePasswordResult = validatePassword(
-                        password.input.value,
-                        password.textInput
-                    )
-                    email.validationResult.value = validateEmailResult
-                    password.validationResult.value = validatePasswordResult
-                    if (validateEmailResult.successful && validatePasswordResult.successful) {
-                        authorize(email.input.value, password.input.value)
-                    }
+                    authorize(email.input.value, password.input.value)
                 }
             }
 

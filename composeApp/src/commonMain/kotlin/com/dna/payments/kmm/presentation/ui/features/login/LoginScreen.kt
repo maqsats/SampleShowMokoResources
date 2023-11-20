@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,6 +30,7 @@ import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
 import com.dna.payments.kmm.presentation.ui.features.pincode.PinScreen
+import com.dna.payments.kmm.presentation.ui.features.restore_password.RestorePasswordScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -48,6 +49,7 @@ class LoginScreen : Screen {
 
         val controller = LocalSoftwareKeyboardController.current
 
+        val navigator = LocalNavigator.currentOrThrow
         val navigator = LocalNavigator.currentOrThrow
 
         UiStateController(state.authorization)
@@ -76,7 +78,7 @@ class LoginScreen : Screen {
                 state = state,
                 onLoginClicked = { loginViewModel.setEvent(LoginContract.Event.OnLoginClicked) },
                 onForgotPasswordClicked = {
-//                        navigator.push(ForgotPasswordScreen())
+                    navigator.push(RestorePasswordScreen())
                 }
             )
             Spacer(modifier = Modifier.weight(0.5f))
@@ -122,7 +124,7 @@ class LoginScreen : Screen {
         DNAText(
             text = stringResource(MR.strings.restore_password),
             style = DnaTextStyle.Green16,
-            modifier = Modifier.fillMaxWidth().noRippleClickable { onForgotPasswordClicked() }
+            modifier = Modifier.wrapContentWidth().noRippleClickable { onForgotPasswordClicked() }
         )
     }
 

@@ -3,14 +3,19 @@ package com.dna.payments.kmm.di
 import com.dna.payments.kmm.data.preferences.DefaultPreferences
 import com.dna.payments.kmm.data.preferences.Preferences
 import com.dna.payments.kmm.data.repository.DefaultAuthorizationRepository
+import com.dna.payments.kmm.data.repository.DefaultResetPasswordRepository
+import com.dna.payments.kmm.data.repository.SendOtpInstructionsUseCaseImpl
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
 import com.dna.payments.kmm.domain.repository.AuthorizationRepository
+import com.dna.payments.kmm.domain.repository.ResetPasswordRepository
+import com.dna.payments.kmm.domain.repository.SendOtpInstructionsUseCase
 import com.dna.payments.kmm.presentation.ui.features.login.LoginViewModel
 import com.dna.payments.kmm.presentation.ui.features.nav_auth.NavAuthViewModel
 import com.dna.payments.kmm.presentation.ui.features.pincode.PinViewModel
+import com.dna.payments.kmm.presentation.ui.features.restore_password.RestorePasswordViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -48,6 +53,7 @@ val viewModelModule = module {
     factoryOf(::LoginViewModel)
     factoryOf(::PinViewModel)
     factoryOf(::NavAuthViewModel)
+    factoryOf(::RestorePasswordViewModel)
 }
 
 val useCasesModule: Module = module {
@@ -57,10 +63,12 @@ val useCasesModule: Module = module {
     //validation
     factoryOf(::ValidatePassword)
     factoryOf(::ValidateEmail)
+    factoryOf(::SendOtpInstructionsUseCaseImpl).bind(SendOtpInstructionsUseCase::class)
 }
 
 val repositoryModule = module {
     factoryOf(::DefaultAuthorizationRepository).bind(AuthorizationRepository::class)
+    factoryOf(::DefaultResetPasswordRepository).bind(ResetPasswordRepository::class)
 }
 
 val preferencesModule = module {

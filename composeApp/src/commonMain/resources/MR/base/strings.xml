@@ -44,4 +44,12 @@
         fingerprint) to authenticate the dialog.
     </string>
 
+
+    <!--     New password-->
+    <string name="back_to_login">Back to Login</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="reset_password_description">Enter the email address you used to register with
+        portal and we will send you instructions to reset your password
+    </string>
+    <string name="send_instructions">Send Instructions</string>
 </resources>

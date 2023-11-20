@@ -37,6 +37,7 @@ suspend inline fun <reified T> handleApiCall(apiCall: () -> HttpResponse): Respo
             }
         }
     } catch (e: Exception) {
+        e.printStackTrace()
         e.catchError()
     }
 
