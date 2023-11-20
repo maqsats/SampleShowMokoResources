@@ -6,7 +6,6 @@ import com.dna.payments.kmm.presentation.model.TextFieldUiState
 import com.dna.payments.kmm.presentation.mvi.UiEffect
 import com.dna.payments.kmm.presentation.mvi.UiEvent
 import com.dna.payments.kmm.presentation.mvi.UiState
-import com.dna.payments.kmm.presentation.ui.features.login.LoginContract
 
 interface RestorePasswordContract {
     sealed interface Event : UiEvent {
@@ -21,7 +20,7 @@ interface RestorePasswordContract {
     ) : UiState
 
     sealed interface Effect : UiEffect {
-        data object OnInstructionSuccess : RestorePasswordContract.Effect
+        data object OnInstructionSuccess : Effect
     }
 }
 

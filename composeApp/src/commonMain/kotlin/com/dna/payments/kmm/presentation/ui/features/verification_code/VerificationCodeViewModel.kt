@@ -28,7 +28,6 @@ class VerificationCodeViewModel(
         when (event) {
             VerificationCodeContract.Event.OnButtonClicked -> {
                 with(currentState) {
-//                    sendInstructions(email.input.value)
                 }
             }
 
@@ -44,36 +43,4 @@ class VerificationCodeViewModel(
             }
         }
     }
-
-//    private fun sendInstructions(email: String) {
-//        setState { copy(sendInstruction = ResourceUiState.Loading) }
-//        coroutineScope.launch {
-//            coroutineScope.launch {
-//                val result = sendOtpInstructionsUseCase(
-//                    email = email,
-//                )
-//                setState {
-//                    copy(
-//                        sendInstruction = when (result) {
-//                            is Response.Success -> {
-//                                ResourceUiState.Success(result.data)
-//                            }
-//
-//                            is Response.Error -> {
-//                                ResourceUiState.Error(result.error)
-//                            }
-//
-//                            is Response.NetworkError -> {
-//                                ResourceUiState.Error(UiText.DynamicString("Network error"))
-//                            }
-//
-//                            is Response.TokenExpire -> {
-//                                ResourceUiState.Error(UiText.DynamicString("Token expired"))
-//                            }
-//                        }
-//                    )
-//                }
-//            }
-//        }
-//    }
 }
