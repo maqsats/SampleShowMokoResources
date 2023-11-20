@@ -46,9 +46,7 @@ class RestorePasswordScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
 
 
-        UiStateController(state.sendInstruction) {
-            //navigate to other menu
-        }
+        UiStateController(state.sendInstruction)
 
         LaunchedEffect(key1 = Unit) {
             restorePasswordViewModel.effect.collectLatest {

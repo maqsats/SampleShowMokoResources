@@ -50,7 +50,6 @@ class LoginScreen : Screen {
         val controller = LocalSoftwareKeyboardController.current
 
         val navigator = LocalNavigator.currentOrThrow
-        val navigator = LocalNavigator.currentOrThrow
 
         UiStateController(state.authorization)
 
