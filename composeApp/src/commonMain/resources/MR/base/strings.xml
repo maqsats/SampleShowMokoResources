@@ -10,6 +10,8 @@
     <string name="invalid_email">Invalid email address</string>
 
     <string name="email_is_blank">Email is blank</string>
+    <string name="verification_is_blank">Verification code is blank</string>
+    <string name="verification_is_invalid">Verification code is invalid</string>
     <string name="at_least_8_length_char">The password needs to consist of at least 8 characters
     </string>
     <string name="verification_at_least_6">The verification code needs to consist of at least 6
@@ -47,9 +49,17 @@
 
     <!--     New password-->
     <string name="back_to_login">Back to Login</string>
+    <string name="back_to_email">Back to Email</string>
     <string name="reset_password">Reset Password</string>
     <string name="reset_password_description">Enter the email address you used to register with
         portal and we will send you instructions to reset your password
     </string>
     <string name="send_instructions">Send Instructions</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_email">Confirm Email</string>
+    <string name="confirm_email_description">If we find an account associated with entered email, we
+        will send a 6-digit verification code to it.
+    </string>
+    <string name="verification_code">Verification Code</string>
+    <string name="verification_code_placeholder">X X X X X X</string>
 </resources>

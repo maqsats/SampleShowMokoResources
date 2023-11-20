@@ -45,7 +45,24 @@ import dev.icerock.moko.resources.compose.stringResource
 fun DNAEmailTextField(textState: TextFieldUiState) {
     DnaTextField(
         textState = textState,
-        placeholder = stringResource(MR.strings.email)
+        placeholder = stringResource(MR.strings.email),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            autoCorrect = false
+        ),
+    )
+}
+
+@Composable
+fun DNAVerificationCodeTextField(textState: TextFieldUiState) {
+    DnaTextField(
+        textState = textState,
+        placeholder = stringResource(MR.strings.verification_code_placeholder),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            autoCorrect = false
+        ),
+        maxLength = 6
     )
 }
 
@@ -71,6 +88,10 @@ fun DNAPasswordTextField(textState: TextFieldUiState) {
                 )
             )
         },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            autoCorrect = false
+        ),
         visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
     )
 }
@@ -80,24 +101,25 @@ fun DnaTextField(
     textState: TextFieldUiState,
     placeholder: String,
     modifier: Modifier = Modifier,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     trailingIcon: (@Composable () -> Unit)? = null,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    maxLength: Int = 0
 ) {
     OutlinedTextField(
         value = textState.input.value,
         onValueChange = {
-            textState.input.value = it
-            textState.onFieldChanged()
+            if (maxLength == 0 || it.length <= maxLength) {
+                textState.input.value = it
+                textState.onFieldChanged()
+            }
         },
         modifier = modifier,
         shape = RoundedCornerShape(10.dp),
         textStyle = DnaTextStyle.Normal16.copy(
             fontFamily = poppinsFontFamily()
         ),
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Email,
-            autoCorrect = false
-        ),
+        keyboardOptions = keyboardOptions,
         supportingText = {
             if (!textState.validationResult.value.successful) {
                 DNAText(

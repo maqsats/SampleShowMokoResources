@@ -2,6 +2,7 @@ package com.dna.payments.kmm.presentation.model.text_input
 
 enum class TextInput {
     CUSTOMER_NAME,
+    VERIFICATION_CODE,
     POST_CODE,
     DESCRIPTION,
     AMOUNT,
