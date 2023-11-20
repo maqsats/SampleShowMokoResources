@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -92,6 +93,10 @@ fun DnaTextField(
         shape = RoundedCornerShape(10.dp),
         textStyle = DnaTextStyle.Normal16.copy(
             fontFamily = poppinsFontFamily()
+        ),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            autoCorrect = false
         ),
         supportingText = {
             if (!textState.validationResult.value.successful) {

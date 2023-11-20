@@ -107,7 +107,6 @@ actual class LocationTracker(
 
     @SuppressLint("MissingPermission")
     actual suspend fun startTracking() {
-        println("startTracking")
         isStarted = true
         locationProviderClient?.requestLocationUpdates(locationRequest, this, null)
     }

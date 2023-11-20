@@ -78,32 +78,30 @@ class LoginViewModel(
     private fun authorize(email: String, password: String) {
         setState { copy(authorization = ResourceUiState.Loading) }
         coroutineScope.launch {
-            coroutineScope.launch {
-                val result = authorizationUseCase(
-                    userName = email,
-                    password = password
-                )
-                setState {
-                    copy(
-                        authorization = when (result) {
-                            is Response.Success -> {
-                                ResourceUiState.Success(result.data)
+            val result = authorizationUseCase(
+                userName = email,
+                password = password
+            )
+            setState {
+                copy(
+                    authorization = when (result) {
+                        is Response.Success -> {
+                            setEffect {
+                                LoginContract.Effect.OnLoginSuccess
                             }
-
-                            is Response.Error -> {
-                                ResourceUiState.Error(result.error)
-                            }
-
-                            is Response.NetworkError -> {
-                                ResourceUiState.Error(UiText.DynamicString("Network error"))
-                            }
-
-                            is Response.TokenExpire -> {
-                                ResourceUiState.Error(UiText.DynamicString("Token expired"))
-                            }
+                            ResourceUiState.Success(result.data)
                         }
-                    )
-                }
+                        is Response.Error -> {
+                            ResourceUiState.Error(result.error)
+                        }
+                        is Response.NetworkError -> {
+                            ResourceUiState.Error(UiText.DynamicString("Network error"))
+                        }
+                        is Response.TokenExpire -> {
+                            ResourceUiState.Error(UiText.DynamicString("Token expired"))
+                        }
+                    }
+                )
             }
         }
     }

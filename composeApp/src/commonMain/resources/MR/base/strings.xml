@@ -25,6 +25,26 @@
     <string name="our_support_team_to_help">Our support team is here to help:</string>
     <string name="support">Support</string>
 
+    <string name="enter_pin_code">Enter pin code</string>
+    <string name="forgot_pin_code">Forgot password?</string>
+    <string name="create_pin_code">Create pin code</string>
+    <string name="repeat_pin_code">Repeat pin code</string>
+    <string name="code_not_same">The repeated code does not match.\nPlease re-enter.</string>
+    <string name="code_not_correct">Invalid code.\nPlease re-enter.</string>
+
+    <string name="settings_logout_dialog_dismiss">No</string>
+    <string name="settings_logout_dialog_title">Log out?</string>
+    <string name="settings_logout_dialog_body">When you log out, unsaved data on the server will be
+        lost.
+    </string>
+    <string name="settings_logout_dialog_confirm">Yes, log out</string>
+
+    <string name="biometric_authentication">Biometric Authentication</string>
+    <string name="biometric_authentication_description">This app uses your device biometrics (user
+        fingerprint) to authenticate the dialog.
+    </string>
+
+
     <!--     New password-->
     <string name="back_to_login">Back to Login</string>
     <string name="reset_password">Reset Password</string>

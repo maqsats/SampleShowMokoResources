@@ -22,6 +22,7 @@ interface LoginContract {
     ) : UiState
 
     sealed interface Effect : UiEffect {
+        data object OnLoginSuccess : Effect
     }
 }
 
