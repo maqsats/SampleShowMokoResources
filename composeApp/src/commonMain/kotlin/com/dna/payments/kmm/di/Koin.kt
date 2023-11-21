@@ -5,6 +5,7 @@ import com.dna.payments.kmm.data.preferences.Preferences
 import com.dna.payments.kmm.data.repository.DefaultAuthorizationRepository
 import com.dna.payments.kmm.data.repository.DefaultResetPasswordRepository
 import com.dna.payments.kmm.data.repository.SendOtpInstructionsUseCaseImpl
+import com.dna.payments.kmm.data.repository.VerifyOtpCodeUseCaseImpl
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidateCode
@@ -13,8 +14,10 @@ import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
 import com.dna.payments.kmm.domain.repository.AuthorizationRepository
 import com.dna.payments.kmm.domain.repository.ResetPasswordRepository
 import com.dna.payments.kmm.domain.repository.SendOtpInstructionsUseCase
+import com.dna.payments.kmm.domain.repository.VerifyOtpCodeUseCase
 import com.dna.payments.kmm.presentation.ui.features.login.LoginViewModel
 import com.dna.payments.kmm.presentation.ui.features.nav_auth.NavAuthViewModel
+import com.dna.payments.kmm.presentation.ui.features.new_password.NewPasswordViewModel
 import com.dna.payments.kmm.presentation.ui.features.pincode.PinViewModel
 import com.dna.payments.kmm.presentation.ui.features.restore_password.RestorePasswordViewModel
 import com.dna.payments.kmm.presentation.ui.features.verification_code.VerificationCodeViewModel
@@ -57,6 +60,7 @@ val viewModelModule = module {
     factoryOf(::NavAuthViewModel)
     factoryOf(::RestorePasswordViewModel)
     factoryOf(::VerificationCodeViewModel)
+    factoryOf(::NewPasswordViewModel)
 }
 
 val useCasesModule: Module = module {
@@ -68,6 +72,7 @@ val useCasesModule: Module = module {
     factoryOf(::ValidateEmail)
     factoryOf(::ValidateCode)
     factoryOf(::SendOtpInstructionsUseCaseImpl).bind(SendOtpInstructionsUseCase::class)
+    factoryOf(::VerifyOtpCodeUseCaseImpl).bind(VerifyOtpCodeUseCase::class)
 }
 
 val repositoryModule = module {

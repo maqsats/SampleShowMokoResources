@@ -8,10 +8,14 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="login_uppercase">Login</string>
     <string name="invalid_email">Invalid email address</string>
-
+    <string name="resend">Resend</string>
+    <string name="resend_with_time">Resend(%1\$s s)</string>
     <string name="email_is_blank">Email is blank</string>
     <string name="verification_is_blank">Verification code is blank</string>
     <string name="verification_is_invalid">Verification code is invalid</string>
+    <string name="verification_hint">If you did not receive a verification code, please check Spam
+        bin or try to re-send
+    </string>
     <string name="at_least_8_length_char">The password needs to consist of at least 8 characters
     </string>
     <string name="verification_at_least_6">The verification code needs to consist of at least 6
@@ -57,7 +61,7 @@
     <string name="send_instructions">Send Instructions</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_email">Confirm Email</string>
-    <string name="confirm_email_description">If we find an account associated with entered email, we
+    <string name="confirm_email_description">If we find an account associated with %s, we
         will send a 6-digit verification code to it.
     </string>
     <string name="verification_code">Verification Code</string>
