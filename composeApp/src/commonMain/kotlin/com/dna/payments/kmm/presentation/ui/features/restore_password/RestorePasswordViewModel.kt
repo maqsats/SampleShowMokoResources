@@ -61,6 +61,9 @@ class RestorePasswordViewModel(
                     copy(
                         sendInstruction = when (result) {
                             is Response.Success -> {
+                                setEffect {
+                                    RestorePasswordContract.Effect.OnInstructionSuccess
+                                }
                                 ResourceUiState.Success(result.data)
                             }
 

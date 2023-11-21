@@ -7,6 +7,7 @@ import com.dna.payments.kmm.data.repository.DefaultResetPasswordRepository
 import com.dna.payments.kmm.data.repository.SendOtpInstructionsUseCaseImpl
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
+import com.dna.payments.kmm.domain.interactors.validation.ValidateCode
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
 import com.dna.payments.kmm.domain.repository.AuthorizationRepository
@@ -16,6 +17,7 @@ import com.dna.payments.kmm.presentation.ui.features.login.LoginViewModel
 import com.dna.payments.kmm.presentation.ui.features.nav_auth.NavAuthViewModel
 import com.dna.payments.kmm.presentation.ui.features.pincode.PinViewModel
 import com.dna.payments.kmm.presentation.ui.features.restore_password.RestorePasswordViewModel
+import com.dna.payments.kmm.presentation.ui.features.verification_code.VerificationCodeViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -54,6 +56,7 @@ val viewModelModule = module {
     factoryOf(::PinViewModel)
     factoryOf(::NavAuthViewModel)
     factoryOf(::RestorePasswordViewModel)
+    factoryOf(::VerificationCodeViewModel)
 }
 
 val useCasesModule: Module = module {
@@ -63,6 +66,7 @@ val useCasesModule: Module = module {
     //validation
     factoryOf(::ValidatePassword)
     factoryOf(::ValidateEmail)
+    factoryOf(::ValidateCode)
     factoryOf(::SendOtpInstructionsUseCaseImpl).bind(SendOtpInstructionsUseCase::class)
 }
 

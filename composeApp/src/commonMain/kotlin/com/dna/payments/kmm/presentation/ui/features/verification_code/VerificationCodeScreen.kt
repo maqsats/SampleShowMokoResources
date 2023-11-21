@@ -1,4 +1,4 @@
-package com.dna.payments.kmm.presentation.ui.features.restore_password
+package com.dna.payments.kmm.presentation.ui.features.verification_code
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,41 +21,36 @@ import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
-import com.dna.payments.kmm.presentation.ui.common.DNAEmailTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
+import com.dna.payments.kmm.presentation.ui.common.DNAVerificationCodeTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
-import com.dna.payments.kmm.presentation.ui.features.verification_code.VerificationCodeScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
-class RestorePasswordScreen : Screen {
+class VerificationCodeScreen : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
-        val restorePasswordViewModel = getScreenModel<RestorePasswordViewModel>()
+        val verificationCodeViewModel = getScreenModel<VerificationCodeViewModel>()
 
-        val state by restorePasswordViewModel.uiState.collectAsState()
+        val state by verificationCodeViewModel.uiState.collectAsState()
 
         val controller = LocalSoftwareKeyboardController.current
         val navigator = LocalNavigator.currentOrThrow
 
 
-        UiStateController(state.sendInstruction)
+        UiStateController(state.sendCode)
 
         LaunchedEffect(key1 = Unit) {
-            restorePasswordViewModel.effect.collectLatest { effect ->
-                when (effect) {
-                    RestorePasswordContract.Effect.OnInstructionSuccess -> {
-                        navigator.push(VerificationCodeScreen())
-                    }
-                }
+            verificationCodeViewModel.effect.collectLatest {
+
             }
         }
 
@@ -72,7 +67,7 @@ class RestorePasswordScreen : Screen {
                 state = state,
                 onBackToLoginClicked = { navigator.pop() },
                 onSendClicked = {
-                    restorePasswordViewModel.setEvent(RestorePasswordContract.Event.OnButtonClicked)
+                    verificationCodeViewModel.setEvent(VerificationCodeContract.Event.OnButtonClicked)
                 }
             )
             Spacer(modifier = Modifier.weight(0.5f))
@@ -82,7 +77,7 @@ class RestorePasswordScreen : Screen {
     @Composable
     private fun RestorePasswordContent(
         modifier: Modifier = Modifier,
-        state: RestorePasswordContract.State,
+        state: VerificationCodeContract.State,
         onBackToLoginClicked: () -> Unit,
         onSendClicked: () -> Unit
     ) {
@@ -92,30 +87,30 @@ class RestorePasswordScreen : Screen {
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             DNAGreenBackButton(
-                text = stringResource(MR.strings.back_to_login),
+                text = stringResource(MR.strings.back_to_email),
                 onClick = onBackToLoginClicked,
                 modifier = Modifier.padding(horizontal = 0.dp)
             )
             Spacer(modifier = modifier.height(16.dp))
             DNAText(
-                text = stringResource(MR.strings.reset_password),
+                text = stringResource(MR.strings.confirm_email),
                 style = DnaTextStyle.Bold20
             )
             Spacer(modifier = modifier.height(8.dp))
             DNAText(
-                text = stringResource(MR.strings.reset_password_description),
+                text = stringResource(MR.strings.confirm_email_description),
                 style = DnaTextStyle.Normal14
             )
             Spacer(modifier = modifier.height(32.dp))
             DNAText(
-                text = stringResource(MR.strings.email),
+                text = stringResource(MR.strings.verification_code),
                 style = DnaTextStyle.Medium16,
             )
             Spacer(modifier = Modifier.height(8.dp))
-            DNAEmailTextField(state.email)
+            DNAVerificationCodeTextField(state.verificationCode)
             Spacer(modifier = modifier.height(32.dp))
             DNAYellowButton(
-                text = stringResource(MR.strings.send_instructions),
+                text = stringResource(MR.strings.confirm),
                 onClick = onSendClicked,
                 enabled = state.isButtonEnabled.value
             )
