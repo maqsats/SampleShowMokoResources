@@ -6,8 +6,10 @@ import com.dna.payments.kmm.data.model.request.NewPasswordRequest
 import com.dna.payments.kmm.data.model.request.SendInstructionRequest
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.repository.ResetPasswordRepository
-import com.dna.payments.kmm.utils.constants.Constants
+import com.dna.payments.kmm.utils.constants.Constants.BASE_RESTORE_URL
 import com.dna.payments.kmm.utils.constants.Constants.BASE_URL
+import com.dna.payments.kmm.utils.constants.Constants.CREDENTIALS_HEADER
+import com.dna.payments.kmm.utils.extension.getBasicToken
 import com.dna.payments.kmm.utils.extension.handleApiCall
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -28,6 +30,7 @@ class DefaultResetPasswordRepository(
         handleApiCall {
             httpClient.post {
                 url("${BASE_URL}v1/password-reset")
+                header(CREDENTIALS_HEADER, getBasicToken())
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 setBody(sendInstructionRequest)
             }.body()
@@ -37,6 +40,7 @@ class DefaultResetPasswordRepository(
         handleApiCall {
             httpClient.post {
                 url("${BASE_URL}v1/validation")
+                header(CREDENTIALS_HEADER, getBasicToken())
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 setBody(emailVerificationRequest)
             }.body()
@@ -45,7 +49,7 @@ class DefaultResetPasswordRepository(
     override suspend fun changePassword(newPasswordRequest: NewPasswordRequest): Response<Unit> =
         handleApiCall {
             httpClient.submitForm(
-                url = "${Constants.BASE_RESTORE_URL}/v1/password",
+                url = "${BASE_RESTORE_URL}/v1/password",
                 formParameters = Parameters.build {
                     append("email", newPasswordRequest.email)
                     append("password", newPasswordRequest.password)
