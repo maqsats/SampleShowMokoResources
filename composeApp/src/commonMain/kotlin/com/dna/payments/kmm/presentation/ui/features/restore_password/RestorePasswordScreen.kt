@@ -53,7 +53,7 @@ class RestorePasswordScreen : Screen {
             restorePasswordViewModel.effect.collectLatest { effect ->
                 when (effect) {
                     RestorePasswordContract.Effect.OnInstructionSuccess -> {
-                        navigator.push(VerificationCodeScreen())
+                        navigator.push(VerificationCodeScreen(state.email.input.value))
                     }
                 }
             }

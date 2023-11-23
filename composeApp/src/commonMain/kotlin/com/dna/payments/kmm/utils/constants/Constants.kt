@@ -12,5 +12,9 @@ object Constants {
     const val BASE_RESTORE_URL = "https://test-portal.dnapayments.com/oppapi/client/"
     const val BASE_URL = "https://test-api.dnapayments.com/"
     const val URL_HELP = "https://dnapayments.com/faq/"
+    const val CREDENTIALS_HEADER = "Authorization"
     const val emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\$"
+
+    const val initialTime = 25
+    const val delayInMillis = 1000L
 }

@@ -9,11 +9,15 @@ import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.data.model.Error
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.utils.UiText
+import com.dna.payments.kmm.utils.constants.Constants
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.json.Json
 import okio.IOException
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 
 suspend inline fun <reified T> handleApiCall(apiCall: () -> HttpResponse): Response<T> =
@@ -58,3 +62,10 @@ fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
         onClick()
     }
 }
+
+@OptIn(ExperimentalEncodingApi::class)
+fun getBasicToken() = "Basic ${
+    Base64.encode(
+        "${Constants.CLIENT_ID}:${Constants.CLIENT_SECRET}".toByteArray()
+    )
+}"
