@@ -7,7 +7,10 @@ import com.dna.payments.kmm.utils.UiText
 
 class ValidatePassword {
 
-    operator fun invoke(password: String, textInput: TextInput): ValidationResult =
+    operator fun invoke(
+        password: String,
+        textInput: TextInput
+    ): ValidationResult =
         when {
             !containsAtLeastEightChars(password) -> {
                 ValidationResult(
@@ -42,15 +45,19 @@ class ValidatePassword {
         }
 
 
-    private fun containsAtLeastEightChars(password: String) = password.length >= 8
+    fun containsAtLeastEightChars(password: String) = password.length >= 8
 
-    private fun containsAtLeastOneDigitAndOneLetter(password: String) =
+    fun containsAtLeastOneDigitAndOneLetter(password: String) =
         password.any { it.isDigit() } && password.any { it.isLetter() }
 
-    private fun containsSpecialChar(password: String) =
+    fun containsSpecialChar(password: String) =
         password.matches("^.*[^a-zA-Z\\d\\s][^a-zA-Z]*\$".toRegex())
 
-    private fun containsUpperCase(password: String) = password.any { it.isUpperCase() }
+    fun containsUpperCase(password: String) = password.any { it.isUpperCase() }
 
-    private fun containsLowerCase(password: String) = password.any { it.isLowerCase() }
+    fun containsLowerCase(password: String) = password.any { it.isLowerCase() }
+
+    fun passwordsMatch(password: String, confirmPassword: String): Boolean {
+        return password == confirmPassword && password.isNotEmpty()
+    }
 }

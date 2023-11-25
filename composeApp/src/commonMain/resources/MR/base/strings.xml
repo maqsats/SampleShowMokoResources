@@ -2,8 +2,8 @@
 <resources>
     <string name="login">Log In</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
     <string name="email">Email address</string>
-    <string name="reset_password">Reset password</string>
     <string name="restore_password">Forgot password?</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="login_uppercase">Login</string>
@@ -27,7 +27,7 @@
 
     <string name="at_least_1_special_char">At least 1 special character e.g. !@#</string>
     <string name="at_least_1_uppercase">At least 1 uppercase letter</string>
-    <string name="at_least_1_lowercase">" At least 1 lowercase letter"</string>
+    <string name="at_least_1_lowercase">At least 1 lowercase letter</string>
     <string name="our_support_team_to_help">Our support team is here to help:</string>
     <string name="support">Support</string>
 
@@ -55,6 +55,9 @@
     <string name="back_to_login">Back to Login</string>
     <string name="back_to_email">Back to Email</string>
     <string name="reset_password">Reset Password</string>
+    <string name="password_must_contain">Password must contain</string>
+    <string name="password_must_match">Passwords must match</string>
+    <string name="set_password">Set Password</string>
     <string name="reset_password_description">Enter the email address you used to register with
         portal and we will send you instructions to reset your password
     </string>
@@ -63,6 +66,9 @@
     <string name="confirm_email">Confirm Email</string>
     <string name="confirm_email_description">If we find an account associated with %s, we
         will send a 6-digit verification code to it.
+    </string>
+    <string name="new_password_description">Change this text change this text change this text
+        change this text change this text change this text
     </string>
     <string name="verification_code">Verification Code</string>
     <string name="verification_code_placeholder">X X X X X X</string>
