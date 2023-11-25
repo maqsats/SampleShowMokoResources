@@ -73,7 +73,7 @@ class VerificationCodeViewModel(
                         sendCode = when (result) {
                             is Response.Success -> {
                                 setEffect {
-                                    VerificationCodeContract.Effect.OnVerificationSuccess(result.data.Id)
+                                    VerificationCodeContract.Effect.OnVerificationSuccess(result.data.id)
                                 }
                                 ResourceUiState.Success(result.data)
                             }

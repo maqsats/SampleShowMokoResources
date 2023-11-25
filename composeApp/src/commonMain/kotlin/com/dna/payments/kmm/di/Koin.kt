@@ -5,6 +5,7 @@ import com.dna.payments.kmm.data.preferences.Preferences
 import com.dna.payments.kmm.data.repository.DefaultAuthorizationRepository
 import com.dna.payments.kmm.data.repository.DefaultResetPasswordRepository
 import com.dna.payments.kmm.data.repository.SendOtpInstructionsUseCaseImpl
+import com.dna.payments.kmm.data.repository.ChangePasswordUseCaseImpl
 import com.dna.payments.kmm.data.repository.VerifyOtpCodeUseCaseImpl
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
@@ -12,6 +13,7 @@ import com.dna.payments.kmm.domain.interactors.validation.ValidateCode
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
 import com.dna.payments.kmm.domain.repository.AuthorizationRepository
+import com.dna.payments.kmm.domain.repository.ChangePasswordUseCase
 import com.dna.payments.kmm.domain.repository.ResetPasswordRepository
 import com.dna.payments.kmm.domain.repository.SendOtpInstructionsUseCase
 import com.dna.payments.kmm.domain.repository.VerifyOtpCodeUseCase
@@ -73,6 +75,7 @@ val useCasesModule: Module = module {
     factoryOf(::ValidateCode)
     factoryOf(::SendOtpInstructionsUseCaseImpl).bind(SendOtpInstructionsUseCase::class)
     factoryOf(::VerifyOtpCodeUseCaseImpl).bind(VerifyOtpCodeUseCase::class)
+    factoryOf(::ChangePasswordUseCaseImpl).bind(ChangePasswordUseCase::class)
 }
 
 val repositoryModule = module {

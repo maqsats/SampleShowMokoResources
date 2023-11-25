@@ -12,10 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
@@ -28,16 +28,18 @@ import com.dna.payments.kmm.presentation.ui.common.DNAEmailTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAPasswordTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
+import com.dna.payments.kmm.presentation.ui.common.SuccessPopup
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
 import com.dna.payments.kmm.presentation.ui.features.pincode.PinScreen
 import com.dna.payments.kmm.presentation.ui.features.restore_password.RestorePasswordScreen
+import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
-class LoginScreen : Screen {
+class LoginScreen(private var showSuccess: Boolean = false) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -50,6 +52,13 @@ class LoginScreen : Screen {
         val controller = LocalSoftwareKeyboardController.current
 
         val navigator = LocalNavigator.currentOrThrow
+
+        val showSuccessChangePassword = mutableStateOf(showSuccess)
+
+        SuccessPopup(
+            UiText.DynamicString("You can now use new password to log in your account"),
+            showSuccessChangePassword
+        )
 
         UiStateController(state.authorization)
 
