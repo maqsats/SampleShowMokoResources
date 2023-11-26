@@ -2,9 +2,13 @@ package com.dna.payments.kmm.utils.extension
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.unit.Dp
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.data.model.Error
 import com.dna.payments.kmm.domain.network.Response
@@ -62,6 +66,15 @@ fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
         onClick()
     }
 }
+
+fun Modifier.bottomShadow(shadow: Dp) =
+    this
+        .clip(GenericShape { size, _ ->
+            lineTo(size.width, 0f)
+            lineTo(size.width, Float.MAX_VALUE)
+            lineTo(0f, Float.MAX_VALUE)
+        })
+        .shadow(shadow)
 
 @OptIn(ExperimentalEncodingApi::class)
 fun getBasicToken() = "Basic ${

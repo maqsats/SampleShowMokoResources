@@ -138,6 +138,7 @@ internal val greenBorderButtonNotFilledAlpha50 = Color(0xFF3369B6AA)
 internal val greyEditTextBorder = Color(0xFFB3B3B3)
 internal val dividerColor = Color(0xFFD7DDE3)
 internal val greenButtonNotFilled = Color(0xFF317E72)
+internal val drawerBackgroundColor = Color(0xFFF8F9F9)
 
 
 internal val seed = Color(0xFF2C3639)
