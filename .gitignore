@@ -40,5 +40,6 @@ Pods/
 
 
 iosApp/AppSecrets.plist
+iosApp/Podfile.lock
 
 
