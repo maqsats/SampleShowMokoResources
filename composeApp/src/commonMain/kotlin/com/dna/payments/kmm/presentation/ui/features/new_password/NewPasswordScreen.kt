@@ -29,13 +29,14 @@ import com.dna.payments.kmm.presentation.ui.common.DNAPasswordTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
+import com.dna.payments.kmm.presentation.ui.features.login.LoginScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
-class NewPasswordScreen(id: String) : Screen {
+class NewPasswordScreen(private val id: String,private val email: String) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -53,7 +54,9 @@ class NewPasswordScreen(id: String) : Screen {
         LaunchedEffect(key1 = Unit) {
             newPasswordViewModel.effect.collectLatest { effect ->
                 when (effect) {
-                    NewPasswordContract.Effect.OnResetPasswordSuccess -> {}
+                    NewPasswordContract.Effect.OnResetPasswordSuccess -> {
+                        navigator.push(LoginScreen(showSuccess = true))
+                    }
                 }
             }
         }
@@ -71,7 +74,7 @@ class NewPasswordScreen(id: String) : Screen {
                 state = state,
                 onBackToLoginClicked = { navigator.pop() },
                 onSendClicked = {
-                    newPasswordViewModel.setEvent(NewPasswordContract.Event.OnButtonClicked)
+                    newPasswordViewModel.setEvent(NewPasswordContract.Event.OnButtonClicked(id, email))
                 }
             )
             Spacer(modifier = Modifier.weight(0.5f))

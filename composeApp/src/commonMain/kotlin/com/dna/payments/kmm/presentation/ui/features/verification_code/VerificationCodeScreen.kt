@@ -58,7 +58,7 @@ class VerificationCodeScreen(
             verificationCodeViewModel.effect.collectLatest { effect ->
                 when (effect) {
                     is VerificationCodeContract.Effect.OnVerificationSuccess -> {
-                        navigator.push(NewPasswordScreen(effect.id))
+                        navigator.push(NewPasswordScreen(effect.id, email))
                     }
                 }
             }

@@ -11,7 +11,7 @@ import com.dna.payments.kmm.utils.swipable.VoyagerSwipeBackContent
 
 @Composable
 internal fun App() = AppTheme {
-    Navigator(NavAuthScreen()) { navigator ->
+    Navigator(NavAuthScreen())  { navigator ->
         val supportSwipeBack = remember { shouldUseSwipeBack }
 
         if (supportSwipeBack) {

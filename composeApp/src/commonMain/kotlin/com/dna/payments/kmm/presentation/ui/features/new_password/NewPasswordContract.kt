@@ -10,7 +10,11 @@ import com.dna.payments.kmm.presentation.mvi.UiState
 
 interface NewPasswordContract {
     sealed interface Event : UiEvent {
-        data object OnButtonClicked : Event
+        data class OnButtonClicked(
+            val id: String,
+            val email: String
+        ) : Event
+
         data object OnPasswordFieldChanged : Event
         data object OnConfirmPasswordFieldChanged : Event
     }

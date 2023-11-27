@@ -8,7 +8,7 @@ import com.dna.payments.kmm.utils.UiText
 
 @Composable
 fun UiStateController(
-    resourceUiState: ResourceUiState<*>
+    resourceUiState: ResourceUiState<*>, showSuccessPopup: Boolean = false
 ) {
     //LoadingPopup
     val loadingPopup = remember { mutableStateOf(false) }
@@ -16,7 +16,9 @@ fun UiStateController(
 
     //ErrorPopup
     val uiError = remember { mutableStateOf<UiText>(UiText.DynamicString("")) }
+    val uiSuccess = remember { mutableStateOf<UiText>(UiText.DynamicString("")) }
     val errorPopup = remember { mutableStateOf(false) }
+    val successPopup = remember { mutableStateOf(false) }
     ErrorPopup(
         showPopup = errorPopup,
         error = uiError.value,
@@ -25,13 +27,27 @@ fun UiStateController(
         }
     )
 
+    SuccessPopup(
+        showPopup = successPopup,
+        successMessage = uiSuccess.value
+    )
+
     when (resourceUiState) {
-        is ResourceUiState.Success,
+        is ResourceUiState.Success -> {
+            if (showSuccessPopup) {
+                successPopup.value = true
+                uiSuccess.value = resourceUiState.message
+            }
+            errorPopup.value = false
+            loadingPopup.value = false
+        }
+
         is ResourceUiState.Empty,
         is ResourceUiState.Idle -> {
             errorPopup.value = false
             loadingPopup.value = false
         }
+
         is ResourceUiState.Error -> {
             errorPopup.value = true
             uiError.value = resourceUiState.error
