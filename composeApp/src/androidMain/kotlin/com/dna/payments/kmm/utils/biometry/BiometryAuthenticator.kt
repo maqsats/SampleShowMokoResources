@@ -9,9 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.LifecycleEventObserver
 import dev.icerock.moko.resources.desc.StringDesc
 import java.util.concurrent.Executor
 import kotlin.coroutines.suspendCoroutine
@@ -20,19 +18,24 @@ actual class BiometryAuthenticator(
     private val applicationContext: Context
 ) {
     private var fragmentManager: FragmentManager? = null
+    private var lifecycleEventObserver: LifecycleEventObserver? = null
 
     fun bind(lifecycle: Lifecycle, fragmentManager: FragmentManager) {
         this.fragmentManager = fragmentManager
 
-        val observer = object : LifecycleObserver {
-
-            @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-            fun onDestroyed(source: LifecycleOwner) {
+        lifecycleEventObserver = LifecycleEventObserver { source, event ->
+            if (event == Lifecycle.Event.ON_DESTROY) {
                 this@BiometryAuthenticator.fragmentManager = null
-                source.lifecycle.removeObserver(this)
+                lifecycleEventObserver?.let {
+                    source.lifecycle.removeObserver(it)
+                    lifecycleEventObserver = null
+                }
             }
         }
-        lifecycle.addObserver(observer)
+
+        lifecycleEventObserver?.let {
+            lifecycle.addObserver(it)
+        }
     }
 
     actual suspend fun checkBiometryAuthentication(

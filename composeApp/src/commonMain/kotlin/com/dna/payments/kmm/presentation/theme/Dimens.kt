@@ -4,5 +4,6 @@ import androidx.compose.ui.unit.dp
 
 object Dimens {
     val toolbarHeight = 56.dp
-    val collapsingToolbarHeight = 200.dp
+    val toolbarAndFilterHeight = 112.dp
+    val collapsingToolbarHeight = 180.dp
 }

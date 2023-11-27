@@ -1,4 +1,4 @@
-package com.dna.payments.kmm.presentation.ui.features.drawer_navigation
+package com.dna.payments.kmm.presentation.ui.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,7 +20,6 @@ import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.presentation.theme.Dimens
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
-import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.utils.extension.bottomShadow
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import dev.icerock.moko.resources.compose.painterResource

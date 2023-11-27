@@ -92,6 +92,7 @@ class PinViewModel(
                     if (repeatString == pinString) {
                         pinUseCase.savePin(pinString)
                         pinState.value = PinState.SUCCESS
+                        setEffect { PinContract.Effect.OnPinCorrect }
                     } else {
                         coroutineScope.launch {
                             codePin.value = Code.Pin(isCorrect = false, input = pinString)
@@ -101,7 +102,6 @@ class PinViewModel(
                             repeatString = ""
                             pinState.value = PinState.ENTER
                             codePin.value = Code.Pin(input = pinString)
-                            setEffect { PinContract.Effect.OnPinCorrect }
                         }
                     }
                 }
@@ -148,6 +148,7 @@ class PinViewModel(
                 copy(
                     getAccessToken = when (result) {
                         is Response.Success -> {
+                            setEffect { PinContract.Effect.OnPinCorrect }
                             ResourceUiState.Success(result.data)
                         }
                         is Response.Error -> {
