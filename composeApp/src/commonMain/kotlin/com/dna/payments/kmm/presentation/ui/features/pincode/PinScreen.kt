@@ -21,7 +21,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,9 +55,8 @@ import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import dev.icerock.moko.resources.desc.desc
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import org.koin.core.parameter.parametersOf
 
 
 class PinScreen : Screen {
@@ -66,7 +64,22 @@ class PinScreen : Screen {
 
     @Composable
     override fun Content() {
-        val pinViewModel = getScreenModel<PinViewModel>()
+
+        val title = stringResource(MR.strings.biometric_authentication)
+        val requestReason =
+            stringResource(MR.strings.biometric_authentication_description)
+
+        val biometryFactory: BiometryAuthenticatorFactory = rememberBiometryAuthenticatorFactory()
+
+        val pinViewModel = getScreenModel<PinViewModel> {
+            parametersOf(
+                biometryFactory.createBiometryAuthenticator(),
+                title,
+                requestReason
+            )
+        }
+
+        BindBiometryAuthenticatorEffect(pinViewModel.biometryAuthenticator)
 
         val state by pinViewModel.uiState.collectAsState()
 
@@ -113,16 +126,6 @@ class PinScreen : Screen {
         pinContactState: PinContract.State,
     ) {
         var showLogoutDialog by remember { mutableStateOf(false) }
-
-        val title = stringResource(MR.strings.biometric_authentication).desc()
-        val requestReason =
-            stringResource(MR.strings.biometric_authentication_description).desc()
-
-        val scope = rememberCoroutineScope()
-
-        val biometryFactory: BiometryAuthenticatorFactory = rememberBiometryAuthenticatorFactory()
-        val biometryAuthenticator = biometryFactory.createBiometryAuthenticator()
-        BindBiometryAuthenticatorEffect(biometryAuthenticator)
 
         val configuration = remember {
             Code.Configuration.Pin(
@@ -192,23 +195,7 @@ class PinScreen : Screen {
                 modifier = Modifier.fillMaxWidth().wrapContentHeight(),
                 onDigit = onDigit,
                 onErase = onErase,
-                onBiometric = {
-                    scope.launch {
-                        try {
-                            val isSuccess = biometryAuthenticator.checkBiometryAuthentication(
-                                requestTitle = title,
-                                requestReason = requestReason,
-                                failureButtonText = "".desc(),
-                                allowDeviceCredentials = false
-                            )
-                            if (isSuccess) {
-                                onBiometric()
-                            }
-                        } catch (throwable: Throwable) {
-                            throwable.printStackTrace()
-                        }
-                    }
-                },
+                onBiometric = onBiometric,
                 pinContactState = pinContactState
             )
 

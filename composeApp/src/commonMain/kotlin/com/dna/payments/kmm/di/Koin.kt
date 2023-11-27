@@ -63,7 +63,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
 
 val viewModelModule = module {
     factoryOf(::LoginViewModel)
-    factoryOf(::PinViewModel)
+    factory { params -> PinViewModel(get(), get(), params.get(), params.get(), params.get()) }
     factoryOf(::NavAuthViewModel)
     factoryOf(::RestorePasswordViewModel)
     factoryOf(::VerificationCodeViewModel)

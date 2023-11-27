@@ -10,13 +10,18 @@ import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
 import com.dna.payments.kmm.utils.UiText
+import com.dna.payments.kmm.utils.biometry.BiometryAuthenticator
+import dev.icerock.moko.resources.desc.desc
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 class PinViewModel(
     private val pinUseCase: PinUseCase,
-    private val authorizationUseCase: AuthorizationUseCase
+    private val authorizationUseCase: AuthorizationUseCase,
+    val biometryAuthenticator: BiometryAuthenticator,
+    private val title: String,
+    private val requestReason: String
 ) :
     BaseViewModel<PinContract.Event, PinContract.State, PinContract.Effect>() {
 
@@ -50,7 +55,26 @@ class PinViewModel(
                 onLogout()
             }
             PinContract.Event.OnBiometricClick -> {
+                showBiometric()
                 getAccessToken()
+            }
+        }
+    }
+
+    private fun showBiometric() {
+        coroutineScope.launch {
+            try {
+                val isSuccess = biometryAuthenticator.checkBiometryAuthentication(
+                    requestTitle = title.desc(),
+                    requestReason = requestReason.desc(),
+                    failureButtonText = "".desc(),
+                    allowDeviceCredentials = false
+                )
+                if (isSuccess) {
+                    getAccessToken()
+                }
+            } catch (throwable: Throwable) {
+                throwable.printStackTrace()
             }
         }
     }
