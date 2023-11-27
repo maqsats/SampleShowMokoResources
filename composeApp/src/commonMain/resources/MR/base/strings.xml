@@ -49,7 +49,7 @@
     <string name="biometric_authentication_description">This app uses your device biometrics (user
         fingerprint) to authenticate the dialog.
     </string>
-
+    <string name="biometric_authentication_failure">Cancel and use pin code instead</string>
 
     <!--     New password-->
     <string name="back_to_login">Back to Login</string>

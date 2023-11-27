@@ -1,13 +1,13 @@
 [versions]
 
-accompanistSystemuicontroller = "0.27.0"
+accompanistSystemuicontroller = "0.32.0"
 composeMaterialDialogsCore = "0.9.4"
 composeShimmer = "1.2.0"
 kotlin = "1.9.10"
 agp = "8.1.0"
 compose = "1.5.10-rc02"
 androidx-appcompat = "1.6.1"
-androidx-activityCompose = "1.7.2"
+androidx-activityCompose = "1.8.1"
 compose-uitooling = "1.6.0-alpha08"
 libres = "1.1.8"
 mapsCompose = "3.1.1"

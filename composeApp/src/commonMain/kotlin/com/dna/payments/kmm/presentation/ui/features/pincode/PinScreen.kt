@@ -69,13 +69,16 @@ class PinScreen : Screen {
         val requestReason =
             stringResource(MR.strings.biometric_authentication_description)
 
+        val failure = stringResource(MR.strings.biometric_authentication_failure)
+
         val biometryFactory: BiometryAuthenticatorFactory = rememberBiometryAuthenticatorFactory()
 
         val pinViewModel = getScreenModel<PinViewModel> {
             parametersOf(
                 biometryFactory.createBiometryAuthenticator(),
                 title,
-                requestReason
+                requestReason,
+                failure
             )
         }
 
@@ -94,7 +97,7 @@ class PinScreen : Screen {
                         navigator.replaceAll(LoginScreen())
                     }
                     PinContract.Effect.OnPinCorrect -> {
-                        navigator.replaceAll(DrawerNavigationScreen())
+                        navigator.push(DrawerNavigationScreen())
                     }
                 }
             }
@@ -151,7 +154,7 @@ class PinScreen : Screen {
             verticalArrangement = Arrangement.Bottom
         ) {
 
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(50.dp))
 
             Row {
                 Spacer(Modifier.weight(1f))

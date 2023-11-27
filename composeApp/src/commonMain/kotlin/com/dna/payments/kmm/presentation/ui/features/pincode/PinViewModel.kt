@@ -21,7 +21,8 @@ class PinViewModel(
     private val authorizationUseCase: AuthorizationUseCase,
     val biometryAuthenticator: BiometryAuthenticator,
     private val title: String,
-    private val requestReason: String
+    private val requestReason: String,
+    private val failure: String
 ) :
     BaseViewModel<PinContract.Event, PinContract.State, PinContract.Effect>() {
 
@@ -56,7 +57,6 @@ class PinViewModel(
             }
             PinContract.Event.OnBiometricClick -> {
                 showBiometric()
-                getAccessToken()
             }
         }
     }
@@ -67,7 +67,7 @@ class PinViewModel(
                 val isSuccess = biometryAuthenticator.checkBiometryAuthentication(
                     requestTitle = title.desc(),
                     requestReason = requestReason.desc(),
-                    failureButtonText = "".desc(),
+                    failureButtonText = failure.desc(),
                     allowDeviceCredentials = false
                 )
                 if (isSuccess) {

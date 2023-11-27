@@ -19,7 +19,7 @@ struct iosApp: App {
 
 struct ContentView: View {
     var body: some View {
-        ComposeView()
+        ComposeView().edgesIgnoringSafeArea(.bottom)
     }
 }
 
