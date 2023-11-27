@@ -2,21 +2,26 @@ package com.dna.payments.kmm.di
 
 import com.dna.payments.kmm.data.preferences.DefaultPreferences
 import com.dna.payments.kmm.data.preferences.Preferences
+import com.dna.payments.kmm.data.repository.ChangePasswordUseCaseImpl
+import com.dna.payments.kmm.data.repository.DefaultAccessLevelRepository
 import com.dna.payments.kmm.data.repository.DefaultAuthorizationRepository
 import com.dna.payments.kmm.data.repository.DefaultResetPasswordRepository
 import com.dna.payments.kmm.data.repository.SendOtpInstructionsUseCaseImpl
-import com.dna.payments.kmm.data.repository.ChangePasswordUseCaseImpl
 import com.dna.payments.kmm.data.repository.VerifyOtpCodeUseCaseImpl
+import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.drawer.DrawerUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidateCode
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
+import com.dna.payments.kmm.domain.repository.AccessLevelRepository
 import com.dna.payments.kmm.domain.repository.AuthorizationRepository
 import com.dna.payments.kmm.domain.repository.ChangePasswordUseCase
 import com.dna.payments.kmm.domain.repository.ResetPasswordRepository
 import com.dna.payments.kmm.domain.repository.SendOtpInstructionsUseCase
 import com.dna.payments.kmm.domain.repository.VerifyOtpCodeUseCase
+import com.dna.payments.kmm.presentation.ui.features.drawer_navigation.DrawerNavigationViewModel
 import com.dna.payments.kmm.presentation.ui.features.login.LoginViewModel
 import com.dna.payments.kmm.presentation.ui.features.nav_auth.NavAuthViewModel
 import com.dna.payments.kmm.presentation.ui.features.new_password.NewPasswordViewModel
@@ -58,16 +63,19 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
 
 val viewModelModule = module {
     factoryOf(::LoginViewModel)
-    factoryOf(::PinViewModel)
+    factory { params -> PinViewModel(get(), get(), params.get(), params.get(), params.get(), params.get()) }
     factoryOf(::NavAuthViewModel)
     factoryOf(::RestorePasswordViewModel)
     factoryOf(::VerificationCodeViewModel)
     factoryOf(::NewPasswordViewModel)
+    factoryOf(::DrawerNavigationViewModel)
 }
 
 val useCasesModule: Module = module {
     factoryOf(::AuthorizationUseCase)
     factoryOf(::PinUseCase)
+    singleOf(::AccessLevelUseCase)
+    singleOf(::DrawerUseCase)
 
     //validation
     factoryOf(::ValidatePassword)
@@ -81,6 +89,7 @@ val useCasesModule: Module = module {
 val repositoryModule = module {
     factoryOf(::DefaultAuthorizationRepository).bind(AuthorizationRepository::class)
     factoryOf(::DefaultResetPasswordRepository).bind(ResetPasswordRepository::class)
+    factoryOf(::DefaultAccessLevelRepository).bind(AccessLevelRepository::class)
 }
 
 val preferencesModule = module {

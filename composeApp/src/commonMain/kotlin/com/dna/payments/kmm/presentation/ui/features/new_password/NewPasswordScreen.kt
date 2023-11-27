@@ -36,7 +36,7 @@ import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
-class NewPasswordScreen(private val id: String,private val email: String) : Screen {
+class NewPasswordScreen(private val id: String, private val email: String) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -74,7 +74,12 @@ class NewPasswordScreen(private val id: String,private val email: String) : Scre
                 state = state,
                 onBackToLoginClicked = { navigator.pop() },
                 onSendClicked = {
-                    newPasswordViewModel.setEvent(NewPasswordContract.Event.OnButtonClicked(id, email))
+                    newPasswordViewModel.setEvent(
+                        NewPasswordContract.Event.OnButtonClicked(
+                            id,
+                            email
+                        )
+                    )
                 }
             )
             Spacer(modifier = Modifier.weight(0.5f))

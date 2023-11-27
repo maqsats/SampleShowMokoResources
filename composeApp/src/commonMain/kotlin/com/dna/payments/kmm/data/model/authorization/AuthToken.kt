@@ -10,6 +10,6 @@ data class AuthToken(
     @SerialName("refresh_token")
     val refreshToken: String,
     @SerialName("is_admin")
-    val isAdmin: Boolean,
+    val isAdmin: Boolean? = false,
     val permissions: List<String>? = null
 )

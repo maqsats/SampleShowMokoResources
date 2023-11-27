@@ -34,12 +34,12 @@ class DefaultAuthorizationRepository(
             httpClient.submitForm(
                 url = "${Constants.BASE_AUTH_URL}oauth2/token",
                 formParameters = Parameters.build {
-                    append("grant_type", Constants.GRANT_TYPE)
+                    append("grant_type", Constants.GRANT_TYPE_REFRESH_TOKEN)
                     append("scope", Constants.SCOPE)
                     append("refresh_token", refreshToken)
                     append("client_id", Constants.CLIENT_ID)
                     append("client_secret", Constants.CLIENT_SECRET)
-                }
+                },
             ).body()
         }
 

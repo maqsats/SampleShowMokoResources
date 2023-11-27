@@ -49,7 +49,7 @@
     <string name="biometric_authentication_description">This app uses your device biometrics (user
         fingerprint) to authenticate the dialog.
     </string>
-
+    <string name="biometric_authentication_failure">Cancel and use pin code instead</string>
 
     <!--     New password-->
     <string name="back_to_login">Back to Login</string>
@@ -72,4 +72,15 @@
     </string>
     <string name="verification_code">Verification Code</string>
     <string name="verification_code_placeholder">X X X X X X</string>
+
+    <string name="overview">Overview</string>
+    <string name="pos_payments">POS payments</string>
+    <string name="online_payments">Online Payments</string>
+    <string name="virtual_terminal">Virtual terminal</string>
+    <string name="settlements">Settlements</string>
+    <string name="reports">Reports</string>
+    <string name="payment_links">Payment links</string>
+    <string name="payment_methods">Payment methods</string>
+    <string name="team_management">Team Management</string>
+    <string name="help_center">Help center</string>
 </resources>

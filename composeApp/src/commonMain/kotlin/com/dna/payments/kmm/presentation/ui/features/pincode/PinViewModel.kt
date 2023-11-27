@@ -10,13 +10,19 @@ import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
 import com.dna.payments.kmm.utils.UiText
+import com.dna.payments.kmm.utils.biometry.BiometryAuthenticator
+import dev.icerock.moko.resources.desc.desc
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 class PinViewModel(
     private val pinUseCase: PinUseCase,
-    private val authorizationUseCase: AuthorizationUseCase
+    private val authorizationUseCase: AuthorizationUseCase,
+    val biometryAuthenticator: BiometryAuthenticator,
+    private val title: String,
+    private val requestReason: String,
+    private val failure: String
 ) :
     BaseViewModel<PinContract.Event, PinContract.State, PinContract.Effect>() {
 
@@ -50,7 +56,25 @@ class PinViewModel(
                 onLogout()
             }
             PinContract.Event.OnBiometricClick -> {
-                getAccessToken()
+                showBiometric()
+            }
+        }
+    }
+
+    private fun showBiometric() {
+        coroutineScope.launch {
+            try {
+                val isSuccess = biometryAuthenticator.checkBiometryAuthentication(
+                    requestTitle = title.desc(),
+                    requestReason = requestReason.desc(),
+                    failureButtonText = failure.desc(),
+                    allowDeviceCredentials = false
+                )
+                if (isSuccess) {
+                    getAccessToken()
+                }
+            } catch (throwable: Throwable) {
+                throwable.printStackTrace()
             }
         }
     }
@@ -92,6 +116,7 @@ class PinViewModel(
                     if (repeatString == pinString) {
                         pinUseCase.savePin(pinString)
                         pinState.value = PinState.SUCCESS
+                        setEffect { PinContract.Effect.OnPinCorrect }
                     } else {
                         coroutineScope.launch {
                             codePin.value = Code.Pin(isCorrect = false, input = pinString)
@@ -101,7 +126,6 @@ class PinViewModel(
                             repeatString = ""
                             pinState.value = PinState.ENTER
                             codePin.value = Code.Pin(input = pinString)
-                            setEffect { PinContract.Effect.OnPinCorrect }
                         }
                     }
                 }
@@ -148,6 +172,7 @@ class PinViewModel(
                 copy(
                     getAccessToken = when (result) {
                         is Response.Success -> {
+                            setEffect { PinContract.Effect.OnPinCorrect }
                             ResourceUiState.Success(result.data)
                         }
                         is Response.Error -> {
