@@ -82,3 +82,5 @@ fun getBasicToken() = "Basic ${
         "${Constants.CLIENT_ID}:${Constants.CLIENT_SECRET}".toByteArray()
     )
 }"
+
+fun String.toBearerToken() = "Bearer $this"
