@@ -12,7 +12,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
 
     fun getNavItemList(): List<NavItem> = arrayListOf(
         NavItem(
-            MR.images.logout,
+            MR.images.ic_home,
             MR.strings.overview,
             NavItemPosition.OVERVIEW,
             true,
@@ -22,7 +22,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_pos_payments,
             MR.strings.pos_payments,
             NavItemPosition.POS_PAYMENTS,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -32,7 +32,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_website_payments,
             MR.strings.online_payments,
             NavItemPosition.ONLINE_PAYMENTS,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -42,7 +42,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_payment_links,
             MR.strings.payment_links,
             NavItemPosition.PAYMENT_LINKS,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -52,7 +52,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_virtual_terminal,
             MR.strings.virtual_terminal,
             NavItemPosition.VIRTUAL_TERMINAL,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -62,7 +62,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_settlements,
             MR.strings.settlements,
             NavItemPosition.SETTLEMENTS,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -72,7 +72,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_reports,
             MR.strings.reports,
             NavItemPosition.REPORTS,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -81,7 +81,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_payment_methods,
             MR.strings.payment_methods,
             NavItemPosition.PAYMENT_METHODS,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -90,7 +90,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.lang_eng,
             MR.strings.team_management,
             NavItemPosition.TEAM_MANAGEMENT,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -99,7 +99,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_help,
             MR.strings.help_center,
             NavItemPosition.HELP_CENTER
         )
