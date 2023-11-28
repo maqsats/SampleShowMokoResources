@@ -12,6 +12,7 @@ import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLeve
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.drawer.DrawerUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.profile.MerchantUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidateCode
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
@@ -51,6 +52,7 @@ val useCasesModule: Module = module {
     factoryOf(::PinUseCase)
     singleOf(::AccessLevelUseCase)
     singleOf(::DrawerUseCase)
+    singleOf(::MerchantUseCase)
 
     //validation
     factoryOf(::ValidatePassword)

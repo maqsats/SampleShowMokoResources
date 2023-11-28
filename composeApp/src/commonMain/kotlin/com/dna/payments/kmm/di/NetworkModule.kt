@@ -35,7 +35,6 @@ val ktorModule = module {
                     }
                 )
             }
-
         }
     }
 }
