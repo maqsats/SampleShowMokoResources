@@ -19,6 +19,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
+import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.payment_methods.PaymentMethod
 import com.dna.payments.kmm.domain.model.payment_methods.setting.DetailTerminalSetting
@@ -37,11 +40,15 @@ import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.greyColor
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
+import com.dna.payments.kmm.presentation.ui.common.UiStateController
+import com.dna.payments.kmm.presentation.ui.features.login.LoginContract
+import com.dna.payments.kmm.presentation.ui.features.pincode.PinScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import kotlinx.coroutines.flow.collectLatest
 
 class DetailPaymentMethodsScreen(val paymentMethod: PaymentMethod) : Screen {
     override val key: ScreenKey = uniqueScreenKey
@@ -50,10 +57,24 @@ class DetailPaymentMethodsScreen(val paymentMethod: PaymentMethod) : Screen {
     @Composable
     override fun Content() {
 
+        val detailPaymentMethodsViewModel = getScreenModel<DetailPaymentMethodsViewModel>()
+
+        val state by detailPaymentMethodsViewModel.uiState.collectAsState()
         val controller = LocalSoftwareKeyboardController.current
         val navigator = LocalNavigator.currentOrThrow
 
-        LaunchedEffect(key1 = Unit) {}
+
+        UiStateController(state.detailPaymentMethod)
+
+        LaunchedEffect(key1 = Unit) {
+            detailPaymentMethodsViewModel.effect.collectLatest { effect ->
+                when (effect) {
+                    is DetailPaymentMethodsContract.Effect.TerminalSettingsFetchedSuccessfully -> {
+
+                    }
+                }
+            }
+        }
 
         Column(
             modifier = Modifier
@@ -65,9 +86,6 @@ class DetailPaymentMethodsScreen(val paymentMethod: PaymentMethod) : Screen {
         ) {
             PaymentMethodsContent(
                 modifier = Modifier.wrapContentHeight(),
-                onItemClicked = {
-
-                },
                 onBackClicked = {
                     navigator.pop()
                 }
@@ -79,7 +97,6 @@ class DetailPaymentMethodsScreen(val paymentMethod: PaymentMethod) : Screen {
     @Composable
     private fun PaymentMethodsContent(
         modifier: Modifier = Modifier,
-        onItemClicked: (PaymentMethod) -> Unit,
         onBackClicked: () -> Unit,
     ) {
         Column(
