@@ -4,5 +4,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 actual fun rememberBiometryAuthenticatorFactory(): BiometryAuthenticatorFactory {
-    TODO("Not yet implemented")
+    return BiometryAuthenticatorFactory { BiometryAuthenticator() }
 }

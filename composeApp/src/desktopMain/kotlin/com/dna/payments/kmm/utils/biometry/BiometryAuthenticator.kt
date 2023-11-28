@@ -22,17 +22,12 @@ actual class BiometryAuthenticator {
         requestReason: StringDesc,
         failureButtonText: StringDesc,
         allowDeviceCredentials: Boolean
-    ): Boolean {
-        TODO("Not yet implemented")
-    }
+    ) = false
 
     /**
      * Performs a biometric scan availability check
      *
      * @return true if it is possible to use a biometry, false - if it is not available
      */
-    actual fun isBiometricAvailable(): Boolean {
-        TODO("Not yet implemented")
-    }
-
+    actual fun isBiometricAvailable() = false
 }
