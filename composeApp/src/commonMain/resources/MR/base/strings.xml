@@ -54,6 +54,7 @@
     <!--     New password-->
     <string name="back_to_login">Back to Login</string>
     <string name="back_to_email">Back to Email</string>
+    <string name="back">Back</string>
     <string name="reset_password">Reset Password</string>
     <string name="password_must_contain">Password must contain</string>
     <string name="password_must_match">Passwords must match</string>
@@ -94,6 +95,7 @@
     <string name="average_metrics">Average Metrics</string>
     <string name="all_payment_methods">All payment methods</string>
     <string name="count_terminals">/d terminals, </string>
+    <string name="terminals">Terminals</string>
 
     <!--    descriptions of payment methods -->
     <string name="apple_pay_description">

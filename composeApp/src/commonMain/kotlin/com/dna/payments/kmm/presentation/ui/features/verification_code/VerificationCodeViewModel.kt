@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.dna.payments.kmm.domain.interactors.validation.ValidateCode
 import com.dna.payments.kmm.domain.network.Response
-import com.dna.payments.kmm.domain.repository.SendOtpInstructionsUseCase
-import com.dna.payments.kmm.domain.repository.VerifyOtpCodeUseCase
+import com.dna.payments.kmm.domain.use_case.SendOtpInstructionsUseCase
+import com.dna.payments.kmm.domain.use_case.VerifyOtpCodeUseCase
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.model.TextFieldUiState
 import com.dna.payments.kmm.presentation.model.text_input.TextInput

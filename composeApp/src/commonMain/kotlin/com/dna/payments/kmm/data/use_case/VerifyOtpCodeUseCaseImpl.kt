@@ -1,10 +1,10 @@
-package com.dna.payments.kmm.data.repository
+package com.dna.payments.kmm.data.use_case
 
 import com.dna.payments.kmm.data.model.request.EmailVerification
 import com.dna.payments.kmm.data.model.request.EmailVerificationRequest
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.repository.ResetPasswordRepository
-import com.dna.payments.kmm.domain.repository.VerifyOtpCodeUseCase
+import com.dna.payments.kmm.domain.use_case.VerifyOtpCodeUseCase
 
 class VerifyOtpCodeUseCaseImpl(private val resetPasswordRepository: ResetPasswordRepository) :
     VerifyOtpCodeUseCase {

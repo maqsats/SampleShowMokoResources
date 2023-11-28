@@ -2,12 +2,12 @@ package com.dna.payments.kmm.di
 
 import com.dna.payments.kmm.data.preferences.DefaultPreferences
 import com.dna.payments.kmm.data.preferences.Preferences
-import com.dna.payments.kmm.data.repository.ChangePasswordUseCaseImpl
 import com.dna.payments.kmm.data.repository.DefaultAccessLevelRepository
 import com.dna.payments.kmm.data.repository.DefaultAuthorizationRepository
 import com.dna.payments.kmm.data.repository.DefaultResetPasswordRepository
-import com.dna.payments.kmm.data.repository.SendOtpInstructionsUseCaseImpl
-import com.dna.payments.kmm.data.repository.VerifyOtpCodeUseCaseImpl
+import com.dna.payments.kmm.data.use_case.ChangePasswordUseCaseImpl
+import com.dna.payments.kmm.data.use_case.SendOtpInstructionsUseCaseImpl
+import com.dna.payments.kmm.data.use_case.VerifyOtpCodeUseCaseImpl
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.drawer.DrawerUseCase
@@ -17,10 +17,10 @@ import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
 import com.dna.payments.kmm.domain.repository.AccessLevelRepository
 import com.dna.payments.kmm.domain.repository.AuthorizationRepository
-import com.dna.payments.kmm.domain.repository.ChangePasswordUseCase
+import com.dna.payments.kmm.domain.use_case.ChangePasswordUseCase
 import com.dna.payments.kmm.domain.repository.ResetPasswordRepository
-import com.dna.payments.kmm.domain.repository.SendOtpInstructionsUseCase
-import com.dna.payments.kmm.domain.repository.VerifyOtpCodeUseCase
+import com.dna.payments.kmm.domain.use_case.SendOtpInstructionsUseCase
+import com.dna.payments.kmm.domain.use_case.VerifyOtpCodeUseCase
 import com.dna.payments.kmm.presentation.ui.features.drawer_navigation.DrawerNavigationViewModel
 import com.dna.payments.kmm.presentation.ui.features.login.LoginViewModel
 import com.dna.payments.kmm.presentation.ui.features.nav_auth.NavAuthViewModel

@@ -1,4 +1,4 @@
-package com.dna.payments.kmm.presentation.ui.features.payment_methods
+package com.dna.payments.kmm.presentation.ui.features.payment_methods_detail
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -33,17 +31,19 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.payment_methods.PaymentMethod
+import com.dna.payments.kmm.domain.model.payment_methods.setting.DetailTerminalSetting
+import com.dna.payments.kmm.domain.model.payment_methods.setting.TerminalSetting
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.greyColor
+import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
-import com.dna.payments.kmm.presentation.ui.features.payment_methods_detail.DetailPaymentMethodsScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
-class PaymentMethodsScreen() : Screen {
+class DetailPaymentMethodsScreen(val paymentMethod: PaymentMethod) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -66,7 +66,10 @@ class PaymentMethodsScreen() : Screen {
             PaymentMethodsContent(
                 modifier = Modifier.wrapContentHeight(),
                 onItemClicked = {
-                    navigator.push(DetailPaymentMethodsScreen(it))
+
+                },
+                onBackClicked = {
+                    navigator.pop()
                 }
             )
             Spacer(modifier = Modifier.weight(0.5f))
@@ -76,31 +79,63 @@ class PaymentMethodsScreen() : Screen {
     @Composable
     private fun PaymentMethodsContent(
         modifier: Modifier = Modifier,
-        onItemClicked: (PaymentMethod) -> Unit
+        onItemClicked: (PaymentMethod) -> Unit,
+        onBackClicked: () -> Unit,
     ) {
         Column(
-            modifier = modifier.padding(horizontal = 8.dp),
+            modifier = modifier.padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.Top
         ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            DNAGreenBackButton(
+                text = stringResource(MR.strings.back),
+                onClick = onBackClicked,
+                modifier = Modifier.padding(horizontal = 0.dp)
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = modifier
+                        .border(
+                            BorderStroke(width = 1.dp, color = greyColor),
+                            shape = RoundedCornerShape(4.dp)
+                        ).height(48.dp)
+                        .background(Color.White)
+                        .width(48.dp).padding(4.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(paymentMethod.icon),
+                        contentDescription = stringResource(paymentMethod.title),
+                        tint = Color.Unspecified,
+                        modifier = modifier.height(40.dp).width(40.dp)
+                    )
+                }
+                DNAText(
+                    modifier = modifier.padding(start = 16.dp),
+                    style = DnaTextStyle.SemiBold20,
+                    text = stringResource(paymentMethod.title)
+                )
+            }
             Spacer(modifier = Modifier.height(24.dp))
             DNAText(
-                text = stringResource(MR.strings.payment_methods),
-                style = DnaTextStyle.Bold20,
-                modifier = modifier.padding(horizontal = 8.dp)
+                style = DnaTextStyle.Normal14,
+                text = stringResource(paymentMethod.description)
             )
-            Spacer(modifier = modifier.height(24.dp))
-            LazyColumn {
-                items(PaymentMethodDataFactory.getPaymentMethods()) { it ->
-                    PaymentMethodsItem(paymentMethod = it, onItemClicked = onItemClicked)
-                }
-            }
+            Spacer(modifier = Modifier.height(24.dp))
+            DNAText(
+                style = DnaTextStyle.WithAlpha16,
+                text = stringResource(MR.strings.terminals)
+            )
+
         }
     }
 
     @Composable
-    private fun PaymentMethodsItem(
+    private fun TerminalSettingItem(
         modifier: Modifier = Modifier,
-        paymentMethod: PaymentMethod,
+        terminalSetting: TerminalSetting,
+        detailTerminalSettingList: List<DetailTerminalSetting>,
         onItemClicked: (PaymentMethod) -> Unit
     ) {
         Box(
@@ -109,37 +144,27 @@ class PaymentMethodsScreen() : Screen {
                 RoundedCornerShape(8.dp)
             ).fillMaxWidth().wrapContentHeight()
                 .noRippleClickable { onItemClicked(paymentMethod) }
-        )
-        {
+        ) {
             Row(
                 modifier = modifier.fillMaxWidth().fillMaxHeight().padding(16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = modifier
-                            .border(
-                                BorderStroke(width = 1.dp, color = greyColor),
-                                shape = RoundedCornerShape(4.dp)
-                            ).height(36.dp)
-                            .background(Color.White)
-                            .width(36.dp).padding(4.dp),
-                    ) {
-                        Icon(
-                            painter = painterResource(paymentMethod.icon),
-                            contentDescription = stringResource(paymentMethod.title),
-                            tint = Color.Unspecified
-                        )
-                    }
+                Column {
+                    DNAText(
+                        text = terminalSetting.name
+                    )
                     DNAText(
                         modifier = modifier.padding(start = 16.dp),
-                        style = DnaTextStyle.SemiBold16,
-                        text = stringResource(paymentMethod.title)
+                        style = DnaTextStyle.Normal14,
+                        text = stringResource(
+                            MR.strings.count_terminals,
+                            detailTerminalSettingList.size
+                        )
                     )
                 }
                 Icon(
-                    painter = painterResource(MR.images.ic_next_arrow),
+                    painter = painterResource(MR.images.ic_arrow_up),
                     contentDescription = null,
                     tint = Color.Unspecified
                 )
