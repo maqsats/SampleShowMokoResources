@@ -22,11 +22,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
@@ -46,21 +44,16 @@ import dev.icerock.moko.resources.compose.stringResource
 class PaymentMethodsScreen() : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
 
-        val controller = LocalSoftwareKeyboardController.current
         val navigator = LocalNavigator.currentOrThrow
 
         LaunchedEffect(key1 = Unit) {}
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .noRippleClickable {
-                    controller?.hide()
-                },
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
             PaymentMethodsContent(
