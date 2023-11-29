@@ -83,4 +83,10 @@
     <string name="payment_methods">Payment methods</string>
     <string name="team_management">Team Management</string>
     <string name="help_center">Help center</string>
+    <string name="profile">Profile</string>
+    <string name="add_link">Add Link</string>
+    <string name="info">Info</string>
+    <string name="loading">Loading...</string>
+
+    <string name="english">English</string>
 </resources>

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.DrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,12 @@ import com.dna.payments.kmm.utils.extension.bottomShadow
 import com.dna.payments.kmm.utils.toolbar.CollapsingToolbarScaffold
 import com.dna.payments.kmm.utils.toolbar.ScrollStrategy
 import com.dna.payments.kmm.utils.toolbar.rememberCollapsingToolbarScaffoldState
+
+typealias MerchantName = String
+
+val LocalSelectedMerchant = compositionLocalOf {
+    "Loading..."
+}
 
 @Composable
 fun DnaCollapsingToolbar(

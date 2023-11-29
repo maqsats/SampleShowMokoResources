@@ -4,6 +4,7 @@
 <dict>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Program requires FaceID to login</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key><true/>
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>en</string>

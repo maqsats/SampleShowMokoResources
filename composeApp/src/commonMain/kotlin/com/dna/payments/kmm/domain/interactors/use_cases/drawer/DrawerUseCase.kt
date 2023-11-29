@@ -4,6 +4,8 @@ import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.model.nav_item.NavItem
 import com.dna.payments.kmm.domain.model.nav_item.NavItemPosition
+import com.dna.payments.kmm.domain.model.nav_item.SettingsItem
+import com.dna.payments.kmm.domain.model.nav_item.SettingsPosition
 import com.dna.payments.kmm.domain.model.permissions.AccessLevel
 import com.dna.payments.kmm.domain.model.permissions.Section
 import org.koin.core.component.KoinComponent
@@ -12,17 +14,16 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
 
     fun getNavItemList(): List<NavItem> = arrayListOf(
         NavItem(
-            MR.images.logout,
+            MR.images.ic_home,
             MR.strings.overview,
             NavItemPosition.OVERVIEW,
-            true,
             isAvailable = accessLevelUseCase.hasPermission(
                 Section.OVERVIEW,
                 AccessLevel.READ
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_pos_payments,
             MR.strings.pos_payments,
             NavItemPosition.POS_PAYMENTS,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -32,7 +33,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_website_payments,
             MR.strings.online_payments,
             NavItemPosition.ONLINE_PAYMENTS,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -42,7 +43,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_payment_links,
             MR.strings.payment_links,
             NavItemPosition.PAYMENT_LINKS,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -52,17 +53,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
-            MR.strings.virtual_terminal,
-            NavItemPosition.VIRTUAL_TERMINAL,
-            isAvailable = accessLevelUseCase.hasPermission(
-                Section.VIRTUAL_TERMINAL,
-                AccessLevel.READ,
-                AccessLevel.FULL
-            )
-        ),
-        NavItem(
-            MR.images.logout,
+            MR.images.ic_settlements,
             MR.strings.settlements,
             NavItemPosition.SETTLEMENTS,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -72,7 +63,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_reports,
             MR.strings.reports,
             NavItemPosition.REPORTS,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -81,7 +72,7 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_payment_methods,
             MR.strings.payment_methods,
             NavItemPosition.PAYMENT_METHODS,
             isAvailable = accessLevelUseCase.hasPermission(
@@ -90,18 +81,31 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.logout,
+            MR.images.ic_team,
             MR.strings.team_management,
             NavItemPosition.TEAM_MANAGEMENT,
             isAvailable = accessLevelUseCase.hasPermission(
                 Section.TEAM_MANAGEMENT,
                 AccessLevel.READ
             )
+        )
+    )
+
+    fun getSettingsItems() : List<SettingsItem> = listOf(
+        SettingsItem(
+            MR.images.lang_eng,
+            MR.strings.english,
+            SettingsPosition.LANGUAGE
         ),
-        NavItem(
-            MR.images.logout,
+        SettingsItem(
+            MR.images.ic_help,
             MR.strings.help_center,
-            NavItemPosition.HELP_CENTER
+            SettingsPosition.HELP_CENTER
+        ),
+        SettingsItem(
+            MR.images.ic_info,
+            MR.strings.info,
+            SettingsPosition.INFO
         )
     )
 
