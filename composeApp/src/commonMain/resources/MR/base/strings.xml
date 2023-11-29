@@ -54,6 +54,7 @@
     <!--     New password-->
     <string name="back_to_login">Back to Login</string>
     <string name="back_to_email">Back to Email</string>
+    <string name="back">Back</string>
     <string name="reset_password">Reset Password</string>
     <string name="password_must_contain">Password must contain</string>
     <string name="password_must_match">Passwords must match</string>
@@ -93,14 +94,24 @@
     <string name="klarna">Klarna</string>
     <string name="average_metrics">Average Metrics</string>
     <string name="all_payment_methods">All payment methods</string>
-    <string name="count_terminals">/d terminals, </string>
+    <string name="count_terminals">%d terminals</string>
+    <string name="terminals">Terminals</string>
+    <string name="no_terminals_to_configure">No terminals to configure</string>
+    <string name="all_disabled">all disabled</string>
+
+    <string name="all_active">all active</string>
+    <string name="no_active">no active</string>
+    <string name="number_active">%d active</string>
 
     <!--    descriptions of payment methods -->
     <string name="apple_pay_description">
-        Apple Pay allows consumers to pay for their goods and services easily and quickly online. The consumers store their payment card information in their Apple Wallet which can be invoked from their Apple devices or within the Safari web browser.
+        Apple Pay allows consumers to pay for their goods and services easily and quickly online.
+        The consumers store their payment card information in their Apple Wallet which can be
+        invoked from their Apple devices or within the Safari web browser.
         \n
         \n
-        DNA Payments are pleased to offer this payment method to merchants and it can be enabled or disabled here.
+        DNA Payments are pleased to offer this payment method to merchants and it can be enabled or
+        disabled here.
     </string>
 
     <string name="google_pay_description">

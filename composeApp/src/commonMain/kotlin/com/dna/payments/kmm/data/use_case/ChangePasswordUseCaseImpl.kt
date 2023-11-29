@@ -1,8 +1,8 @@
-package com.dna.payments.kmm.data.repository
+package com.dna.payments.kmm.data.use_case
 
 import com.dna.payments.kmm.data.model.request.NewPasswordRequest
 import com.dna.payments.kmm.domain.network.Response
-import com.dna.payments.kmm.domain.repository.ChangePasswordUseCase
+import com.dna.payments.kmm.domain.use_case.ChangePasswordUseCase
 import com.dna.payments.kmm.domain.repository.ResetPasswordRepository
 
 class ChangePasswordUseCaseImpl(private val resetPasswordRepository: ResetPasswordRepository) :

@@ -1,4 +1,4 @@
-package com.dna.payments.kmm.domain.repository
+package com.dna.payments.kmm.domain.use_case
 
 import com.dna.payments.kmm.domain.network.Response
 
