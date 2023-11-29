@@ -18,10 +18,14 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import com.dna.payments.kmm.domain.model.nav_item.NavItemPosition
+import com.dna.payments.kmm.domain.model.nav_item.SettingsPosition
 import com.dna.payments.kmm.presentation.ui.common.LocalSelectedMerchant
+import com.dna.payments.kmm.presentation.ui.features.help_center.HelpCenterScreen
 import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsScreen
 import com.dna.payments.kmm.presentation.ui.features.overview.OverviewScreen
+import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.NavigatorDisposeBehavior
+import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.CurrentDrawerScreen
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.LocalDrawerNavigator
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.NavigatorContent
@@ -44,6 +48,8 @@ class DrawerNavigationScreen : Screen {
         val content: NavigatorContent = { CurrentDrawerScreen(drawerState) }
 
         val scope = rememberCoroutineScope()
+
+        val parentNavigator = LocalNavigator.currentOrThrow
 
         var merchantState by rememberSaveable { mutableStateOf("") }
 
@@ -75,16 +81,19 @@ class DrawerNavigationScreen : Screen {
                             onNavItemClick = {
                                 scope.launch {
                                     navigator.replace(getScreenByNavItem(it))
-                                    if (drawerState.isOpen) drawerState.close()
+                                    drawerState.close()
                                 }
                             },
                             onSettingsClick = {
-
+                                scope.launch {
+                                    drawerState.close()
+                                    parentNavigator.push(getScreenBySettingsItem(it))
+                                }
                             },
                             onMerchantChange = {
-                                navigator.replaceAll(getInitialScreen())
                                 scope.launch {
-                                    if (drawerState.isOpen) drawerState.close()
+                                    navigator.replaceAll(getInitialScreen())
+                                    drawerState.close()
                                 }
                             },
                             onMerchantSelected = {
@@ -114,6 +123,13 @@ class DrawerNavigationScreen : Screen {
             NavItemPosition.ONLINE_PAYMENTS -> OnlinePaymentsScreen()
             else -> {
                 OverviewScreen()
+            }
+        }
+
+    private fun getScreenBySettingsItem(settingsPosition: SettingsPosition) =
+        when (settingsPosition) {
+            else -> {
+                HelpCenterScreen()
             }
         }
 
