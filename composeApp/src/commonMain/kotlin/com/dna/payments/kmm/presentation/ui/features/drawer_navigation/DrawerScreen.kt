@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,25 +37,29 @@ import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.data.model.profile.Merchant
 import com.dna.payments.kmm.domain.model.nav_item.NavItem
 import com.dna.payments.kmm.domain.model.nav_item.NavItemPosition
+import com.dna.payments.kmm.domain.model.nav_item.SettingsItem
+import com.dna.payments.kmm.domain.model.nav_item.SettingsPosition
 import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.Shapes
 import com.dna.payments.kmm.presentation.theme.blueDrawer
-import com.dna.payments.kmm.presentation.theme.greyFirst
 import com.dna.payments.kmm.presentation.ui.common.DNAOutlinedGreenButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
+import com.dna.payments.kmm.presentation.ui.common.MerchantName
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
+import com.dna.payments.kmm.utils.extension.bottomShadow
 import com.dna.payments.kmm.utils.extension.noRippleClickable
-import com.dna.payments.kmm.utils.navigation.LocalNavigator
-import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
-class DrawerView(
-    val onNavItemClick: (NavItemPosition) -> Unit = {}
+class DrawerScreen(
+    private val onNavItemClick: (NavItemPosition) -> Unit = {},
+    private val onSettingsClick: (SettingsPosition) -> Unit = {},
+    private val onMerchantSelected: (MerchantName) -> Unit = {},
+    private val onMerchantChange: () -> Unit = {}
 ) : Screen {
 
     @Composable
@@ -64,13 +69,14 @@ class DrawerView(
 
         val state by drawerViewModel.uiState.collectAsState()
 
-        val parentNavigator = LocalNavigator.currentOrThrow
-
         LaunchedEffect(key1 = Unit) {
             drawerViewModel.effect.collectLatest { effect ->
                 when (effect) {
-                    DrawerViewContract.Effect.OnMerchantChange -> {
-                        parentNavigator.replace(DrawerNavigationScreen())
+                    DrawerScreenContract.Effect.OnMerchantChange -> {
+                        onMerchantChange()
+                    }
+                    is DrawerScreenContract.Effect.OnMerchantSelected -> {
+                        onMerchantSelected(effect.merchantName)
                     }
                 }
             }
@@ -78,7 +84,7 @@ class DrawerView(
 
         UiStateController(state.merchantChange)
 
-        Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
+        Column(verticalArrangement = Arrangement.Top, modifier = Modifier.fillMaxSize()) {
             ManagementResourceUiState(
                 resourceUiState = state.merchants,
                 modifier = Modifier.fillMaxWidth(),
@@ -87,25 +93,21 @@ class DrawerView(
                         merchants = it,
                         onMerchantClick = { merchantId ->
                             drawerViewModel.setEvent(
-                                DrawerViewContract.Event.OnMerchantChange(
+                                DrawerScreenContract.Event.OnMerchantChange(
                                     merchantId
                                 )
                             )
                         }
                     )
                 },
-                onCheckAgain = {
-
-                },
-                onTryAgain = {
-
-                },
+                onCheckAgain = {},
+                onTryAgain = {},
                 loadingView = {
                     MerchantViewHeader(
                         merchants = listOf(
                             Merchant(
-                                name = "Loading...",
-                                companyName = "Loading...",
+                                name = stringResource(MR.strings.loading),
+                                companyName = stringResource(MR.strings.loading),
                                 isActive = false,
                                 isDefault = false, merchantId = "", portalGuideViewedDate = ""
                             )
@@ -114,25 +116,34 @@ class DrawerView(
                 }
             )
 
-            Spacer(modifier = Modifier.height(Paddings.medium))
-
-            AddButton()
-
-            Spacer(modifier = Modifier.height(Paddings.small))
-
-            VirtualTerminalButton()
-
-            Spacer(modifier = Modifier.height(Paddings.medium))
-
             LazyColumn(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.fillMaxWidth()
             ) {
-                items(state.navItems.value) { navItem ->
+                item {
+                    AddButton()
+                    Spacer(modifier = Modifier.height(Paddings.small))
+                }
+                item {
+                    VirtualTerminalButton()
+                    Spacer(modifier = Modifier.height(Paddings.medium))
+                }
+                items(state.navItems) { navItem ->
                     DrawerItem(navItem, onNavItemClick)
                 }
+                item {
+                    Spacer(modifier = Modifier.height(Paddings.small))
+                    Divider(modifier = Modifier.fillMaxWidth())
+                    Spacer(modifier = Modifier.height(Paddings.medium))
+                }
+                items(state.settingsItems) { settingsItem ->
+                    SettingsItem(settingsItem, onSettingsClick)
+                }
+                item {
+                    Spacer(modifier = Modifier.height(Paddings.medium))
+                    Divider(modifier = Modifier.fillMaxWidth().bottomShadow(1.dp))
+                    ProfileItem()
+                }
             }
-
-            ProfileItem()
         }
     }
 }
@@ -204,10 +215,7 @@ private fun MerchantViewHeader(
 
     Row(
         modifier = modifier.wrapContentHeight().fillMaxWidth().padding(
-            start = Paddings.medium,
-            end = Paddings.medium,
-            top = Paddings.standard,
-            bottom = Paddings.large
+            Paddings.medium
         ),
     ) {
         Box(
@@ -257,7 +265,10 @@ private fun MerchantViewHeader(
                             modifier = Modifier.fillMaxWidth(),
                             merchant = merchant,
                             isFirst = index == 0,
-                            onMerchantClick = onMerchantClick
+                            onMerchantClick = {
+                                isExpanded = false
+                                onMerchantClick(it)
+                            }
                         )
                     }
                 }
@@ -317,6 +328,7 @@ private fun DrawerItem(
         )
             .noRippleClickable { onNavItemClick(navItem.position) }) {
         Icon(
+            modifier = Modifier.size(24.dp),
             painter = painterResource(navItem.imageDrawableId),
             contentDescription = null,
             tint = Color.Unspecified
@@ -327,11 +339,41 @@ private fun DrawerItem(
 }
 
 @Composable
+private fun SettingsItem(
+    settingsItem: SettingsItem,
+    onSettingsClick: (SettingsPosition) -> Unit = {}
+) {
+    Row(
+        modifier = Modifier.padding(
+            horizontal = Paddings.extraLarge,
+            vertical = Paddings.standard
+        )
+            .noRippleClickable { onSettingsClick(settingsItem.position) }) {
+        Icon(
+            modifier = Modifier.size(24.dp),
+            painter = painterResource(settingsItem.imageDrawableId),
+            contentDescription = null,
+            tint = Color.Unspecified
+        )
+        Spacer(modifier = Modifier.width(Paddings.medium))
+        DNAText(
+            modifier = Modifier.weight(1f),
+            text = stringResource(settingsItem.title),
+            style = DnaTextStyle.Medium16
+        )
+        Icon(
+            painter = painterResource(MR.images.ic_arrow_right),
+            contentDescription = null,
+            tint = Color.Unspecified
+        )
+    }
+}
+
+@Composable
 private fun ProfileItem(onProfileClick: () -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(greyFirst)
             .padding(
                 start = Paddings.extraLarge,
                 end = Paddings.extraLarge,

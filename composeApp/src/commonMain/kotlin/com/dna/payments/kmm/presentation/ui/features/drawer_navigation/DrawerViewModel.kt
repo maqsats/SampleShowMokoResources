@@ -1,6 +1,5 @@
 package com.dna.payments.kmm.presentation.ui.features.drawer_navigation
 
-import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.drawer.DrawerUseCase
@@ -16,22 +15,23 @@ class DrawerViewModel(
     private val authorizationUseCase: AuthorizationUseCase,
     private val drawerUseCase: DrawerUseCase
 ) :
-    BaseViewModel<DrawerViewContract.Event, DrawerViewContract.State, DrawerViewContract.Effect>() {
+    BaseViewModel<DrawerScreenContract.Event, DrawerScreenContract.State, DrawerScreenContract.Effect>() {
 
     init {
         getMerchants()
     }
 
-    override fun createInitialState(): DrawerViewContract.State =
-        DrawerViewContract.State(
-            navItems = mutableStateOf(emptyList()),
+    override fun createInitialState(): DrawerScreenContract.State =
+        DrawerScreenContract.State(
+            navItems = emptyList(),
+            settingsItems = emptyList(),
             merchants = ResourceUiState.Loading,
             merchantChange = ResourceUiState.Idle
         )
 
-    override fun handleEvent(event: DrawerViewContract.Event) {
+    override fun handleEvent(event: DrawerScreenContract.Event) {
         when (event) {
-            is DrawerViewContract.Event.OnMerchantChange -> {
+            is DrawerScreenContract.Event.OnMerchantChange -> {
                 changeMerchant(event.data.merchantId)
             }
         }
@@ -44,7 +44,11 @@ class DrawerViewModel(
                 copy(
                     merchants = when (result) {
                         is Response.Success -> {
-                            println("Response.Success")
+                            if (result.data.isNotEmpty()) {
+                                setEffect {
+                                    DrawerScreenContract.Effect.OnMerchantSelected(result.data.first().name)
+                                }
+                            }
                             ResourceUiState.Success(result.data)
                         }
                         is Response.Error -> {
@@ -57,7 +61,8 @@ class DrawerViewModel(
                             ResourceUiState.Error(UiText.DynamicString("Token expired"))
                         }
                     },
-                    navItems = mutableStateOf(drawerUseCase.getNavItemList())
+                    navItems = drawerUseCase.getNavItemList(),
+                    settingsItems = drawerUseCase.getSettingsItems()
                 )
             }
         }
@@ -71,7 +76,7 @@ class DrawerViewModel(
                 copy(
                     merchantChange = when (result) {
                         is Response.Success -> {
-                            setEffect { DrawerViewContract.Effect.OnMerchantChange }
+                            setEffect { DrawerScreenContract.Effect.OnMerchantChange }
                             getMerchants()
                             ResourceUiState.Success(Unit)
                         }

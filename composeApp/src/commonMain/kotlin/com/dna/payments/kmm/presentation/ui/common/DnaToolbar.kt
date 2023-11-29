@@ -30,7 +30,6 @@ fun DnaToolbar(
     drawerState: DrawerState,
     shadowDp: Dp = 10.dp
 ) {
-    println(shadowDp)
     val scope = rememberCoroutineScope()
     Row(
         modifier = Modifier
@@ -56,7 +55,7 @@ fun DnaToolbar(
         Spacer(modifier = Modifier.width(Paddings.small))
 
         DNAText(
-            text = "Demo Merchant",
+            text = LocalSelectedMerchant.current,
             modifier = Modifier.weight(1f),
             style = DnaTextStyle.SemiBold18
         )

@@ -6,13 +6,19 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import com.dna.payments.kmm.domain.model.nav_item.NavItemPosition
+import com.dna.payments.kmm.presentation.ui.common.LocalSelectedMerchant
 import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsScreen
 import com.dna.payments.kmm.presentation.ui.features.overview.OverviewScreen
 import com.dna.payments.kmm.utils.navigation.NavigatorDisposeBehavior
@@ -24,6 +30,7 @@ import com.dna.payments.kmm.utils.navigation.internal.DrawerNavigatorDisposableE
 import com.dna.payments.kmm.utils.navigation.internal.DrawerStepDisposableEffect
 import com.dna.payments.kmm.utils.navigation.internal.LocalDrawerNavigatorStateHolder
 import com.dna.payments.kmm.utils.navigation.internal.rememberDrawerNavigator
+import kotlinx.coroutines.launch
 
 class DrawerNavigationScreen : Screen {
 
@@ -32,9 +39,13 @@ class DrawerNavigationScreen : Screen {
     @Composable
     override fun Content() {
 
-        val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
+        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
         val content: NavigatorContent = { CurrentDrawerScreen(drawerState) }
+
+        val scope = rememberCoroutineScope()
+
+        var merchantState by rememberSaveable { mutableStateOf("") }
 
         CompositionLocalProvider(
             LocalDrawerNavigatorStateHolder providesDefault rememberSaveableStateHolder()
@@ -42,7 +53,7 @@ class DrawerNavigationScreen : Screen {
             val disposeBehavior = NavigatorDisposeBehavior()
             val navigator =
                 rememberDrawerNavigator(
-                    listOf(OverviewScreen()),
+                    listOf(getInitialScreen()),
                     key,
                     disposeBehavior,
                     LocalDrawerNavigator.current
@@ -60,15 +71,32 @@ class DrawerNavigationScreen : Screen {
                         drawerContainerColor = Color.White,
                         drawerTonalElevation = 0.dp,
                     ) {
-                        DrawerView(
+                        DrawerScreen(
                             onNavItemClick = {
-                                navigator.replace(getScreenByNavItem(it))
-                            }).Content()
+                                scope.launch {
+                                    navigator.replace(getScreenByNavItem(it))
+                                    if (drawerState.isOpen) drawerState.close()
+                                }
+                            },
+                            onSettingsClick = {
+
+                            },
+                            onMerchantChange = {
+                                navigator.replaceAll(getInitialScreen())
+                                scope.launch {
+                                    if (drawerState.isOpen) drawerState.close()
+                                }
+                            },
+                            onMerchantSelected = {
+                                merchantState = it
+                            }
+                        ).Content()
                     }
                 },
             ) {
                 CompositionLocalProvider(
-                    LocalDrawerNavigator provides navigator
+                    LocalDrawerNavigator provides navigator,
+                    LocalSelectedMerchant provides merchantState,
                 ) {
                     if (disposeBehavior.disposeSteps) {
                         DrawerStepDisposableEffect(navigator)
@@ -88,4 +116,6 @@ class DrawerNavigationScreen : Screen {
                 OverviewScreen()
             }
         }
+
+    private fun getInitialScreen() = OverviewScreen()
 }

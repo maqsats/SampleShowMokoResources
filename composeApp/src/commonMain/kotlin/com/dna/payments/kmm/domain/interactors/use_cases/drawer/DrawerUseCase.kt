@@ -4,6 +4,8 @@ import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.model.nav_item.NavItem
 import com.dna.payments.kmm.domain.model.nav_item.NavItemPosition
+import com.dna.payments.kmm.domain.model.nav_item.SettingsItem
+import com.dna.payments.kmm.domain.model.nav_item.SettingsPosition
 import com.dna.payments.kmm.domain.model.permissions.AccessLevel
 import com.dna.payments.kmm.domain.model.permissions.Section
 import org.koin.core.component.KoinComponent
@@ -15,7 +17,6 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             MR.images.ic_home,
             MR.strings.overview,
             NavItemPosition.OVERVIEW,
-            true,
             isAvailable = accessLevelUseCase.hasPermission(
                 Section.OVERVIEW,
                 AccessLevel.READ
@@ -87,6 +88,24 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
                 Section.TEAM_MANAGEMENT,
                 AccessLevel.READ
             )
+        )
+    )
+
+    fun getSettingsItems() : List<SettingsItem> = listOf(
+        SettingsItem(
+            MR.images.lang_eng,
+            MR.strings.english,
+            SettingsPosition.LANGUAGE
+        ),
+        SettingsItem(
+            MR.images.ic_help,
+            MR.strings.help_center,
+            SettingsPosition.HELP_CENTER
+        ),
+        SettingsItem(
+            MR.images.ic_info,
+            MR.strings.info,
+            SettingsPosition.INFO
         )
     )
 
