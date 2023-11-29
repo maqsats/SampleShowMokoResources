@@ -15,7 +15,7 @@ class DetailPaymentMethodsViewModel(
 
     override fun createInitialState(): DetailPaymentMethodsContract.State =
         DetailPaymentMethodsContract.State(
-            detailPaymentMethod = ResourceUiState.Idle,
+            terminalSettings = ResourceUiState.Idle,
         )
 
     override fun handleEvent(event: DetailPaymentMethodsContract.Event) {
@@ -27,19 +27,14 @@ class DetailPaymentMethodsViewModel(
     }
 
     private fun fetchData(paymentMethodType: PaymentMethodType) {
-        setState { copy(detailPaymentMethod = ResourceUiState.Loading) }
+        setState { copy(terminalSettings = ResourceUiState.Loading) }
         coroutineScope.launch {
             coroutineScope.launch {
                 val result = getTerminalSettingsUseCase(paymentMethodType)
                 setState {
                     copy(
-                        detailPaymentMethod = when (result) {
+                        terminalSettings = when (result) {
                             is Response.Success -> {
-                                setEffect {
-                                    DetailPaymentMethodsContract.Effect.TerminalSettingsFetchedSuccessfully(
-                                        result.data
-                                    )
-                                }
                                 ResourceUiState.Success(result.data)
                             }
 

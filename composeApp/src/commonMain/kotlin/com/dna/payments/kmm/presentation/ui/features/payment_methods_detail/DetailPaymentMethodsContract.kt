@@ -13,14 +13,10 @@ interface DetailPaymentMethodsContract {
     }
 
     data class State(
-        val detailPaymentMethod: ResourceUiState<List<TerminalSetting>>,
+        val terminalSettings: ResourceUiState<List<TerminalSetting>>,
     ) : UiState
 
-    sealed interface Effect : UiEffect {
-        data class TerminalSettingsFetchedSuccessfully(
-            val terminalSettingList: List<TerminalSetting>
-        ) : Effect
-    }
+    sealed interface Effect : UiEffect {}
 }
 
 

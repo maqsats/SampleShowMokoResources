@@ -8,14 +8,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,21 +37,19 @@ import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.payment_methods.PaymentMethod
 import com.dna.payments.kmm.domain.model.payment_methods.setting.DetailTerminalSetting
 import com.dna.payments.kmm.domain.model.payment_methods.setting.TerminalSetting
+import com.dna.payments.kmm.presentation.model.ResourceUiState
+import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.greyColor
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
-import com.dna.payments.kmm.presentation.ui.common.UiStateController
-import com.dna.payments.kmm.presentation.ui.features.login.LoginContract
-import com.dna.payments.kmm.presentation.ui.features.pincode.PinScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import kotlinx.coroutines.flow.collectLatest
 
-class DetailPaymentMethodsScreen(val paymentMethod: PaymentMethod) : Screen {
+class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -63,17 +62,13 @@ class DetailPaymentMethodsScreen(val paymentMethod: PaymentMethod) : Screen {
         val controller = LocalSoftwareKeyboardController.current
         val navigator = LocalNavigator.currentOrThrow
 
-
-        UiStateController(state.detailPaymentMethod)
-
         LaunchedEffect(key1 = Unit) {
-            detailPaymentMethodsViewModel.effect.collectLatest { effect ->
-                when (effect) {
-                    is DetailPaymentMethodsContract.Effect.TerminalSettingsFetchedSuccessfully -> {
-
-                    }
-                }
-            }
+            detailPaymentMethodsViewModel.setEvent(
+                DetailPaymentMethodsContract.Event.OnInit(
+                    paymentMethodsType =
+                    paymentMethod.paymentMethodType
+                )
+            )
         }
 
         Column(
@@ -86,17 +81,18 @@ class DetailPaymentMethodsScreen(val paymentMethod: PaymentMethod) : Screen {
         ) {
             PaymentMethodsContent(
                 modifier = Modifier.wrapContentHeight(),
+                terminalSettings = state.terminalSettings,
                 onBackClicked = {
                     navigator.pop()
                 }
             )
-            Spacer(modifier = Modifier.weight(0.5f))
         }
     }
 
     @Composable
     private fun PaymentMethodsContent(
         modifier: Modifier = Modifier,
+        terminalSettings: ResourceUiState<List<TerminalSetting>>,
         onBackClicked: () -> Unit,
     ) {
         Column(
@@ -109,42 +105,61 @@ class DetailPaymentMethodsScreen(val paymentMethod: PaymentMethod) : Screen {
                 onClick = onBackClicked,
                 modifier = Modifier.padding(horizontal = 0.dp)
             )
-            Spacer(modifier = Modifier.height(24.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = modifier
-                        .border(
-                            BorderStroke(width = 1.dp, color = greyColor),
-                            shape = RoundedCornerShape(4.dp)
-                        ).height(48.dp)
-                        .background(Color.White)
-                        .width(48.dp).padding(4.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(paymentMethod.icon),
-                        contentDescription = stringResource(paymentMethod.title),
-                        tint = Color.Unspecified,
-                        modifier = modifier.height(40.dp).width(40.dp)
+            Spacer(modifier = Modifier.height(12.dp))
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = modifier
+                            .border(
+                                BorderStroke(width = 1.dp, color = greyColor),
+                                shape = RoundedCornerShape(4.dp)
+                            ).height(48.dp)
+                            .background(Color.White)
+                            .width(48.dp).padding(4.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(paymentMethod.icon),
+                            contentDescription = stringResource(paymentMethod.title),
+                            tint = Color.Unspecified,
+                            modifier = modifier.height(40.dp).width(40.dp)
+                        )
+                    }
+                    DNAText(
+                        modifier = modifier.padding(start = 16.dp),
+                        style = DnaTextStyle.SemiBold20,
+                        text = stringResource(paymentMethod.title)
                     )
                 }
+                Spacer(modifier = Modifier.height(24.dp))
                 DNAText(
-                    modifier = modifier.padding(start = 16.dp),
-                    style = DnaTextStyle.SemiBold20,
-                    text = stringResource(paymentMethod.title)
+                    style = DnaTextStyle.Normal14,
+                    text = stringResource(paymentMethod.description)
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+                DNAText(
+                    style = DnaTextStyle.WithAlpha16,
+                    text = stringResource(MR.strings.terminals)
+                )
+                ManagementResourceUiState(
+                    modifier = modifier,
+                    resourceUiState = terminalSettings,
+                    successView = {
+                        Column {
+                            it.forEach {
+                                TerminalSettingItem(
+                                    terminalSetting = it,
+                                    onItemClicked = {},
+                                    detailTerminalSettingList = emptyList()
+                                )
+                            }
+                        }
+                    },
+                    onCheckAgain = {},
+                    onTryAgain = {},
                 )
             }
-            Spacer(modifier = Modifier.height(24.dp))
-            DNAText(
-                style = DnaTextStyle.Normal14,
-                text = stringResource(paymentMethod.description)
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            DNAText(
-                style = DnaTextStyle.WithAlpha16,
-                text = stringResource(MR.strings.terminals)
-            )
-
         }
     }
 
@@ -156,14 +171,14 @@ class DetailPaymentMethodsScreen(val paymentMethod: PaymentMethod) : Screen {
         onItemClicked: (PaymentMethod) -> Unit
     ) {
         Box(
-            modifier = modifier.padding(8.dp).shadow(4.dp).background(
+            modifier = modifier.padding(vertical = 8.dp).shadow(4.dp).background(
                 Color.White,
                 RoundedCornerShape(8.dp)
             ).fillMaxWidth().wrapContentHeight()
                 .noRippleClickable { onItemClicked(paymentMethod) }
         ) {
             Row(
-                modifier = modifier.fillMaxWidth().fillMaxHeight().padding(16.dp),
+                modifier = modifier.fillMaxWidth().padding(16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -172,12 +187,19 @@ class DetailPaymentMethodsScreen(val paymentMethod: PaymentMethod) : Screen {
                         text = terminalSetting.name
                     )
                     DNAText(
-                        modifier = modifier.padding(start = 16.dp),
                         style = DnaTextStyle.Normal14,
-                        text = stringResource(
-                            MR.strings.count_terminals,
-                            detailTerminalSettingList.size
-                        )
+                        text = when (terminalSetting.countTerminal) {
+                            NO_TERMINALS_TO_CONFIGURE -> {
+                                stringResource(MR.strings.no_terminals_to_configure)
+                            }
+
+                            else -> {
+                                stringResource(
+                                    MR.strings.count_terminals,
+                                    terminalSetting.countTerminal
+                                )
+                            }
+                        }
                     )
                 }
                 Icon(
@@ -187,5 +209,9 @@ class DetailPaymentMethodsScreen(val paymentMethod: PaymentMethod) : Screen {
                 )
             }
         }
+    }
+
+    companion object {
+        const val NO_TERMINALS_TO_CONFIGURE = 0
     }
 }

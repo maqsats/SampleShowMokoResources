@@ -1,10 +1,10 @@
 package com.dna.payments.kmm.data.model.stores
 
-import com.dna.payments.kmm.data.model.stores.Setting
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Settings(
     val applepay: Setting,
-    val card: Setting,
     val ecospend: Setting,
     val googlepay: Setting,
     val klarna: Setting,

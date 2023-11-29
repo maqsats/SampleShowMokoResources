@@ -1,7 +1,8 @@
 package com.dna.payments.kmm.data.model.stores
 
-import com.dna.payments.kmm.data.model.stores.Settings
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Terminal(
     val defaultCurrency: String,
     val id: String,

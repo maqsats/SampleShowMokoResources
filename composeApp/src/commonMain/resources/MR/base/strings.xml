@@ -94,8 +94,10 @@
     <string name="klarna">Klarna</string>
     <string name="average_metrics">Average Metrics</string>
     <string name="all_payment_methods">All payment methods</string>
-    <string name="count_terminals">/d terminals, </string>
+    <string name="count_terminals">%d terminals</string>
     <string name="terminals">Terminals</string>
+    <string name="no_terminals_to_configure">No terminals to configure</string>
+    <string name="all_disabled">all disabled</string>
 
     <!--    descriptions of payment methods -->
     <string name="apple_pay_description">
