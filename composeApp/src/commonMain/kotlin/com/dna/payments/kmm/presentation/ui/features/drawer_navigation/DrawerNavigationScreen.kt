@@ -23,6 +23,7 @@ import com.dna.payments.kmm.domain.model.nav_item.NavItem
 import com.dna.payments.kmm.domain.model.nav_item.NavItemPosition
 import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsScreen
 import com.dna.payments.kmm.presentation.ui.features.overview.OverviewScreen
+import com.dna.payments.kmm.presentation.ui.features.payment_methods.PaymentMethodsScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.NavigatorDisposeBehavior
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.CurrentDrawerScreen
@@ -115,6 +116,7 @@ class DrawerNavigationScreen : Screen {
         when (item.position) {
             NavItemPosition.OVERVIEW -> OverviewScreen()
             NavItemPosition.ONLINE_PAYMENTS -> OnlinePaymentsScreen()
+            NavItemPosition.PAYMENT_METHODS -> PaymentMethodsScreen()
             else -> {
                 OverviewScreen()
             }
