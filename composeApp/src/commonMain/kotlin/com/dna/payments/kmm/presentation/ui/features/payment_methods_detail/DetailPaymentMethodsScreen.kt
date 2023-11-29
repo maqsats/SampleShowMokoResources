@@ -43,6 +43,7 @@ import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.greyColor
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
+import com.dna.payments.kmm.presentation.ui.common.DNATextWithBackground
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -79,12 +80,16 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
                 },
             verticalArrangement = Arrangement.Top
         ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            DNAGreenBackButton(
+                text = stringResource(MR.strings.back),
+                onClick = { navigator.pop() },
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
             PaymentMethodsContent(
                 modifier = Modifier.wrapContentHeight(),
                 terminalSettings = state.terminalSettings,
-                onBackClicked = {
-                    navigator.pop()
-                }
             )
         }
     }
@@ -93,40 +98,30 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
     private fun PaymentMethodsContent(
         modifier: Modifier = Modifier,
         terminalSettings: ResourceUiState<List<TerminalSetting>>,
-        onBackClicked: () -> Unit,
     ) {
         Column(
-            modifier = modifier.padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.Top
+            modifier = Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
-            DNAGreenBackButton(
-                text = stringResource(MR.strings.back),
-                onClick = onBackClicked,
-                modifier = Modifier.padding(horizontal = 0.dp)
-            )
             Spacer(modifier = Modifier.height(12.dp))
-            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                Spacer(modifier = Modifier.height(12.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = modifier
-                            .border(
-                                BorderStroke(width = 1.dp, color = greyColor),
-                                shape = RoundedCornerShape(4.dp)
-                            ).height(48.dp)
-                            .background(Color.White)
-                            .width(48.dp).padding(4.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(paymentMethod.icon),
-                            contentDescription = stringResource(paymentMethod.title),
-                            tint = Color.Unspecified,
-                            modifier = modifier.height(40.dp).width(40.dp)
-                        )
-                    }
-                    DNAText(
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = modifier
+                        .border(
+                            BorderStroke(width = 1.dp, color = greyColor),
+                            shape = RoundedCornerShape(4.dp)
+                        ).height(48.dp)
+                        .background(Color.White)
+                        .width(48.dp).padding(4.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(paymentMethod.icon),
+                        contentDescription = stringResource(paymentMethod.title),
+                        tint = Color.Unspecified,
+                        modifier = modifier.height(40.dp).width(40.dp)
+                    )
+                }
+                DNAText(
                         modifier = modifier.padding(start = 16.dp),
                         style = DnaTextStyle.SemiBold20,
                         text = stringResource(paymentMethod.title)
@@ -161,7 +156,7 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
                 )
             }
         }
-    }
+
 
     @Composable
     private fun TerminalSettingItem(
@@ -186,21 +181,51 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
                     DNAText(
                         text = terminalSetting.name
                     )
-                    DNAText(
-                        style = DnaTextStyle.Normal14,
-                        text = when (terminalSetting.countTerminal) {
-                            NO_TERMINALS_TO_CONFIGURE -> {
-                                stringResource(MR.strings.no_terminals_to_configure)
-                            }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        DNAText(
+                            style = DnaTextStyle.Normal14,
+                            text = when (terminalSetting.countTerminal) {
+                                NO_TERMINALS_TO_CONFIGURE -> {
+                                    stringResource(MR.strings.no_terminals_to_configure)
+                                }
 
-                            else -> {
-                                stringResource(
-                                    MR.strings.count_terminals,
-                                    terminalSetting.countTerminal
-                                )
+                                else -> {
+                                    stringResource(
+                                        MR.strings.count_terminals,
+                                        terminalSetting.countTerminal
+                                    )
+                                }
                             }
+                        )
+                        if (terminalSetting.countTerminal != NO_TERMINALS_TO_CONFIGURE) {
+                            DNATextWithBackground(
+                                modifier = modifier.padding(start = 8.dp),
+                                style = when {
+                                    terminalSetting.activeTerminal > NO_TERMINALS_TO_CONFIGURE ->
+                                        DnaTextStyle.BackgroundGreen12
+
+                                    else -> DnaTextStyle.BackgroundGrey12
+                                },
+                                text = when {
+                                    terminalSetting.countTerminal == terminalSetting.activeTerminal
+                                            && terminalSetting.countTerminal != NO_TERMINALS_TO_CONFIGURE -> {
+                                        stringResource(MR.strings.all_active)
+                                    }
+
+                                    terminalSetting.activeTerminal > NO_TERMINALS_TO_CONFIGURE -> {
+                                        stringResource(
+                                            MR.strings.number_active,
+                                            terminalSetting.activeTerminal
+                                        )
+                                    }
+
+                                    else -> {
+                                        stringResource(MR.strings.no_active)
+                                    }
+                                }
+                            )
                         }
-                    )
+                    }
                 }
                 Icon(
                     painter = painterResource(MR.images.ic_arrow_up),
