@@ -1,6 +1,6 @@
 package com.dna.payments.kmm.di
 
-import com.dna.payments.kmm.presentation.ui.features.drawer_navigation.DrawerNavigationViewModel
+import com.dna.payments.kmm.presentation.ui.features.drawer_navigation.DrawerViewModel
 import com.dna.payments.kmm.presentation.ui.features.login.LoginViewModel
 import com.dna.payments.kmm.presentation.ui.features.nav_auth.NavAuthViewModel
 import com.dna.payments.kmm.presentation.ui.features.new_password.NewPasswordViewModel
@@ -26,6 +26,6 @@ val viewModelModule = module {
     factoryOf(::RestorePasswordViewModel)
     factoryOf(::VerificationCodeViewModel)
     factoryOf(::NewPasswordViewModel)
-    factoryOf(::DrawerNavigationViewModel)
+    factoryOf(::DrawerViewModel)
 }
 

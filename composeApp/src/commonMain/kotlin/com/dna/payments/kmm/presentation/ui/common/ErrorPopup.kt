@@ -60,7 +60,7 @@ fun ErrorPopup(
                 .wrapContentHeight()
                 .padding(horizontal = 30.dp, vertical = 20.dp)
                 .border(1.dp, red, shape = RoundedCornerShape(10.dp))
-                .background(Color.White),
+                .background(Color.White, shape = RoundedCornerShape(10.dp)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {

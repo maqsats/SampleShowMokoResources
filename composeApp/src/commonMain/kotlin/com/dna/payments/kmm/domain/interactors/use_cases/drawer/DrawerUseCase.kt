@@ -52,16 +52,6 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.ic_virtual_terminal,
-            MR.strings.virtual_terminal,
-            NavItemPosition.VIRTUAL_TERMINAL,
-            isAvailable = accessLevelUseCase.hasPermission(
-                Section.VIRTUAL_TERMINAL,
-                AccessLevel.READ,
-                AccessLevel.FULL
-            )
-        ),
-        NavItem(
             MR.images.ic_settlements,
             MR.strings.settlements,
             NavItemPosition.SETTLEMENTS,
@@ -90,18 +80,13 @@ class DrawerUseCase(private val accessLevelUseCase: AccessLevelUseCase) : KoinCo
             )
         ),
         NavItem(
-            MR.images.lang_eng,
+            MR.images.ic_team,
             MR.strings.team_management,
             NavItemPosition.TEAM_MANAGEMENT,
             isAvailable = accessLevelUseCase.hasPermission(
                 Section.TEAM_MANAGEMENT,
                 AccessLevel.READ
             )
-        ),
-        NavItem(
-            MR.images.ic_help,
-            MR.strings.help_center,
-            NavItemPosition.HELP_CENTER
         )
     )
 

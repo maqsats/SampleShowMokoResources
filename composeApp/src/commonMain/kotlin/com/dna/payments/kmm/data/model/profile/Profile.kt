@@ -1,5 +1,8 @@
 package com.dna.payments.kmm.data.model.profile
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Profile(
     val acquisitionChannel: String,
     val createdAt: String,
