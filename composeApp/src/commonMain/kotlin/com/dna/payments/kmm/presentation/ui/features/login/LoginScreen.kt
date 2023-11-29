@@ -131,7 +131,7 @@ class LoginScreen(private var showSuccess: Boolean = false) : Screen {
     private fun ForgotPasswordButton(onForgotPasswordClicked: () -> Unit) {
         DNAText(
             text = stringResource(MR.strings.restore_password),
-            style = DnaTextStyle.Green16,
+            style = DnaTextStyle.GreenMedium16,
             modifier = Modifier.wrapContentWidth().noRippleClickable { onForgotPasswordClicked() }
         )
     }

@@ -24,7 +24,15 @@ class AuthorizationUseCase(
         map(repository.updateToken(preference.getRefreshToken()))
 
     suspend fun changeMerchant(merchantId: String): Response<Unit> =
-        map(repository.changeMerchant(merchantId))
+        when (val response = repository.changeMerchant(merchantId)) {
+            is Response.Error -> Response.Error(response.error)
+            is Response.NetworkError -> Response.NetworkError
+            is Response.TokenExpire -> Response.TokenExpire
+            is Response.Success -> {
+                saveData(response.data, merchantId)
+                Response.Success(Unit)
+            }
+        }
 
     private fun saveData(data: AuthToken, merchantId: String? = null) {
         preference.setAuthToken(data.accessToken)

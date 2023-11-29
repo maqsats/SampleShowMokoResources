@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -56,11 +58,10 @@ fun ErrorPopup(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
+                .wrapContentHeight().widthIn(min = 300.dp, max = 400.dp)
                 .padding(horizontal = 30.dp, vertical = 20.dp)
                 .border(1.dp, red, shape = RoundedCornerShape(10.dp))
-                .background(Color.White),
+                .background(Color.White, shape = RoundedCornerShape(10.dp)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
