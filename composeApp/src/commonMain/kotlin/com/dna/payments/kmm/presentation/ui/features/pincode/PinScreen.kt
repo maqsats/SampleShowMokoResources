@@ -98,7 +98,7 @@ class PinScreen : Screen {
                         navigator.replaceAll(LoginScreen())
                     }
                     PinContract.Effect.OnPinCorrect -> {
-                        navigator.push(PaymentMethodsScreen())
+                        navigator.push(DrawerNavigationScreen())
                     }
                 }
             }

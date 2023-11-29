@@ -15,20 +15,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import com.dna.payments.kmm.MR
@@ -40,27 +34,21 @@ import com.dna.payments.kmm.presentation.ui.features.payment_methods_detail.Deta
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
+import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
-class PaymentMethodsScreen() : Screen {
+class PaymentMethodsScreen : DrawerScreen {
     override val key: ScreenKey = uniqueScreenKey
+    override val isFilterEnabled: Boolean = false
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
-    override fun Content() {
-
-        val controller = LocalSoftwareKeyboardController.current
+    override fun DrawerContent() {
         val navigator = LocalNavigator.currentOrThrow
-
-        LaunchedEffect(key1 = Unit) {}
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .noRippleClickable {
-                    controller?.hide()
-                },
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
             PaymentMethodsContent(
@@ -74,6 +62,23 @@ class PaymentMethodsScreen() : Screen {
     }
 
     @Composable
+    override fun DrawerHeader() {
+        Column {
+            Spacer(modifier = Modifier.height(24.dp))
+            DNAText(
+                text = stringResource(MR.strings.payment_methods),
+                style = DnaTextStyle.Bold20,
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+        }
+    }
+
+    @Composable
+    override fun DrawerFilter() {
+
+    }
+
+    @Composable
     private fun PaymentMethodsContent(
         modifier: Modifier = Modifier,
         onItemClicked: (PaymentMethod) -> Unit
@@ -82,15 +87,9 @@ class PaymentMethodsScreen() : Screen {
             modifier = modifier.padding(horizontal = 8.dp),
             verticalArrangement = Arrangement.Top
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
-            DNAText(
-                text = stringResource(MR.strings.payment_methods),
-                style = DnaTextStyle.Bold20,
-                modifier = modifier.padding(horizontal = 8.dp)
-            )
             Spacer(modifier = modifier.height(24.dp))
-            LazyColumn {
-                items(PaymentMethodDataFactory.getPaymentMethods()) { it ->
+            Column {
+                PaymentMethodDataFactory.getPaymentMethods().forEach {
                     PaymentMethodsItem(paymentMethod = it, onItemClicked = onItemClicked)
                 }
             }
