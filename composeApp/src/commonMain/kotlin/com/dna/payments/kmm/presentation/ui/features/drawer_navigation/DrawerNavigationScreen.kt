@@ -17,12 +17,14 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
+import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.nav_item.NavItemPosition
 import com.dna.payments.kmm.domain.model.nav_item.SettingsPosition
 import com.dna.payments.kmm.presentation.ui.common.LocalSelectedMerchant
 import com.dna.payments.kmm.presentation.ui.features.help_center.HelpCenterScreen
 import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsScreen
 import com.dna.payments.kmm.presentation.ui.features.overview.OverviewScreen
+import com.dna.payments.kmm.presentation.ui.features.payment_methods.PaymentMethodsScreen
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.NavigatorDisposeBehavior
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -34,6 +36,7 @@ import com.dna.payments.kmm.utils.navigation.internal.DrawerNavigatorDisposableE
 import com.dna.payments.kmm.utils.navigation.internal.DrawerStepDisposableEffect
 import com.dna.payments.kmm.utils.navigation.internal.LocalDrawerNavigatorStateHolder
 import com.dna.payments.kmm.utils.navigation.internal.rememberDrawerNavigator
+import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.launch
 
 class DrawerNavigationScreen : Screen {
@@ -51,7 +54,9 @@ class DrawerNavigationScreen : Screen {
 
         val parentNavigator = LocalNavigator.currentOrThrow
 
-        var merchantState by rememberSaveable { mutableStateOf("") }
+        val loading = stringResource(MR.strings.loading)
+
+        var merchantState by rememberSaveable { mutableStateOf(loading) }
 
         CompositionLocalProvider(
             LocalDrawerNavigatorStateHolder providesDefault rememberSaveableStateHolder()
@@ -121,6 +126,7 @@ class DrawerNavigationScreen : Screen {
         when (navPosition) {
             NavItemPosition.OVERVIEW -> OverviewScreen()
             NavItemPosition.ONLINE_PAYMENTS -> OnlinePaymentsScreen()
+            NavItemPosition.PAYMENT_METHODS -> PaymentMethodsScreen()
             else -> {
                 OverviewScreen()
             }
@@ -133,5 +139,5 @@ class DrawerNavigationScreen : Screen {
             }
         }
 
-    private fun getInitialScreen() = OverviewScreen()
+    private fun getInitialScreen() = PaymentMethodsScreen()
 }

@@ -103,11 +103,12 @@ class PaymentMethodsScreen : DrawerScreen {
         onItemClicked: (PaymentMethod) -> Unit
     ) {
         Box(
-            modifier = modifier.padding(8.dp).shadow(4.dp).background(
-                Color.White,
-                RoundedCornerShape(8.dp)
-            ).fillMaxWidth().wrapContentHeight()
-                .noRippleClickable { onItemClicked(paymentMethod) }
+            modifier = modifier.fillMaxWidth().wrapContentHeight().padding(8.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                .background(
+                    Color.White,
+                    RoundedCornerShape(8.dp)
+                ).noRippleClickable { onItemClicked(paymentMethod) }
         )
         {
             Row(

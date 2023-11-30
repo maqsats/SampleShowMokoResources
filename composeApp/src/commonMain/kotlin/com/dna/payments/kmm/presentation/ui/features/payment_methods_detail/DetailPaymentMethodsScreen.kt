@@ -75,6 +75,7 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .noRippleClickable {
                     controller?.hide()
                 },
@@ -122,40 +123,40 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
                     )
                 }
                 DNAText(
-                        modifier = modifier.padding(start = 16.dp),
-                        style = DnaTextStyle.SemiBold20,
-                        text = stringResource(paymentMethod.title)
-                    )
-                }
-                Spacer(modifier = Modifier.height(24.dp))
-                DNAText(
-                    style = DnaTextStyle.Normal14,
-                    text = stringResource(paymentMethod.description)
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-                DNAText(
-                    style = DnaTextStyle.WithAlpha16,
-                    text = stringResource(MR.strings.terminals)
-                )
-                ManagementResourceUiState(
-                    modifier = modifier,
-                    resourceUiState = terminalSettings,
-                    successView = {
-                        Column {
-                            it.forEach {
-                                TerminalSettingItem(
-                                    terminalSetting = it,
-                                    onItemClicked = {},
-                                    detailTerminalSettingList = emptyList()
-                                )
-                            }
-                        }
-                    },
-                    onCheckAgain = {},
-                    onTryAgain = {},
+                    modifier = modifier.padding(start = 16.dp),
+                    style = DnaTextStyle.SemiBold20,
+                    text = stringResource(paymentMethod.title)
                 )
             }
+            Spacer(modifier = Modifier.height(24.dp))
+            DNAText(
+                style = DnaTextStyle.Normal14,
+                text = stringResource(paymentMethod.description)
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            DNAText(
+                style = DnaTextStyle.WithAlpha16,
+                text = stringResource(MR.strings.terminals)
+            )
+            ManagementResourceUiState(
+                modifier = modifier,
+                resourceUiState = terminalSettings,
+                successView = {
+                    Column {
+                        it.forEach {
+                            TerminalSettingItem(
+                                terminalSetting = it,
+                                onItemClicked = {},
+                                detailTerminalSettingList = emptyList()
+                            )
+                        }
+                    }
+                },
+                onCheckAgain = {},
+                onTryAgain = {},
+            )
         }
+    }
 
 
     @Composable
@@ -166,10 +167,11 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
         onItemClicked: (PaymentMethod) -> Unit
     ) {
         Box(
-            modifier = modifier.padding(vertical = 8.dp).shadow(4.dp).background(
-                Color.White,
-                RoundedCornerShape(8.dp)
-            ).fillMaxWidth().wrapContentHeight()
+            modifier = modifier.padding(vertical = 8.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                .background(Color.White, RoundedCornerShape(8.dp))
+                .fillMaxWidth()
+                .wrapContentHeight()
                 .noRippleClickable { onItemClicked(paymentMethod) }
         ) {
             Row(
