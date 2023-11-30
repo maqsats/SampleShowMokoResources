@@ -47,7 +47,6 @@ import com.dna.payments.kmm.presentation.ui.common.LogoutDialog
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
 import com.dna.payments.kmm.presentation.ui.features.drawer_navigation.DrawerNavigationScreen
 import com.dna.payments.kmm.presentation.ui.features.login.LoginScreen
-import com.dna.payments.kmm.presentation.ui.features.payment_methods.PaymentMethodsScreen
 import com.dna.payments.kmm.utils.biometry.BindBiometryAuthenticatorEffect
 import com.dna.payments.kmm.utils.biometry.BiometryAuthenticatorFactory
 import com.dna.payments.kmm.utils.biometry.rememberBiometryAuthenticatorFactory

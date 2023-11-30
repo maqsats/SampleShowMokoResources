@@ -12,6 +12,7 @@ import com.dna.payments.kmm.domain.interactors.validation.ValidateCode
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
 import com.dna.payments.kmm.domain.use_case.ChangePasswordUseCase
+import com.dna.payments.kmm.domain.use_case.GetDomainsUseCase
 import com.dna.payments.kmm.domain.use_case.GetTerminalSettingsUseCase
 import com.dna.payments.kmm.domain.use_case.SendOtpInstructionsUseCase
 import com.dna.payments.kmm.domain.use_case.VerifyOtpCodeUseCase
@@ -33,6 +34,7 @@ val useCasesModule: Module = module {
     factoryOf(::ValidatePassword)
     factoryOf(::ValidateEmail)
     factoryOf(::ValidateCode)
+    factoryOf(::GetDomainsUseCase)
     factoryOf(::GetTerminalSettingsUseCase)
     factoryOf(::SendOtpInstructionsUseCaseImpl).bind(SendOtpInstructionsUseCase::class)
     factoryOf(::VerifyOtpCodeUseCaseImpl).bind(VerifyOtpCodeUseCase::class)

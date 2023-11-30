@@ -85,7 +85,6 @@ class NewPasswordViewModel(
 
     private fun changePassword(email: String, password: String, verificationId: String) {
         setState { copy(newPassword = ResourceUiState.Loading) }
-        coroutineScope.launch {
             coroutineScope.launch {
                 val result = changePasswordUseCase(
                     email = email,
@@ -118,7 +117,6 @@ class NewPasswordViewModel(
                         }
                     )
                 }
-            }
         }
     }
 }

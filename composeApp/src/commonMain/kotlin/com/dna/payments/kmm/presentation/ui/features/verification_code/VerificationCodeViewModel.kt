@@ -62,7 +62,6 @@ class VerificationCodeViewModel(
 
     private fun verifyOtpCode(email: String, code: String) {
         setState { copy(sendCode = ResourceUiState.Loading) }
-        coroutineScope.launch {
             coroutineScope.launch {
                 val result = verifyOtpCodeUseCase(
                     code = code,
@@ -93,16 +92,13 @@ class VerificationCodeViewModel(
                     )
                 }
             }
-        }
     }
 
     private fun sendInstructions(email: String) {
-        coroutineScope.launch {
             coroutineScope.launch {
                 sendOtpInstructionsUseCase(
                     email = email,
                 )
-            }
         }
     }
 }
