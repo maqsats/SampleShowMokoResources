@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
 import com.dna.payments.kmm.domain.network.Response
-import com.dna.payments.kmm.domain.repository.ChangePasswordUseCase
+import com.dna.payments.kmm.domain.use_case.ChangePasswordUseCase
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.model.TextFieldUiState
 import com.dna.payments.kmm.presentation.model.text_input.TextInput

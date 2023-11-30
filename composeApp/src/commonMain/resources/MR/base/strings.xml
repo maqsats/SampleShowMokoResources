@@ -54,6 +54,7 @@
     <!--     New password-->
     <string name="back_to_login">Back to Login</string>
     <string name="back_to_email">Back to Email</string>
+    <string name="back">Back</string>
     <string name="reset_password">Reset Password</string>
     <string name="password_must_contain">Password must contain</string>
     <string name="password_must_match">Passwords must match</string>
@@ -83,6 +84,73 @@
     <string name="payment_methods">Payment methods</string>
     <string name="team_management">Team Management</string>
     <string name="help_center">Help center</string>
+
+    <!--    payment methods-->
+    <string name="apple_pay">Apple Pay</string>
+    <string name="google_pay">Google Pay</string>
+    <string name="pay_pall">PayPall</string>
+    <string name="pay_by_bank">Pay by Bank</string>
+    <string name="open_bank">Open Bank</string>
+    <string name="klarna">Klarna</string>
+    <string name="average_metrics">Average Metrics</string>
+    <string name="all_payment_methods">All payment methods</string>
+    <string name="count_terminals">%d terminals</string>
+    <string name="terminals">Terminals</string>
+    <string name="no_terminals_to_configure">No terminals to configure</string>
+    <string name="all_disabled">all disabled</string>
+
+    <string name="all_active">all active</string>
+    <string name="no_active">no active</string>
+    <string name="number_active">%d active</string>
+
+    <!--    descriptions of payment methods -->
+    <string name="apple_pay_description">
+        Apple Pay allows consumers to pay for their goods and services easily and quickly online.
+        The consumers store their payment card information in their Apple Wallet which can be
+        invoked from their Apple devices or within the Safari web browser.
+        \n
+        \n
+        DNA Payments are pleased to offer this payment method to merchants and it can be enabled or
+        disabled here.
+    </string>
+
+    <string name="google_pay_description">
+        Google Pay allows consumers to pay for their goods and services easily and quickly online. The consumers store their payment card information in their Google Wallet which can be invoked from their Android devices or within the Google Chrome web browser.
+        \n
+        \n
+        DNA Payments are pleased to offer this payment method to merchants and it can be enabled or disabled here.
+    </string>
+
+    <string name="pay_pal_description">
+        DNA Payments have partnered with PayPal to provide merchants with an easy route to add this popular payment method for customers. Merchants with existing PayPal accounts can link them on this page or if a PayPal account needs to be created it can also be done here.
+        \n
+        \n
+        Once an account is linked the PayPal payment option can easily be enabled or disabled using the toggle option, leaving the merchant in complete control.
+    </string>
+
+    <string name="pay_by_bank_description">
+        DNA Payments are proud to offer merchants the ability for consumers to pay for goods and services direct from their bank account via the new Pay by Bank app service. Pay by Bank app is a new online checkout option that lets consumers pay using their bank app on their phone. It is designed to make online checkout easier, whilst using all the security of the supported banks.
+        \n
+        \n
+        Most importantly Pay by Bank app isn’t a separate app to download or service to sign-up for – it works through the bank app consumers use already.
+    </string>
+
+    <string name="open_by_bank_description">
+        Open Banking is a secure way to receive payment for goods and services direct from the consumer is bank account.
+        \n
+        \n
+        By enabling Open Banking the consumers will have the option to choose their banking provider (from over 50+ financial institutions, a list which is growing all the time) making the payment in a few easy steps. The funds will be debited from the account instantly helping manage available balances more efficient.
+        \n
+        \n
+        DNA Payments are proud to have partnered with the leading supplier of Open Banking services, Ecospend, to make this facility available to our customer base.
+    </string>
+
+    <string name="klarna_description">
+        DNA Payments are proud to partner with Klarna for the provision of Buy Now, Pay Later (BNPL) transactions. BNPL allows consumers to spread the cost of an applicable purchase without paying any interest or additional fees.
+        \n
+        \n
+        Once this is enabled consumers will be given the option to choose the Klarna BNPL during the checkout process unless specifically disabled in the integration configuration.
+    </string>
     <string name="profile">Profile</string>
     <string name="add_link">Add Link</string>
     <string name="info">Info</string>
