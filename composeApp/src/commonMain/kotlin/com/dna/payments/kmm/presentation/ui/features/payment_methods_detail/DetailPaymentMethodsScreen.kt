@@ -37,6 +37,8 @@ import com.dna.payments.kmm.domain.model.payment_methods.domain.Domain
 import com.dna.payments.kmm.domain.model.payment_methods.setting.DetailTerminalSetting
 import com.dna.payments.kmm.domain.model.payment_methods.setting.TerminalSetting
 import com.dna.payments.kmm.presentation.model.ResourceUiState
+import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
+import com.dna.payments.kmm.presentation.state.ComponentRectangleLineShort
 import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
@@ -149,6 +151,13 @@ class DetailPaymentMethodsScreen(
                         }
                     }
                 },
+                loadingView = {
+                    Column {
+                        for (i in 1..3) {
+                            TerminalSettingItemOnLoading()
+                        }
+                    }
+                },
                 onCheckAgain = {},
                 onTryAgain = {},
             )
@@ -167,6 +176,13 @@ class DetailPaymentMethodsScreen(
                             DomainsItem(
                                 domain = it
                             )
+                        }
+                    }
+                },
+                loadingView = {
+                    Column {
+                        for (i in 1..3) {
+                            DomainsItemOnLoading()
                         }
                     }
                 },
@@ -257,6 +273,39 @@ class DetailPaymentMethodsScreen(
     }
 
     @Composable
+    private fun TerminalSettingItemOnLoading(
+        modifier: Modifier = Modifier
+    ) {
+        Box(
+            modifier = modifier.padding(top = 8.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                .background(Color.White, RoundedCornerShape(8.dp))
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+            Row(
+                modifier = modifier.fillMaxWidth().padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    ComponentRectangleLineLong(isLoadingCompleted = false, isLightModeActive = true)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    ) {
+                        ComponentRectangleLineShort(
+                            isLoadingCompleted = false,
+                            isLightModeActive = false
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+
+    @Composable
     private fun DomainsItem(
         modifier: Modifier = Modifier,
         domain: Domain
@@ -281,6 +330,27 @@ class DetailPaymentMethodsScreen(
                     contentDescription = null,
                     tint = Color.Unspecified
                 )
+            }
+        }
+    }
+
+    @Composable
+    private fun DomainsItemOnLoading(
+        modifier: Modifier = Modifier,
+    ) {
+        Box(
+            modifier = modifier.padding(top = 8.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                .background(Color.White, RoundedCornerShape(8.dp))
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+            Row(
+                modifier = modifier.fillMaxWidth().padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ComponentRectangleLineLong(isLoadingCompleted = false, isLightModeActive = true)
             }
         }
     }
