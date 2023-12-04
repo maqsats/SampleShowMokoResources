@@ -36,7 +36,7 @@ import com.dna.payments.kmm.utils.toolbar.rememberCollapsingToolbarScaffoldState
 typealias MerchantName = String
 
 val LocalSelectedMerchant = compositionLocalOf {
-    "Loading..."
+    ""
 }
 
 @Composable

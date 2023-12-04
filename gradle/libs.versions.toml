@@ -29,6 +29,8 @@ resource-generator = "0.23.0"
 playServicesLocationVersion = "21.0.1"
 androidBiometricVersion = "1.1.0"
 klock = "2.4.13"
+googleServices = "4.3.15"
+firebaseBom = "32.2.2"
 [libraries]
 
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -44,6 +46,9 @@ androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "a
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 compose-uitooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-uitooling" }
 libres = { module = "io.github.skeptick.libres:libres-compose", version.ref = "libres" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "resourcesCompose" }
 ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
