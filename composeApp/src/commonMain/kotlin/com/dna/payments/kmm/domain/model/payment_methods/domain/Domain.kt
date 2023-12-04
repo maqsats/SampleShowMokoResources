@@ -7,5 +7,6 @@ import dev.icerock.moko.parcelize.Parcelize
 @Parcelize
 data class Domain(
     val name: String,
-    val paymentMethodType: PaymentMethodType
+    val paymentMethodType: PaymentMethodType,
+    val isDeleteAvailable: Boolean = true
 ) : Parcelable

@@ -68,7 +68,7 @@ class PaymentMethodsScreen : DrawerScreen {
             DNAText(
                 text = stringResource(MR.strings.payment_methods),
                 style = DnaTextStyle.Bold20,
-                modifier = Modifier.padding(horizontal = 8.dp)
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
     }

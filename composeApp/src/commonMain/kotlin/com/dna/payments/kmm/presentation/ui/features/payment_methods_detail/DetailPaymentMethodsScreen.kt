@@ -23,11 +23,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
@@ -35,11 +33,15 @@ import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.payment_methods.PaymentMethod
+import com.dna.payments.kmm.domain.model.payment_methods.domain.Domain
 import com.dna.payments.kmm.domain.model.payment_methods.setting.DetailTerminalSetting
 import com.dna.payments.kmm.domain.model.payment_methods.setting.TerminalSetting
 import com.dna.payments.kmm.presentation.model.ResourceUiState
+import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
+import com.dna.payments.kmm.presentation.state.ComponentRectangleLineShort
 import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
+import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.greyColor
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
@@ -50,17 +52,15 @@ import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
-class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Screen {
+class DetailPaymentMethodsScreen(
+    private val paymentMethod: PaymentMethod
+) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
-
         val detailPaymentMethodsViewModel = getScreenModel<DetailPaymentMethodsViewModel>()
-
         val state by detailPaymentMethodsViewModel.uiState.collectAsState()
-        val controller = LocalSoftwareKeyboardController.current
         val navigator = LocalNavigator.currentOrThrow
 
         LaunchedEffect(key1 = Unit) {
@@ -75,10 +75,7 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
-                .noRippleClickable {
-                    controller?.hide()
-                },
+                .background(Color.White),
             verticalArrangement = Arrangement.Top
         ) {
             Spacer(modifier = Modifier.height(16.dp))
@@ -91,6 +88,7 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
             PaymentMethodsContent(
                 modifier = Modifier.wrapContentHeight(),
                 terminalSettings = state.terminalSettings,
+                domainList = state.domainList
             )
         }
     }
@@ -99,6 +97,7 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
     private fun PaymentMethodsContent(
         modifier: Modifier = Modifier,
         terminalSettings: ResourceUiState<List<TerminalSetting>>,
+        domainList: ResourceUiState<List<Domain>>,
     ) {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)
@@ -152,6 +151,41 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
                         }
                     }
                 },
+                loadingView = {
+                    Column {
+                        for (i in 1..3) {
+                            TerminalSettingItemOnLoading()
+                        }
+                    }
+                },
+                onCheckAgain = {},
+                onTryAgain = {},
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+            DNAText(
+                style = DnaTextStyle.WithAlpha16,
+                text = stringResource(MR.strings.domains)
+            )
+            Spacer(modifier = Modifier.height(Paddings.medium))
+            ManagementResourceUiState(
+                modifier = modifier.padding(bottom = Paddings.medium),
+                resourceUiState = domainList,
+                successView = {
+                    Column {
+                        it.forEach {
+                            DomainsItem(
+                                domain = it
+                            )
+                        }
+                    }
+                },
+                loadingView = {
+                    Column {
+                        for (i in 1..3) {
+                            DomainsItemOnLoading()
+                        }
+                    }
+                },
                 onCheckAgain = {},
                 onTryAgain = {},
             )
@@ -167,7 +201,7 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
         onItemClicked: (PaymentMethod) -> Unit
     ) {
         Box(
-            modifier = modifier.padding(vertical = 8.dp)
+            modifier = modifier.padding(top = 8.dp)
                 .shadow(4.dp, shape = RoundedCornerShape(8.dp))
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
@@ -234,6 +268,89 @@ class DetailPaymentMethodsScreen(private val paymentMethod: PaymentMethod) : Scr
                     contentDescription = null,
                     tint = Color.Unspecified
                 )
+            }
+        }
+    }
+
+    @Composable
+    private fun TerminalSettingItemOnLoading(
+        modifier: Modifier = Modifier
+    ) {
+        Box(
+            modifier = modifier.padding(top = 8.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                .background(Color.White, RoundedCornerShape(8.dp))
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+            Row(
+                modifier = modifier.fillMaxWidth().padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    ComponentRectangleLineLong(isLoadingCompleted = false, isLightModeActive = true)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    ) {
+                        ComponentRectangleLineShort(
+                            isLoadingCompleted = false,
+                            isLightModeActive = false
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+
+    @Composable
+    private fun DomainsItem(
+        modifier: Modifier = Modifier,
+        domain: Domain
+    ) {
+        Box(
+            modifier = modifier.padding(top = 8.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                .background(Color.White, RoundedCornerShape(8.dp))
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+            Row(
+                modifier = modifier.fillMaxWidth().padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                DNAText(
+                    text = domain.name
+                )
+                Icon(
+                    painter = painterResource(MR.images.ic_trash),
+                    contentDescription = null,
+                    tint = Color.Unspecified
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun DomainsItemOnLoading(
+        modifier: Modifier = Modifier,
+    ) {
+        Box(
+            modifier = modifier.padding(top = 8.dp)
+                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                .background(Color.White, RoundedCornerShape(8.dp))
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+            Row(
+                modifier = modifier.fillMaxWidth().padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ComponentRectangleLineLong(isLoadingCompleted = false, isLightModeActive = true)
             }
         }
     }

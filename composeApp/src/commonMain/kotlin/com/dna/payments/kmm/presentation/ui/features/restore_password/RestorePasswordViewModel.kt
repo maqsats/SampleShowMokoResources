@@ -52,7 +52,6 @@ class RestorePasswordViewModel(
 
     private fun sendInstructions(email: String) {
         setState { copy(sendInstruction = ResourceUiState.Loading) }
-        coroutineScope.launch {
             coroutineScope.launch {
                 val result = sendOtpInstructionsUseCase(
                     email = email,
@@ -81,7 +80,6 @@ class RestorePasswordViewModel(
                         }
                     )
                 }
-            }
         }
     }
 }

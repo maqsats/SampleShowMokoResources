@@ -157,4 +157,6 @@
     <string name="loading">Loading...</string>
 
     <string name="english">English</string>
+    <string name="domains">Domains</string>
+    <string name="empty_text" />
 </resources>
