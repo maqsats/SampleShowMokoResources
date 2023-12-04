@@ -15,7 +15,8 @@ import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.repository.StoresRepository
 
 class GetTerminalSettingsUseCase(
-    private val storesRepository: StoresRepository
+    private val storesRepository: StoresRepository,
+    private val getDetailTerminalSettingsUseCase: GetDetailTerminalSettingsUseCase
 ) {
     suspend operator fun invoke(paymentMethodType: PaymentMethodType): Response<List<TerminalSetting>> =
         when (val response = storesRepository.getStores()) {
@@ -98,7 +99,12 @@ class GetTerminalSettingsUseCase(
             paymentMethodType = paymentMethodType,
             countTerminal = countTerminal,
             activeTerminal = activeTerminal,
-            id = storeItem.id
+            id = storeItem.id,
+            detailTerminalSettingList = getDetailTerminalSettingsUseCase(
+                stores = storesApiModel,
+                storeItemId = storeItem.id,
+                paymentMethodType = paymentMethodType
+            )
         )
     }
 }

@@ -1,5 +1,8 @@
 package com.dna.payments.kmm.presentation.ui.features.payment_methods_detail
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,8 +25,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -145,8 +152,7 @@ class DetailPaymentMethodsScreen(
                         it.forEach {
                             TerminalSettingItem(
                                 terminalSetting = it,
-                                onItemClicked = {},
-                                detailTerminalSettingList = emptyList()
+                                onItemClicked = {}
                             )
                         }
                     }
@@ -197,77 +203,113 @@ class DetailPaymentMethodsScreen(
     private fun TerminalSettingItem(
         modifier: Modifier = Modifier,
         terminalSetting: TerminalSetting,
-        detailTerminalSettingList: List<DetailTerminalSetting>,
         onItemClicked: (PaymentMethod) -> Unit
     ) {
+        var isExpanded by remember { mutableStateOf<Boolean?>(null) }
+        var currentRotation by remember { mutableStateOf(0f) }
+        val rotation = remember { androidx.compose.animation.core.Animatable(currentRotation) }
+
         Box(
             modifier = modifier.padding(top = 8.dp)
                 .shadow(4.dp, shape = RoundedCornerShape(8.dp))
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .noRippleClickable { onItemClicked(paymentMethod) }
+                .animateContentSize()
+                .noRippleClickable {
+                    if (terminalSetting.detailTerminalSettingList.isNotEmpty()) {
+                        isExpanded = isExpanded != true
+                    }
+                }
         ) {
-            Row(
-                modifier = modifier.fillMaxWidth().padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    DNAText(
-                        text = terminalSetting.name
+            LaunchedEffect(isExpanded)
+            {
+                if (isExpanded == null) return@LaunchedEffect
+                rotation.animateTo(
+                    targetValue = currentRotation + 180f,
+                    animationSpec = tween(
+                        durationMillis = 200,
+                        easing = LinearOutSlowInEasing
                     )
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                ) {
+                    currentRotation = value
+                }
+            }
+            Column(modifier = modifier.padding(16.dp)) {
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
                         DNAText(
-                            style = DnaTextStyle.Normal14,
-                            text = when (terminalSetting.countTerminal) {
-                                NO_TERMINALS_TO_CONFIGURE -> {
-                                    stringResource(MR.strings.no_terminals_to_configure)
-                                }
-
-                                else -> {
-                                    stringResource(
-                                        MR.strings.count_terminals,
-                                        terminalSetting.countTerminal
-                                    )
-                                }
-                            }
+                            text = terminalSetting.name
                         )
-                        if (terminalSetting.countTerminal != NO_TERMINALS_TO_CONFIGURE) {
-                            DNATextWithBackground(
-                                modifier = modifier.padding(start = 8.dp),
-                                style = when {
-                                    terminalSetting.activeTerminal > NO_TERMINALS_TO_CONFIGURE ->
-                                        DnaTextStyle.BackgroundGreen12
-
-                                    else -> DnaTextStyle.BackgroundGrey12
-                                },
-                                text = when {
-                                    terminalSetting.countTerminal == terminalSetting.activeTerminal
-                                            && terminalSetting.countTerminal != NO_TERMINALS_TO_CONFIGURE -> {
-                                        stringResource(MR.strings.all_active)
-                                    }
-
-                                    terminalSetting.activeTerminal > NO_TERMINALS_TO_CONFIGURE -> {
-                                        stringResource(
-                                            MR.strings.number_active,
-                                            terminalSetting.activeTerminal
-                                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            DNAText(
+                                style = DnaTextStyle.Normal14,
+                                text = when (terminalSetting.countTerminal) {
+                                    NO_TERMINALS_TO_CONFIGURE -> {
+                                        stringResource(MR.strings.no_terminals_to_configure)
                                     }
 
                                     else -> {
-                                        stringResource(MR.strings.no_active)
+                                        stringResource(
+                                            MR.strings.count_terminals,
+                                            terminalSetting.countTerminal
+                                        )
                                     }
                                 }
+                            )
+                            if (terminalSetting.countTerminal != NO_TERMINALS_TO_CONFIGURE) {
+                                DNATextWithBackground(
+                                    modifier = modifier.padding(start = 8.dp),
+                                    style = when {
+                                        terminalSetting.activeTerminal > NO_TERMINALS_TO_CONFIGURE ->
+                                            DnaTextStyle.BackgroundGreen12
+
+                                        else -> DnaTextStyle.BackgroundGrey12
+                                    },
+                                    text = when {
+                                        terminalSetting.countTerminal == terminalSetting.activeTerminal
+                                                && terminalSetting.countTerminal != NO_TERMINALS_TO_CONFIGURE -> {
+                                            stringResource(MR.strings.all_active)
+                                        }
+
+                                        terminalSetting.activeTerminal > NO_TERMINALS_TO_CONFIGURE -> {
+                                            stringResource(
+                                                MR.strings.number_active,
+                                                terminalSetting.activeTerminal
+                                            )
+                                        }
+
+                                        else -> {
+                                            stringResource(MR.strings.no_active)
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    if (terminalSetting.countTerminal > 0) {
+                        Icon(
+                            painter = painterResource(MR.images.ic_dropdown_arrow),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.rotate(rotation.value)
+                        )
+                    }
+                }
+                if (isExpanded == true) {
+                    Spacer(modifier = Modifier.height(Paddings.small))
+                    Column {
+                        terminalSetting.detailTerminalSettingList.forEachIndexed { index, item ->
+                            DetailTerminalSettingItem(
+                                detailTerminalSetting = item
                             )
                         }
                     }
                 }
-                Icon(
-                    painter = painterResource(MR.images.ic_arrow_up),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
             }
         }
     }
@@ -325,11 +367,6 @@ class DetailPaymentMethodsScreen(
                 DNAText(
                     text = domain.name
                 )
-                Icon(
-                    painter = painterResource(MR.images.ic_trash),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
             }
         }
     }
@@ -354,6 +391,31 @@ class DetailPaymentMethodsScreen(
             }
         }
     }
+
+    @Composable
+    private fun DetailTerminalSettingItem(
+        modifier: Modifier = Modifier,
+        detailTerminalSetting: DetailTerminalSetting
+    ) {
+        Box(
+            modifier = modifier.padding(top = 16.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                DNAText(
+                    text = detailTerminalSetting.id,
+                    maxLines = 1,
+                    modifier = modifier.padding(end = 16.dp)
+                )
+            }
+        }
+    }
+
 
     companion object {
         const val NO_TERMINALS_TO_CONFIGURE = 0
