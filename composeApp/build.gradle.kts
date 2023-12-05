@@ -58,8 +58,10 @@ kotlin {
 
         pod("GoogleMaps") {
             version = "8.2.0"
+            extraOpts += listOf("-compiler-option", "-fmodules")
         }
-        pod ("FirebaseAnalytics")
+
+        pod("FirebaseAnalytics")
 
         podfile = project.file("../iosApp/Podfile")
         framework {

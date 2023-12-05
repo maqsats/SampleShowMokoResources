@@ -13,9 +13,11 @@ import platform.Foundation.NSLog
 import platform.Foundation.timeIntervalSince1970
 import platform.UIKit.UIDevice
 import platform.darwin.NSObject
+import kotlin.experimental.ExperimentalNativeApi
 import kotlin.native.ref.WeakReference
 import kotlin.time.Duration.Companion.seconds
 
+@OptIn(ExperimentalNativeApi::class, ExperimentalForeignApi::class)
 class Tracker constructor(
     locationsChannel: Channel<LatLng>,
     extendedLocationsChannel: Channel<ExtendedLocation>,
@@ -25,7 +27,6 @@ class Tracker constructor(
     private val locationsChannel = WeakReference(locationsChannel)
     private val extendedLocationsChannel = WeakReference(extendedLocationsChannel)
 
-    @OptIn(ExperimentalForeignApi::class)
     @Suppress("ReturnCount")
     override fun locationManager(manager: CLLocationManager, didUpdateLocations: List<*>) {
         val locations = didUpdateLocations as List<CLLocation>
