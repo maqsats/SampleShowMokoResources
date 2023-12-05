@@ -9,3 +9,9 @@ plugins {
     alias(libs.plugins.sqlDelight).apply(false)
     alias(libs.plugins.resource.generator).apply(false)
 }
+
+buildscript {
+    dependencies {
+        classpath(libs.google.services)
+    }
+}

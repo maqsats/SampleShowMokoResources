@@ -9,6 +9,7 @@ Pod::Spec.new do |spec|
     spec.vendored_frameworks      = 'build/cocoapods/framework/ComposeApp.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target = '14.0'
+    spec.dependency 'FirebaseAnalytics'
     spec.dependency 'GoogleMaps', '8.2.0'
                 
     spec.pod_target_xcconfig = {

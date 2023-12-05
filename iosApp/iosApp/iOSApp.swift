@@ -3,11 +3,13 @@ import SwiftUI
 import ComposeApp
 import GoogleMaps
 import MapKit
+import Firebase
 
 @main
 struct iosApp: App {
     init() {
         KoinKt.doInitKoin()
+        FirebaseApp.configure()
     }
 
     var body: some Scene {

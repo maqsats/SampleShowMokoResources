@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "584933479665",
+    "project_id": "merchant-portal-app-da2ef",
+    "storage_bucket": "merchant-portal-app-da2ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584933479665:android:ba9ae55522ee6709384550",
+        "android_client_info": {
+          "package_name": "com.dna.payments.kmm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6dR4e7RV2tJc_cr9S4QhJceKJmhQw5J8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584933479665:android:c8810d3b6bd96df1384550",
+        "android_client_info": {
+          "package_name": "com.dnapayments.mp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6dR4e7RV2tJc_cr9S4QhJceKJmhQw5J8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

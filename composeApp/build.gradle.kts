@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.sqlDelight)
     alias(libs.plugins.resource.generator)
     alias(libs.plugins.parcelize)
+    id("com.google.gms.google-services")
 }
 
 
@@ -58,6 +59,7 @@ kotlin {
         pod("GoogleMaps") {
             version = "8.2.0"
         }
+        pod ("FirebaseAnalytics")
 
         podfile = project.file("../iosApp/Podfile")
         framework {
@@ -117,6 +119,8 @@ kotlin {
                 implementation(libs.accompanist.systemuicontroller)
                 implementation(libs.maps.compose)
                 implementation(libs.ui.tooling.preview)
+                api(project.dependencies.platform(libs.firebase.bom))
+                api(libs.firebase.analytics.ktx)
             }
         }
 
