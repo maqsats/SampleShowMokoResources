@@ -1,7 +1,9 @@
 package com.dna.payments.kmm.utils.firebase
 
 import cocoapods.FirebaseAnalytics.FIRAnalytics
+import kotlinx.cinterop.ExperimentalForeignApi
 
+@OptIn(ExperimentalForeignApi::class)
 actual fun logEvent(
     name: String,
     parameters: Map<String, Any?>
