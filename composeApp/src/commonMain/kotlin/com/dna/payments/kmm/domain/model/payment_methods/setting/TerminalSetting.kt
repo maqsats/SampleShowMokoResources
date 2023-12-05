@@ -9,5 +9,6 @@ data class TerminalSetting(
     val name: String,
     val paymentMethodType: PaymentMethodType,
     val countTerminal: Int,
-    val activeTerminal: Int
+    val activeTerminal: Int,
+    val detailTerminalSettingList: List<DetailTerminalSetting>
 ) : Parcelable

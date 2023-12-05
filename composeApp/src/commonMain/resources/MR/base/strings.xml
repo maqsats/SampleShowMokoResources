@@ -88,7 +88,7 @@
     <!--    payment methods-->
     <string name="apple_pay">Apple Pay</string>
     <string name="google_pay">Google Pay</string>
-    <string name="pay_pall">PayPall</string>
+    <string name="pay_pall">PayPal</string>
     <string name="pay_by_bank">Pay by Bank</string>
     <string name="open_bank">Open Bank</string>
     <string name="klarna">Klarna</string>

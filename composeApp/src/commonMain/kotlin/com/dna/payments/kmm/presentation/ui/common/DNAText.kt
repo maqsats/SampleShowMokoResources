@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.poppinsFontFamily
@@ -17,14 +18,17 @@ fun DNAText(
     text: String,
     modifier: Modifier = Modifier,
     style: TextStyle = DnaTextStyle.Normal16,
-    textAlign: TextAlign = TextAlign.Start
+    textAlign: TextAlign = TextAlign.Start,
+    maxLines: Int? = null
 ) {
     Text(
         text = text,
         style = style,
         modifier = modifier,
         fontFamily = poppinsFontFamily(),
-        textAlign = textAlign
+        textAlign = textAlign,
+        maxLines = maxLines ?: Int.MAX_VALUE,
+        overflow = TextOverflow.Ellipsis
     )
 }
 

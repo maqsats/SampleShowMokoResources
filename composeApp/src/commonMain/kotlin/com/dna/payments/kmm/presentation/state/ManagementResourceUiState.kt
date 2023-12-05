@@ -15,23 +15,15 @@ fun <T> ManagementResourceUiState(
     onTryAgain: () -> Unit,
     msgTryAgain: String = "No data to show",
     onCheckAgain: () -> Unit,
-    msgCheckAgain: String = "An error has occurred"
+    msgCheckAgain: @Composable () -> Unit = { Empty() }
 ) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
         when (resourceUiState) {
-            is ResourceUiState.Empty -> Empty(
-                modifier = modifier,
-                onCheckAgain = onCheckAgain,
-                msg = msgCheckAgain
-            )
-            is ResourceUiState.Error -> Error(
-                modifier = modifier,
-                onTryAgain = onTryAgain,
-                msg = msgTryAgain
-            )
+            is ResourceUiState.Empty -> msgCheckAgain()
+            is ResourceUiState.Error -> msgCheckAgain()
             ResourceUiState.Loading -> loadingView()
             is ResourceUiState.Success -> successView(resourceUiState.data)
             ResourceUiState.Idle -> Unit
