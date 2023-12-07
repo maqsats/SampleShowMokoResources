@@ -20,7 +20,7 @@ class OnlinePaymentsScreen : DrawerScreen {
     override val isFilterEnabled = false
 
     @Composable
-    override fun DrawerContent() {  // Just for testing purposes
+    override fun Content() {  // Just for testing purposes
 
     }
 

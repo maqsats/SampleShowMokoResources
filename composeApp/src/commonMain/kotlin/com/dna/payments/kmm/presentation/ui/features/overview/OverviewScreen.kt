@@ -1,68 +1,80 @@
 package com.dna.payments.kmm.presentation.ui.features.overview
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Text
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
-import com.dna.payments.kmm.presentation.theme.DnaTextStyle
-import com.dna.payments.kmm.presentation.ui.common.DNAText
+import com.dna.payments.kmm.presentation.ui.common.DnaTabRow
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
 import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
+import kotlinx.coroutines.flow.collectLatest
 
+
+@OptIn(ExperimentalFoundationApi::class)
 class OverviewScreen : DrawerScreen {
 
     override val isFilterEnabled = true
 
     @Composable
-    override fun DrawerContent() { // Just for testing purposes
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth(),
-        ) {
-            items (100) {
-                Text(
-                    text = "Item $it",
-                    modifier = Modifier.padding(8.dp)
-                )
+    override fun Content() {
+
+        val overviewScreen = getScreenModel<OverviewViewModel>()
+        val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
+
+        LaunchedEffect(key1 = Unit) {
+            overviewScreen.effect.collectLatest { effect ->
+                when (effect) {
+                    is OverviewContract.Effect.OnPageChanged -> {
+                        pagerState.animateScrollToPage(effect.position)
+                    }
+                }
             }
         }
+
+        LaunchedEffect(pagerState) {
+            snapshotFlow { pagerState.currentPage }.collect { page ->
+                overviewScreen.setEvent(OverviewContract.Event.OnPageChanged(page))
+            }
+        }
+
+        HorizontalPager(
+            modifier = Modifier.fillMaxSize(),
+            state = pagerState,
+            userScrollEnabled = true,
+            pageContent = {}
+        )
     }
 
     @Composable
-    override fun DrawerHeader() {   // Just for testing purposes
-        Column {
-            Spacer(modifier = Modifier.height(10.dp))
-            Box(
-                Modifier.fillMaxWidth().background(Color(0xFFF8F9F9)),
-                contentAlignment = Alignment.CenterStart
-            ) {
-                DNAText(
-                    modifier = Modifier.padding(
-                        vertical = 10.dp,
-                        horizontal = 16.dp
-                    ),
-                    text = "Overview",
-                    style = DnaTextStyle.Bold22,
-                )
+    override fun DrawerHeader() {
+        val overviewScreen = getScreenModel<OverviewViewModel>()
+        val state by overviewScreen.uiState.collectAsState()
+
+        DnaTabRow(
+            tabList = listOf(
+                stringResource(MR.strings.pos_payments),
+                stringResource(MR.strings.online_payments),
+            ),
+            selectedPagePosition = state.selectedPage,
+            onTabClick = {
+                overviewScreen.setEvent(OverviewContract.Event.OnPageChanged(it))
             }
-        }
+        )
     }
 
     @Composable
-    override fun DrawerFilter() {  // Just for testing purposes
+    override fun DrawerFilter() {
         Image(
             modifier = Modifier.fillMaxSize(),
             alignment = Alignment.CenterStart,

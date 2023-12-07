@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.nav_item.NavItemPosition
 import com.dna.payments.kmm.domain.model.nav_item.SettingsPosition
@@ -31,6 +30,7 @@ import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.CurrentDrawerScreen
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.LocalDrawerNavigator
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.NavigatorContent
+import com.dna.payments.kmm.utils.navigation.drawer_navigation.compositionUniqueId
 import com.dna.payments.kmm.utils.navigation.internal.ChildrenNavigationDisposableEffect
 import com.dna.payments.kmm.utils.navigation.internal.DrawerNavigatorDisposableEffect
 import com.dna.payments.kmm.utils.navigation.internal.DrawerStepDisposableEffect
@@ -40,8 +40,6 @@ import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.launch
 
 class DrawerNavigationScreen : Screen {
-
-    override val key = uniqueScreenKey
 
     @Composable
     override fun Content() {
@@ -65,7 +63,7 @@ class DrawerNavigationScreen : Screen {
             val navigator =
                 rememberDrawerNavigator(
                     listOf(getInitialScreen()),
-                    key,
+                    compositionUniqueId(),
                     disposeBehavior,
                     LocalDrawerNavigator.current
                 )
@@ -139,5 +137,5 @@ class DrawerNavigationScreen : Screen {
             }
         }
 
-    private fun getInitialScreen() = PaymentMethodsScreen()
+    private fun getInitialScreen() = OverviewScreen()
 }

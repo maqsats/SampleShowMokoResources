@@ -1,24 +1,19 @@
 package com.dna.payments.kmm.utils.navigation.drawer_navigation
 
 import androidx.compose.runtime.Composable
+import cafe.adriel.voyager.core.platform.multiplatformName
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.core.screen.uniqueScreenKey
 
 interface DrawerScreen : Screen {
     override val key: ScreenKey
-        get() = uniqueScreenKey
+        get() = commonKeyGeneration()
 
     val isFilterEnabled: Boolean
         get() = true
 
     @Composable
-    override fun Content() {
-        DrawerContent()
-    }
-
-    @Composable
-    fun DrawerContent()
+    override fun Content()
 
     @Composable
     fun DrawerHeader()
@@ -26,3 +21,7 @@ interface DrawerScreen : Screen {
     @Composable
     fun DrawerFilter()
 }
+
+internal fun DrawerScreen.commonKeyGeneration() =
+    this::class.multiplatformName
+        ?: error("Default ScreenKey not found, please provide your own key")
