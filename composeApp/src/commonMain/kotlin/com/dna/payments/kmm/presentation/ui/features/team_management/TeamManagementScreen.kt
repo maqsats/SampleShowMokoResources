@@ -31,6 +31,9 @@ import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DNAText
+import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
+import com.dna.payments.kmm.utils.extension.capitalizeFirstLetter
+import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
@@ -126,15 +129,36 @@ class TeamManagementScreen : DrawerScreen {
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
                 .wrapContentHeight()
+                .noRippleClickable {
+
+                }
         ) {
-            Row(
-                modifier = modifier.fillMaxWidth().padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                DNAText(
-                    text = teammate.firstName
-                )
+            Column(modifier = modifier.padding(16.dp)) {
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        DNAText(
+                            text = teammate.firstName + " " + teammate.lastName,
+                            style = DnaTextStyle.SemiBold16
+                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            DNAText(
+                                style = DnaTextStyle.WithAlpha12,
+                                text = teammate.roles[0].capitalizeFirstLetter()
+                            )
+                        }
+                    }
+                    DNATextWithIcon(
+                        text = stringResource(teammate.status.displayName),
+                        style = DnaTextStyle.WithAlphaNormal12,
+                        icon = teammate.status.icon,
+                        textColor = teammate.status.textColor,
+                        backgroundColor = teammate.status.backgroundColor
+                    )
+                }
             }
         }
     }
@@ -155,7 +179,10 @@ class TeamManagementScreen : DrawerScreen {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ComponentRectangleLineLong(isLoadingCompleted = false, isLightModeActive = true)
+                ComponentRectangleLineLong(
+                    isLoadingCompleted = false,
+                    isLightModeActive = true
+                )
             }
         }
     }
