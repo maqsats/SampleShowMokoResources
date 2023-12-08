@@ -28,9 +28,9 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.pincode.Code
@@ -60,11 +60,10 @@ import org.koin.core.parameter.parametersOf
 
 
 class PinScreen : Screen {
-    override val key: ScreenKey = uniqueScreenKey
+    override val key: ScreenKey = "PinScreen"
 
     @Composable
     override fun Content() {
-
         val title = stringResource(MR.strings.biometric_authentication)
         val requestReason =
             stringResource(MR.strings.biometric_authentication_description)
@@ -82,6 +81,13 @@ class PinScreen : Screen {
             )
         }
 
+        LifecycleEffect(
+            onDisposed = {
+                pinViewModel.setEvent(PinContract.Event.OnDispose)
+            }
+        )
+
+
         BindBiometryAuthenticatorEffect(pinViewModel.biometryAuthenticator)
 
         val state by pinViewModel.uiState.collectAsState()
@@ -97,7 +103,7 @@ class PinScreen : Screen {
                         navigator.replaceAll(LoginScreen())
                     }
                     PinContract.Effect.OnPinCorrect -> {
-                        navigator.push(DrawerNavigationScreen())
+                        navigator.replaceAll(DrawerNavigationScreen())
                     }
                 }
             }
@@ -173,8 +179,8 @@ class PinScreen : Screen {
 
             DNAText(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(pinContactState.pinState.value.stringResourceId),
-                style = when (pinContactState.pinState.value) {
+                text = stringResource(pinContactState.pinState.stringResourceId),
+                style = when (pinContactState.pinState) {
                     ERROR,
                     ERROR_REPEAT -> DnaTextStyle.RedBold20
                     else -> DnaTextStyle.GreenBold20
@@ -187,7 +193,7 @@ class PinScreen : Screen {
             CodeField(size = PinViewModel.PinSize) { position ->
                 drawPinPattern(
                     position = position,
-                    value = pinContactState.codePin.value,
+                    value = pinContactState.codePin,
                     configurationProvider = { configuration }
                 )
             }
@@ -268,7 +274,7 @@ class PinScreen : Screen {
 
                                 KeyboardItem.Biometric -> {
                                     KeyboardItemContent(onClick = onBiometric) {
-                                        if (pinContactState.showBiometric.value) {
+                                        if (pinContactState.showBiometric) {
                                             Icon(
                                                 modifier = Modifier.size(50.dp),
                                                 painter = painterResource(MR.images.face_id),

@@ -1,7 +1,6 @@
 package com.dna.payments.kmm.presentation.ui.features.pincode
 
-import androidx.compose.runtime.mutableStateOf
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
 import com.dna.payments.kmm.domain.model.pincode.Code
@@ -30,18 +29,21 @@ class PinViewModel(
     private var repeatString = ""
 
     init {
-        currentState.pinState.value =
-            if (pinUseCase.isPinCodeExist()) PinState.ENTER else PinState.CREATE
-        currentState.showBiometric.value = pinUseCase.isPinCodeExist()
+        setState {
+            copy(
+                pinState = if (pinUseCase.isPinCodeExist()) PinState.ENTER else PinState.CREATE,
+                showBiometric = pinUseCase.isPinCodeExist()
+            )
+        }
     }
 
-    override fun createInitialState(): PinContract.State = PinContract.State(
-        codePin = mutableStateOf(Code.Pin()),
-        pinState = mutableStateOf(
-            PinState.ENTER
-        ),
+    override fun createInitialState(): PinContract.State = getInitialState()
+
+    private fun getInitialState() = PinContract.State(
+        codePin = Code.Pin(),
+        pinState = PinState.ENTER,
         getAccessToken = ResourceUiState.Idle,
-        showBiometric = mutableStateOf(false)
+        showBiometric = false
     )
 
     override fun handleEvent(event: PinContract.Event) {
@@ -58,11 +60,14 @@ class PinViewModel(
             PinContract.Event.OnBiometricClick -> {
                 showBiometric()
             }
+            PinContract.Event.OnDispose -> {
+                setState { getInitialState() }
+            }
         }
     }
 
     private fun showBiometric() {
-        coroutineScope.launch {
+        screenModelScope.launch {
             try {
                 val isSuccess = biometryAuthenticator.checkBiometryAuthentication(
                     requestTitle = title.desc(),
@@ -86,73 +91,113 @@ class PinViewModel(
         }
     }
 
-    private fun onEraseClicked() = with(currentState) {
+    private fun onEraseClicked() {
         when {
             repeatString.isNotEmpty() -> {
                 repeatString = repeatString.dropLast(1)
                 if (repeatString.isEmpty()) {
-                    pinState.value = PinState.ENTER
-                    codePin.value = Code.Pin(input = pinString)
+                    setState {
+                        copy(
+                            pinState = PinState.ENTER,
+                            codePin = Code.Pin(input = pinString)
+                        )
+                    }
                     return
                 }
-                codePin.value = Code.Pin(input = repeatString)
+                setState {
+                    copy(
+                        codePin = Code.Pin(input = repeatString)
+                    )
+                }
             }
             pinString.isNotEmpty() -> {
                 pinString = pinString.dropLast(1)
-                codePin.value = Code.Pin(input = pinString)
-                pinState.value = PinState.ENTER
+                setState {
+                    copy(
+                        pinState = PinState.ENTER,
+                        codePin = Code.Pin(input = pinString)
+                    )
+                }
             }
         }
     }
 
     private fun onNumberEntered(numPad: String) = with(currentState) {
-        if (pinState.value == PinState.SUCCESS || pinState.value == PinState.ERROR) return@with
+        if (pinState == PinState.SUCCESS || pinState == PinState.ERROR) return@with
         when {
             pinString.length == 4 && repeatString.length < 4 -> {
                 repeatString += numPad
-                codePin.value = Code.Pin(input = repeatString)
+                setState {
+                    copy(
+                        codePin = Code.Pin(input = repeatString)
+                    )
+                }
 
                 if (repeatString.length == 4) {
                     if (repeatString == pinString) {
                         pinUseCase.savePin(pinString)
-                        pinState.value = PinState.SUCCESS
+                        setState { copy(pinState = PinState.SUCCESS) }
                         setEffect { PinContract.Effect.OnPinCorrect }
                     } else {
-                        coroutineScope.launch {
-                            codePin.value = Code.Pin(isCorrect = false, input = pinString)
-                            pinState.value = PinState.ERROR
+                        screenModelScope.launch {
+                            setState {
+                                copy(
+                                    pinState = PinState.ERROR,
+                                    codePin = Code.Pin(isCorrect = false, input = repeatString)
+                                )
+                            }
                             delay(1000)
                             pinString = ""
                             repeatString = ""
-                            pinState.value = PinState.ENTER
-                            codePin.value = Code.Pin(input = pinString)
+                            setState {
+                                copy(
+                                    pinState = PinState.ENTER,
+                                    codePin = Code.Pin(input = pinString)
+                                )
+                            }
                         }
                     }
                 }
             }
             pinString.length < 4 -> {
                 pinString += numPad
-                codePin.value = Code.Pin(input = pinString)
+                setState {
+                    copy(
+                        codePin = Code.Pin(input = pinString)
+                    )
+                }
                 if (pinString.length == 4) {
                     if (pinUseCase.isPinCodeExist()) {
                         if (pinUseCase.isPinCorrect(pinString)) {
                             getAccessToken()
                         } else {
-                            coroutineScope.launch {
+                            screenModelScope.launch {
                                 pinString = ""
-                                codePin.value = Code.Pin(isCorrect = false)
-                                pinState.value = PinState.ERROR_REPEAT
+                                setState {
+                                    copy(
+                                        pinState = PinState.ERROR_REPEAT,
+                                        codePin = Code.Pin(isCorrect = false)
+                                    )
+                                }
                                 delay(1000)
                                 pinString = ""
                                 repeatString = ""
-                                pinState.value = PinState.ENTER
-                                codePin.value = Code.Pin(input = pinString)
+                                setState {
+                                    copy(
+                                        pinState = PinState.ENTER,
+                                        codePin = Code.Pin(input = pinString)
+                                    )
+                                }
                             }
                         }
                         return
                     }
-                    codePin.value = Code.Pin(input = repeatString)
-                    pinState.value = PinState.REPEAT
+                    setState {
+                        copy(
+                            pinState = PinState.REPEAT,
+                            codePin = Code.Pin(input = repeatString)
+                        )
+                    }
                 }
             }
         }
@@ -161,12 +206,16 @@ class PinViewModel(
     private fun onResetPin() = with(currentState) {
         pinString = ""
         repeatString = ""
-        codePin.value = Code.Pin(input = pinString)
+        setState {
+            copy(
+                codePin = Code.Pin(input = pinString)
+            )
+        }
     }
 
     private fun getAccessToken() {
         setState { copy(getAccessToken = ResourceUiState.Loading) }
-        coroutineScope.launch {
+        screenModelScope.launch {
             val result = authorizationUseCase.updateToken()
             setState {
                 copy(
