@@ -43,7 +43,7 @@ class PaymentMethodsScreen : DrawerScreen {
     override val isFilterEnabled: Boolean = false
 
     @Composable
-    override fun DrawerContent() {
+    override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
 
         Column(

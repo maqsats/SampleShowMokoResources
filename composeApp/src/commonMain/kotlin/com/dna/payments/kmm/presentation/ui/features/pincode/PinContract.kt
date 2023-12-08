@@ -1,6 +1,5 @@
 package com.dna.payments.kmm.presentation.ui.features.pincode
 
-import androidx.compose.runtime.MutableState
 import com.dna.payments.kmm.domain.model.pincode.Code
 import com.dna.payments.kmm.domain.model.pincode.PinState
 import com.dna.payments.kmm.presentation.model.ResourceUiState
@@ -14,13 +13,14 @@ interface PinContract {
         data object OnErase : Event
         data object OnLogout : Event
         data object OnBiometricClick : Event
+        data object OnDispose : Event
     }
 
     data class State(
-        val codePin: MutableState<Code.Pin>,
+        val codePin: Code.Pin,
         val getAccessToken: ResourceUiState<Unit>,
-        val pinState: MutableState<PinState>,
-        val showBiometric: MutableState<Boolean>,
+        val pinState: PinState,
+        val showBiometric: Boolean,
     ) : UiState
 
     sealed interface Effect : UiEffect {

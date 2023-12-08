@@ -59,7 +59,7 @@ fun CurrentDrawerScreen(drawerState: DrawerState) {
                 currentScreen.DrawerFilter()
             },
             content = {
-                currentScreen.DrawerContent()
+                currentScreen.Content()
             }
         )
     }
@@ -122,7 +122,7 @@ fun DrawerNavigator(
     }
 }
 
-public class DrawerNavigator @InternalVoyagerApi constructor(
+class DrawerNavigator @InternalVoyagerApi constructor(
     screens: List<DrawerScreen>,
     @InternalVoyagerApi public val key: String,
     private val stateHolder: SaveableStateHolder,
@@ -209,7 +209,6 @@ public class DrawerNavigator @InternalVoyagerApi constructor(
     }
 }
 
-@InternalVoyagerApi
 @Composable
 public fun compositionUniqueId(): String = currentCompositeKeyHash.toString(MaxSupportedRadix)
 
