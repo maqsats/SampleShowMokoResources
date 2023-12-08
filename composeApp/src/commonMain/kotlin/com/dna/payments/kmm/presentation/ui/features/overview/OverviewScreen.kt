@@ -1,8 +1,14 @@
 package com.dna.payments.kmm.presentation.ui.features.overview
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -10,13 +16,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.presentation.theme.DnaTextStyle
+import com.dna.payments.kmm.presentation.theme.Paddings
+import com.dna.payments.kmm.presentation.theme.white
+import com.dna.payments.kmm.presentation.ui.common.DNAText
+import com.dna.payments.kmm.presentation.ui.common.DnaFilter
 import com.dna.payments.kmm.presentation.ui.common.DnaTabRow
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
-import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
@@ -51,7 +61,7 @@ class OverviewScreen : DrawerScreen {
         HorizontalPager(
             modifier = Modifier.fillMaxSize(),
             state = pagerState,
-            userScrollEnabled = true,
+            userScrollEnabled = false,
             pageContent = {}
         )
     }
@@ -75,11 +85,47 @@ class OverviewScreen : DrawerScreen {
 
     @Composable
     override fun DrawerFilter() {
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            alignment = Alignment.CenterStart,
-            painter = painterResource(MR.images.header),
-            contentDescription = null
-        )
+        LazyRow(modifier = Modifier.padding(start = Paddings.small)) {
+            item {
+                DnaFilter(
+                    dropDownContent = {
+                        DNAText(
+                            modifier = Modifier.wrapContentWidth(),
+                            text = stringResource(MR.strings.all_statuses),
+                            style = DnaTextStyle.Medium14
+                        )
+                    },
+                    bottomSheetContent = {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth().height(300.dp).background(white)
+                        ) {
+                            item {
+                                DNAText(text = stringResource(MR.strings.all_statuses))
+                            }
+                        }
+                    }
+                )
+            }
+            item {
+                DnaFilter(
+                    dropDownContent = {
+                        DNAText(
+                            modifier = Modifier.wrapContentWidth(),
+                            text = stringResource(MR.strings.all_statuses),
+                            style = DnaTextStyle.Medium14
+                        )
+                    },
+                    bottomSheetContent = {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth().height(300.dp).background(white)
+                        ) {
+                            item {
+                                DNAText(text = stringResource(MR.strings.all_statuses))
+                            }
+                        }
+                    }
+                )
+            }
+        }
     }
 }
