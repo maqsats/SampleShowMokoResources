@@ -7,6 +7,7 @@ import com.dna.payments.kmm.presentation.ui.features.new_password.NewPasswordVie
 import com.dna.payments.kmm.presentation.ui.features.payment_methods_detail.DetailPaymentMethodsViewModel
 import com.dna.payments.kmm.presentation.ui.features.pincode.PinViewModel
 import com.dna.payments.kmm.presentation.ui.features.restore_password.RestorePasswordViewModel
+import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementViewModel
 import com.dna.payments.kmm.presentation.ui.features.verification_code.VerificationCodeViewModel
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
@@ -24,6 +25,7 @@ val viewModelModule = module {
         )
     }
     factoryOf(::NavAuthViewModel)
+    factoryOf(::TeamManagementViewModel)
     factoryOf(::RestorePasswordViewModel)
     factoryOf(::VerificationCodeViewModel)
     factoryOf(::NewPasswordViewModel)
