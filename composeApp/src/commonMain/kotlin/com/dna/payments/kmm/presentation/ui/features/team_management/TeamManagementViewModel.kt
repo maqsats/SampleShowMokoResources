@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class TeamManagementViewModel(
     private val teamManagementByUserPageSource: TeamManagementByUserPageSource,
+    private val teamManagementInvitedPageSource: TeamManagementInvitedPageSource,
     private val accessLevelUseCase: AccessLevelUseCase
 ) : BaseViewModel<TeamManagementContract.Event, TeamManagementContract.State, TeamManagementContract.Effect>() {
 
@@ -35,13 +36,58 @@ class TeamManagementViewModel(
         TeamManagementContract.State(
             teammateListAll = ResourceUiState.Idle,
             teammateListInvited = ResourceUiState.Idle,
-            hasPermission = false
+            hasPermission = false,
+            selectedPage = 0
         )
 
     override fun handleEvent(event: TeamManagementContract.Event) {
         when (event) {
             is TeamManagementContract.Event.OnInit -> {
                 getTeammateList()
+                getInvitedTeammateList()
+            }
+
+            is TeamManagementContract.Event.OnPageChanged -> {
+                setState {
+                    copy(selectedPage = event.position)
+                }
+                setEffect {
+                    TeamManagementContract.Effect.OnPageChanged(event.position)
+                }
+            }
+        }
+    }
+
+    private fun getInvitedTeammateList() {
+        setState { copy(teammateListInvited = ResourceUiState.Loading) }
+        screenModelScope.launch {
+            teamManagementInvitedPageSource.updateParameters(
+                TeamManagementSearchParameters(
+                    role = if (role == UserType.ALL) "" else role.displayName.lowercase(),
+                    isActive = false
+                )
+            )
+            val result = teamManagementInvitedPageSource.onLoadMore()
+            setState {
+                copy(
+                    teammateListInvited = when (result) {
+                        is Response.Success -> {
+                            ResourceUiState.Success(result.data)
+                        }
+
+                        is Response.Error -> {
+                            ResourceUiState.Error(result.error)
+                        }
+
+                        is Response.NetworkError -> {
+                            ResourceUiState.Error(UiText.DynamicString("Network error"))
+                        }
+
+                        is Response.TokenExpire -> {
+                            ResourceUiState.Error(UiText.DynamicString("Token expired"))
+                        }
+                    }
+                )
             }
         }
     }

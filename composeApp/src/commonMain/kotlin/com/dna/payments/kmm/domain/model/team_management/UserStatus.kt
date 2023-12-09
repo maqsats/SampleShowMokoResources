@@ -46,6 +46,13 @@ enum class UserStatus(
         darkBlue,
         MR.images.ic_ready_to_charge,
         lightBlue
+    ),
+    INVITED(
+        "INVITED",
+        MR.strings.invited,
+        darkBlue,
+        MR.images.ic_ready_to_charge,
+        lightBlue
     );
 
     companion object {

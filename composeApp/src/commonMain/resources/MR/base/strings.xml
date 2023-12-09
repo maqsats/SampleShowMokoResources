@@ -167,4 +167,7 @@
     <string name="change_password">Change password</string>
     <string name="validate_email">Email validation</string>
     <string name="blocked">Blocked</string>
+
+    <string name="all">All</string>
+    <string name="invited">Invited</string>
 </resources>
