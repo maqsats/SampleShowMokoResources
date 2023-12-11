@@ -144,5 +144,14 @@ internal val greenBackground = Color(0xFFE9F4F3)
 internal val drawerBackgroundColor = Color(0xFFF8F9F9)
 internal val greyFirst = Color(0xFFF9FAFA)
 
+internal val lightGreen = Color(0xFFC2E9E3)
+internal val darkGreen = Color(0xFF317E72)
+
+internal val lightBlue = Color(0xFFC7DDFF)
+internal val darkBlue = Color(0xFF3D5F92)
+
+internal val lightGrey = Color(0xFFF1F2F2)
+internal val darkGrey = Color(0xFF7F8286)
+
 internal val blueDrawer = Color(0xFFC7DDFF)
 internal val seed = Color(0xFF2C3639)

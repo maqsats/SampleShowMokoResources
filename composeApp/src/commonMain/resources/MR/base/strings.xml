@@ -163,4 +163,12 @@
     <string name="empty_text" />
     <string name="all_statuses">All Statuses</string>
     <string name="team_management">Team Management</string>
+
+    <string name="active">Active</string>
+    <string name="change_password">Change password</string>
+    <string name="validate_email">Email validation</string>
+    <string name="blocked">Blocked</string>
+
+    <string name="all">All</string>
+    <string name="invited">Invited</string>
 </resources>

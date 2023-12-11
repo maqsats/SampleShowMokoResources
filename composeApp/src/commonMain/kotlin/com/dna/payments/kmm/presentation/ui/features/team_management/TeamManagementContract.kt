@@ -9,15 +9,23 @@ import com.dna.payments.kmm.presentation.mvi.UiState
 interface TeamManagementContract {
     sealed interface Event : UiEvent {
         data object OnInit : Event
+        data class OnPageChanged(
+            val position: Int
+        ) : Event
     }
 
     data class State(
         val teammateListAll: ResourceUiState<List<Teammate>>,
         val teammateListInvited: ResourceUiState<List<Teammate>>,
-        val hasPermission: Boolean
+        val hasPermission: Boolean,
+        val selectedPage: Int = 0
     ) : UiState
 
-    sealed interface Effect : UiEffect {}
+    sealed interface Effect : UiEffect {
+        data class OnPageChanged(
+            val position: Int
+        ) : Effect
+    }
 }
 
 

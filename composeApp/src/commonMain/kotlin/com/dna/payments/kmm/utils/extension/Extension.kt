@@ -134,3 +134,11 @@ fun Modifier.shimmerLoadingAnimation(
         )
     }
 }
+
+fun String.capitalizeFirstLetter(): String {
+    return if (isNotEmpty()) {
+        this[0].uppercaseChar() + substring(1).lowercase()
+    } else {
+        this
+    }
+}

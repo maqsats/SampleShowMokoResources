@@ -18,6 +18,7 @@ import com.dna.payments.kmm.domain.use_case.GetTerminalSettingsUseCase
 import com.dna.payments.kmm.domain.use_case.SendOtpInstructionsUseCase
 import com.dna.payments.kmm.domain.use_case.VerifyOtpCodeUseCase
 import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementByUserPageSource
+import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementInvitedPageSource
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -32,6 +33,7 @@ val useCasesModule: Module = module {
     singleOf(::DrawerUseCase)
     singleOf(::MerchantUseCase)
     singleOf(::TeamManagementByUserPageSource)
+    singleOf(::TeamManagementInvitedPageSource)
 
     //validation
     factoryOf(::ValidatePassword)
