@@ -38,7 +38,7 @@ local.properties
 xcuserdata/
 Pods/
 
-
+iosApp/iosApp.xcodeproj/project.pbxproj
 iosApp/AppSecrets.plist
 iosApp/Podfile.lock
 
