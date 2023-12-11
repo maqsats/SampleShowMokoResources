@@ -40,6 +40,11 @@ object DnaTextStyle {
         fontSize = 14.sp
     )
 
+    val Medium14 = TextStyle(
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Medium,
+    )
+
     val Normal16 = TextStyle(
         fontSize = 16.sp,
         fontWeight = FontWeight.Normal

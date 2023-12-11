@@ -40,7 +40,6 @@ fun DnaTabRow(
     selectedPagePosition: Int,
     onTabClick: (Int) -> Unit
 ) {
-    println("DnaTabRow: $selectedPagePosition")
     TabRow(
         selectedTabIndex = selectedPagePosition,
         modifier = modifier.fillMaxWidth().height(Dimens.tabBarHeight)
@@ -58,7 +57,6 @@ fun DnaTabRow(
             DnaTab(
                 selected = selectedPagePosition == index,
                 onClick = {
-                    println("DnaTabRow: DnaTab: onClick: index: $index")
                     onTabClick(index)
                 },
                 content = {

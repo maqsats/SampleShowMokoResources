@@ -41,7 +41,7 @@ class TeamManagementScreen : DrawerScreen {
     override val isFilterEnabled: Boolean = false
 
     @Composable
-    override fun DrawerContent() {
+    override fun Content() {
         val teamManagementViewModel = getScreenModel<TeamManagementViewModel>()
         val state by teamManagementViewModel.uiState.collectAsState()
         val navigator = LocalNavigator.currentOrThrow

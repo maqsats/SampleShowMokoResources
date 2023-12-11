@@ -82,7 +82,7 @@ class PinScreen : Screen {
         }
 
         LifecycleEffect(
-            onDisposed = {
+            onStarted = {
                 pinViewModel.setEvent(PinContract.Event.OnDispose)
             }
         )

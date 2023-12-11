@@ -1,7 +1,8 @@
-package com.dna.payments.domain.presentation.team_management.edit_user
+package com.dna.payments.kmm.domain.model.team_management.edit_user
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import dev.icerock.moko.parcelize.Parcelable
+import dev.icerock.moko.parcelize.Parcelize
+
 
 @Parcelize
 data class TeammateEditParam(

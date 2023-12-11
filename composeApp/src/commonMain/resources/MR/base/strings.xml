@@ -146,10 +146,13 @@
     </string>
 
     <string name="klarna_description">
-        DNA Payments are proud to partner with Klarna for the provision of Buy Now, Pay Later (BNPL) transactions. BNPL allows consumers to spread the cost of an applicable purchase without paying any interest or additional fees.
+        DNA Payments are proud to partner with Klarna for the provision of Buy Now, Pay Later (BNPL)
+        transactions. BNPL allows consumers to spread the cost of an applicable purchase without
+        paying any interest or additional fees.
         \n
         \n
-        Once this is enabled consumers will be given the option to choose the Klarna BNPL during the checkout process unless specifically disabled in the integration configuration.
+        Once this is enabled consumers will be given the option to choose the Klarna BNPL during the
+        checkout process unless specifically disabled in the integration configuration.
     </string>
     <string name="profile">Profile</string>
     <string name="add_link">Add Link</string>
@@ -158,5 +161,6 @@
     <string name="english">English</string>
     <string name="domains">Domains</string>
     <string name="empty_text" />
+    <string name="all_statuses">All Statuses</string>
     <string name="team_management">Team Management</string>
 </resources>
