@@ -84,7 +84,7 @@ class DrawerNavigationScreen : Screen {
                         DrawerScreen(
                             onNavItemClick = {
                                 scope.launch {
-                                    navigator.replace(getScreenByNavItem(it))
+                                    navigator.replaceAll(getScreenByNavItem(it))
                                     drawerState.close()
                                 }
                             },
