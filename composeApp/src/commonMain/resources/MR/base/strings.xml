@@ -115,34 +115,50 @@
     </string>
 
     <string name="google_pay_description">
-        Google Pay allows consumers to pay for their goods and services easily and quickly online. The consumers store their payment card information in their Google Wallet which can be invoked from their Android devices or within the Google Chrome web browser.
+        Google Pay allows consumers to pay for their goods and services easily and quickly online.
+        The consumers store their payment card information in their Google Wallet which can be
+        invoked from their Android devices or within the Google Chrome web browser.
         \n
         \n
-        DNA Payments are pleased to offer this payment method to merchants and it can be enabled or disabled here.
+        DNA Payments are pleased to offer this payment method to merchants and it can be enabled or
+        disabled here.
     </string>
 
     <string name="pay_pal_description">
-        DNA Payments have partnered with PayPal to provide merchants with an easy route to add this popular payment method for customers. Merchants with existing PayPal accounts can link them on this page or if a PayPal account needs to be created it can also be done here.
+        DNA Payments have partnered with PayPal to provide merchants with an easy route to add this
+        popular payment method for customers. Merchants with existing PayPal accounts can link them
+        on this page or if a PayPal account needs to be created it can also be done here.
         \n
         \n
-        Once an account is linked the PayPal payment option can easily be enabled or disabled using the toggle option, leaving the merchant in complete control.
+        Once an account is linked the PayPal payment option can easily be enabled or disabled using
+        the toggle option, leaving the merchant in complete control.
     </string>
 
     <string name="pay_by_bank_description">
-        DNA Payments are proud to offer merchants the ability for consumers to pay for goods and services direct from their bank account via the new Pay by Bank app service. Pay by Bank app is a new online checkout option that lets consumers pay using their bank app on their phone. It is designed to make online checkout easier, whilst using all the security of the supported banks.
+        DNA Payments are proud to offer merchants the ability for consumers to pay for goods and
+        services direct from their bank account via the new Pay by Bank app service. Pay by Bank app
+        is a new online checkout option that lets consumers pay using their bank app on their phone.
+        It is designed to make online checkout easier, whilst using all the security of the
+        supported banks.
         \n
         \n
-        Most importantly Pay by Bank app isn’t a separate app to download or service to sign-up for – it works through the bank app consumers use already.
+        Most importantly Pay by Bank app isn’t a separate app to download or service to sign-up for
+        – it works through the bank app consumers use already.
     </string>
 
     <string name="open_by_bank_description">
-        Open Banking is a secure way to receive payment for goods and services direct from the consumer is bank account.
+        Open Banking is a secure way to receive payment for goods and services direct from the
+        consumer is bank account.
         \n
         \n
-        By enabling Open Banking the consumers will have the option to choose their banking provider (from over 50+ financial institutions, a list which is growing all the time) making the payment in a few easy steps. The funds will be debited from the account instantly helping manage available balances more efficient.
+        By enabling Open Banking the consumers will have the option to choose their banking provider
+        (from over 50+ financial institutions, a list which is growing all the time) making the
+        payment in a few easy steps. The funds will be debited from the account instantly helping
+        manage available balances more efficient.
         \n
         \n
-        DNA Payments are proud to have partnered with the leading supplier of Open Banking services, Ecospend, to make this facility available to our customer base.
+        DNA Payments are proud to have partnered with the leading supplier of Open Banking services,
+        Ecospend, to make this facility available to our customer base.
     </string>
 
     <string name="klarna_description">
@@ -195,4 +211,6 @@
     <string name="one_week">1 week</string>
     <string name="forty_eight_hours">48 hours</string>
     <string name="twenty_four_hours">24 hours</string>
+    <string name="date_range">Date range</string>
+    <string name="hyphen">-</string>
 </resources>

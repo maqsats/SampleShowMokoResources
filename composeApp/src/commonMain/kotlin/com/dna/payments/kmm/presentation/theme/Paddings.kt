@@ -3,6 +3,7 @@ package com.dna.payments.kmm.presentation.theme
 import androidx.compose.ui.unit.dp
 
 object Paddings {
+    val minimum = 1.dp
     val default = 0.dp
     val xxSmall = 2.dp
     val extraSmall = 4.dp

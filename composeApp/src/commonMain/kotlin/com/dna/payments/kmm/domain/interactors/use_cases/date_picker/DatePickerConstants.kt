@@ -14,6 +14,7 @@ object DatePickerConstants {
     const val TIME_FORMAT_YEAR = "yyyy"
 
     const val dateFormatter = "d MMM"
+    const val dateFormatterWithYear = "d MMM yyyy"
     const val dateFormatterHM = "d MMM HH:mm"
     const val dateFormatterOnlyHM = "HH:mm"
 

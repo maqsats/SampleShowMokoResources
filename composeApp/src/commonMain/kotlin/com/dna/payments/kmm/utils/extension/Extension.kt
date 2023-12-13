@@ -24,6 +24,9 @@ import com.dna.payments.kmm.data.model.Error
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatter
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterHM
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterOnlyHM
+import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterWithYear
+import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod
+import com.dna.payments.kmm.domain.model.date_picker.DateSelection
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.constants.Constants
@@ -106,6 +109,18 @@ fun DateTime?.isSameDayAs(other: DateTime): Boolean {
 fun DateTime.getFormatted(): String {
     return this.format(dateFormatter)
 }
+
+fun DateTime?.ddMmYyyy(): String {
+    return this?.format(dateFormatterWithYear) ?: ""
+}
+
+fun getDefaultDateRange(): Pair<DatePickerPeriod, DateSelection> = Pair(
+    DatePickerPeriod.TODAY,
+    DateSelection(
+        DateTime.now().startOfDay,
+        DateTime.now().endOfDay
+    )
+)
 
 fun DateTime?.getFormattedHM(): String {
     return this?.format(dateFormatterHM) ?: ""

@@ -10,11 +10,14 @@ import com.dna.payments.kmm.domain.model.date_picker.Menu.POS_PAYMENTS
 import com.dna.payments.kmm.domain.model.date_picker.Menu.REPORTS
 import com.dna.payments.kmm.domain.model.date_picker.Menu.SETTLEMENTS
 
-class DateSelectionUseCase(
-    private val datePeriodUseCase: DatePeriodUseCase
+class GetDateRangeUseCase(
+    private val dateHelper: DateHelper
 ) {
     operator fun invoke(menu: Menu): Pair<DatePickerPeriod, DateSelection> =
         Pair(getDatePickerPeriod(menu), getDateSelection(menu))
+
+    operator fun invoke(datePickerPeriod: DatePickerPeriod): DateSelection =
+        dateHelper.getDateSelectionByDatePickerPeriod(datePickerPeriod)
 
     private fun getDatePickerPeriod(menu: Menu): DatePickerPeriod = when (menu) {
         OVERVIEW -> DatePickerPeriod.TODAY
@@ -26,6 +29,6 @@ class DateSelectionUseCase(
     }
 
     private fun getDateSelection(menu: Menu): DateSelection =
-        datePeriodUseCase.getDateSelectionByDatePickerPeriod(getDatePickerPeriod(menu))
+        dateHelper.getDateSelectionByDatePickerPeriod(getDatePickerPeriod(menu))
 
 }

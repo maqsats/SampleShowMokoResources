@@ -4,12 +4,12 @@ import com.dna.payments.kmm.MR
 import dev.icerock.moko.resources.StringResource
 
 enum class DatePickerPeriod(val stringResource: StringResource) {
-    CURRENT_MONTH(MR.strings.current_month),
-    PREVIOUS_WEEK(MR.strings.previous_week),
-    LAST_WEEK(MR.strings.last_week),
     TODAY(MR.strings.today),
     YESTERDAY(MR.strings.yesterday),
     THIS_WEEK(MR.strings.this_week),
+    LAST_WEEK(MR.strings.last_week),
+    PREVIOUS_WEEK(MR.strings.previous_week),
+    CURRENT_MONTH(MR.strings.current_month),
     LAST_30_DAYS(MR.strings.last_30_days),
     LAST_MONTH(MR.strings.last_month),
     LAST_60_DAYS(MR.strings.last_60_days),

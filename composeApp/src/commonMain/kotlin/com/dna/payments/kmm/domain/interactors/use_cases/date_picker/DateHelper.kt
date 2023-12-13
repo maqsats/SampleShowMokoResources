@@ -39,7 +39,7 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.DateTimeSpan
 
 
-class DatePeriodUseCase {
+class DateHelper {
 
     fun findIntervalType(dateSelection: DateSelection): IntervalType {
         val startDate = dateSelection.startDate
