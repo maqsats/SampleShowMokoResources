@@ -1,4 +1,4 @@
-package com.dna.payments.kmm.domain.interactors.use_cases.date_selection
+package com.dna.payments.kmm.domain.interactors.use_cases.date_picker
 
 object DatePickerConstants {
     const val LIMITED_ACCESS_INDEX = 1
