@@ -1,7 +1,7 @@
 package com.dna.payments.kmm.presentation.ui.features.new_password
 
 import androidx.compose.runtime.mutableStateOf
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.use_case.ChangePasswordUseCase
@@ -85,7 +85,7 @@ class NewPasswordViewModel(
 
     private fun changePassword(email: String, password: String, verificationId: String) {
         setState { copy(newPassword = ResourceUiState.Loading) }
-            coroutineScope.launch {
+            screenModelScope.launch {
                 val result = changePasswordUseCase(
                     email = email,
                     password = password,

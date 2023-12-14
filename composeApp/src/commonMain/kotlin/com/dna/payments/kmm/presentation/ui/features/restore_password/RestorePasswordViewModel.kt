@@ -1,7 +1,7 @@
 package com.dna.payments.kmm.presentation.ui.features.restore_password
 
 import androidx.compose.runtime.mutableStateOf
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.use_case.SendOtpInstructionsUseCase
@@ -52,7 +52,7 @@ class RestorePasswordViewModel(
 
     private fun sendInstructions(email: String) {
         setState { copy(sendInstruction = ResourceUiState.Loading) }
-            coroutineScope.launch {
+            screenModelScope.launch {
                 val result = sendOtpInstructionsUseCase(
                     email = email,
                 )

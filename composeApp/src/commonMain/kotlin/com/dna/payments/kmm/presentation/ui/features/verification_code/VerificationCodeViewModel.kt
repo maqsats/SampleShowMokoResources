@@ -1,7 +1,7 @@
 package com.dna.payments.kmm.presentation.ui.features.verification_code
 
 import androidx.compose.runtime.mutableStateOf
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.domain.interactors.validation.ValidateCode
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.use_case.SendOtpInstructionsUseCase
@@ -62,7 +62,7 @@ class VerificationCodeViewModel(
 
     private fun verifyOtpCode(email: String, code: String) {
         setState { copy(sendCode = ResourceUiState.Loading) }
-            coroutineScope.launch {
+            screenModelScope.launch {
                 val result = verifyOtpCodeUseCase(
                     code = code,
                     email = email,
@@ -95,7 +95,7 @@ class VerificationCodeViewModel(
     }
 
     private fun sendInstructions(email: String) {
-            coroutineScope.launch {
+            screenModelScope.launch {
                 sendOtpInstructionsUseCase(
                     email = email,
                 )
