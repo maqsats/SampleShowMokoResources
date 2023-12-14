@@ -15,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,6 +28,8 @@ import com.dna.payments.kmm.presentation.theme.white
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DnaFilter
 import com.dna.payments.kmm.presentation.ui.common.DnaTabRow
+import com.dna.payments.kmm.presentation.ui.features.date_range.DateRange
+import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeFilter
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
@@ -85,6 +89,11 @@ class OverviewScreen : DrawerScreen {
 
     @Composable
     override fun DrawerFilter() {
+        val overviewScreen = getScreenModel<OverviewViewModel>()
+        val state by overviewScreen.uiState.collectAsState()
+
+        val openDatePickerFilter = rememberSaveable { mutableStateOf(false) }
+
         LazyRow(modifier = Modifier.padding(start = Paddings.small)) {
             item {
                 DnaFilter(
@@ -108,21 +117,24 @@ class OverviewScreen : DrawerScreen {
             }
             item {
                 DnaFilter(
+                    openBottomSheet = openDatePickerFilter,
                     dropDownContent = {
-                        DNAText(
-                            modifier = Modifier.wrapContentWidth(),
-                            text = stringResource(MR.strings.all_statuses),
-                            style = DnaTextStyle.Medium14
+                        DateRangeFilter(
+                            state.dateRange.first
                         )
                     },
                     bottomSheetContent = {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxWidth().height(300.dp).background(white)
-                        ) {
-                            item {
-                                DNAText(text = stringResource(MR.strings.all_statuses))
+                        DateRange(
+                            dateSelection = state.dateRange.second,
+                            onDatePeriodClick = {
+                                openDatePickerFilter.value = false
+                                overviewScreen.setEvent(
+                                    OverviewContract.Event.OnDateSelection(
+                                        it
+                                    )
+                                )
                             }
-                        }
+                        )
                     }
                 )
             }

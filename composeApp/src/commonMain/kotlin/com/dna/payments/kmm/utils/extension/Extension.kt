@@ -21,9 +21,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.data.model.Error
+import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatter
+import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterHM
+import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterOnlyHM
+import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterWithYear
+import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod
+import com.dna.payments.kmm.domain.model.date_picker.DateSelection
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.constants.Constants
+import com.soywiz.klock.DateTime
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
@@ -94,6 +101,34 @@ fun getBasicToken() = "Basic ${
 }"
 
 fun String.toBearerToken() = "Bearer $this"
+
+fun DateTime?.isSameDayAs(other: DateTime): Boolean {
+    return this?.dayOfYear == other.dayOfYear && this.year == other.year
+}
+
+fun DateTime.getFormatted(): String {
+    return this.format(dateFormatter)
+}
+
+fun DateTime?.ddMmYyyy(): String {
+    return this?.format(dateFormatterWithYear) ?: ""
+}
+
+fun getDefaultDateRange(): Pair<DatePickerPeriod, DateSelection> = Pair(
+    DatePickerPeriod.TODAY,
+    DateSelection(
+        DateTime.now().startOfDay,
+        DateTime.now().endOfDay
+    )
+)
+
+fun DateTime?.getFormattedHM(): String {
+    return this?.format(dateFormatterHM) ?: ""
+}
+
+fun DateTime?.getFormattedOnlyHM(): String {
+    return this?.format(dateFormatterOnlyHM) ?: ""
+}
 
 fun Modifier.shimmerLoadingAnimation(
     widthOfShadowBrush: Int = 500,

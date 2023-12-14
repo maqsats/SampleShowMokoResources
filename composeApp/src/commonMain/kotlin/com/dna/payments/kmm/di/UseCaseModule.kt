@@ -5,6 +5,8 @@ import com.dna.payments.kmm.data.use_case.SendOtpInstructionsUseCaseImpl
 import com.dna.payments.kmm.data.use_case.VerifyOtpCodeUseCaseImpl
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DateHelper
+import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.GetDateRangeUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.drawer.DrawerUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_link.PaymentLinkUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
@@ -35,6 +37,8 @@ val useCasesModule: Module = module {
     singleOf(::MerchantUseCase)
     singleOf(::TeamManagementByUserPageSource)
     singleOf(::TeamManagementInvitedPageSource)
+    singleOf(::DateHelper)
+    singleOf(::GetDateRangeUseCase)
 
     //validation
     factoryOf(::ValidatePassword)
