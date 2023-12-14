@@ -23,6 +23,7 @@ import com.dna.payments.kmm.presentation.ui.common.LocalSelectedMerchant
 import com.dna.payments.kmm.presentation.ui.features.help_center.HelpCenterScreen
 import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsScreen
 import com.dna.payments.kmm.presentation.ui.features.overview.OverviewScreen
+import com.dna.payments.kmm.presentation.ui.features.payment_links.PaymentLinksScreen
 import com.dna.payments.kmm.presentation.ui.features.payment_methods.PaymentMethodsScreen
 import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementScreen
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
@@ -127,6 +128,7 @@ class DrawerNavigationScreen : Screen {
             NavItemPosition.ONLINE_PAYMENTS -> OnlinePaymentsScreen()
             NavItemPosition.PAYMENT_METHODS -> PaymentMethodsScreen()
             NavItemPosition.TEAM_MANAGEMENT -> TeamManagementScreen()
+            NavItemPosition.PAYMENT_LINKS -> PaymentLinksScreen()
             else -> {
                 OverviewScreen()
             }

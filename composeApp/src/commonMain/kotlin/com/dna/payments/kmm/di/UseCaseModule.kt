@@ -1,6 +1,7 @@
 package com.dna.payments.kmm.di
 
 import com.dna.payments.kmm.data.use_case.ChangePasswordUseCaseImpl
+import com.dna.payments.kmm.data.use_case.PaymentLinkStatusUseCaseImpl
 import com.dna.payments.kmm.data.use_case.SendOtpInstructionsUseCaseImpl
 import com.dna.payments.kmm.data.use_case.VerifyOtpCodeUseCaseImpl
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
@@ -18,8 +19,10 @@ import com.dna.payments.kmm.domain.use_case.ChangePasswordUseCase
 import com.dna.payments.kmm.domain.use_case.GetDetailTerminalSettingsUseCase
 import com.dna.payments.kmm.domain.use_case.GetDomainsUseCase
 import com.dna.payments.kmm.domain.use_case.GetTerminalSettingsUseCase
+import com.dna.payments.kmm.domain.use_case.PaymentLinkStatusUseCase
 import com.dna.payments.kmm.domain.use_case.SendOtpInstructionsUseCase
 import com.dna.payments.kmm.domain.use_case.VerifyOtpCodeUseCase
+import com.dna.payments.kmm.presentation.ui.features.payment_links.PaymentLinksPageSource
 import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementByUserPageSource
 import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementInvitedPageSource
 import org.koin.core.module.Module
@@ -37,6 +40,7 @@ val useCasesModule: Module = module {
     singleOf(::MerchantUseCase)
     singleOf(::TeamManagementByUserPageSource)
     singleOf(::TeamManagementInvitedPageSource)
+    singleOf(::PaymentLinksPageSource)
     singleOf(::DateHelper)
     singleOf(::GetDateRangeUseCase)
 
@@ -51,6 +55,7 @@ val useCasesModule: Module = module {
     factoryOf(::SendOtpInstructionsUseCaseImpl).bind(SendOtpInstructionsUseCase::class)
     factoryOf(::VerifyOtpCodeUseCaseImpl).bind(VerifyOtpCodeUseCase::class)
     factoryOf(::ChangePasswordUseCaseImpl).bind(ChangePasswordUseCase::class)
+    factoryOf(::PaymentLinkStatusUseCaseImpl).bind(PaymentLinkStatusUseCase::class)
 }
 
 

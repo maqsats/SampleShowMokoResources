@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.data.model.Error
+import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.DATE_FORMAT_WITH_HOUR
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatter
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterHM
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterOnlyHM
@@ -31,6 +32,7 @@ import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.constants.Constants
 import com.soywiz.klock.DateTime
+import com.soywiz.klock.DateTimeTz
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
@@ -126,6 +128,19 @@ fun DateTime?.getFormattedHM(): String {
     return this?.format(dateFormatterHM) ?: ""
 }
 
+fun String.cutSubstringAfterDot(): String {
+    val dotIndex = indexOf('.')
+    return if (dotIndex != -1) {
+        substring(0, dotIndex).replace("T", " ")
+    } else {
+        this
+    }
+}
+
+fun DateTime?.convertToServerFormat(): String {
+    return this?.format(DATE_FORMAT_WITH_HOUR) ?: ""
+}
+
 fun DateTime?.getFormattedOnlyHM(): String {
     return this?.format(dateFormatterOnlyHM) ?: ""
 }
@@ -177,3 +192,8 @@ fun String.capitalizeFirstLetter(): String {
         this
     }
 }
+
+fun DateTimeTz.isEqual(other: DateTime): Boolean {
+    return this.year == other.year && this.month == other.month && this.dayOfMonth == other.dayOfMonth
+}
+
