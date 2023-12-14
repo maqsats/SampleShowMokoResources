@@ -16,7 +16,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,6 +30,7 @@ import com.dna.payments.kmm.presentation.theme.white
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DnaFilter
 import com.dna.payments.kmm.presentation.ui.common.DnaTabRow
+import com.dna.payments.kmm.presentation.ui.common.DnaTextSwitch
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRange
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeFilter
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
@@ -61,12 +64,32 @@ class OverviewScreen : DrawerScreen {
                 overviewScreen.setEvent(OverviewContract.Event.OnPageChanged(page))
             }
         }
+        var selectedTabIndex by remember {
+            mutableStateOf(0)
+        }
 
         HorizontalPager(
             modifier = Modifier.fillMaxSize(),
             state = pagerState,
             userScrollEnabled = false,
-            pageContent = {}
+            pageContent = { pageIndex ->
+                when (pageIndex) {
+                    POS_PAYMENTS -> {
+
+                        DnaTextSwitch(
+                            selectedIndex = selectedTabIndex,
+                            items = listOf("Amount", "Count"),
+                            onSelectionChange = { index ->
+                                selectedTabIndex = index
+                            }
+                        )
+                    }
+
+                    ONLINE_PAYMENTS -> {
+
+                    }
+                }
+            }
         )
     }
 
@@ -139,5 +162,10 @@ class OverviewScreen : DrawerScreen {
                 )
             }
         }
+    }
+
+    companion object {
+        private const val POS_PAYMENTS = 0
+        private const val ONLINE_PAYMENTS = 1
     }
 }
