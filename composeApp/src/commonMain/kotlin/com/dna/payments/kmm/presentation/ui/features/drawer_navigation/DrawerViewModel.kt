@@ -1,6 +1,6 @@
 package com.dna.payments.kmm.presentation.ui.features.drawer_navigation
 
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.drawer.DrawerUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.profile.MerchantUseCase
@@ -38,7 +38,7 @@ class DrawerViewModel(
     }
 
     private fun getMerchants() {
-        coroutineScope.launch {
+        screenModelScope.launch {
             val result = merchantUseCase()
             setState {
                 copy(
@@ -69,7 +69,7 @@ class DrawerViewModel(
     }
 
     private fun changeMerchant(merchantId: String) {
-        coroutineScope.launch {
+        screenModelScope.launch {
             setState { copy(merchantChange = ResourceUiState.Loading) }
             val result = authorizationUseCase.changeMerchant(merchantId)
             setState {

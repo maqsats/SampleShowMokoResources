@@ -1,16 +1,19 @@
 package com.dna.payments.kmm.presentation.mvi
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
 abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect> :
     ScreenModel,
-    KoinComponent
-{
+    KoinComponent {
     private val initialState: State by lazy { createInitialState() }
     abstract fun createInitialState(): State
 
@@ -34,7 +37,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
      * Start listening to Event
      */
     private fun subscribeEvents() {
-        coroutineScope.launch {
+        screenModelScope.launch {
             event.collect {
                 handleEvent(it)
             }
@@ -51,7 +54,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
      */
     fun setEvent(event: Event) {
         val newEvent = event
-        coroutineScope.launch { _event.emit(newEvent) }
+        screenModelScope.launch { _event.emit(newEvent) }
     }
 
     /**
@@ -67,7 +70,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
      */
     protected fun setEffect(builder: () -> Effect) {
         val effectValue = builder()
-        coroutineScope.launch { _effect.send(effectValue) }
+        screenModelScope.launch { _effect.send(effectValue) }
     }
 
 }

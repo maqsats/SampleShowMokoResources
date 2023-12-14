@@ -1,7 +1,7 @@
 package com.dna.payments.kmm.presentation.ui.features.login
 
 import androidx.compose.runtime.mutableStateOf
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
@@ -77,7 +77,7 @@ class LoginViewModel(
 
     private fun authorize(email: String, password: String) {
         setState { copy(authorization = ResourceUiState.Loading) }
-        coroutineScope.launch {
+        screenModelScope.launch {
             val result = authorizationUseCase(
                 userName = email,
                 password = password

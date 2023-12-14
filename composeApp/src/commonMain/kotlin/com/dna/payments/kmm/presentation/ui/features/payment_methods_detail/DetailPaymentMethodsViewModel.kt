@@ -1,6 +1,6 @@
 package com.dna.payments.kmm.presentation.ui.features.payment_methods_detail
 
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.model.payment_methods.setting.PaymentMethodType
 import com.dna.payments.kmm.domain.model.permissions.AccessLevel
@@ -36,7 +36,7 @@ class DetailPaymentMethodsViewModel(
 
     private fun fetchData(paymentMethodType: PaymentMethodType) {
         setState { copy(terminalSettings = ResourceUiState.Loading) }
-            coroutineScope.launch {
+            screenModelScope.launch {
                 val result = getTerminalSettingsUseCase(paymentMethodType)
                 setState {
                     copy(
@@ -66,7 +66,7 @@ class DetailPaymentMethodsViewModel(
         paymentMethodType: PaymentMethodType
     ) {
         setState { copy(domainList = ResourceUiState.Loading) }
-        coroutineScope.launch {
+        screenModelScope.launch {
             val result = getDomainsUseCase(paymentMethodType)
             setState {
                 copy(
