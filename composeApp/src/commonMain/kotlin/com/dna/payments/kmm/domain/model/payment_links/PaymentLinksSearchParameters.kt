@@ -4,6 +4,6 @@ data class PaymentLinksSearchParameters(
     var startDate: String,
     var endDate: String,
     var status: String,
-    var page: Int,
-    var size: Int
+    var page: Int = 0,
+    var size: Int = 0
 )

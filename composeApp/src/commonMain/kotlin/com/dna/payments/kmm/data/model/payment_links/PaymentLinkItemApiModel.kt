@@ -5,8 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PaymentLinkItemApiModel(
     val amount: Double,
-    val attemptedDate: String,
-    val cancelledDate: String,
     val createdDate: String,
     val currency: String,
     val customerName: String,

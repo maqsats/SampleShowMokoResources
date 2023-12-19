@@ -79,7 +79,7 @@ fun DNATextWithIcon(
         Icon(
             painter = painterResource(icon),
             contentDescription = null,
-            tint = Color.Unspecified,
+            tint = textColor,
             modifier = Modifier.height(14.dp).width(14.dp)
         )
         Text(

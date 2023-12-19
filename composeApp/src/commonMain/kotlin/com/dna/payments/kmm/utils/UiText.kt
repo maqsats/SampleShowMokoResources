@@ -1,13 +1,19 @@
 package com.dna.payments.kmm.utils
 
 import androidx.compose.runtime.Composable
+import dev.icerock.moko.parcelize.Parcelable
+import dev.icerock.moko.parcelize.Parcelize
 import dev.icerock.moko.resources.compose.stringResource
 
-sealed class UiText {
-    data class DynamicString(val value: String) : UiText()
+@Parcelize
+sealed class UiText : Parcelable {
+    @Parcelize
+    data class DynamicString(val value: String) : UiText(), Parcelable
+
+    @Parcelize
     class StringResource(
         val stringResource: dev.icerock.moko.resources.StringResource
-    ) : UiText()
+    ) : UiText(), Parcelable
 
     @Composable
     fun getText(): String {

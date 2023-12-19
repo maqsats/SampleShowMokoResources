@@ -3,8 +3,10 @@ package com.dna.payments.kmm.domain.model.payment_links
 import androidx.compose.ui.graphics.Color
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.presentation.theme.darkBlue
+import com.dna.payments.kmm.presentation.theme.darkGreen
 import com.dna.payments.kmm.presentation.theme.darkGrey
 import com.dna.payments.kmm.presentation.theme.lightBlue
+import com.dna.payments.kmm.presentation.theme.lightGreen
 import com.dna.payments.kmm.presentation.theme.lightGrey
 import com.dna.payments.kmm.presentation.theme.outlineGreenColor
 import com.dna.payments.kmm.presentation.theme.white
@@ -28,7 +30,7 @@ enum class PaymentLinkStatus(
         lightBlue
     ),
     ACTIVE(
-        "active", "Active", outlineGreenColor,
+        "active", "Active", darkGreen,
         MR.images.ic_active,
         white
     ),
@@ -38,7 +40,7 @@ enum class PaymentLinkStatus(
         lightGrey
     ),
     VIEWED(
-        "viewed", "Active", outlineGreenColor,
+        "viewed", "Active", darkGreen,
         MR.images.ic_active,
         white,
         MR.images.ic_viewed

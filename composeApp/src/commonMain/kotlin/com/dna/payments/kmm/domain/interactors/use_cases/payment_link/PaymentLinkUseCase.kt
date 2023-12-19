@@ -1,15 +1,20 @@
 package com.dna.payments.kmm.domain.interactors.use_cases.payment_link
 
+import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.map.Mapper
 import com.dna.payments.kmm.domain.model.payment_links.PaymentLink
 import com.dna.payments.kmm.domain.model.payment_links.PaymentLinkByPeriod
 import com.dna.payments.kmm.domain.model.payment_links.PaymentLinkHeader
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.repository.PaymentLinksRepository
+import com.dna.payments.kmm.utils.UiText
+import com.dna.payments.kmm.utils.extension.cutSubstringAfterDot
+import com.dna.payments.kmm.utils.extension.isEqual
+import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.DateTimeSpan
-import com.soywiz.klock.DateTimeTz
-import com.soywiz.klock.TimeFormat
+import com.soywiz.klock.parse
+
 
 class PaymentLinkUseCase(
     private val paymentLinksRepository: PaymentLinksRepository
@@ -33,16 +38,16 @@ class PaymentLinkUseCase(
 
     override fun mapData(from: PaymentLink): List<PaymentLinkByPeriod> {
         val items = from.records
-        val sortedItems = items.sortedWith(compareByDescending { it.createdDate })
 
-        val groupedItems = sortedItems.groupBy {
-            val today = DateTime.now().toString()
-            val itemDate = DateTime.parse(it.createdDate.substringBefore("T"))
+        val groupedItems = items.groupBy {
+            val today = DateTime.now()
+            val itemDate =
+                DateFormat("yyyy-MM-dd HH:mm:ss").parse(it.createdDate.cutSubstringAfterDot())
 
             when {
-                itemDate.isEqual(DateTime.parse(today)) -> "Today"
-                itemDate.isEqual(DateTime.parse(today).minus(DateTimeSpan(days = 1))) -> "Yesterday"
-                else -> itemDate.format("dd MMMM yyyy")
+                itemDate.isEqual(today) -> UiText.StringResource(MR.strings.today)
+                itemDate.isEqual(today.minus(DateTimeSpan(days = 1))) -> UiText.StringResource(MR.strings.yesterday)
+                else -> UiText.DynamicString(itemDate.format("dd MMMM yyyy"))
             }
         }
 
@@ -52,14 +57,10 @@ class PaymentLinkUseCase(
             // Add Header
             result.add(PaymentLinkHeader(title = headerTitle))
 
-            // Add Items
+//            Add Items
             result.addAll(itemList)
         }
-
         return result
     }
 }
 
-private fun DateTimeTz.isEqual(other: DateTimeTz): Boolean {
-    return this.year == other.year && this.month == other.month && this.dayOfMonth == other.dayOfMonth
-}

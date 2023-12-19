@@ -1,5 +1,6 @@
 package com.dna.payments.kmm.domain.model.payment_links
 
+import com.dna.payments.kmm.utils.UiText
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 
@@ -20,8 +21,9 @@ data class PaymentLinkItem(
     val viewedDate: String
 ) : Parcelable, PaymentLinkByPeriod
 
+@Parcelize
 data class PaymentLinkHeader(
-    val title : String
+    val title : UiText
 ) : Parcelable, PaymentLinkByPeriod
 
 interface PaymentLinkByPeriod
