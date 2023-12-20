@@ -75,7 +75,6 @@ class OverviewScreen : DrawerScreen {
             pageContent = { pageIndex ->
                 when (pageIndex) {
                     POS_PAYMENTS -> {
-
                         DnaTextSwitch(
                             selectedIndex = selectedTabIndex,
                             items = listOf("Amount", "Count"),

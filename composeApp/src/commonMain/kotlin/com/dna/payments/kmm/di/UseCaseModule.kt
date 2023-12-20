@@ -6,12 +6,16 @@ import com.dna.payments.kmm.data.use_case.SendOtpInstructionsUseCaseImpl
 import com.dna.payments.kmm.data.use_case.VerifyOtpCodeUseCaseImpl
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.currency.CurrencyUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.currency.DefaultCurrencyUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DateHelper
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.GetDateRangeUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.drawer.DrawerUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_link.PaymentLinkUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.profile.MerchantUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.transaction.DefaultTransactionUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.transaction.TransactionUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidateCode
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
@@ -52,6 +56,8 @@ val useCasesModule: Module = module {
     factoryOf(::GetDomainsUseCase)
     factoryOf(::GetTerminalSettingsUseCase)
     factoryOf(::GetDetailTerminalSettingsUseCase)
+    factoryOf(::DefaultCurrencyUseCase).bind(CurrencyUseCase::class)
+    factoryOf(::DefaultTransactionUseCase).bind(TransactionUseCase::class)
     factoryOf(::SendOtpInstructionsUseCaseImpl).bind(SendOtpInstructionsUseCase::class)
     factoryOf(::VerifyOtpCodeUseCaseImpl).bind(VerifyOtpCodeUseCase::class)
     factoryOf(::ChangePasswordUseCaseImpl).bind(ChangePasswordUseCase::class)

@@ -137,6 +137,15 @@ fun String.cutSubstringAfterDot(): String {
     }
 }
 
+fun DateTime?.daysBetween(other: DateTime?): Int {
+    return if (this == null || other == null) 0 else {
+        val startMillis = this.unixMillisLong
+        val endMillis = other.unixMillisLong
+        val millisecondsPerDay = 24 * 60 * 60 * 1000
+        ((endMillis - startMillis) / millisecondsPerDay).toInt()
+    }
+}
+
 fun DateTime?.convertToServerFormat(): String {
     return this?.format(DATE_FORMAT_WITH_HOUR) ?: ""
 }

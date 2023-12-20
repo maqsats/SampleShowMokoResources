@@ -1,7 +1,7 @@
 package com.dna.payments.kmm.presentation.ui.features.team_management
 
-import com.dna.payments.domain.presentation.team_management.TeamManagement
-import com.dna.payments.domain.presentation.team_management.TeamManagementSearchParameters
+import com.dna.payments.kmm.domain.model.team_management.TeamManagement
+import com.dna.payments.kmm.domain.model.team_management.TeamManagementSearchParameters
 import com.dna.payments.kmm.domain.model.team_management.Teammate
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.repository.TeamManagementRepository
