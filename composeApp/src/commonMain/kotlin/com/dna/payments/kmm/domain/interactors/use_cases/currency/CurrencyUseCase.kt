@@ -5,7 +5,8 @@ import com.dna.payments.kmm.domain.model.currency.Currency
 import com.dna.payments.kmm.domain.network.Response
 
 interface CurrencyUseCase {
-    suspend fun getCurrencyList(): Response<List<Currency>>
+
+    suspend operator fun invoke(): Response<List<Currency>>
 
     fun getCurrencyFromSupportedList(stores: List<StoresItem>): List<Currency>
 

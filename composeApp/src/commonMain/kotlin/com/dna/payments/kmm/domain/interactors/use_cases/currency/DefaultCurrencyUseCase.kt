@@ -8,7 +8,7 @@ import com.dna.payments.kmm.domain.repository.StoresRepository
 class DefaultCurrencyUseCase(private val storesRepository: StoresRepository) :
     CurrencyUseCase {
 
-    override suspend fun getCurrencyList(): Response<List<Currency>> =
+    override suspend operator fun invoke(): Response<List<Currency>> =
         when (val response = storesRepository.getStores()) {
             is Response.Error -> Response.Error(response.error)
             is Response.NetworkError -> Response.NetworkError

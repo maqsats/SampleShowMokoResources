@@ -18,6 +18,8 @@ object Constants {
     const val initialTime = 25
     const val delayInMillis = 1000L
 
+    const val GBP = "GBP"
+
     const val ROLE = "role"
     const val ACTIVE = "active"
     const val PAGE = "page"

@@ -26,6 +26,7 @@ import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerC
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterHM
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterOnlyHM
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterWithYear
+import com.dna.payments.kmm.domain.model.currency.Currency
 import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod
 import com.dna.payments.kmm.domain.model.date_picker.DateSelection
 import com.dna.payments.kmm.domain.network.Response
@@ -206,3 +207,9 @@ fun DateTimeTz.isEqual(other: DateTime): Boolean {
     return this.year == other.year && this.month == other.month && this.dayOfMonth == other.dayOfMonth
 }
 
+fun List<Currency>.findIndexOfDefaultCurrency(
+    defaultCurrency: String
+): Int {
+    val index = indexOfFirst { it.name == defaultCurrency }
+    return if (index != -1) index else 0
+}

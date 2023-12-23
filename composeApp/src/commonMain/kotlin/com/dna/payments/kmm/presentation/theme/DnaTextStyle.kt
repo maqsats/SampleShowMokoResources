@@ -101,6 +101,12 @@ object DnaTextStyle {
         fontSize = 16.sp
     )
 
+    val Medium16Grey5 = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
+        color = greyColor5
+    )
+
     val Medium36 = TextStyle(
         fontWeight = FontWeight.Medium,
         fontSize = 36.sp
