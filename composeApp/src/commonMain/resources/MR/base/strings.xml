@@ -213,4 +213,6 @@
     <string name="twenty_four_hours">24 hours</string>
     <string name="date_range">Date range</string>
     <string name="hyphen">-</string>
+    <string name="customer">Customer</string>
+    <string name="order_number">Order number</string>
 </resources>
