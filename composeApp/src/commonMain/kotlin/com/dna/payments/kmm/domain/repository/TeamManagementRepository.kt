@@ -1,6 +1,6 @@
 package com.dna.payments.kmm.domain.repository
 
-import com.dna.payments.domain.presentation.team_management.TeamManagement
+import com.dna.payments.kmm.domain.model.team_management.TeamManagement
 import com.dna.payments.kmm.domain.network.Response
 
 interface TeamManagementRepository {

@@ -15,6 +15,7 @@ fun <T> ManagementResourceUiState(
     onTryAgain: () -> Unit,
     msgTryAgain: String = "No data to show",
     onCheckAgain: () -> Unit,
+    onTokenExpire: () -> Unit = { },
     msgCheckAgain: @Composable () -> Unit = { Empty() }
 ) {
     Box(
@@ -27,6 +28,8 @@ fun <T> ManagementResourceUiState(
             ResourceUiState.Loading -> loadingView()
             is ResourceUiState.Success -> successView(resourceUiState.data)
             ResourceUiState.Idle -> Unit
+            ResourceUiState.NetworkError -> msgCheckAgain()
+            ResourceUiState.TokenExpire -> onTokenExpire()
         }
     }
 }

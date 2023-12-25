@@ -43,8 +43,8 @@ import com.dna.payments.kmm.presentation.theme.white
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
 import com.dna.payments.kmm.presentation.ui.common.DnaFilter
-import com.dna.payments.kmm.presentation.ui.features.date_range.DateRange
-import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeFilter
+import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeBottomSheet
+import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeWidget
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -174,12 +174,12 @@ class PaymentLinksScreen : DrawerScreen {
                 DnaFilter(
                     openBottomSheet = openDatePickerFilter,
                     dropDownContent = {
-                        DateRangeFilter(
+                        DateRangeWidget(
                             state.dateRange.first
                         )
                     },
                     bottomSheetContent = {
-                        DateRange(
+                        DateRangeBottomSheet(
                             dateSelection = state.dateRange.second,
                             onDatePeriodClick = {
                                 openDatePickerFilter.value = false

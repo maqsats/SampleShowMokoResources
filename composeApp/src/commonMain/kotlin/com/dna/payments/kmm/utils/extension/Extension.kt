@@ -26,6 +26,7 @@ import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerC
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterHM
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterOnlyHM
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterWithYear
+import com.dna.payments.kmm.domain.model.currency.Currency
 import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod
 import com.dna.payments.kmm.domain.model.date_picker.DateSelection
 import com.dna.payments.kmm.domain.network.Response
@@ -137,6 +138,15 @@ fun String.cutSubstringAfterDot(): String {
     }
 }
 
+fun DateTime?.daysBetween(other: DateTime?): Int {
+    return if (this == null || other == null) 0 else {
+        val startMillis = this.unixMillisLong
+        val endMillis = other.unixMillisLong
+        val millisecondsPerDay = 24 * 60 * 60 * 1000
+        ((endMillis - startMillis) / millisecondsPerDay).toInt()
+    }
+}
+
 fun DateTime?.convertToServerFormat(): String {
     return this?.format(DATE_FORMAT_WITH_HOUR) ?: ""
 }
@@ -197,3 +207,9 @@ fun DateTimeTz.isEqual(other: DateTime): Boolean {
     return this.year == other.year && this.month == other.month && this.dayOfMonth == other.dayOfMonth
 }
 
+fun List<Currency>.findIndexOfDefaultCurrency(
+    defaultCurrency: String
+): Int {
+    val index = indexOfFirst { it.name == defaultCurrency }
+    return if (index != -1) index else 0
+}

@@ -1,4 +1,4 @@
-package com.dna.payments.domain.presentation.team_management.stores
+package com.dna.payments.kmm.domain.model.team_management.stores
 
 data class SelectStoreItem(
     val name: String,

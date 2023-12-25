@@ -57,5 +57,15 @@ fun UiStateController(
             loadingPopup.value = true
             errorPopup.value = false
         }
+        ResourceUiState.NetworkError -> {
+            errorPopup.value = true
+            uiError.value = UiText.DynamicString("Network error")
+            loadingPopup.value = false
+        }
+        ResourceUiState.TokenExpire -> {
+            errorPopup.value = true
+            uiError.value = UiText.DynamicString("Token expired")
+            loadingPopup.value = false
+        }
     }
 }

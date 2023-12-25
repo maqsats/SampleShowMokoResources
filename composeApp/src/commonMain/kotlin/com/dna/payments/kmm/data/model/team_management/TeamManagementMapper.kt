@@ -1,6 +1,6 @@
 package com.dna.payments.kmm.data.model.team_management
 
-import com.dna.payments.domain.presentation.team_management.TeamManagement
+import com.dna.payments.kmm.domain.model.team_management.TeamManagement
 import com.dna.payments.kmm.domain.model.team_management.Teammate
 import com.dna.payments.kmm.domain.model.team_management.UserStatus
 import com.dna.payments.kmm.domain.model.map.Mapper

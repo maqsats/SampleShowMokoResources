@@ -36,7 +36,28 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
-fun DateRange(dateSelection: DateSelection, onDatePeriodClick: (DatePickerPeriod) -> Unit) {
+fun DateRangeWidget(datePickerPeriod: DatePickerPeriod) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            modifier = Modifier.padding(end = Paddings.small),
+            painter = painterResource(MR.images.ic_calendar),
+            contentDescription = null
+        )
+        DNAText(
+            modifier = Modifier.wrapContentWidth(),
+            text = stringResource(datePickerPeriod.stringResource),
+            style = DnaTextStyle.Medium14
+        )
+    }
+}
+
+@Composable
+fun DateRangeBottomSheet(
+    dateSelection: DateSelection,
+    onDatePeriodClick: (DatePickerPeriod) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -120,24 +141,6 @@ fun DatePeriodItem(datePickerPeriod: DatePickerPeriod, onClick: () -> Unit) {
             text = stringResource(datePickerPeriod.stringResource),
             style = DnaTextStyle.Medium12Grey,
             textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Composable
-fun DateRangeFilter(datePickerPeriod: DatePickerPeriod) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            modifier = Modifier.padding(end = Paddings.small),
-            painter = painterResource(MR.images.ic_calendar),
-            contentDescription = null
-        )
-        DNAText(
-            modifier = Modifier.wrapContentWidth(),
-            text = stringResource(datePickerPeriod.stringResource),
-            style = DnaTextStyle.Medium14
         )
     }
 }
