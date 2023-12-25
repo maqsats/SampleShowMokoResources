@@ -11,13 +11,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,6 +30,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
@@ -39,19 +43,20 @@ import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
 import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
-import com.dna.payments.kmm.presentation.theme.white
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
 import com.dna.payments.kmm.presentation.ui.common.DnaFilter
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeBottomSheet
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeWidget
+import com.dna.payments.kmm.presentation.ui.features.payment_links.status.StatusBottomSheet
+import com.dna.payments.kmm.presentation.ui.features.payment_links.status.StatusWidget
 import com.dna.payments.kmm.utils.extension.noRippleClickable
+import com.dna.payments.kmm.utils.extension.toCurrencySymbol
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-
 import kotlinx.coroutines.flow.collectLatest
 
 class PaymentLinksScreen : DrawerScreen {
@@ -103,7 +108,7 @@ class PaymentLinksScreen : DrawerScreen {
             ManagementResourceUiState(
                 resourceUiState = state.paymentLinkList,
                 successView = { paymentLinkByPeriods ->
-                    LazyColumn(modifier = modifier.padding(bottom = Paddings.medium)) {
+                    LazyColumn(modifier = modifier) {
                         items(paymentLinkByPeriods) { paymentLinkByPeriodItem ->
                             when (paymentLinkByPeriodItem) {
                                 is PaymentLinkItem -> {
@@ -146,27 +151,28 @@ class PaymentLinksScreen : DrawerScreen {
     override fun DrawerFilter() {
         val paymentLinksViewModel = getScreenModel<PaymentLinksViewModel>()
         val state by paymentLinksViewModel.uiState.collectAsState()
-
+        val statusFilter = rememberSaveable { mutableStateOf(false) }
         val openDatePickerFilter = rememberSaveable { mutableStateOf(false) }
 
         LazyRow(modifier = Modifier.padding(start = Paddings.small)) {
             item {
                 DnaFilter(
+                    openBottomSheet = statusFilter,
                     dropDownContent = {
-                        DNAText(
-                            modifier = Modifier.wrapContentWidth(),
-                            text = stringResource(MR.strings.all_statuses),
-                            style = DnaTextStyle.Medium14
-                        )
+                        StatusWidget(state)
                     },
                     bottomSheetContent = {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxWidth().height(300.dp).background(white)
-                        ) {
-                            item {
-                                DNAText(text = stringResource(MR.strings.all_statuses))
+                        StatusBottomSheet(
+                            state = state,
+                            onItemChange = {
+                                statusFilter.value = false
+                                paymentLinksViewModel.setEvent(
+                                    PaymentLinksContract.Event.OnStatusChange(
+                                        it
+                                    )
+                                )
                             }
-                        }
+                        )
                     }
                 )
             }
@@ -221,9 +227,11 @@ class PaymentLinksScreen : DrawerScreen {
         modifier: Modifier = Modifier,
         paymentLinkItem: PaymentLinkItem
     ) {
+        val clipboardManager: ClipboardManager = LocalClipboardManager.current
+
         Box(
             modifier = modifier.padding(vertical = 8.dp)
-                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                .shadow(2.dp, shape = RoundedCornerShape(8.dp))
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
                 .wrapContentHeight()
@@ -238,13 +246,14 @@ class PaymentLinksScreen : DrawerScreen {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     DNAText(
-                        text = paymentLinkItem.currency + " " + paymentLinkItem.amount.toString(),
+                        text = paymentLinkItem.currency.toCurrencySymbol() + " " + paymentLinkItem.amount.toString(),
                         style = DnaTextStyle.SemiBold20
                     )
                     DNATextWithIcon(
-                        text = paymentLinkItem.status.displayName,
+                        text = stringResource(paymentLinkItem.status.stringResource),
                         style = DnaTextStyle.WithAlphaNormal12,
                         icon = paymentLinkItem.status.icon,
+                        secondIcon = paymentLinkItem.status.iconEnd,
                         textColor = paymentLinkItem.status.textColor,
                         backgroundColor = paymentLinkItem.status.backgroundColor
                     )
@@ -276,12 +285,26 @@ class PaymentLinksScreen : DrawerScreen {
                         style = DnaTextStyle.WithAlpha14,
                         text = stringResource(MR.strings.order_number)
                     )
-                    DNAText(
-                        style = DnaTextStyle.Medium14,
-                        text = paymentLinkItem.invoiceId
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = modifier.noRippleClickable {
+                            clipboardManager.setText(AnnotatedString(paymentLinkItem.invoiceId))
+                        }
+                    ) {
+                        DNAText(
+                            style = DnaTextStyle.Medium14,
+                            text = paymentLinkItem.invoiceId
+                        )
+                        Icon(
+                            painter = painterResource(MR.images.ic_copy),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.height(24.dp).width(24.dp)
+                        )
+                    }
+
                 }
-                Spacer(modifier = Modifier.height(Paddings.medium))
+                Spacer(modifier = Modifier.height(Paddings.small))
             }
         }
     }
@@ -292,7 +315,7 @@ class PaymentLinksScreen : DrawerScreen {
     ) {
         Box(
             modifier = modifier.padding(top = 8.dp)
-                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                .shadow(2.dp, shape = RoundedCornerShape(8.dp))
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
                 .wrapContentHeight()

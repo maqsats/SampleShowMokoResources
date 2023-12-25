@@ -35,7 +35,8 @@ class PaymentLinksViewModel(
                     Section.PAYMENT_LINKS,
                     AccessLevel.FULL
                 ),
-                dateRange = getDateRangeUseCase(Menu.OVERVIEW)
+                dateRange = getDateRangeUseCase(Menu.OVERVIEW),
+                statusList = ResourceUiState.Success(paymentLinkStatusList)
             )
         }
     }
@@ -45,7 +46,9 @@ class PaymentLinksViewModel(
             paymentLinkList = ResourceUiState.Idle,
             hasPermission = false,
             selectedPage = 0,
-            dateRange = getDefaultDateRange()
+            dateRange = getDefaultDateRange(),
+            statusList = ResourceUiState.Loading,
+            indexOfSelectedStatus = 0
         )
 
     override fun handleEvent(event: PaymentLinksContract.Event) {
@@ -73,6 +76,15 @@ class PaymentLinksViewModel(
                         )
                     )
                 }
+                paymentLinksPageSource.onReset()
+                getPaymentLinkList()
+            }
+
+            is PaymentLinksContract.Event.OnStatusChange -> {
+                setState {
+                    copy(indexOfSelectedStatus = event.selectedStatusIndex)
+                }
+                selectedPaymentLinkStatus = paymentLinkStatusList[event.selectedStatusIndex]
                 paymentLinksPageSource.onReset()
                 getPaymentLinkList()
             }
