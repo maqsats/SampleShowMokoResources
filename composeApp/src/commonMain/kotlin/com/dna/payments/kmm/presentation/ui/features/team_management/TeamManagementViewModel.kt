@@ -1,11 +1,11 @@
 package com.dna.payments.kmm.presentation.ui.features.team_management
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.dna.payments.kmm.domain.model.team_management.TeamManagementSearchParameters
-import com.dna.payments.kmm.domain.model.team_management.UserType
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.model.permissions.AccessLevel
 import com.dna.payments.kmm.domain.model.permissions.Section
+import com.dna.payments.kmm.domain.model.team_management.TeamManagementSearchParameters
+import com.dna.payments.kmm.domain.model.team_management.UserType
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
@@ -27,7 +27,8 @@ class TeamManagementViewModel(
                 accessLevelUseCase.hasPermission(
                     Section.TEAM_MANAGEMENT,
                     AccessLevel.FULL
-                )
+                ),
+                roleList = ResourceUiState.Success(UserType.entries.map { it.displayName })
             )
         }
     }
@@ -37,12 +38,15 @@ class TeamManagementViewModel(
             teammateListAll = ResourceUiState.Idle,
             teammateListInvited = ResourceUiState.Idle,
             hasPermission = false,
-            selectedPage = 0
+            selectedPage = 0,
+            roleList = ResourceUiState.Idle,
         )
 
     override fun handleEvent(event: TeamManagementContract.Event) {
         when (event) {
             is TeamManagementContract.Event.OnInit -> {
+                teamManagementByUserPageSource.onReset()
+                teamManagementInvitedPageSource.onReset()
                 getTeammateList()
                 getInvitedTeammateList()
             }
@@ -54,6 +58,17 @@ class TeamManagementViewModel(
                 setEffect {
                     TeamManagementContract.Effect.OnPageChanged(event.position)
                 }
+            }
+
+            is TeamManagementContract.Event.OnRoleChange -> {
+                setState {
+                    copy(indexOfSelectedRole = event.selectedRoleIndex)
+                }
+                role = UserType.entries.toTypedArray()[event.selectedRoleIndex]
+                teamManagementByUserPageSource.onReset()
+                teamManagementInvitedPageSource.onReset()
+                getTeammateList()
+                getInvitedTeammateList()
             }
         }
     }

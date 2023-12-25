@@ -1,8 +1,8 @@
 package com.dna.payments.kmm.data.repository
 
-import com.dna.payments.kmm.domain.model.team_management.TeamManagement
 import com.dna.payments.kmm.data.model.team_management.TeamManagementMapper
 import com.dna.payments.kmm.data.preferences.Preferences
+import com.dna.payments.kmm.domain.model.team_management.TeamManagement
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.repository.TeamManagementRepository
 import com.dna.payments.kmm.utils.constants.Constants
@@ -28,7 +28,7 @@ class DefaultTeamManagementRepository(
     ): Response<TeamManagement> = teamManagementMapper.map(
         handleApiCall {
             httpClient.get {
-                url("${Constants.BASE_URL}v1/teammates?active=${isActive}&page=${page}&size=${size}")
+                url("${Constants.BASE_URL}v1/teammates?role=${role}&active=${isActive}&page=${page}&size=${size}")
                 header(Constants.CREDENTIALS_HEADER, preferences.getAuthToken().toBearerToken())
             }.body()
         })

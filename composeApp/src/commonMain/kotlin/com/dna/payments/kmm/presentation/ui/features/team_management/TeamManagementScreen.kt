@@ -1,7 +1,6 @@
 package com.dna.payments.kmm.presentation.ui.features.team_management
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -22,6 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,13 +41,15 @@ import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
+import com.dna.payments.kmm.presentation.ui.common.DnaFilter
 import com.dna.payments.kmm.presentation.ui.common.DnaTabRow
+import com.dna.payments.kmm.presentation.ui.features.team_management.status.StatusBottomSheet
+import com.dna.payments.kmm.presentation.ui.features.team_management.status.StatusWidget
 import com.dna.payments.kmm.utils.extension.capitalizeFirstLetter
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
-import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
@@ -81,7 +85,7 @@ class TeamManagementScreen : DrawerScreen {
         }
 
         HorizontalPager(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(vertical = 0.dp),
             state = pagerState,
             userScrollEnabled = false,
             pageContent = {
@@ -114,10 +118,13 @@ class TeamManagementScreen : DrawerScreen {
             verticalArrangement = Arrangement.Top
         ) {
             ManagementResourceUiState(
-                modifier = modifier.padding(bottom = Paddings.medium),
+                modifier = modifier,
                 resourceUiState = state.teammateListInvited,
                 successView = {
-                    LazyColumn {
+                    LazyColumn(
+                        modifier = modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Top
+                    ) {
                         items(it) {
                             InvitedTeammateItem(teammate = it)
                         }
@@ -163,12 +170,33 @@ class TeamManagementScreen : DrawerScreen {
 
     @Composable
     override fun DrawerFilter() {
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            alignment = Alignment.CenterStart,
-            painter = painterResource(MR.images.header),
-            contentDescription = null
-        )
+        val teamManagementViewModel = getScreenModel<TeamManagementViewModel>()
+        val state by teamManagementViewModel.uiState.collectAsState()
+        val openCurrencyFilter = rememberSaveable { mutableStateOf(false) }
+
+        LazyRow(modifier = Modifier.padding(start = Paddings.small)) {
+            item {
+                DnaFilter(
+                    openBottomSheet = openCurrencyFilter,
+                    dropDownContent = {
+                        StatusWidget(state)
+                    },
+                    bottomSheetContent = {
+                        StatusBottomSheet(
+                            state = state,
+                            onCurrencyChange = {
+                                openCurrencyFilter.value = false
+                                teamManagementViewModel.setEvent(
+                                    TeamManagementContract.Event.OnRoleChange(
+                                        it
+                                    )
+                                )
+                            }
+                        )
+                    }
+                )
+            }
+        }
     }
 
     @Composable
@@ -181,10 +209,13 @@ class TeamManagementScreen : DrawerScreen {
             verticalArrangement = Arrangement.Top
         ) {
             ManagementResourceUiState(
-                modifier = modifier.padding(bottom = Paddings.medium),
+                modifier = modifier,
                 resourceUiState = state.teammateListAll,
                 successView = {
-                    LazyColumn {
+                    LazyColumn(
+                        modifier = modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Top
+                    ) {
                         items(it) {
                             TeammateItem(teammate = it)
                         }
@@ -209,8 +240,8 @@ class TeamManagementScreen : DrawerScreen {
         teammate: Teammate
     ) {
         Box(
-            modifier = modifier.padding(top = 8.dp)
-                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+            modifier = modifier.padding(top = 2.dp, bottom = 6.dp)
+                .shadow(2.dp, shape = RoundedCornerShape(8.dp))
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
                 .wrapContentHeight()
