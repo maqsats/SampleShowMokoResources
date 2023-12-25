@@ -336,10 +336,7 @@ class DetailPaymentMethodsScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(vertical = 4.dp)
                     ) {
-                        ComponentRectangleLineShort(
-                            isLoadingCompleted = false,
-                            isLightModeActive = false
-                        )
+                        ComponentRectangleLineShort()
                     }
                 }
             }

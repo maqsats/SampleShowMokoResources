@@ -96,6 +96,7 @@ kotlin {
                 implementation(libs.multiplatform.settings.no.arg)
                 implementation(libs.time.klock)
                 implementation(libs.compose.shimmer)
+                implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
             }
         }
 

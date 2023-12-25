@@ -213,4 +213,11 @@
     <string name="twenty_four_hours">24 hours</string>
     <string name="date_range">Date range</string>
     <string name="hyphen">-</string>
+
+    <string name="successful_average">Average successful payment amount</string>
+    <string name="successful_average_daily">Average successful daily amount</string>
+    <string name="successful_average_daily_number">Average successful daily transactions number
+    </string>
+
+    <string name="select_currency">Select Currency</string>
 </resources>

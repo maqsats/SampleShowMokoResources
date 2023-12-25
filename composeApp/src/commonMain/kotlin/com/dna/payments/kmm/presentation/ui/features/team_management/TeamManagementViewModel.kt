@@ -1,8 +1,8 @@
 package com.dna.payments.kmm.presentation.ui.features.team_management
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.dna.payments.domain.presentation.team_management.TeamManagementSearchParameters
-import com.dna.payments.domain.presentation.team_management.UserType
+import com.dna.payments.kmm.domain.model.team_management.TeamManagementSearchParameters
+import com.dna.payments.kmm.domain.model.team_management.UserType
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.model.permissions.AccessLevel
 import com.dna.payments.kmm.domain.model.permissions.Section

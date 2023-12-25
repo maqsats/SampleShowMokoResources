@@ -1,4 +1,4 @@
-package com.dna.payments.domain.presentation.team_management.all
+package com.dna.payments.kmm.domain.model.team_management.all
 
 enum class TeammateAction {
     EDIT_TEAMMATE,

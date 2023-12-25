@@ -1,6 +1,6 @@
 package com.dna.payments.kmm.data.repository
 
-import com.dna.payments.domain.presentation.team_management.TeamManagement
+import com.dna.payments.kmm.domain.model.team_management.TeamManagement
 import com.dna.payments.kmm.data.model.team_management.TeamManagementMapper
 import com.dna.payments.kmm.data.preferences.Preferences
 import com.dna.payments.kmm.domain.network.Response

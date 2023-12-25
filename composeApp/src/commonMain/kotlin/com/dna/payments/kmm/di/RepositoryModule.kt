@@ -8,6 +8,7 @@ import com.dna.payments.kmm.data.repository.DefaultProfileRepository
 import com.dna.payments.kmm.data.repository.DefaultResetPasswordRepository
 import com.dna.payments.kmm.data.repository.DefaultStoresRepository
 import com.dna.payments.kmm.data.repository.DefaultTeamManagementRepository
+import com.dna.payments.kmm.data.repository.DefaultTransactionRepository
 import com.dna.payments.kmm.domain.repository.AccessLevelRepository
 import com.dna.payments.kmm.domain.repository.AuthorizationRepository
 import com.dna.payments.kmm.domain.repository.InfoRepository
@@ -16,6 +17,7 @@ import com.dna.payments.kmm.domain.repository.ProfileRepository
 import com.dna.payments.kmm.domain.repository.ResetPasswordRepository
 import com.dna.payments.kmm.domain.repository.StoresRepository
 import com.dna.payments.kmm.domain.repository.TeamManagementRepository
+import com.dna.payments.kmm.domain.repository.TransactionRepository
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -29,5 +31,6 @@ val repositoryModule = module {
     factoryOf(::DefaultInfoRepository).bind(InfoRepository::class)
     factoryOf(::DefaultTeamManagementRepository).bind(TeamManagementRepository::class)
     factoryOf(::DefaultPaymentLinksRepository).bind(PaymentLinksRepository::class)
+    factoryOf(::DefaultTransactionRepository).bind(TransactionRepository::class)
 }
 

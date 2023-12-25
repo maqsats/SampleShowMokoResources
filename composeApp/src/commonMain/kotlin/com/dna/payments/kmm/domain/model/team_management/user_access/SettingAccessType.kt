@@ -1,4 +1,4 @@
-package com.dna.payments.domain.presentation.team_management.user_access
+package com.dna.payments.kmm.domain.model.team_management.user_access
 
 enum class SettingAccessType(val key: String, val url: String) {
     READ_ONLY("Read only", "read"),

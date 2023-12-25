@@ -71,12 +71,9 @@ fun ComponentRectangleLineLong(
 }
 
 @Composable
-fun ComponentRectangleLineShort(
-    isLoadingCompleted: Boolean,
-    isLightModeActive: Boolean,
-) {
+fun ComponentRectangleLineShort(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(shape = RoundedCornerShape(4.dp))
             .background(color = grayLight)
             .height(20.dp).fillMaxWidth(0.5f)
