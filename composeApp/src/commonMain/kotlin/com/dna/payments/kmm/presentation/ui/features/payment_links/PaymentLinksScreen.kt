@@ -1,6 +1,7 @@
 package com.dna.payments.kmm.presentation.ui.features.payment_links
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,7 +49,9 @@ import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
+import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+
 import kotlinx.coroutines.flow.collectLatest
 
 class PaymentLinksScreen : DrawerScreen {
@@ -234,18 +237,10 @@ class PaymentLinksScreen : DrawerScreen {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column {
-                        DNAText(
-                            text = paymentLinkItem.currency + " " + paymentLinkItem.amount.toString(),
-                            style = DnaTextStyle.SemiBold16
-                        )
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            DNAText(
-                                style = DnaTextStyle.WithAlpha12,
-                                text = paymentLinkItem.customerName
-                            )
-                        }
-                    }
+                    DNAText(
+                        text = paymentLinkItem.currency + " " + paymentLinkItem.amount.toString(),
+                        style = DnaTextStyle.SemiBold20
+                    )
                     DNATextWithIcon(
                         text = paymentLinkItem.status.displayName,
                         style = DnaTextStyle.WithAlphaNormal12,
@@ -254,6 +249,39 @@ class PaymentLinksScreen : DrawerScreen {
                         backgroundColor = paymentLinkItem.status.backgroundColor
                     )
                 }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Image(painter = painterResource(MR.images.divider), contentDescription = null)
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    DNAText(
+                        style = DnaTextStyle.WithAlpha14,
+                        text = stringResource(MR.strings.customer)
+                    )
+                    DNAText(
+                        style = DnaTextStyle.Medium14,
+                        text = paymentLinkItem.customerName
+                    )
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    DNAText(
+                        style = DnaTextStyle.WithAlpha14,
+                        text = stringResource(MR.strings.order_number)
+                    )
+                    DNAText(
+                        style = DnaTextStyle.Medium14,
+                        text = paymentLinkItem.invoiceId
+                    )
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
             }
         }
     }
