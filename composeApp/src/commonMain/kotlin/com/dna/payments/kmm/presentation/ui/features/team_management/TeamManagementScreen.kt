@@ -184,7 +184,7 @@ class TeamManagementScreen : DrawerScreen {
                     bottomSheetContent = {
                         StatusBottomSheet(
                             state = state,
-                            onCurrencyChange = {
+                            onItemChange = {
                                 openCurrencyFilter.value = false
                                 teamManagementViewModel.setEvent(
                                     TeamManagementContract.Event.OnRoleChange(
