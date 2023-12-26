@@ -12,13 +12,18 @@ interface TeamManagementContract {
         data class OnPageChanged(
             val position: Int
         ) : Event
+
+        data class OnRoleChange(val selectedRoleIndex: Int) : Event
+
     }
 
     data class State(
         val teammateListAll: ResourceUiState<List<Teammate>>,
         val teammateListInvited: ResourceUiState<List<Teammate>>,
         val hasPermission: Boolean,
-        val selectedPage: Int = 0
+        val selectedPage: Int = 0,
+        val roleList: ResourceUiState<List<String>>,
+        val indexOfSelectedRole: Int = 0
     ) : UiState
 
     sealed interface Effect : UiEffect {

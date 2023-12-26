@@ -213,3 +213,12 @@ fun List<Currency>.findIndexOfDefaultCurrency(
     val index = indexOfFirst { it.name == defaultCurrency }
     return if (index != -1) index else 0
 }
+
+fun String.toCurrencySymbol(): String {
+    return when (this) {
+        "GBP" -> "£"
+        "USD" -> "$"
+        "EUR" -> "€"
+        else -> this // Return the input code if no match is found
+    }
+}
