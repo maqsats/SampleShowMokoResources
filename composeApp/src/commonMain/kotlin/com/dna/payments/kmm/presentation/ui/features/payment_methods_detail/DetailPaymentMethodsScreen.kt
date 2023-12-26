@@ -331,7 +331,7 @@ class DetailPaymentMethodsScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
-                    ComponentRectangleLineLong(isLoadingCompleted = false, isLightModeActive = true)
+                    ComponentRectangleLineLong()
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(vertical = 4.dp)
@@ -384,7 +384,7 @@ class DetailPaymentMethodsScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ComponentRectangleLineLong(isLoadingCompleted = false, isLightModeActive = true)
+                ComponentRectangleLineLong()
             }
         }
     }

@@ -4,6 +4,8 @@ import com.dna.payments.kmm.data.use_case.ChangePasswordUseCaseImpl
 import com.dna.payments.kmm.data.use_case.PaymentLinkStatusUseCaseImpl
 import com.dna.payments.kmm.data.use_case.SendOtpInstructionsUseCaseImpl
 import com.dna.payments.kmm.data.use_case.VerifyOtpCodeUseCaseImpl
+import com.dna.payments.kmm.domain.interactors.data_factory.overview.OverviewDataFactory
+import com.dna.payments.kmm.domain.interactors.data_factory.product_guide.ProductGuideDataFactory
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.currency.CurrencyUseCase
@@ -14,6 +16,10 @@ import com.dna.payments.kmm.domain.interactors.use_cases.drawer.DrawerUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_link.PaymentLinkUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.profile.MerchantUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.DefaultOnlineSummaryGraphUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.DefaultPosSummaryGraphUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.OnlineSummaryGraphUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.PosSummaryGraphUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.transaction.DefaultTransactionUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.transaction.TransactionUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidateCode
@@ -37,6 +43,9 @@ import org.koin.dsl.module
 
 
 val useCasesModule: Module = module {
+    //data factory
+    factoryOf(::OverviewDataFactory)
+    factoryOf(::ProductGuideDataFactory)
     factoryOf(::AuthorizationUseCase)
     factoryOf(::PinUseCase)
     singleOf(::AccessLevelUseCase)
@@ -57,6 +66,8 @@ val useCasesModule: Module = module {
     factoryOf(::GetTerminalSettingsUseCase)
     factoryOf(::GetDetailTerminalSettingsUseCase)
     factoryOf(::DefaultCurrencyUseCase).bind(CurrencyUseCase::class)
+    factoryOf(::DefaultPosSummaryGraphUseCase).bind(PosSummaryGraphUseCase::class)
+    factoryOf(::DefaultOnlineSummaryGraphUseCase).bind(OnlineSummaryGraphUseCase::class)
     factoryOf(::DefaultTransactionUseCase).bind(TransactionUseCase::class)
     factoryOf(::SendOtpInstructionsUseCaseImpl).bind(SendOtpInstructionsUseCase::class)
     factoryOf(::VerifyOtpCodeUseCaseImpl).bind(VerifyOtpCodeUseCase::class)

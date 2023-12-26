@@ -207,7 +207,6 @@ class PaymentLinksScreen : DrawerScreen {
         modifier: Modifier = Modifier,
         paymentLinkHeader: PaymentLinkHeader
     ) {
-        println(paymentLinkHeader.title)
         Box(
             modifier = modifier.padding(top = Paddings.small)
                 .fillMaxWidth()
@@ -325,10 +324,7 @@ class PaymentLinksScreen : DrawerScreen {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ComponentRectangleLineLong(
-                    isLoadingCompleted = false,
-                    isLightModeActive = true
-                )
+                ComponentRectangleLineLong()
             }
         }
     }

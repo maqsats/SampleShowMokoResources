@@ -5,7 +5,7 @@ enum class PosPaymentStatus(
     val displayName: String,
     val detailText: String?
 ) {
-    ALL(null, "All", null),
+    ALL(null, "Total transactions", null),
     CHARGE(
         key = "success",
         displayName = "Successful",

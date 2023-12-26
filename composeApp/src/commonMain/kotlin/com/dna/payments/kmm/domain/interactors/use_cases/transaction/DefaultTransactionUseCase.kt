@@ -76,6 +76,18 @@ class DefaultTransactionUseCase(private val transactionRepository: TransactionRe
         }
     }
 
+    private fun filterMainSummary(summaryList: List<Summary>): List<Summary> {
+        val desiredStatuses = listOf(
+            PaymentStatus.CHARGE,
+            PaymentStatus.AUTH,
+            PaymentStatus.CANCEL,
+            PaymentStatus.REFUND
+        )
+
+        return summaryList.filter { it.status in desiredStatuses }
+            .sortedBy { desiredStatuses.indexOf(it.status) }
+    }
+
     override suspend fun getPosPaymentsSummary(
         startDate: DateTime?,
         endDate: DateTime?,
@@ -139,6 +151,7 @@ class DefaultTransactionUseCase(private val transactionRepository: TransactionRe
 
     private fun filterPosPaymentSummary(data: List<PosPaymentSummary>): List<PosPaymentSummary> {
         val desiredStatuses = listOf(
+            PosPaymentStatus.ALL,
             PosPaymentStatus.CHARGE,
             PosPaymentStatus.REJECT
         )
@@ -150,10 +163,11 @@ class DefaultTransactionUseCase(private val transactionRepository: TransactionRe
         summaryList: List<Summary>,
         daysCount: Int?
     ): List<Metric> {
-        if (daysCount == null || daysCount == 0) return emptyList()
+        if (daysCount == null || daysCount == 0) return getEmptyMetricList()
 
         val chargePaymentMethod =
-            summaryList.firstOrNull { it.status == PaymentStatus.CHARGE } ?: return emptyList()
+            summaryList.firstOrNull { it.status == PaymentStatus.CHARGE }
+                ?: return getEmptyMetricList()
 
         return listOf(
             Metric(
@@ -183,10 +197,11 @@ class DefaultTransactionUseCase(private val transactionRepository: TransactionRe
         summaryList: List<PosPaymentSummary>,
         daysCount: Int?
     ): List<Metric> {
-        if (daysCount == null || daysCount == 0) return emptyList()
+        if (daysCount == null || daysCount == 0) return getEmptyMetricList()
 
         val successful =
-            summaryList.firstOrNull { it.status == PosPaymentStatus.CHARGE } ?: return emptyList()
+            summaryList.firstOrNull { it.status == PosPaymentStatus.CHARGE }
+                ?: return getEmptyMetricList()
 
         return listOf(
             Metric(
@@ -205,19 +220,21 @@ class DefaultTransactionUseCase(private val transactionRepository: TransactionRe
         )
     }
 
-
-    private fun filterMainSummary(summaryList: List<Summary>): List<Summary> {
-        val desiredStatuses = listOf(
-            PaymentStatus.CHARGE,
-            PaymentStatus.AUTH,
-            PaymentStatus.CANCEL,
-            PaymentStatus.REFUND
-        )
-
-        return summaryList.filter { it.status in desiredStatuses }
-            .sortedBy { desiredStatuses.indexOf(it.status) }
-    }
-
     override fun getOrderedPaymentStatus(): List<PaymentStatus> =
         PaymentStatus.values().toList()
+
+    private fun getEmptyMetricList() = listOf(
+        Metric(
+            ZERO_DOUBLE_VALUE,
+            MetricDescription.SUCCESSFUL_AVERAGE
+        ),
+        Metric(
+            ZERO_DOUBLE_VALUE,
+            MetricDescription.SUCCESSFUL_DAILY_AVERAGE
+        ),
+        Metric(
+            ZERO_DOUBLE_VALUE,
+            MetricDescription.SUCCESSFUL_DAILY_AVERAGE_NUMBER
+        )
+    )
 }
