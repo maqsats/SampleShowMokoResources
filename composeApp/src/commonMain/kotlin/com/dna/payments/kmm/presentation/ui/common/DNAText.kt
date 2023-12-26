@@ -64,6 +64,7 @@ fun DNATextWithIcon(
     text: String,
     modifier: Modifier = Modifier,
     icon: ImageResource,
+    secondIcon: ImageResource? = null,
     style: TextStyle = DnaTextStyle.Normal16,
     textColor: Color = style.color,
     backgroundColor: Color = style.background,
@@ -86,9 +87,18 @@ fun DNATextWithIcon(
             text = text,
             style = style,
             color = textColor,
-            modifier = modifier.padding(start = 4.dp),
+            modifier = modifier.padding(horizontal = 4.dp),
             fontFamily = poppinsFontFamily(),
             textAlign = textAlign
         )
+        if (secondIcon != null) {
+            Icon(
+                painter = painterResource(secondIcon),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier.height(14.dp).width(14.dp)
+            )
+        }
     }
 }
+

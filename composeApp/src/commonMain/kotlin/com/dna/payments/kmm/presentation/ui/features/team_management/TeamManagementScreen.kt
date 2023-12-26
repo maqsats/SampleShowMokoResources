@@ -172,12 +172,12 @@ class TeamManagementScreen : DrawerScreen {
     override fun DrawerFilter() {
         val teamManagementViewModel = getScreenModel<TeamManagementViewModel>()
         val state by teamManagementViewModel.uiState.collectAsState()
-        val openCurrencyFilter = rememberSaveable { mutableStateOf(false) }
+        val userRoleFilter = rememberSaveable { mutableStateOf(false) }
 
         LazyRow(modifier = Modifier.padding(start = Paddings.small)) {
             item {
                 DnaFilter(
-                    openBottomSheet = openCurrencyFilter,
+                    openBottomSheet = userRoleFilter,
                     dropDownContent = {
                         StatusWidget(state)
                     },
@@ -185,7 +185,7 @@ class TeamManagementScreen : DrawerScreen {
                         StatusBottomSheet(
                             state = state,
                             onItemChange = {
-                                openCurrencyFilter.value = false
+                                userRoleFilter.value = false
                                 teamManagementViewModel.setEvent(
                                     TeamManagementContract.Event.OnRoleChange(
                                         it

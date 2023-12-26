@@ -6,57 +6,60 @@ import com.dna.payments.kmm.presentation.theme.darkBlue
 import com.dna.payments.kmm.presentation.theme.darkGreen
 import com.dna.payments.kmm.presentation.theme.darkGrey
 import com.dna.payments.kmm.presentation.theme.lightBlue
-import com.dna.payments.kmm.presentation.theme.lightGreen
 import com.dna.payments.kmm.presentation.theme.lightGrey
 import com.dna.payments.kmm.presentation.theme.outlineGreenColor
 import com.dna.payments.kmm.presentation.theme.white
 import dev.icerock.moko.resources.ImageResource
+import dev.icerock.moko.resources.StringResource
 
 
 enum class PaymentLinkStatus(
-    val value: String, val displayName: String, val textColor: Color,
+    val value: String,
+    val stringResource: StringResource,
+    val stringResourceStatus: StringResource,
+    val textColor: Color,
     val icon: ImageResource,
     val backgroundColor: Color,
     val iconEnd: ImageResource? = null
 ) {
     ALL(
-        "All", "All", outlineGreenColor,
+        "All", MR.strings.all_statuses, MR.strings.all_statuses, outlineGreenColor,
         MR.images.ic_success,
         white
     ),
     PAID(
-        "paid", "Paid", darkBlue,
+        "paid", MR.strings.paid, MR.strings.paid, darkBlue,
         MR.images.ic_success,
         lightBlue
     ),
     ACTIVE(
-        "active", "Active", darkGreen,
+        "active", MR.strings.active, MR.strings.active, darkGreen,
         MR.images.ic_active,
         white
     ),
     ATTEMPTED(
-        "attempted", "Attempted", darkGrey,
+        "attempted", MR.strings.attempted, MR.strings.attempted, darkGrey,
         MR.images.ic_attempted,
         lightGrey
     ),
     VIEWED(
-        "viewed", "Active", darkGreen,
+        "viewed", MR.strings.active, MR.strings.viewed, darkGreen,
         MR.images.ic_active,
         white,
         MR.images.ic_viewed
     ),
     EXPIRED(
-        "expired", "Expired", darkGrey,
+        "expired", MR.strings.expired, MR.strings.expired, darkGrey,
         MR.images.ic_cancel,
         lightGrey
     ),
     CANCELLED(
-        "cancelled", "Cancelled", darkGrey,
+        "cancelled", MR.strings.cancelled, MR.strings.cancelled, darkGrey,
         MR.images.ic_cancel,
         lightGrey
     ),
     NOT_FOUND(
-        "", "", white,
+        "", MR.strings.empty_text, MR.strings.empty_text, white,
         MR.images.ic_cancel,
         white
     );
