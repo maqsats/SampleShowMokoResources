@@ -1,5 +1,8 @@
 package com.dna.payments.kmm.data.model.overview
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class SummaryOnlinePaymentsApiModel(
     val amount: Double = 0.0,
     val count: Int = 0,

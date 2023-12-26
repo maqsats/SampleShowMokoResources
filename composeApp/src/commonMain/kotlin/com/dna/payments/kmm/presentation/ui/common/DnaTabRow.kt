@@ -32,11 +32,13 @@ import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.dnaGreenLight
 import com.dna.payments.kmm.presentation.theme.white
 import com.dna.payments.kmm.utils.extension.bottomShadow
+import dev.icerock.moko.resources.StringResource
+import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
 fun DnaTabRow(
     modifier: Modifier = Modifier,
-    tabList: List<String>,
+    tabList: List<StringResource>,
     selectedPagePosition: Int,
     onTabClick: (Int) -> Unit
 ) {
@@ -61,7 +63,7 @@ fun DnaTabRow(
                 },
                 content = {
                     DNAText(
-                        text = title,
+                        text = stringResource(title),
                         style = DnaTextStyle.Medium16
                     )
                 }

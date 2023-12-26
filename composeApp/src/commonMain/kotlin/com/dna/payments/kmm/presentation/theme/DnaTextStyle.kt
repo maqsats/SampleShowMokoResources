@@ -1,14 +1,17 @@
 package com.dna.payments.kmm.presentation.theme
 
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 object DnaTextStyle {
 
+    val SemiBold14 = TextStyle(
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 14.sp
+    )
+
     val SemiBold16 = TextStyle(
-        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp
     )
@@ -53,8 +56,24 @@ object DnaTextStyle {
         fontWeight = FontWeight.Medium,
     )
 
+    val Medium12Grey5 = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+        color = greyColor5
+    )
+
     val Normal14 = TextStyle(
         fontSize = 14.sp
+    )
+
+    val Normal14Grey5 = TextStyle(
+        fontSize = 14.sp,
+        color = greyColor5
+    )
+
+   val Normal10Grey5 = TextStyle(
+        fontSize = 10.sp,
+        color = greyColor5
     )
 
     val Medium14 = TextStyle(

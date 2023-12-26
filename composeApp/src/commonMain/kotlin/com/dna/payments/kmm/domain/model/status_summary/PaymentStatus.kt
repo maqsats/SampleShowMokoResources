@@ -4,7 +4,7 @@ package com.dna.payments.kmm.domain.model.status_summary
 enum class PaymentStatus(
     val displayName: String,
 ) {
-    ALL("All"),
+    ALL("Total transactions"),
     AUTH("Pending"),
     CREATED("Created"),
     CREDITED("Credited"),

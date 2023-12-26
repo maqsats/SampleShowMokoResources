@@ -2,9 +2,12 @@ package com.dna.payments.kmm.presentation.state
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -57,15 +60,34 @@ fun ComponentRectangle(
 }
 
 @Composable
-fun ComponentRectangleLineLong(
-    isLoadingCompleted: Boolean,
-    isLightModeActive: Boolean,
-) {
+fun ComponentCircle(modifier: Modifier = Modifier) {
+    Box(
+        modifier = Modifier
+            .clip(shape = CircleShape)
+            .background(color = grayLight)
+            .then(modifier)
+            .shimmerLoadingAnimation()
+    )
+}
+
+@Composable
+fun ComponentRectangleLineLong() {
     Box(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(4.dp))
             .background(color = grayLight)
             .height(20.dp).fillMaxWidth()
+            .shimmerLoadingAnimation()
+    )
+}
+
+@Composable
+fun ComponentRectangleVerticalLineLong() {
+    Box(
+        modifier = Modifier
+            .clip(shape = RoundedCornerShape(4.dp))
+            .background(color = grayLight)
+            .width(20.dp).fillMaxHeight()
             .shimmerLoadingAnimation()
     )
 }

@@ -52,7 +52,7 @@ class DateHelper {
         val yearsDifference = yearsBetween(startDate, endDate)
 
         return when {
-            startDate == endDate && startDate == getCurrentDay() -> HOUR
+            daysDifference == 0L -> HOUR
             daysDifference in 1..30 -> DAY
             monthsDifference in 0..2 -> WEEK
             monthsDifference in 2..11 -> MONTH

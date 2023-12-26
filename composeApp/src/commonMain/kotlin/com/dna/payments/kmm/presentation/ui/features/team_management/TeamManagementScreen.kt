@@ -151,8 +151,8 @@ class TeamManagementScreen : DrawerScreen {
         Column {
             DnaTabRow(
                 tabList = listOf(
-                    stringResource(MR.strings.all),
-                    stringResource(MR.strings.invited),
+                    MR.strings.all,
+                    MR.strings.invited,
                 ),
                 selectedPagePosition = state.selectedPage,
                 onTabClick = {
@@ -340,10 +340,7 @@ class TeamManagementScreen : DrawerScreen {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ComponentRectangleLineLong(
-                    isLoadingCompleted = false,
-                    isLightModeActive = true
-                )
+                ComponentRectangleLineLong()
             }
         }
     }

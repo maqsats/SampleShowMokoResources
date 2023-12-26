@@ -325,10 +325,7 @@ class PaymentLinksScreen : DrawerScreen {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ComponentRectangleLineLong(
-                    isLoadingCompleted = false,
-                    isLightModeActive = true
-                )
+                ComponentRectangleLineLong()
             }
         }
     }

@@ -41,7 +41,7 @@ fun CurrencyWidget(
                 return@ManagementResourceUiState
             DNAText(
                 modifier = Modifier.wrapContentWidth(),
-                text = currencies[state.indexOfSelectedCurrency].name,
+                text = state.selectedCurrency.name,
                 style = DnaTextStyle.Medium14
             )
         },
@@ -60,7 +60,7 @@ fun CurrencyWidget(
 @Composable
 fun CurrencyBottomSheet(
     state: OverviewContract.State,
-    onCurrencyChange: (Int) -> Unit
+    onCurrencyChange: (Currency) -> Unit
 ) {
     ManagementResourceUiState(
         resourceUiState = state.currencies,
@@ -82,9 +82,9 @@ fun CurrencyBottomSheet(
                 currencies.forEach { currency ->
                     CurrencyItem(
                         currency = currency,
-                        isSelected = currencies[state.indexOfSelectedCurrency] == currency,
+                        isSelected = state.selectedCurrency == currency,
                         onCurrencyClick = {
-                            onCurrencyChange(currencies.indexOf(currency))
+                            onCurrencyChange(currency)
                         })
                 }
 

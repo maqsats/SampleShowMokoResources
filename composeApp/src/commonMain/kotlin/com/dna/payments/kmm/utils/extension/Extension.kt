@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.data.model.Error
+import com.dna.payments.kmm.domain.interactors.use_cases.currency.CurrencyHelper
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.DATE_FORMAT_WITH_HOUR
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatter
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterHM
@@ -151,6 +152,26 @@ fun DateTime?.convertToServerFormat(): String {
     return this?.format(DATE_FORMAT_WITH_HOUR) ?: ""
 }
 
+fun Double.toMoneyString(): String {
+    return if (this >= 1000000) {
+        "${(this / 1000000).toInt()}m"
+    } else if (this >= 1000) {
+        "${(this / 1000).toInt()}k"
+    } else {
+        this.toInt().toString()
+    }
+}
+
+fun Int.toMoneyString(): String {
+    return if (this >= 1000000) {
+        "${(this / 1000000)}m"
+    } else if (this >= 1000) {
+        "${(this / 1000)}k"
+    } else {
+        this.toString()
+    }
+}
+
 fun DateTime?.getFormattedOnlyHM(): String {
     return this?.format(dateFormatterOnlyHM) ?: ""
 }
@@ -212,6 +233,31 @@ fun List<Currency>.findIndexOfDefaultCurrency(
 ): Int {
     val index = indexOfFirst { it.name == defaultCurrency }
     return if (index != -1) index else 0
+}
+
+
+fun Double.toMoneyString(currency: String): String {
+    val intValue = this.toLong()
+    val decimalValue = ((this - intValue) * 100).toInt()
+
+    val integralPart = addCommas(intValue)
+    val decimalPart = decimalValue.toString().padStart(2, '0')
+
+    return "${CurrencyHelper(currency)}$integralPart.${decimalPart.first()}"
+}
+
+fun addCommas(number: Long): String {
+    val str = number.toString()
+    val result = StringBuilder()
+
+    for (i in str.indices.reversed()) {
+        result.insert(0, str[i])
+        if (i > 0 && (str.length - i) % 3 == 0) {
+            result.insert(0, ',')
+        }
+    }
+
+    return result.toString()
 }
 
 fun String.toCurrencySymbol(): String {

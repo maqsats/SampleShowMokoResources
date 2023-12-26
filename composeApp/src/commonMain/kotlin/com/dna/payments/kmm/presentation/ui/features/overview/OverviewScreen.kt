@@ -11,23 +11,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.koin.getScreenModel
-import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.overview.OverviewType
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DnaFilter
 import com.dna.payments.kmm.presentation.ui.common.DnaTabRow
-import com.dna.payments.kmm.presentation.ui.common.DnaTextSwitch
+import com.dna.payments.kmm.presentation.ui.common.LocalSelectedMerchant
 import com.dna.payments.kmm.presentation.ui.features.currency.CurrencyBottomSheet
 import com.dna.payments.kmm.presentation.ui.features.currency.CurrencyWidget
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeBottomSheet
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeWidget
+import com.dna.payments.kmm.presentation.ui.features.overview.widgets.OverviewWidget
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
-import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -41,6 +39,7 @@ class OverviewScreen : DrawerScreen {
 
         val overviewScreen = getScreenModel<OverviewViewModel>()
         val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
+        val state by overviewScreen.uiState.collectAsState()
 
         LaunchedEffect(key1 = Unit) {
             overviewScreen.effect.collectLatest { effect ->
@@ -52,13 +51,16 @@ class OverviewScreen : DrawerScreen {
             }
         }
 
+        LaunchedEffect(
+            LocalSelectedMerchant.current
+        ) {
+            overviewScreen.setEvent(OverviewContract.Event.OnMerchantChanged)
+        }
+
         LaunchedEffect(pagerState) {
             snapshotFlow { pagerState.currentPage }.collect { page ->
                 overviewScreen.setEvent(OverviewContract.Event.OnPageChanged(page))
             }
-        }
-        var selectedTabIndex by remember {
-            mutableStateOf(0)
         }
 
         HorizontalPager(
@@ -67,18 +69,17 @@ class OverviewScreen : DrawerScreen {
             userScrollEnabled = false,
             pageContent = { pageIndex ->
                 when (pageIndex) {
-                    POS_PAYMENTS -> {
-                        DnaTextSwitch(
-                            selectedIndex = selectedTabIndex,
-                            items = listOf("Amount", "Count"),
-                            onSelectionChange = { index ->
-                                selectedTabIndex = index
-                            }
+                    OverviewType.POS_PAYMENTS.pageId -> {
+                        OverviewWidget(
+                            state = state,
+                            overviewType = OverviewType.POS_PAYMENTS
                         )
                     }
-
-                    ONLINE_PAYMENTS -> {
-
+                    OverviewType.ONLINE_PAYMENTS.pageId -> {
+                        OverviewWidget(
+                            state = state,
+                            overviewType = OverviewType.ONLINE_PAYMENTS
+                        )
                     }
                 }
             }
@@ -91,10 +92,7 @@ class OverviewScreen : DrawerScreen {
         val state by overviewScreen.uiState.collectAsState()
 
         DnaTabRow(
-            tabList = listOf(
-                stringResource(MR.strings.pos_payments),
-                stringResource(MR.strings.online_payments),
-            ),
+            tabList = OverviewType.values().map { it.displayName },
             selectedPagePosition = state.selectedPage,
             onTabClick = {
                 overviewScreen.setEvent(OverviewContract.Event.OnPageChanged(it))
@@ -156,10 +154,5 @@ class OverviewScreen : DrawerScreen {
                 )
             }
         }
-    }
-
-    companion object {
-        private const val POS_PAYMENTS = 0
-        private const val ONLINE_PAYMENTS = 1
     }
 }

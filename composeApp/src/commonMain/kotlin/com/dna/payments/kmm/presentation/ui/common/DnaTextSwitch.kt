@@ -34,24 +34,26 @@ import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.zIndex
+import com.dna.payments.kmm.domain.model.text_switch.TextSwitch
 import com.dna.payments.kmm.presentation.theme.Dimens
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.darkGreen
 import com.dna.payments.kmm.presentation.theme.greyColorTextSwitch
 import com.dna.payments.kmm.presentation.theme.white
+import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
 fun DnaTextSwitch(
     modifier: Modifier = Modifier,
     selectedIndex: Int,
-    items: List<String>,
+    items: Array<TextSwitch>,
     onSelectionChange: (Int) -> Unit
 ) {
     require(items.isNotEmpty())
     Box(
-        modifier = modifier.padding(Paddings.small)
-            .height(Dimens.switchHeight).width(Dimens.switchWidth)
+        modifier = Modifier.padding(Paddings.small)
+            .height(Dimens.switchHeight).width(Dimens.switchWidth).then(modifier)
     ) {
         Box(
             modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(Paddings.small))
@@ -120,7 +122,7 @@ fun DnaTextSwitch(
                         contentAlignment = Alignment.Center
                     ) {
                         DNAText(
-                            text = text,
+                            text = stringResource(text.displayName),
                             style = if (selectedIndex == index) DnaTextStyle.Medium12 else DnaTextStyle.Medium12Grey4,
                         )
                     }
