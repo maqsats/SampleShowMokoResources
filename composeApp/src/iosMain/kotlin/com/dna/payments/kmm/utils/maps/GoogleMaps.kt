@@ -76,7 +76,7 @@ actual fun GoogleMaps(
     val density = LocalDensity.current
 
     val onValueChange: (text: String) -> Unit = {
-        println("value = $it")
+
     }
 
     val markers2 = mutableListOf<MapMarker>()

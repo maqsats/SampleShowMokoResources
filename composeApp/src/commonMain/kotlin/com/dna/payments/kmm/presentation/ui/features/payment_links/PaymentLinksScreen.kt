@@ -207,7 +207,6 @@ class PaymentLinksScreen : DrawerScreen {
         modifier: Modifier = Modifier,
         paymentLinkHeader: PaymentLinkHeader
     ) {
-        println(paymentLinkHeader.title)
         Box(
             modifier = modifier.padding(top = Paddings.small)
                 .fillMaxWidth()

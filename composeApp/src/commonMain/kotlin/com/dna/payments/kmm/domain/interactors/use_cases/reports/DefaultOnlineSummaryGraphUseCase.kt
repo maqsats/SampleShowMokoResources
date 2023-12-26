@@ -53,7 +53,7 @@ class DefaultOnlineSummaryGraphUseCase(private val transactionRepository: Transa
         )
 
         var earliestDate = dateFormat.parse(sortedList.first().date)
-        println("interval type $intervalType")
+
         val interval = when (intervalType) {
             IntervalType.HOUR -> DateTimeSpan(hours = 1)
             IntervalType.DAY -> DateTimeSpan(days = 1)
