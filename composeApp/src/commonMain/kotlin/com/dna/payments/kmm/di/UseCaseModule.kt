@@ -32,6 +32,7 @@ import com.dna.payments.kmm.domain.use_case.GetTerminalSettingsUseCase
 import com.dna.payments.kmm.domain.use_case.PaymentLinkStatusUseCase
 import com.dna.payments.kmm.domain.use_case.SendOtpInstructionsUseCase
 import com.dna.payments.kmm.domain.use_case.VerifyOtpCodeUseCase
+import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsPageSource
 import com.dna.payments.kmm.presentation.ui.features.payment_links.PaymentLinksPageSource
 import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementByUserPageSource
 import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementInvitedPageSource
@@ -54,6 +55,7 @@ val useCasesModule: Module = module {
     singleOf(::TeamManagementByUserPageSource)
     singleOf(::TeamManagementInvitedPageSource)
     singleOf(::PaymentLinksPageSource)
+    singleOf(::OnlinePaymentsPageSource)
     singleOf(::DateHelper)
     singleOf(::GetDateRangeUseCase)
 

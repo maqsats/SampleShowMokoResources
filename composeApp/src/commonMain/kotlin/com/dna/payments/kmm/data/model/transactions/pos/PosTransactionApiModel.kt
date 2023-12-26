@@ -1,6 +1,8 @@
 package com.dna.payments.kmm.data.model.transactions.pos
 
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class PosTransactionApiModel(
     val amount: Double?,
     val captureMethod: String?,

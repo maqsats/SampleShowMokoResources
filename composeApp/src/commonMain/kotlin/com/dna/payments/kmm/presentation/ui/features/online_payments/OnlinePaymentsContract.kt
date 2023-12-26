@@ -1,15 +1,15 @@
-package com.dna.payments.kmm.presentation.ui.features.payment_links
+package com.dna.payments.kmm.presentation.ui.features.online_payments
 
 import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod
 import com.dna.payments.kmm.domain.model.date_picker.DateSelection
-import com.dna.payments.kmm.domain.model.payment_links.PaymentLinkByPeriod
-import com.dna.payments.kmm.domain.model.payment_links.PaymentLinkStatus
+import com.dna.payments.kmm.domain.model.status_summary.PaymentStatus
+import com.dna.payments.kmm.domain.model.transactions.Transaction
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.mvi.UiEffect
 import com.dna.payments.kmm.presentation.mvi.UiEvent
 import com.dna.payments.kmm.presentation.mvi.UiState
 
-interface PaymentLinksContract {
+interface OnlinePaymentsContract {
     sealed interface Event : UiEvent {
         data object OnInit : Event
         data class OnPageChanged(
@@ -22,11 +22,11 @@ interface PaymentLinksContract {
     }
 
     data class State(
-        val paymentLinkList: ResourceUiState<List<PaymentLinkByPeriod>>,
+        val onlinePaymentList: ResourceUiState<List<Transaction>>,
         val hasPermission: Boolean,
         val selectedPage: Int = 0,
         val dateRange: Pair<DatePickerPeriod, DateSelection>,
-        val statusList: List<PaymentLinkStatus>,
+        val statusList: List<PaymentStatus>,
         val indexOfSelectedStatus: Int = 0
     ) : UiState
 

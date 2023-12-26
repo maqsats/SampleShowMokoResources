@@ -8,19 +8,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.payment_links.PaymentLinkStatus
-import com.dna.payments.kmm.presentation.state.ComponentRectangleLineShort
-import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.white
@@ -34,26 +29,26 @@ import dev.icerock.moko.resources.compose.stringResource
 fun StatusWidget(
     state: PaymentLinksContract.State
 ) {
-    ManagementResourceUiState(
-        resourceUiState = state.statusList,
-        successView = { status ->
-            if (status.isEmpty())
-                return@ManagementResourceUiState
-            DNAText(
-                modifier = Modifier.wrapContentWidth(),
-                text = stringResource(status[state.indexOfSelectedStatus].stringResourceStatus),
-                style = DnaTextStyle.Medium14
-            )
-        },
-        loadingView = {
-            ComponentRectangleLineShort(
-                modifier = Modifier
-                    .width(30.dp)
-            )
-        },
-        onCheckAgain = {},
-        onTryAgain = {},
+//    ManagementResourceUiState(
+//        resourceUiState = state.statusList,
+//        successView = { status ->
+    if (state.statusList.isEmpty())
+        return
+    DNAText(
+        modifier = Modifier.wrapContentWidth(),
+        text = stringResource(state.statusList[state.indexOfSelectedStatus].stringResourceStatus),
+        style = DnaTextStyle.Medium14
     )
+
+//        loadingView = {
+//            ComponentRectangleLineShort(
+//                modifier = Modifier
+//                    .width(30.dp)
+//            )
+//        },
+//        onCheckAgain = {},
+//        onTryAgain = {},
+//)
 }
 
 
@@ -62,51 +57,47 @@ fun StatusBottomSheet(
     state: PaymentLinksContract.State,
     onItemChange: (Int) -> Unit
 ) {
-    ManagementResourceUiState(
-        resourceUiState = state.statusList,
-        successView = { status ->
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = white)
-                    .padding(Paddings.medium),
-                verticalArrangement = Arrangement.Top
-            ) {
-                DNAText(
-                    text = stringResource(MR.strings.status),
-                    style = DnaTextStyle.SemiBold20
-                )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = white)
+            .padding(Paddings.medium),
+        verticalArrangement = Arrangement.Top
+    ) {
+        DNAText(
+            text = stringResource(MR.strings.status),
+            style = DnaTextStyle.SemiBold20
+        )
 
-                Spacer(modifier = Modifier.height(Paddings.medium))
+        Spacer(modifier = Modifier.height(Paddings.medium))
 
-                status.forEach { item ->
-                    StatusItem(
-                        status = item,
-                        isSelected = status[state.indexOfSelectedStatus] == item,
-                        onItemClick = {
-                            onItemChange(status.indexOf(item))
-                        })
-                }
+        state.statusList.forEach { item ->
+            StatusItem(
+                status = item,
+                isSelected = state.statusList[state.indexOfSelectedStatus] == item,
+                onItemClick = {
+                    onItemChange(state.statusList.indexOf(item))
+                })
+        }
 
-                Spacer(modifier = Modifier.height(Paddings.medium))
-            }
-        },
-        loadingView = {
-            LazyColumn {
-                item {
-                    DNAText(text = stringResource(MR.strings.all_statuses))
-                }
-                items(10) {
-                    ComponentRectangleLineShort(
-                        modifier = Modifier
-                            .width(30.dp)
-                    )
-                }
-            }
-        },
-        onCheckAgain = {},
-        onTryAgain = {},
-    )
+        Spacer(modifier = Modifier.height(Paddings.medium))
+    }
+//    loadingView = {
+//        LazyColumn {
+//            item {
+//                DNAText(text = stringResource(MR.strings.all_statuses))
+//            }
+//            items(10) {
+//                ComponentRectangleLineShort(
+//                    modifier = Modifier
+//                        .width(30.dp)
+//                )
+//            }
+//        }
+//    },
+//    onCheckAgain = {},
+//    onTryAgain = {},
+//    )
 }
 
 @Composable
