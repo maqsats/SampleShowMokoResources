@@ -12,9 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
+import dev.icerock.moko.resources.compose.stringResource
 
 class OnlinePaymentsScreen : DrawerScreen {
     override val isFilterEnabled = false
@@ -37,7 +39,7 @@ class OnlinePaymentsScreen : DrawerScreen {
                         vertical = 10.dp,
                         horizontal = 16.dp
                     ),
-                    text = "OnlinePayments",
+                    text = stringResource(MR.strings.online_payments),
                     style = DnaTextStyle.Bold22,
                 )
             }
