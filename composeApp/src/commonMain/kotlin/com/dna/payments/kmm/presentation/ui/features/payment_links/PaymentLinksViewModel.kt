@@ -24,9 +24,6 @@ class PaymentLinksViewModel(
     private val paymentLinkStatusUseCase: PaymentLinkStatusUseCase
 ) : BaseViewModel<PaymentLinksContract.Event, PaymentLinksContract.State, PaymentLinksContract.Effect>() {
 
-    private var paymentLinkStatusList = paymentLinkStatusUseCase.getMainPaymentLinkStatus()
-    private var selectedPaymentLinkStatus = paymentLinkStatusList.first()
-
     init {
         setState {
             copy(
@@ -35,8 +32,9 @@ class PaymentLinksViewModel(
                     Section.PAYMENT_LINKS,
                     AccessLevel.FULL
                 ),
-                dateRange = getDateRangeUseCase(Menu.OVERVIEW),
-                statusList = ResourceUiState.Success(paymentLinkStatusList)
+                dateRange = getDateRangeUseCase(Menu.PAYMENT_LINKS),
+                statusList = paymentLinkStatusUseCase.getMainPaymentLinkStatus(),
+                indexOfSelectedStatus = 0
             )
         }
     }
@@ -47,7 +45,7 @@ class PaymentLinksViewModel(
             hasPermission = false,
             selectedPage = 0,
             dateRange = getDefaultDateRange(),
-            statusList = ResourceUiState.Loading,
+            statusList = emptyList(),
             indexOfSelectedStatus = 0
         )
 
@@ -84,7 +82,6 @@ class PaymentLinksViewModel(
                 setState {
                     copy(indexOfSelectedStatus = event.selectedStatusIndex)
                 }
-                selectedPaymentLinkStatus = paymentLinkStatusList[event.selectedStatusIndex]
                 paymentLinksPageSource.onReset()
                 getPaymentLinkList()
             }
@@ -98,8 +95,8 @@ class PaymentLinksViewModel(
                 PaymentLinksSearchParameters(
                     startDate = currentState.dateRange.second.startDate.convertToServerFormat(),
                     endDate = currentState.dateRange.second.endDate.convertToServerFormat(),
-                    status = if (selectedPaymentLinkStatus == PaymentLinkStatus.ALL)
-                        "" else selectedPaymentLinkStatus.value
+                    status = if (currentState.statusList[currentState.indexOfSelectedStatus] == PaymentLinkStatus.ALL)
+                        "" else currentState.statusList[currentState.indexOfSelectedStatus].value
                 )
             )
             val result = paymentLinksPageSource.onLoadMore()

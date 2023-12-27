@@ -1,5 +1,8 @@
 package com.dna.payments.kmm.data.model.transactions
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class TransactionApiModel(
     val accountId: String?,
     val acquirerResponseCode: String?,
