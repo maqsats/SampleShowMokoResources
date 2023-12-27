@@ -1,23 +1,22 @@
 package com.dna.payments.kmm.presentation.ui.features.payment_links
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,13 +33,14 @@ import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.payment_links.PaymentLinkHeader
 import com.dna.payments.kmm.domain.model.payment_links.PaymentLinkItem
 import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
-import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
+import com.dna.payments.kmm.presentation.state.Empty
+import com.dna.payments.kmm.presentation.state.PaginationUiStateManager
+import com.dna.payments.kmm.presentation.theme.Dimens
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DNAText
@@ -52,29 +52,23 @@ import com.dna.payments.kmm.presentation.ui.features.payment_links.status.Status
 import com.dna.payments.kmm.presentation.ui.features.payment_links.status.StatusWidget
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.extension.toCurrencySymbol
-import com.dna.payments.kmm.utils.navigation.LocalNavigator
-import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
 class PaymentLinksScreen : DrawerScreen {
-    override val key: ScreenKey = "PaymentLinksScreen"
+
     override val isFilterEnabled: Boolean = true
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    override fun Content() {
+    override fun DrawerContent(isToolbarCollapsed: Boolean) {
         val paymentLinksViewModel = getScreenModel<PaymentLinksViewModel>()
         val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
         val state by paymentLinksViewModel.uiState.collectAsState()
-        val navigator = LocalNavigator.currentOrThrow
 
         LaunchedEffect(key1 = Unit) {
-            paymentLinksViewModel.setEvent(
-                PaymentLinksContract.Event.OnInit
-            )
             paymentLinksViewModel.effect.collectLatest { effect ->
                 when (effect) {
                     is PaymentLinksContract.Effect.OnPageChanged -> {
@@ -92,57 +86,60 @@ class PaymentLinksScreen : DrawerScreen {
 
         PaymentLinksContent(
             modifier = Modifier.wrapContentHeight(),
-            state = state
-        )
+            state = state,
+            isToolbarCollapsed = isToolbarCollapsed,
+            onRequestNextPage = {
+                paymentLinksViewModel.setEvent(PaymentLinksContract.Event.OnLoadMore)
+            }
+        ) {
+            paymentLinksViewModel.setEvent(PaymentLinksContract.Event.OnRefresh)
+        }
+    }
+
+    @Composable
+    override fun Content() {
+
     }
 
     @Composable
     private fun PaymentLinksContent(
         modifier: Modifier = Modifier,
-        state: PaymentLinksContract.State
+        state: PaymentLinksContract.State,
+        isToolbarCollapsed: Boolean,
+        onRequestNextPage: () -> Unit = {},
+        onRefresh: () -> Unit = {}
     ) {
-        Column(
-            modifier = modifier.padding(horizontal = Paddings.medium),
-            verticalArrangement = Arrangement.Top
-        ) {
-            ManagementResourceUiState(
-                resourceUiState = state.paymentLinkList,
-                successView = { paymentLinkByPeriods ->
-                    LazyColumn(modifier = modifier) {
-                        items(paymentLinkByPeriods) { paymentLinkByPeriodItem ->
-                            when (paymentLinkByPeriodItem) {
-                                is PaymentLinkItem -> {
-                                    PaymentLinkItem(paymentLinkItem = paymentLinkByPeriodItem)
-                                }
+        PaginationUiStateManager(
+            modifier = modifier.fillMaxSize().padding(horizontal = Paddings.medium),
+            resourceUiState = state.pagingUiState,
+            pagingList = state.paymentLinkList,
+            onRequestNextPage = onRequestNextPage,
+            onRefresh = onRefresh,
+            isToolbarCollapsed = isToolbarCollapsed,
+            successItemView = { paymentLinkByPeriod ->
+                when (paymentLinkByPeriod) {
+                    is PaymentLinkItem -> {
+                        PaymentLinkItem(paymentLinkItem = paymentLinkByPeriod)
+                    }
 
-                                is PaymentLinkHeader -> {
-                                    PaymentLinkItemHeader(paymentLinkHeader = paymentLinkByPeriodItem)
-                                }
-                            }
-                        }
+                    is PaymentLinkHeader -> {
+                        PaymentLinkItemHeader(paymentLinkHeader = paymentLinkByPeriod)
                     }
-                },
-                loadingView = {
-                    Column {
-                        for (i in 1..12) {
-                            TeammateItemOnLoading()
-                        }
-                    }
-                },
-                onCheckAgain = {},
-                onTryAgain = {},
-            )
-        }
+                }
+            },
+            loadingView = { TeammateItemOnLoading() },
+            emptyView = { Empty(text = "No payment links yet") }
+        )
     }
 
     @Composable
     override fun DrawerHeader() {
         Column {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(Paddings.large))
             DNAText(
                 text = stringResource(MR.strings.payment_links),
                 style = DnaTextStyle.Bold20,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = Paddings.medium)
             )
         }
     }
@@ -229,16 +226,16 @@ class PaymentLinksScreen : DrawerScreen {
         val clipboardManager: ClipboardManager = LocalClipboardManager.current
 
         Box(
-            modifier = modifier.padding(vertical = 8.dp)
-                .shadow(2.dp, shape = RoundedCornerShape(8.dp))
-                .background(Color.White, RoundedCornerShape(8.dp))
+            modifier = modifier.padding(vertical = Paddings.small)
+                .shadow(2.dp, shape = RoundedCornerShape(Paddings.small))
+                .background(Color.White, RoundedCornerShape(Paddings.small))
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .noRippleClickable {
 
                 }
         ) {
-            Column(modifier = modifier.padding(16.dp)) {
+            Column(modifier = modifier.padding(Paddings.medium)) {
                 Row(
                     modifier = modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -258,8 +255,11 @@ class PaymentLinksScreen : DrawerScreen {
                     )
                 }
                 Spacer(modifier = Modifier.height(Paddings.medium))
-                Image(painter = painterResource(MR.images.divider), contentDescription = null)
+
+                Divider()
+
                 Spacer(modifier = Modifier.height(Paddings.medium))
+
                 Row(
                     modifier = modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -298,11 +298,12 @@ class PaymentLinksScreen : DrawerScreen {
                             painter = painterResource(MR.images.ic_copy),
                             contentDescription = null,
                             tint = Color.Unspecified,
-                            modifier = Modifier.height(24.dp).width(24.dp)
+                            modifier = Modifier.size(Dimens.iconSize)
                         )
                     }
 
                 }
+
                 Spacer(modifier = Modifier.height(Paddings.small))
             }
         }
@@ -313,14 +314,14 @@ class PaymentLinksScreen : DrawerScreen {
         modifier: Modifier = Modifier,
     ) {
         Box(
-            modifier = modifier.padding(top = 8.dp)
-                .shadow(2.dp, shape = RoundedCornerShape(8.dp))
-                .background(Color.White, RoundedCornerShape(8.dp))
+            modifier = modifier.padding(top = Paddings.small)
+                .shadow(Paddings.xxSmall, shape = RoundedCornerShape(Paddings.small))
+                .background(Color.White, RoundedCornerShape(Paddings.small))
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
             Row(
-                modifier = modifier.fillMaxWidth().padding(16.dp),
+                modifier = modifier.fillMaxWidth().padding(Paddings.medium),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {

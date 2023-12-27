@@ -16,6 +16,11 @@ interface DrawerScreen : Screen {
     override fun Content()
 
     @Composable
+    fun DrawerContent(isToolbarCollapsed: Boolean) {
+        Content()
+    }
+
+    @Composable
     fun DrawerHeader()
 
     @Composable

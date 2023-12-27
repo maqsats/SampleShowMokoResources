@@ -43,12 +43,14 @@ val LocalSelectedMerchant = compositionLocalOf {
 fun DnaCollapsingToolbar(
     drawerState: DrawerState,
     isFilterEnabled: Boolean,
+    isToolbarCollapsed: (Boolean) -> Unit,
     headerContent: @Composable () -> Unit,
     filterContent: @Composable () -> Unit,
     content: @Composable () -> Unit,
 ) {
     if (isFilterEnabled) {
         DnaCollapsingToolbarWithFilter(
+            isToolbarCollapsed = isToolbarCollapsed,
             drawerState = drawerState,
             headerContent = headerContent,
             filterContent = filterContent,
@@ -92,6 +94,7 @@ fun DnaCollapsingToolbarWithoutFilter(
 @Composable
 fun DnaCollapsingToolbarWithFilter(
     drawerState: DrawerState,
+    isToolbarCollapsed: (Boolean) -> Unit,
     headerContent: @Composable () -> Unit,
     filterContent: @Composable () -> Unit,
     content: @Composable () -> Unit
@@ -159,5 +162,6 @@ fun DnaCollapsingToolbarWithFilter(
                 .bottomShadow(if (reverseShadow > 7.dp) reverseShadow else 0.dp)
                 .height(1.dp)
         )
+        isToolbarCollapsed(state.toolbarState.progress != 1.0f)
     }
 }

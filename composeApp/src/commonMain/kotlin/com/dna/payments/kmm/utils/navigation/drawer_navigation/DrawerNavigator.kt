@@ -7,9 +7,11 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.currentCompositeKeyHash
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
@@ -46,9 +48,13 @@ val <T> ProvidableCompositionLocal<T?>.currentOrThrow: T
 fun CurrentDrawerScreen(drawerState: DrawerState) {
     val navigator = LocalDrawerNavigator.currentOrThrow
     val currentScreen = navigator.lastItem
+    var isToolbarCollapsed by remember { mutableStateOf(false) }
 
     navigator.saveableState("currentDrawerScreen") {
         DnaCollapsingToolbar(
+            isToolbarCollapsed = {
+                isToolbarCollapsed = it
+            },
             drawerState = drawerState,
             isFilterEnabled = currentScreen.isFilterEnabled,
             headerContent = {
@@ -58,7 +64,9 @@ fun CurrentDrawerScreen(drawerState: DrawerState) {
                 currentScreen.DrawerFilter()
             },
             content = {
-                currentScreen.Content()
+                currentScreen.DrawerContent(
+                    isToolbarCollapsed
+                )
             }
         )
     }

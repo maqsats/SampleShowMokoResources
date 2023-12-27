@@ -95,7 +95,6 @@ class OnlinePaymentsViewModel(
     }
 
     private fun getOnlinePaymentList() {
-        println("HELLO")
         setState { copy(onlinePaymentList = ResourceUiState.Loading) }
         screenModelScope.launch {
             onlinePaymentsPageSource.updateParameters(
