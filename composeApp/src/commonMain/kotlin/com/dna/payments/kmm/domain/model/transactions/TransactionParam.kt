@@ -1,12 +1,13 @@
 package com.dna.payments.kmm.domain.model.transactions
 
+import com.dna.payments.kmm.domain.model.status_summary.PaymentStatus
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 
 @Parcelize
 data class TransactionParam(
     var amount: Double,
-    var status: String?,
+    var status: PaymentStatus,
     val currency: String,
     val id: String
 ) : Parcelable {

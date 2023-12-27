@@ -1,6 +1,7 @@
 package com.dna.payments.kmm.presentation.ui.features.online_payments
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,11 +11,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -24,11 +30,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
-import com.dna.payments.kmm.domain.model.team_management.UserStatus
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.*
+import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentCard
 import com.dna.payments.kmm.domain.model.transactions.Transaction
 import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
 import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
@@ -41,6 +51,7 @@ import com.dna.payments.kmm.utils.extension.toCurrencySymbol
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
+import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
@@ -120,9 +131,11 @@ class OnlinePaymentsScreen : DrawerScreen {
         modifier: Modifier = Modifier,
         onClick: () -> Unit
     ) {
+        val clipboardManager: ClipboardManager = LocalClipboardManager.current
+
         Box(
-            modifier = modifier.padding(top = 8.dp)
-                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+            modifier = modifier.padding(top = 2.dp, bottom = 6.dp)
+                .shadow(2.dp, shape = RoundedCornerShape(8.dp))
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
                 .wrapContentHeight()
@@ -130,25 +143,157 @@ class OnlinePaymentsScreen : DrawerScreen {
 
                 }
         ) {
-            Column(modifier = modifier.padding(16.dp)) {
+            Column(modifier = modifier.padding(Paddings.medium)) {
                 Row(
                     modifier = modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (transaction.transactionType.backgroundColor != null && transaction.transactionType.imageResource != null) {
+                            Box(
+                                modifier = Modifier
+                                    .background(
+                                        transaction.transactionType.backgroundColor,
+                                        CircleShape
+                                    )
+                                    .size(40.dp)
+                            ) {
+                                Image(
+                                    painter = painterResource(transaction.transactionType.imageResource),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                        .padding(Paddings.small)
+                                        .height(24.dp)
+                                        .width(24.dp)
+                                )
+                            }
+                        }
                         DNAText(
-                            text = transaction.status ?: "",
-                            style = DnaTextStyle.SemiBold16
+                            text = transaction.currency.toCurrencySymbol() + " " + transaction.amount.toString(),
+                            style = DnaTextStyle.SemiBold20,
+                            modifier = Modifier.padding(start = Paddings.small)
                         )
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            DNAText(
-                                style = DnaTextStyle.WithAlpha12,
-                                text = "${transaction.amount} ${transaction.currency.toCurrencySymbol()}"
+                    }
+                    DNATextWithIcon(
+                        text = stringResource(transaction.status.stringResource),
+                        style = DnaTextStyle.WithAlphaNormal12,
+                        icon = transaction.status.icon,
+                        textColor = transaction.status.textColor,
+                        backgroundColor = transaction.status.backgroundColor
+                    )
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Divider()
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    DNAText(
+                        style = DnaTextStyle.WithAlpha14,
+                        text = stringResource(MR.strings.payment_method)
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = modifier.noRippleClickable {
+                            clipboardManager.setText(AnnotatedString(transaction.invoiceId))
+                        }
+                    ) {
+                        when (transaction.paymentMethod) {
+                            CARD -> {
+                                if (transaction.cardType != null) {
+                                    PosPaymentCard.fromCardType(transaction.cardType).imageResource?.let {
+                                        painterResource(
+                                            it
+                                        )
+                                    }
+                                } else {
+                                    null
+                                }
+                            }
+
+                            else -> {
+                                transaction.paymentMethod.imageResource?.let {
+                                    painterResource(it)
+                                }
+                            }
+                        }?.let {
+                            Icon(
+                                painter = it,
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier.height(24.dp).width(24.dp)
                             )
                         }
+                        DNAText(
+                            modifier = modifier.padding(start = Paddings.small),
+                            style = DnaTextStyle.Medium14,
+                            text = when (transaction.paymentMethod) {
+                                CARD -> {
+                                    transaction.cardMask
+                                }
+
+                                CLICK_TO_PAY -> {
+                                    transaction.cardMask
+                                }
+
+                                else -> {
+                                    stringResource(transaction.paymentMethod.stringResource)
+                                }
+                            }
+                        )
+                    }
+
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    DNAText(
+                        style = DnaTextStyle.WithAlpha14,
+                        text = stringResource(MR.strings.order_number)
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = modifier.noRippleClickable {
+                            clipboardManager.setText(AnnotatedString(transaction.invoiceId))
+                        }
+                    ) {
+                        DNAText(
+                            style = DnaTextStyle.Medium14,
+                            text = transaction.invoiceId
+                        )
+                        Icon(
+                            painter = painterResource(MR.images.ic_copy),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier.height(24.dp).width(24.dp)
+                        )
                     }
                 }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    DNAText(
+                        style = DnaTextStyle.WithAlpha14,
+                        text = stringResource(MR.strings.customer)
+                    )
+                    DNAText(
+                        style = DnaTextStyle.Medium14,
+                        text = transaction.payerName
+                    )
+                }
+                Spacer(modifier = Modifier.height(Paddings.small))
             }
         }
     }

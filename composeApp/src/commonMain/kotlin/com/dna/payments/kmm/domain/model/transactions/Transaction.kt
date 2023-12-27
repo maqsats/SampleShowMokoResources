@@ -1,5 +1,8 @@
 package com.dna.payments.kmm.domain.model.transactions
 
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod
+import com.dna.payments.kmm.domain.model.online_payments.TransactionType
+import com.dna.payments.kmm.domain.model.status_summary.PaymentStatus
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 
@@ -46,7 +49,7 @@ data class Transaction(
     val payerIp: String,
     val payerName: String,
     val payerPhone: String,
-    val paymentMethod: String,
+    val paymentMethod: OnlinePaymentMethod,
     val payoutAmount: Double,
     val payoutDate: String,
     val postLink: String,
@@ -57,6 +60,6 @@ data class Transaction(
     val resultMessage: String,
     val secure3D: Boolean,
     val shop: String?,
-    var status: String?,
-    val transactionType: String
+    var status: PaymentStatus,
+    val transactionType: TransactionType
 ) : Parcelable

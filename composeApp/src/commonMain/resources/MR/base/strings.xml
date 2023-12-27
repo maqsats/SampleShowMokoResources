@@ -82,6 +82,7 @@
     <string name="reports">Reports</string>
     <string name="payment_links">Payment links</string>
     <string name="payment_methods">Payment methods</string>
+    <string name="payment_method">Payment method</string>
     <string name="team_management">Team Management</string>
     <string name="help_center">Help center</string>
 
@@ -238,14 +239,59 @@
 
     <!--    //Product guide texts-->
     <string name="product_guide">Product Guides</string>
-    <string name="product_guide_description">To help you get started, we have prepared some quick and easy-to-use guides</string>
+    <string name="product_guide_description">To help you get started, we have prepared some quick
+        and easy-to-use guides
+    </string>
     <string name="product_guide_detail_link">Merchant Portal Guide</string>
 
     <string name="product_guide_second">Where to Start</string>
-    <string name="product_guide_second_description">An online payment system, integrated directly to your website - Click through the tips on how to start using the portal</string>
+    <string name="product_guide_second_description">An online payment system, integrated directly to
+        your website - Click through the tips on how to start using the portal
+    </string>
     <string name="product_guide_second_detail_link">Read more</string>
 
     <string name="merchant_portal">Merchant Portal</string>
 
     <string name="select_role">Select Role</string>
+
+    <!--    Online Payment Transaction Type  -->
+    <string name="sale">Sale</string>
+    <string name="auth">Authorisation Only</string>
+    <string name="adjustment">Adjustment</string>
+    <string name="pre_auth">Pre-Authorisation</string>
+    <string name="refund">Refund</string>
+    <string name="verification">Verification</string>
+    <string name="other">Other</string>
+    <string name="pay_by_link">Pay by Link</string>
+    <string name="init">Init</string>
+    <string name="tokenization">Tokenization</string>
+    <string name="p2p">P2P</string>
+    <string name="recurring">Recurring</string>
+
+    <!--    Online Payment Transaction Status  -->
+    <string name="pending">Pending</string>
+    <string name="created">Created</string>
+    <string name="credited">Credited</string>
+    <string name="charged">Charged</string>
+    <string name="refunded">Refunded</string>
+    <string name="declined">Declined</string>
+    <string name="failed">Failed</string>
+    <string name="new_status">New</string>
+    <string name="three_d_secure">3D Secure</string>
+    <string name="tokenized">Tokenized</string>
+    <string name="verified">Verified</string>
+    <string name="processing">Processing</string>
+    <string name="abandoned">Abandoned</string>
+
+    <string name="astro_pay">AstroPay</string>
+    <string name="ecospend">Ecospend</string>
+    <string name="clicktopay">Click to pay</string>
+    <string name="card">Card</string>
+
+<!--    Pos Payments -->
+    <string name="visa">Visa</string>
+    <string name="mastercard">Mastercard</string>
+    <string name="upi">UnionPay</string>
+    <string name="amex">American Express</string>
+    <string name="diners">Diners Club</string>
 </resources>

@@ -178,7 +178,7 @@ fun OnlinePaymentsWidgetSuccess(
                     verticalArrangement = Arrangement.Center
                 ) {
                     DNAText(
-                        text = summary.status.displayName,
+                        text = summary.status.value,
                         style = DnaTextStyle.Medium12Grey5
                     )
                     DNAText(
