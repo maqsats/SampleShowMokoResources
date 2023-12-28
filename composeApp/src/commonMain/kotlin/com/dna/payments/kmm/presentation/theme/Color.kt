@@ -80,7 +80,7 @@ internal val redFreeSpeech = Color(0xFFDD0000)
 internal val whiteTransparent = Color(0xB3FFFFFF)
 internal val green = Color(0xFF61C75F)
 internal val dnaGreenLight = Color(0xFF69B6AA)
-internal val dnaRed2= Color(0xFFEA6262)
+internal val dnaRed2 = Color(0xFFEA6262)
 internal val dnaGreenLightBackground = Color(0xFFD6E8E5)
 internal val dnaRedLightBackground = Color(0xFFF2D2D1)
 internal val greenSolid = Color(0xFF04AA01)
@@ -132,7 +132,7 @@ internal val notEditableEditView = Color(0xFF898B9A)
 internal val greyColor = Color(0xFFC3C5C7)
 internal val greyColorBackground = Color(0xFFF1F2F2)
 internal val greyColorAlpha = Color(0xFF7F8286)
-internal val greyColor5= Color(0xFF4B4F54)
+internal val greyColor5 = Color(0xFF4B4F54)
 internal val greyColorTextSwitch = Color(0xFFD8DDE2)
 internal val outlineGreenColor = Color(0xFF317E72)
 
@@ -160,3 +160,10 @@ internal val darkGrey = Color(0xFF7F8286)
 
 internal val blueDrawer = Color(0xFFC7DDFF)
 internal val seed = Color(0xFF2C3639)
+
+internal val peachBlossom = Color(0xFFFEF0ED)
+internal val skyBlue = Color(0xFFC7DDFF)
+
+internal val darkRed = Color(0xFFEA6262)
+
+

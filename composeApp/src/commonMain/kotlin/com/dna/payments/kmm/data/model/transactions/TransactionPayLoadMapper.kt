@@ -1,6 +1,9 @@
 package com.dna.payments.kmm.data.model.transactions
 
 import com.dna.payments.kmm.domain.model.map.Mapper
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod
+import com.dna.payments.kmm.domain.model.online_payments.TransactionType
+import com.dna.payments.kmm.domain.model.status_summary.PaymentStatus
 import com.dna.payments.kmm.domain.model.transactions.AdditionalDetails
 import com.dna.payments.kmm.domain.model.transactions.Transaction
 import com.dna.payments.kmm.domain.model.transactions.TransactionPayload
@@ -62,7 +65,7 @@ class TransactionPayLoadMapper : Mapper<TransactionPayloadApiModel, TransactionP
             payerIp = from.payerIp ?: "",
             payerName = from.payerName ?: "",
             payerPhone = from.payerPhone ?: "",
-            paymentMethod = from.paymentMethod ?: "",
+            paymentMethod = OnlinePaymentMethod.fromString(from.paymentMethod ?: ""),
             payoutAmount = from.payoutAmount ?: 0.0,
             payoutDate = from.payoutDate ?: "",
             postLink = from.postLink ?: "",
@@ -73,8 +76,8 @@ class TransactionPayLoadMapper : Mapper<TransactionPayloadApiModel, TransactionP
             resultMessage = from.resultMessage ?: "",
             secure3D = from.secure3D ?: false,
             shop = from.shop ?: "",
-            status = from.status ?: "ALL",
-            transactionType = from.transactionType ?: ""
+            status = PaymentStatus.fromString(from.status ?: ""),
+            transactionType = TransactionType.fromKey(from.transactionType ?: "")
         )
     }
 
