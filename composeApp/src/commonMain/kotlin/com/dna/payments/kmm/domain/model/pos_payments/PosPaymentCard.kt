@@ -12,15 +12,15 @@ enum class PosPaymentCard(
 ) {
     MASTER_CARD(MR.strings.mastercard, MR.images.ic_mastercard, "mastercard", "MasterCard"),
     VISA(MR.strings.visa, MR.images.ic_visa, "visa", "VISA"),
-    UPI(MR.strings.upi, MR.images.ic_visa, "upi", "UnionPay"),
-    UNION_PAY(MR.strings.upi, MR.images.ic_visa, "unionpay", "UnionPay"),
+    UPI(MR.strings.upi, MR.images.ic_unionpay, "upi", "UnionPay"),
+    UNION_PAY(MR.strings.upi, MR.images.ic_unionpay, "unionpay", "UnionPay"),
     AMERICAN_EXPRESS(
         MR.strings.amex,
-        MR.images.ic_visa,
+        MR.images.ic_amex,
         "americanexpress",
         "AmericanExpress"
     ),
-    DINERS_CLUB(MR.strings.diners, MR.images.ic_visa, "diners", "Diners"),
+    DINERS_CLUB(MR.strings.diners, MR.images.ic_dc, "diners", "Diners"),
     UNDEFINED(MR.strings.empty_text, null, "", "");
 
 

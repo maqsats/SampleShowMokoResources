@@ -1,5 +1,6 @@
 package com.dna.payments.kmm.presentation.ui.features.online_payments
 
+import androidx.compose.runtime.mutableStateListOf
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.data.model.search.OrderParameter
 import com.dna.payments.kmm.data.model.search.Paging
@@ -16,9 +17,8 @@ import com.dna.payments.kmm.domain.model.search.method.MethodType
 import com.dna.payments.kmm.domain.model.search.type_order.TypeOrder
 import com.dna.payments.kmm.domain.model.status_summary.PaymentStatus
 import com.dna.payments.kmm.domain.network.Response
-import com.dna.payments.kmm.presentation.model.ResourceUiState
+import com.dna.payments.kmm.presentation.model.PagingUiState
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
-import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.convertToServerFormat
 import com.dna.payments.kmm.utils.extension.getDefaultDateRange
 import kotlinx.coroutines.launch
@@ -47,7 +47,8 @@ class OnlinePaymentsViewModel(
 
     override fun createInitialState(): OnlinePaymentsContract.State =
         OnlinePaymentsContract.State(
-            onlinePaymentList = ResourceUiState.Idle,
+            onlinePaymentList = mutableStateListOf(),
+            pagingUiState = PagingUiState.Loading,
             hasPermission = false,
             selectedPage = 0,
             dateRange = getDefaultDateRange(),
@@ -91,36 +92,50 @@ class OnlinePaymentsViewModel(
                 onlinePaymentsPageSource.onReset()
                 getOnlinePaymentList()
             }
+
+            OnlinePaymentsContract.Event.OnLoadMore -> {
+                if (onlinePaymentsPageSource.getIsLastPage()) return
+                getOnlinePaymentList()
+            }
+
+            OnlinePaymentsContract.Event.OnRefresh -> {
+                onlinePaymentsPageSource.onReset()
+                getOnlinePaymentList()
+            }
         }
     }
 
     private fun getOnlinePaymentList() {
-        setState { copy(onlinePaymentList = ResourceUiState.Loading) }
         screenModelScope.launch {
+            setState {
+                copy(
+                    pagingUiState = PagingUiState.Loading
+                )
+            }
             onlinePaymentsPageSource.updateParameters(
                 formSearchBody()
             )
             val result = onlinePaymentsPageSource.onLoadMore()
             setState {
                 copy(
-                    onlinePaymentList = when (result) {
+                    pagingUiState = when (result) {
                         is Response.Success -> {
-                            println("HELLO"+result.data)
-                            ResourceUiState.Success(result.data)
+                            PagingUiState.Idle
                         }
 
                         is Response.Error -> {
-                            ResourceUiState.Error(result.error)
+                            PagingUiState.Error(result.error)
                         }
 
                         is Response.NetworkError -> {
-                            ResourceUiState.NetworkError
+                            PagingUiState.NetworkError
                         }
 
                         is Response.TokenExpire -> {
-                            ResourceUiState.TokenExpire
+                            PagingUiState.TokenExpire
                         }
-                    }
+                    },
+                    onlinePaymentList = onlinePaymentsPageSource.remoteData
                 )
             }
         }

@@ -4,6 +4,7 @@ import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod
 import com.dna.payments.kmm.domain.model.date_picker.DateSelection
 import com.dna.payments.kmm.domain.model.status_summary.PaymentStatus
 import com.dna.payments.kmm.domain.model.transactions.Transaction
+import com.dna.payments.kmm.presentation.model.PagingUiState
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.mvi.UiEffect
 import com.dna.payments.kmm.presentation.mvi.UiEvent
@@ -16,14 +17,16 @@ interface OnlinePaymentsContract {
             val position: Int
         ) : Event
 
-
+        data object OnLoadMore : Event
+        data object OnRefresh : Event
         data class OnDateSelection(val datePickerPeriod: DatePickerPeriod) : Event
         data class OnStatusChange(val selectedStatusIndex: Int) : Event
     }
 
     data class State(
-        val onlinePaymentList: ResourceUiState<List<Transaction>>,
+        val onlinePaymentList: List<Transaction>,
         val hasPermission: Boolean,
+        val pagingUiState: PagingUiState,
         val selectedPage: Int = 0,
         val dateRange: Pair<DatePickerPeriod, DateSelection>,
         val statusList: List<PaymentStatus>,

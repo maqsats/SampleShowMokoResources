@@ -291,6 +291,7 @@
     <string name="ecospend">Ecospend</string>
     <string name="clicktopay">Click to pay</string>
     <string name="card">Card</string>
+    <string name="no_payments_yet">No payments yet</string>
 
 <!--    Pos Payments -->
     <string name="visa">Visa</string>
