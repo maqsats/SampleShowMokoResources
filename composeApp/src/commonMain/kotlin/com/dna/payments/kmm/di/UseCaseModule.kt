@@ -6,6 +6,8 @@ import com.dna.payments.kmm.data.use_case.SendOtpInstructionsUseCaseImpl
 import com.dna.payments.kmm.data.use_case.VerifyOtpCodeUseCaseImpl
 import com.dna.payments.kmm.domain.interactors.data_factory.overview.OverviewDataFactory
 import com.dna.payments.kmm.domain.interactors.data_factory.product_guide.ProductGuideDataFactory
+import com.dna.payments.kmm.domain.interactors.page_source.OnlinePaymentsPageSource
+import com.dna.payments.kmm.domain.interactors.page_source.PosPaymentsPageSource
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.authorization.AuthorizationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.currency.CurrencyUseCase
@@ -15,6 +17,7 @@ import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.GetDateRang
 import com.dna.payments.kmm.domain.interactors.use_cases.drawer.DrawerUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_link.PaymentLinkUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.pos_payments.GetPosTransactionsUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.profile.MerchantUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.reports.DefaultOnlineSummaryGraphUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.reports.DefaultPosSummaryGraphUseCase
@@ -32,7 +35,6 @@ import com.dna.payments.kmm.domain.use_case.GetTerminalSettingsUseCase
 import com.dna.payments.kmm.domain.use_case.PaymentLinkStatusUseCase
 import com.dna.payments.kmm.domain.use_case.SendOtpInstructionsUseCase
 import com.dna.payments.kmm.domain.use_case.VerifyOtpCodeUseCase
-import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsPageSource
 import com.dna.payments.kmm.presentation.ui.features.payment_links.PaymentLinksPageSource
 import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementByUserPageSource
 import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementInvitedPageSource
@@ -56,6 +58,8 @@ val useCasesModule: Module = module {
     singleOf(::TeamManagementInvitedPageSource)
     singleOf(::PaymentLinksPageSource)
     singleOf(::OnlinePaymentsPageSource)
+    singleOf(::PosPaymentsPageSource)
+    singleOf(::GetPosTransactionsUseCase)
     singleOf(::DateHelper)
     singleOf(::GetDateRangeUseCase)
 

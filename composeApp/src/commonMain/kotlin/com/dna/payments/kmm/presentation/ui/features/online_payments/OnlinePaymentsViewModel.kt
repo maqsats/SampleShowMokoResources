@@ -17,6 +17,7 @@ import com.dna.payments.kmm.domain.model.search.method.MethodType
 import com.dna.payments.kmm.domain.model.search.type_order.TypeOrder
 import com.dna.payments.kmm.domain.model.status_summary.PaymentStatus
 import com.dna.payments.kmm.domain.network.Response
+import com.dna.payments.kmm.domain.interactors.page_source.OnlinePaymentsPageSource
 import com.dna.payments.kmm.presentation.model.PagingUiState
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
 import com.dna.payments.kmm.utils.extension.convertToServerFormat

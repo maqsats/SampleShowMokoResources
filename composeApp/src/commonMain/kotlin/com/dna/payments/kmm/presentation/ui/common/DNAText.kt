@@ -63,7 +63,7 @@ fun DNATextWithBackground(
 fun DNATextWithIcon(
     text: String,
     modifier: Modifier = Modifier,
-    icon: ImageResource,
+    icon: ImageResource?,
     secondIcon: ImageResource? = null,
     style: TextStyle = DnaTextStyle.Normal16,
     textColor: Color = style.color,
@@ -77,12 +77,14 @@ fun DNATextWithIcon(
         ).padding(horizontal = 8.dp),
         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painterResource(icon),
-            contentDescription = null,
-            tint = textColor,
-            modifier = Modifier.height(14.dp).width(14.dp)
-        )
+        if (icon != null) {
+            Icon(
+                painter = painterResource(icon),
+                contentDescription = null,
+                tint = textColor,
+                modifier = Modifier.height(14.dp).width(14.dp)
+            )
+        }
         Text(
             text = text,
             style = style,

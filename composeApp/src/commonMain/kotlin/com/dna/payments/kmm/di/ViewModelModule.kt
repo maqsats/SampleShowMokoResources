@@ -9,6 +9,7 @@ import com.dna.payments.kmm.presentation.ui.features.overview.OverviewViewModel
 import com.dna.payments.kmm.presentation.ui.features.payment_links.PaymentLinksViewModel
 import com.dna.payments.kmm.presentation.ui.features.payment_methods_detail.DetailPaymentMethodsViewModel
 import com.dna.payments.kmm.presentation.ui.features.pincode.PinViewModel
+import com.dna.payments.kmm.presentation.ui.features.pos_payments.PosPaymentsViewModel
 import com.dna.payments.kmm.presentation.ui.features.restore_password.RestorePasswordViewModel
 import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementViewModel
 import com.dna.payments.kmm.presentation.ui.features.verification_code.VerificationCodeViewModel
@@ -37,5 +38,6 @@ val viewModelModule = module {
     factoryOf(::OverviewViewModel)
     factoryOf(::PaymentLinksViewModel)
     factoryOf(::OnlinePaymentsViewModel)
+    factoryOf(::PosPaymentsViewModel)
 }
 
