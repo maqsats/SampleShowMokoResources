@@ -23,7 +23,7 @@ enum class PaymentStatus(
 ) {
     ALL(
         "Total transactions",
-        MR.strings.total_transactions,
+        MR.strings.all_statuses,
         darkGrey,
         lightGrey,
         MR.images.ic_ready_to_charge
