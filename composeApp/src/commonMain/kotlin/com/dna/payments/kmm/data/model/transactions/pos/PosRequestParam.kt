@@ -1,7 +1,9 @@
 package com.dna.payments.kmm.data.model.transactions.pos
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class PosRequestParam(
     @SerialName("from")
     val startDate: String,

@@ -1,4 +1,4 @@
-package com.dna.payments.kmm.presentation.ui.features.online_payments.status
+package com.dna.payments.kmm.presentation.ui.features.pos_payments.status
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,25 +17,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.dna.payments.kmm.MR
-import com.dna.payments.kmm.domain.model.status_summary.PaymentStatus
+import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentStatusV2
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.white
 import com.dna.payments.kmm.presentation.ui.common.DNAText
-import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsContract
+import com.dna.payments.kmm.presentation.ui.features.pos_payments.PosPaymentsContract
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
 fun StatusWidget(
-    state: OnlinePaymentsContract.State
+    state: PosPaymentsContract.State
 ) {
     if (state.statusList.isEmpty())
         return
     DNAText(
         modifier = Modifier.wrapContentWidth(),
-        text = stringResource(state.statusList[state.indexOfSelectedStatus].stringResource),
+        text = state.statusList[state.indexOfSelectedStatus].displayName,
         style = DnaTextStyle.Medium14
     )
 }
@@ -43,7 +43,7 @@ fun StatusWidget(
 
 @Composable
 fun StatusBottomSheet(
-    state: OnlinePaymentsContract.State,
+    state: PosPaymentsContract.State,
     onItemChange: (Int) -> Unit
 ) {
     Column(
@@ -76,7 +76,7 @@ fun StatusBottomSheet(
 }
 
 @Composable
-fun StatusItem(status: PaymentStatus, isSelected: Boolean, onItemClick: () -> Unit) {
+fun StatusItem(status: PosPaymentStatusV2, isSelected: Boolean, onItemClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -93,7 +93,7 @@ fun StatusItem(status: PaymentStatus, isSelected: Boolean, onItemClick: () -> Un
     ) {
         DNAText(
             modifier = Modifier.weight(1f),
-            text = stringResource(status.stringResource),
+            text = status.displayName,
             style = if (isSelected) DnaTextStyle.SemiBold16 else DnaTextStyle.Medium16Grey5,
         )
         if (isSelected)

@@ -25,6 +25,7 @@ import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePayme
 import com.dna.payments.kmm.presentation.ui.features.overview.OverviewScreen
 import com.dna.payments.kmm.presentation.ui.features.payment_links.PaymentLinksScreen
 import com.dna.payments.kmm.presentation.ui.features.payment_methods.PaymentMethodsScreen
+import com.dna.payments.kmm.presentation.ui.features.pos_payments.PosPaymentsScreen
 import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementScreen
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.NavigatorDisposeBehavior
@@ -129,6 +130,7 @@ class DrawerNavigationScreen : Screen {
             NavItemPosition.PAYMENT_METHODS -> PaymentMethodsScreen()
             NavItemPosition.TEAM_MANAGEMENT -> TeamManagementScreen()
             NavItemPosition.PAYMENT_LINKS -> PaymentLinksScreen()
+            NavItemPosition.POS_PAYMENTS -> PosPaymentsScreen()
             else -> {
                 OverviewScreen()
             }

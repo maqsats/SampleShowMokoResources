@@ -1,5 +1,7 @@
 package com.dna.payments.kmm.domain.model.transactions.pos
 
+import com.dna.payments.kmm.domain.model.online_payments.TransactionType
+import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentStatusV2
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize
 
@@ -18,12 +20,12 @@ data class PosTransaction(
     val operation: String,
     val returnCode: String,
     val returnCodeDescription: String,
-    val status: String,
+    val status: PosPaymentStatusV2,
     val terminalId: String,
     val transactionCity: String,
     val transactionCountry: String,
     val transactionDate: String,
     val transactionDetails: String,
     val transactionId: String,
-    var transactionType: String
+    val transactionType: TransactionType
 ) : Parcelable
