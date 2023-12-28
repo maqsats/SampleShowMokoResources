@@ -1,5 +1,6 @@
 package com.dna.payments.kmm.presentation.state
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,22 +46,6 @@ fun <T : Any> PaginationUiStateManager(
         isRefreshing = false
     }
 
-    when (resourceUiState) {
-        is PagingUiState.Error -> {
-            errorPopup.value = true
-            uiError.value = resourceUiState.error
-        }
-        PagingUiState.NetworkError -> {
-            errorPopup.value = true
-            uiError.value = UiText.DynamicString("Network Error")
-        }
-        PagingUiState.TokenExpire -> {
-
-        }
-        PagingUiState.Loading -> if (pagingList.isEmpty()) PaginationLoadingView { loadingView() }
-        PagingUiState.Idle -> if (pagingList.isEmpty()) emptyView()
-    }
-
     PullToRefresh(
         modifier = modifier,
         state = rememberPullToRefreshState(isRefreshing = isRefreshing),
@@ -73,6 +58,23 @@ fun <T : Any> PaginationUiStateManager(
                 requestNextPage = onRequestNextPage
             ) {
                 successItemView(it)
+            }
+            item {
+                when (resourceUiState) {
+                    is PagingUiState.Error -> {
+                        errorPopup.value = true
+                        uiError.value = resourceUiState.error
+                    }
+                    PagingUiState.NetworkError -> {
+                        errorPopup.value = true
+                        uiError.value = UiText.DynamicString("Network Error")
+                    }
+                    PagingUiState.TokenExpire -> {
+
+                    }
+                    PagingUiState.Loading -> if (pagingList.isEmpty()) PaginationLoadingView { loadingView() }
+                    PagingUiState.Idle -> if (pagingList.isEmpty()) emptyView()
+                }
             }
             item {
                 if (
@@ -88,8 +90,8 @@ fun <T : Any> PaginationUiStateManager(
 
 @Composable
 fun PaginationLoadingView(loadingView: @Composable () -> Unit) {
-    LazyColumn {
-        items(10) {
+    Column {
+        repeat(10) {
             loadingView()
         }
     }

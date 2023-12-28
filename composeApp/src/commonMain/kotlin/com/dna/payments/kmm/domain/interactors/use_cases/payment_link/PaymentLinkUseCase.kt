@@ -39,14 +39,17 @@ class PaymentLinkUseCase(
     override fun mapData(from: PaymentLink): List<PaymentLinkByPeriod> {
         val items = from.records
 
+        val yesterdayItem = UiText.StringResource(MR.strings.yesterday)
+        val todayItem = UiText.StringResource(MR.strings.today)
+
         val groupedItems = items.groupBy {
             val today = DateTime.now()
             val itemDate =
                 DateFormat("yyyy-MM-dd HH:mm:ss").parse(it.createdDate.cutSubstringAfterDot())
 
             when {
-                itemDate.isEqual(today) -> UiText.StringResource(MR.strings.today)
-                itemDate.isEqual(today.minus(DateTimeSpan(days = 1))) -> UiText.StringResource(MR.strings.yesterday)
+                itemDate.isEqual(today) -> todayItem
+                itemDate.isEqual(today.minus(DateTimeSpan(days = 1))) -> yesterdayItem
                 else -> UiText.DynamicString(itemDate.format("dd MMMM yyyy"))
             }
         }
@@ -56,7 +59,6 @@ class PaymentLinkUseCase(
         groupedItems.entries.forEach { (headerTitle, itemList) ->
             // Add Header
             result.add(PaymentLinkHeader(title = headerTitle))
-
 //            Add Items
             result.addAll(itemList)
         }

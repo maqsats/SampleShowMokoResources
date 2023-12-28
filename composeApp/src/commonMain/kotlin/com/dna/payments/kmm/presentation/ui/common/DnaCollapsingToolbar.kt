@@ -18,6 +18,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,8 +31,11 @@ import com.dna.payments.kmm.presentation.theme.drawerBackgroundColor
 import com.dna.payments.kmm.utils.dimension.DimensionSubComposeLayout
 import com.dna.payments.kmm.utils.extension.bottomShadow
 import com.dna.payments.kmm.utils.toolbar.CollapsingToolbarScaffold
+import com.dna.payments.kmm.utils.toolbar.ExperimentalToolbarApi
 import com.dna.payments.kmm.utils.toolbar.ScrollStrategy
 import com.dna.payments.kmm.utils.toolbar.rememberCollapsingToolbarScaffoldState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 typealias MerchantName = String
 
@@ -91,6 +95,7 @@ fun DnaCollapsingToolbarWithoutFilter(
     }
 }
 
+@OptIn(ExperimentalToolbarApi::class)
 @Composable
 fun DnaCollapsingToolbarWithFilter(
     drawerState: DrawerState,
@@ -104,6 +109,12 @@ fun DnaCollapsingToolbarWithFilter(
     var columnHeightDp by remember {
         mutableStateOf(0.dp)
     }
+
+    var isExpandToolbar by remember {
+        mutableStateOf(false)
+    }
+
+    val scope = rememberCoroutineScope()
 
     val density = LocalDensity.current
 
@@ -135,6 +146,15 @@ fun DnaCollapsingToolbarWithFilter(
                                 headerContent()
                                 val dpSize = density.run { size.toDpSize() }
                                 columnHeightDp = dpSize.height + Dimens.toolbarAndFilterHeight
+                                if (columnHeightDp > Dimens.collapsingToolbarHeight && !isExpandToolbar) {
+                                    scope.launch {
+                                        delay(200)
+                                        state.toolbarState.expand(
+                                            0
+                                        )
+                                    }
+                                    isExpandToolbar = true
+                                }
                             },
                             placeMainContent = false
                         )
