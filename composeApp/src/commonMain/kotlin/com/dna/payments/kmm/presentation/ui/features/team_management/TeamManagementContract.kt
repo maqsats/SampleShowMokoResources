@@ -1,6 +1,7 @@
 package com.dna.payments.kmm.presentation.ui.features.team_management
 
 import com.dna.payments.kmm.domain.model.team_management.Teammate
+import com.dna.payments.kmm.presentation.model.PagingUiState
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.mvi.UiEffect
 import com.dna.payments.kmm.presentation.mvi.UiEvent
@@ -13,13 +14,17 @@ interface TeamManagementContract {
             val position: Int
         ) : Event
 
+        data object OnLoadMore : Event
+        data object OnRefresh : Event
+
         data class OnRoleChange(val selectedRoleIndex: Int) : Event
 
     }
 
     data class State(
-        val teammateListAll: ResourceUiState<List<Teammate>>,
-        val teammateListInvited: ResourceUiState<List<Teammate>>,
+        val teammateListAll: List<Teammate>,
+        val teammateListInvited: List<Teammate>,
+        val pagingUiState: PagingUiState,
         val hasPermission: Boolean,
         val selectedPage: Int = 0,
         val roleList: ResourceUiState<List<String>>,
