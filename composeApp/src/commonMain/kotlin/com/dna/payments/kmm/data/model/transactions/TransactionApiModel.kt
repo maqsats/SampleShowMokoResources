@@ -51,7 +51,7 @@ data class TransactionApiModel(
     val postLink: String?,
     val postLinkStatus: Boolean?,
     val processingTypeId: Int?,
-    val processingTypeName: String?,
+    val processingTypeName: String? = null,
     val reference: String?,
     val resultMessage: String?,
     val secure3D: Boolean?,

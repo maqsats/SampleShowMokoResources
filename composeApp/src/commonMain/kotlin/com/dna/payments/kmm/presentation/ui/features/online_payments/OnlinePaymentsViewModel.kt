@@ -105,6 +105,7 @@ class OnlinePaymentsViewModel(
                 copy(
                     onlinePaymentList = when (result) {
                         is Response.Success -> {
+                            println("HELLO"+result.data)
                             ResourceUiState.Success(result.data)
                         }
 

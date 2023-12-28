@@ -285,8 +285,8 @@ class TeamManagementScreen : DrawerScreen {
         teammate: Teammate
     ) {
         Box(
-            modifier = modifier.padding(top = 8.dp)
-                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+            modifier = modifier.padding(top = 2.dp, bottom = 6.dp)
+                .shadow(2.dp, shape = RoundedCornerShape(8.dp))
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
                 .wrapContentHeight()
