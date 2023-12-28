@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,7 +34,8 @@ import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.team_management.Teammate
 import com.dna.payments.kmm.domain.model.team_management.UserStatus
 import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
-import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
+import com.dna.payments.kmm.presentation.state.Empty
+import com.dna.payments.kmm.presentation.state.PaginationUiStateManager
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DNAText
@@ -57,9 +56,13 @@ class TeamManagementScreen : DrawerScreen {
     override val key: ScreenKey = "TeamManagementScreen"
     override val isFilterEnabled: Boolean = true
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
+    }
+
+    @OptIn(ExperimentalFoundationApi::class)
+    @Composable
+    override fun DrawerContent(isToolbarCollapsed: Boolean) {
         val teamManagementViewModel = getScreenModel<TeamManagementViewModel>()
         val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
         val state by teamManagementViewModel.uiState.collectAsState()
@@ -93,15 +96,27 @@ class TeamManagementScreen : DrawerScreen {
                     0 -> {
                         TeamManagementContent(
                             modifier = Modifier.wrapContentHeight(),
-                            state = state
-                        )
+                            state = state,
+                            isToolbarCollapsed = isToolbarCollapsed,
+                            onRequestNextPage = {
+                                teamManagementViewModel.setEvent(TeamManagementContract.Event.OnLoadMore)
+                            }
+                        ) {
+                            teamManagementViewModel.setEvent(TeamManagementContract.Event.OnRefresh)
+                        }
                     }
 
                     1 -> {
                         InvitedTeamManagementContent(
                             modifier = Modifier.wrapContentHeight(),
-                            state = state
-                        )
+                            state = state,
+                            isToolbarCollapsed = isToolbarCollapsed,
+                            onRequestNextPage = {
+                                teamManagementViewModel.setEvent(TeamManagementContract.Event.OnLoadMore)
+                            }
+                        ) {
+                            teamManagementViewModel.setEvent(TeamManagementContract.Event.OnRefresh)
+                        }
                     }
                 }
             }
@@ -111,34 +126,27 @@ class TeamManagementScreen : DrawerScreen {
     @Composable
     private fun InvitedTeamManagementContent(
         modifier: Modifier,
-        state: TeamManagementContract.State
+        state: TeamManagementContract.State,
+        isToolbarCollapsed: Boolean,
+        onRequestNextPage: () -> Unit = {},
+        onRefresh: () -> Unit = {}
     ) {
         Column(
             modifier = modifier.padding(horizontal = 8.dp),
             verticalArrangement = Arrangement.Top
         ) {
-            ManagementResourceUiState(
-                modifier = modifier,
-                resourceUiState = state.teammateListInvited,
-                successView = {
-                    LazyColumn(
-                        modifier = modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Top
-                    ) {
-                        items(it) {
-                            InvitedTeammateItem(teammate = it)
-                        }
-                    }
+            PaginationUiStateManager(
+                modifier = modifier.fillMaxSize(),
+                resourceUiState = state.pagingUiState,
+                pagingList = state.teammateListAll,
+                onRequestNextPage = onRequestNextPage,
+                onRefresh = onRefresh,
+                isToolbarCollapsed = isToolbarCollapsed,
+                successItemView = { teammate ->
+                    TeammateItem(teammate = teammate)
                 },
-                loadingView = {
-                    Column {
-                        for (i in 1..12) {
-                            TeammateItemOnLoading()
-                        }
-                    }
-                },
-                onCheckAgain = {},
-                onTryAgain = {},
+                loadingView = { TeammateItemOnLoading() },
+                emptyView = { Empty(text = stringResource(MR.strings.no_teammates)) }
             )
         }
     }
@@ -202,34 +210,27 @@ class TeamManagementScreen : DrawerScreen {
     @Composable
     private fun TeamManagementContent(
         modifier: Modifier = Modifier,
-        state: TeamManagementContract.State
+        state: TeamManagementContract.State,
+        isToolbarCollapsed: Boolean,
+        onRequestNextPage: () -> Unit = {},
+        onRefresh: () -> Unit = {}
     ) {
         Column(
             modifier = modifier.padding(horizontal = 8.dp),
             verticalArrangement = Arrangement.Top
         ) {
-            ManagementResourceUiState(
-                modifier = modifier,
-                resourceUiState = state.teammateListAll,
-                successView = {
-                    LazyColumn(
-                        modifier = modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Top
-                    ) {
-                        items(it) {
-                            TeammateItem(teammate = it)
-                        }
-                    }
+            PaginationUiStateManager(
+                modifier = modifier.fillMaxSize(),
+                resourceUiState = state.pagingUiState,
+                pagingList = state.teammateListAll,
+                onRequestNextPage = onRequestNextPage,
+                onRefresh = onRefresh,
+                isToolbarCollapsed = isToolbarCollapsed,
+                successItemView = { teammate ->
+                    TeammateItem(teammate = teammate)
                 },
-                loadingView = {
-                    Column {
-                        for (i in 1..12) {
-                            TeammateItemOnLoading()
-                        }
-                    }
-                },
-                onCheckAgain = {},
-                onTryAgain = {},
+                loadingView = { TeammateItemOnLoading() },
+                emptyView = { Empty(text = stringResource(MR.strings.no_teammates)) }
             )
         }
     }

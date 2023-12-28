@@ -1,5 +1,6 @@
 package com.dna.payments.kmm.presentation.ui.features.team_management
 
+import androidx.compose.runtime.mutableStateListOf
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.model.permissions.AccessLevel
@@ -7,9 +8,9 @@ import com.dna.payments.kmm.domain.model.permissions.Section
 import com.dna.payments.kmm.domain.model.team_management.TeamManagementSearchParameters
 import com.dna.payments.kmm.domain.model.team_management.UserType
 import com.dna.payments.kmm.domain.network.Response
+import com.dna.payments.kmm.presentation.model.PagingUiState
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
-import com.dna.payments.kmm.utils.UiText
 import kotlinx.coroutines.launch
 
 class TeamManagementViewModel(
@@ -35,11 +36,12 @@ class TeamManagementViewModel(
 
     override fun createInitialState(): TeamManagementContract.State =
         TeamManagementContract.State(
-            teammateListAll = ResourceUiState.Idle,
-            teammateListInvited = ResourceUiState.Idle,
+            teammateListAll = mutableStateListOf(),
+            teammateListInvited = mutableStateListOf(),
             hasPermission = false,
             selectedPage = 0,
             roleList = ResourceUiState.Idle,
+            pagingUiState = PagingUiState.Loading,
         )
 
     override fun handleEvent(event: TeamManagementContract.Event) {
@@ -70,12 +72,32 @@ class TeamManagementViewModel(
                 getTeammateList()
                 getInvitedTeammateList()
             }
+
+            TeamManagementContract.Event.OnLoadMore -> {
+                if (!teamManagementByUserPageSource.getIsLastPage()) {
+                    getTeammateList()
+                }
+                if (!teamManagementInvitedPageSource.getIsLastPage()) {
+                    getInvitedTeammateList()
+                }
+            }
+
+            TeamManagementContract.Event.OnRefresh -> {
+                teamManagementByUserPageSource.onReset()
+                teamManagementInvitedPageSource.onReset()
+                getTeammateList()
+                getInvitedTeammateList()
+            }
         }
     }
 
     private fun getInvitedTeammateList() {
-        setState { copy(teammateListInvited = ResourceUiState.Loading) }
         screenModelScope.launch {
+            setState {
+                copy(
+                    pagingUiState = PagingUiState.Loading
+                )
+            }
             teamManagementInvitedPageSource.updateParameters(
                 TeamManagementSearchParameters(
                     role = if (role == UserType.ALL) "" else role.displayName.lowercase(),
@@ -85,31 +107,36 @@ class TeamManagementViewModel(
             val result = teamManagementInvitedPageSource.onLoadMore()
             setState {
                 copy(
-                    teammateListInvited = when (result) {
+                    pagingUiState = when (result) {
                         is Response.Success -> {
-                            ResourceUiState.Success(result.data)
+                            PagingUiState.Idle
                         }
 
                         is Response.Error -> {
-                            ResourceUiState.Error(result.error)
+                            PagingUiState.Error(result.error)
                         }
 
                         is Response.NetworkError -> {
-                            ResourceUiState.Error(UiText.DynamicString("Network error"))
+                            PagingUiState.NetworkError
                         }
 
                         is Response.TokenExpire -> {
-                            ResourceUiState.Error(UiText.DynamicString("Token expired"))
+                            PagingUiState.TokenExpire
                         }
-                    }
+                    },
+                    teammateListInvited = teamManagementInvitedPageSource.remoteData
                 )
             }
         }
     }
 
     private fun getTeammateList() {
-        setState { copy(teammateListAll = ResourceUiState.Loading) }
         screenModelScope.launch {
+            setState {
+                copy(
+                    pagingUiState = PagingUiState.Loading
+                )
+            }
             teamManagementByUserPageSource.updateParameters(
                 TeamManagementSearchParameters(
                     role = if (role == UserType.ALL) "" else role.displayName.lowercase(),
@@ -119,23 +146,24 @@ class TeamManagementViewModel(
             val result = teamManagementByUserPageSource.onLoadMore()
             setState {
                 copy(
-                    teammateListAll = when (result) {
+                    pagingUiState = when (result) {
                         is Response.Success -> {
-                            ResourceUiState.Success(result.data)
+                            PagingUiState.Idle
                         }
 
                         is Response.Error -> {
-                            ResourceUiState.Error(result.error)
+                            PagingUiState.Error(result.error)
                         }
 
                         is Response.NetworkError -> {
-                            ResourceUiState.Error(UiText.DynamicString("Network error"))
+                            PagingUiState.NetworkError
                         }
 
                         is Response.TokenExpire -> {
-                            ResourceUiState.Error(UiText.DynamicString("Token expired"))
+                            PagingUiState.TokenExpire
                         }
-                    }
+                    },
+                    teammateListAll = teamManagementByUserPageSource.remoteData
                 )
             }
         }
