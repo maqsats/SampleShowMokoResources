@@ -1,5 +1,6 @@
 package com.dna.payments.kmm.presentation.ui.features.payment_links
 
+import androidx.compose.runtime.mutableStateListOf
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.GetDateRangeUseCase
@@ -10,9 +11,8 @@ import com.dna.payments.kmm.domain.model.permissions.AccessLevel
 import com.dna.payments.kmm.domain.model.permissions.Section
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.use_case.PaymentLinkStatusUseCase
-import com.dna.payments.kmm.presentation.model.ResourceUiState
+import com.dna.payments.kmm.presentation.model.PagingUiState
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
-import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.convertToServerFormat
 import com.dna.payments.kmm.utils.extension.getDefaultDateRange
 import kotlinx.coroutines.launch
@@ -37,11 +37,14 @@ class PaymentLinksViewModel(
                 indexOfSelectedStatus = 0
             )
         }
+        paymentLinksPageSource.onReset()
+        getPaymentLinkList()
     }
 
     override fun createInitialState(): PaymentLinksContract.State =
         PaymentLinksContract.State(
-            paymentLinkList = ResourceUiState.Idle,
+            paymentLinkList = mutableStateListOf(),
+            pagingUiState = PagingUiState.Loading,
             hasPermission = false,
             selectedPage = 0,
             dateRange = getDefaultDateRange(),
@@ -51,11 +54,6 @@ class PaymentLinksViewModel(
 
     override fun handleEvent(event: PaymentLinksContract.Event) {
         when (event) {
-            is PaymentLinksContract.Event.OnInit -> {
-                paymentLinksPageSource.onReset()
-                getPaymentLinkList()
-            }
-
             is PaymentLinksContract.Event.OnPageChanged -> {
                 setState {
                     copy(selectedPage = event.position)
@@ -85,12 +83,24 @@ class PaymentLinksViewModel(
                 paymentLinksPageSource.onReset()
                 getPaymentLinkList()
             }
+            PaymentLinksContract.Event.OnLoadMore -> {
+                if (paymentLinksPageSource.getIsLastPage()) return
+                getPaymentLinkList()
+            }
+            PaymentLinksContract.Event.OnRefresh -> {
+                paymentLinksPageSource.onReset()
+                getPaymentLinkList()
+            }
         }
     }
 
     private fun getPaymentLinkList() {
-        setState { copy(paymentLinkList = ResourceUiState.Loading) }
         screenModelScope.launch {
+            setState {
+                copy(
+                    pagingUiState = PagingUiState.Loading
+                )
+            }
             paymentLinksPageSource.updateParameters(
                 PaymentLinksSearchParameters(
                     startDate = currentState.dateRange.second.startDate.convertToServerFormat(),
@@ -100,25 +110,24 @@ class PaymentLinksViewModel(
                 )
             )
             val result = paymentLinksPageSource.onLoadMore()
+
             setState {
                 copy(
-                    paymentLinkList = when (result) {
+                    pagingUiState = when (result) {
                         is Response.Success -> {
-                            ResourceUiState.Success(result.data)
+                            PagingUiState.Idle
                         }
-
                         is Response.Error -> {
-                            ResourceUiState.Error(result.error)
+                            PagingUiState.Error(result.error)
                         }
-
                         is Response.NetworkError -> {
-                            ResourceUiState.Error(UiText.DynamicString("Network error"))
+                            PagingUiState.NetworkError
                         }
-
                         is Response.TokenExpire -> {
-                            ResourceUiState.Error(UiText.DynamicString("Token expired"))
+                            PagingUiState.TokenExpire
                         }
-                    }
+                    },
+                    paymentLinkList = paymentLinksPageSource.remoteData
                 )
             }
         }

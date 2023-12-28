@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.dp
 object Dimens {
     val toolbarHeight = 56.dp
     val tabBarHeight = 32.dp
+    val emptyIconSize = 120.dp
     val dateRangeHeight = 42.dp
     val switchHeight = 40.dp
     val switchWidth = 134.dp

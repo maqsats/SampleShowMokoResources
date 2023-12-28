@@ -71,6 +71,11 @@ object DnaTextStyle {
         color = greyColor5
     )
 
+    val Normal14Grey4 = TextStyle(
+        fontSize = 14.sp,
+        color = greyColorAlpha
+    )
+
    val Normal10Grey5 = TextStyle(
         fontSize = 10.sp,
         color = greyColor5

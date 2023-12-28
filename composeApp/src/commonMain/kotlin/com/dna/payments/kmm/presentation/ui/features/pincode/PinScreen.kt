@@ -30,7 +30,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.pincode.Code
@@ -60,7 +59,6 @@ import org.koin.core.parameter.parametersOf
 
 
 class PinScreen : Screen {
-    override val key: ScreenKey = "PinScreen"
 
     @Composable
     override fun Content() {

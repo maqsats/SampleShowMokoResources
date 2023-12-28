@@ -254,6 +254,10 @@
 
     <string name="select_role">Select Role</string>
 
+    <string name="cptr_pull_to_refresh">Pull to refresh</string>
+    <string name="cptr_release_to_refresh">Release to refresh</string>
+    <string name="cptr_refreshing">Refreshing…</string>
+
     <!--    Online Payment Transaction Type  -->
     <string name="sale">Sale</string>
     <string name="auth">Authorisation Only</string>

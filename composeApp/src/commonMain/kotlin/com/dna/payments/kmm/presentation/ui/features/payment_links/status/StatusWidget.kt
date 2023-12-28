@@ -29,9 +29,6 @@ import dev.icerock.moko.resources.compose.stringResource
 fun StatusWidget(
     state: PaymentLinksContract.State
 ) {
-//    ManagementResourceUiState(
-//        resourceUiState = state.statusList,
-//        successView = { status ->
     if (state.statusList.isEmpty())
         return
     DNAText(
@@ -39,16 +36,6 @@ fun StatusWidget(
         text = stringResource(state.statusList[state.indexOfSelectedStatus].stringResourceStatus),
         style = DnaTextStyle.Medium14
     )
-
-//        loadingView = {
-//            ComponentRectangleLineShort(
-//                modifier = Modifier
-//                    .width(30.dp)
-//            )
-//        },
-//        onCheckAgain = {},
-//        onTryAgain = {},
-//)
 }
 
 
@@ -82,22 +69,6 @@ fun StatusBottomSheet(
 
         Spacer(modifier = Modifier.height(Paddings.medium))
     }
-//    loadingView = {
-//        LazyColumn {
-//            item {
-//                DNAText(text = stringResource(MR.strings.all_statuses))
-//            }
-//            items(10) {
-//                ComponentRectangleLineShort(
-//                    modifier = Modifier
-//                        .width(30.dp)
-//                )
-//            }
-//        }
-//    },
-//    onCheckAgain = {},
-//    onTryAgain = {},
-//    )
 }
 
 @Composable

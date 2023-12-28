@@ -61,7 +61,7 @@ class DefaultOnlineSummaryGraphUseCase(private val transactionRepository: Transa
             IntervalType.MONTH -> DateTimeSpan(months = 1)
             IntervalType.YEAR -> DateTimeSpan(years = 1)
         }
-        println(interval)
+
         val labelList = mutableListOf<String>()
 
         val amountList = mutableListOf<BarEntry>()

@@ -34,7 +34,7 @@ class PaymentLinksPageSource(
 
     private fun handleSuccessResponse(list: List<PaymentLinkByPeriod>): Response<List<PaymentLinkByPeriod>> {
         remoteData.addAll(list)
-        noMoreItems = list.count() <= TAKE_ITEM_SIZE_IN_ONE_REQUEST * currentPage
+        noMoreItems = list.count() <= TAKE_ITEM_SIZE_IN_ONE_REQUEST
         return Response.Success(remoteData)
     }
 
