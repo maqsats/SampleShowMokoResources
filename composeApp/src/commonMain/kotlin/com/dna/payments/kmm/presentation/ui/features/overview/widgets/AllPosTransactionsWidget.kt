@@ -14,16 +14,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.dna.payments.kmm.domain.interactors.use_cases.currency.CurrencyHelper
+import com.dna.payments.kmm.domain.model.currency.Currency
+import com.dna.payments.kmm.domain.model.reports.HistogramEntry
 import com.dna.payments.kmm.domain.model.text_switch.DnaTextSwitchType
 import com.dna.payments.kmm.domain.model.text_switch.TextSwitch
+import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DnaTextSwitch
-import com.dna.payments.kmm.presentation.ui.features.overview.OverviewContract
 import com.dna.payments.kmm.utils.chart.histogram.HistogramChart
 
 @Composable
-fun AllPosTransactionsWidget(state: OverviewContract.State) {
+fun AllPosTransactionsWidget(
+    posPaymentsGraphSummary: ResourceUiState<HistogramEntry>,
+    selectedCurrency: Currency
+) {
 
     var selectedTabIndex by remember {
         mutableStateOf(DnaTextSwitchType.AMOUNT.index)
@@ -46,13 +51,13 @@ fun AllPosTransactionsWidget(state: OverviewContract.State) {
 
         ManagementResourceUiState(
             modifier = Modifier.fillMaxWidth(),
-            resourceUiState = state.posPaymentsGraphSummary,
+            resourceUiState = posPaymentsGraphSummary,
             onCheckAgain = {},
             onTryAgain = {},
             successView = { histogramEntry ->
                 HistogramChart(
                     currency = if (selectedTabIndex == DnaTextSwitchType.AMOUNT.index) CurrencyHelper(
-                        state.selectedCurrency.name
+                        selectedCurrency.name
                     ) else "",
                     xPoints = histogramEntry.labelList,
                     yPoints =

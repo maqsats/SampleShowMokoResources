@@ -37,6 +37,10 @@ class OverviewScreen : DrawerScreen {
     @Composable
     override fun Content() {
 
+    }
+
+    @Composable
+    override fun DrawerContent(isToolbarCollapsed: Boolean) {
         val overviewScreen = getScreenModel<OverviewViewModel>()
         val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
         val state by overviewScreen.uiState.collectAsState()

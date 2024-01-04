@@ -27,7 +27,6 @@ import com.dna.payments.kmm.domain.model.product_guide.ProductGuide
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DNAText
-import com.dna.payments.kmm.presentation.ui.features.overview.OverviewContract
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.delay
@@ -35,7 +34,8 @@ import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ProductGuideWidget(state: OverviewContract.State) {
+fun ProductGuideWidget(productGuideList: List<ProductGuide>) {
+
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
 
     LaunchedEffect(Unit) {
@@ -60,7 +60,7 @@ fun ProductGuideWidget(state: OverviewContract.State) {
         state = pagerState,
         userScrollEnabled = true,
         pageContent = { pageIndex ->
-            ProductGuideWidgetItem(state.productGuideList[pageIndex])
+            ProductGuideWidgetItem(productGuideList[pageIndex])
         }
     )
 }

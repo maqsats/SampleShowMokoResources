@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -57,14 +56,14 @@ fun <T : Number, V> HistogramChart(
             .fillMaxWidth()
             .height(boxHeight)
     ) {
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(diff),
             horizontalAlignment = Alignment.Start,
         ) {
-            items(chartHeight) {
+            repeat(chartHeight) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -87,30 +86,28 @@ fun <T : Number, V> HistogramChart(
                     yCurrent -= yDifference
                 }
             }
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .drawBehind {
-                            drawLine(
-                                color = outlineColor,
-                                strokeWidth = 2f,
-                                start = Offset(x = 40.dp.toPx(), y = (this.size.height / 2)),
-                                end = Offset(x = this.size.width, y = this.size.height / 2)
-                            )
-                        },
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    DNAText(
-                        text = "0$currency ",
-                        style = DnaTextStyle.Normal10Grey5,
-                        textAlign = TextAlign.End,
-                        modifier = Modifier.defaultMinSize(35.dp)
-                    )
-                    yCurrent = 0.0
-                }
-                Spacer(modifier = Modifier.height(Paddings.medium))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .drawBehind {
+                        drawLine(
+                            color = outlineColor,
+                            strokeWidth = 2f,
+                            start = Offset(x = 40.dp.toPx(), y = (this.size.height / 2)),
+                            end = Offset(x = this.size.width, y = this.size.height / 2)
+                        )
+                    },
+                horizontalArrangement = Arrangement.Start
+            ) {
+                DNAText(
+                    text = "0$currency ",
+                    style = DnaTextStyle.Normal10Grey5,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.defaultMinSize(35.dp)
+                )
+                yCurrent = 0.0
             }
+            Spacer(modifier = Modifier.height(Paddings.medium))
         }
         LazyRow(
             modifier = Modifier

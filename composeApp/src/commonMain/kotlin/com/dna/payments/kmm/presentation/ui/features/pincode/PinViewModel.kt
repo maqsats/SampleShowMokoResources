@@ -28,22 +28,18 @@ class PinViewModel(
     private var pinString = ""
     private var repeatString = ""
 
-    init {
-        setState {
-            copy(
-                pinState = if (pinUseCase.isPinCodeExist()) PinState.ENTER else PinState.CREATE,
-                showBiometric = pinUseCase.isPinCodeExist()
-            )
-        }
-    }
-
-    override fun createInitialState(): PinContract.State = getInitialState()
-
-    private fun getInitialState() = PinContract.State(
+    override fun createInitialState(): PinContract.State = PinContract.State(
         codePin = Code.Pin(),
         pinState = PinState.ENTER,
         getAccessToken = ResourceUiState.Idle,
         showBiometric = false
+    )
+
+    private fun getPinState() = PinContract.State(
+        codePin = Code.Pin(),
+        getAccessToken = ResourceUiState.Idle,
+        pinState = if (pinUseCase.isPinCodeExist()) PinState.ENTER else PinState.CREATE,
+        showBiometric = pinUseCase.isPinCodeExist()
     )
 
     override fun handleEvent(event: PinContract.Event) {
@@ -61,7 +57,7 @@ class PinViewModel(
                 showBiometric()
             }
             PinContract.Event.OnDispose -> {
-                setState { getInitialState() }
+                setState { getPinState() }
             }
         }
     }
