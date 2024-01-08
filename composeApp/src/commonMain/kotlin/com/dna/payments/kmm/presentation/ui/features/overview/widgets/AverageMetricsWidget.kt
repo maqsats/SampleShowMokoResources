@@ -10,32 +10,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.dna.payments.kmm.domain.model.average_metrics.Metric
 import com.dna.payments.kmm.domain.model.currency.Currency
-import com.dna.payments.kmm.domain.model.overview.OverviewType
+import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.state.ComponentRectangleLineShort
 import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DNAText
-import com.dna.payments.kmm.presentation.ui.features.overview.OverviewContract
 import com.dna.payments.kmm.utils.extension.toMoneyString
 import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
 fun AverageMetricsWidget(
-    state: OverviewContract.State,
-    overviewType: OverviewType
+    metricResourceUiState: ResourceUiState<List<Metric>>,
+    selectedCurrency: Currency
 ) {
-    val metricResourceUiState = when (overviewType) {
-        OverviewType.POS_PAYMENTS -> state.posPaymentsMetricList
-        OverviewType.ONLINE_PAYMENTS -> state.onlinePaymentsMetricList
-    }
     ManagementResourceUiState(
         modifier = Modifier.fillMaxWidth(),
         resourceUiState = metricResourceUiState,
         onCheckAgain = {},
         onTryAgain = {},
         successView = {
-            AverageMetricsWidgetSuccess(it, state.selectedCurrency)
+            AverageMetricsWidgetSuccess(it, selectedCurrency)
         },
         loadingView = {
             AverageMetricsWidgetLoading()

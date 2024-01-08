@@ -17,18 +17,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.dna.payments.kmm.domain.interactors.use_cases.currency.CurrencyHelper
+import com.dna.payments.kmm.domain.model.currency.Currency
+import com.dna.payments.kmm.domain.model.reports.HistogramEntry
 import com.dna.payments.kmm.domain.model.text_switch.DnaTextSwitchType
 import com.dna.payments.kmm.domain.model.text_switch.TextSwitch
+import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
 import com.dna.payments.kmm.presentation.state.ComponentRectangleVerticalLineLong
 import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DnaTextSwitch
-import com.dna.payments.kmm.presentation.ui.features.overview.OverviewContract
 import com.dna.payments.kmm.utils.chart.histogram.HistogramChart
 
 @Composable
-fun ChargedTransactionsWidget(state: OverviewContract.State) {
+fun ChargedTransactionsWidget(
+    onlinePaymentsGraphSummary: ResourceUiState<HistogramEntry>,
+    selectedCurrency: Currency
+) {
 
     var selectedTabIndex by remember {
         mutableStateOf(DnaTextSwitchType.AMOUNT.index)
@@ -51,13 +56,13 @@ fun ChargedTransactionsWidget(state: OverviewContract.State) {
 
         ManagementResourceUiState(
             modifier = Modifier.fillMaxWidth(),
-            resourceUiState = state.onlinePaymentsGraphSummary,
+            resourceUiState = onlinePaymentsGraphSummary,
             onCheckAgain = {},
             onTryAgain = {},
             successView = { histogramEntry ->
                 HistogramChart(
                     currency = if (selectedTabIndex == DnaTextSwitchType.AMOUNT.index) CurrencyHelper(
-                        state.selectedCurrency.name
+                        selectedCurrency.name
                     ) else "",
                     xPoints = histogramEntry.labelList,
                     yPoints =
