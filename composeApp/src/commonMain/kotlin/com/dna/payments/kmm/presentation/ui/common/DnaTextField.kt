@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -124,7 +125,8 @@ fun DnaTextField(
             if (!textState.validationResult.value.successful) {
                 DNAText(
                     textState.validationResult.value.errorMessage?.getText() ?: "",
-                    style = DnaTextStyle.Red16
+                    style = DnaTextStyle.Red16,
+                    modifier = Modifier.padding(start = 0.dp)
                 )
             }
         },

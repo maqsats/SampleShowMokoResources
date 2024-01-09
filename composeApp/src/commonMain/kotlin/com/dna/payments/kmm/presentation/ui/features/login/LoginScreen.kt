@@ -2,19 +2,24 @@ package com.dna.payments.kmm.presentation.ui.features.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -36,6 +41,7 @@ import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
+import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
@@ -56,7 +62,7 @@ class LoginScreen(private var showSuccess: Boolean = false) : Screen {
         val showSuccessChangePassword = mutableStateOf(showSuccess)
 
         SuccessPopup(
-            UiText.DynamicString("You can now use new password to log in your account"),
+            UiText.StringResource(MR.strings.success_new_password),
             showSuccessChangePassword
         )
 
@@ -106,10 +112,21 @@ class LoginScreen(private var showSuccess: Boolean = false) : Screen {
             verticalArrangement = Arrangement.Top
         ) {
             Spacer(modifier = Modifier.height(32.dp))
-            DNAText(
-                text = stringResource(MR.strings.login),
-                style = DnaTextStyle.SemiBold20
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                DNAText(
+                    text = stringResource(MR.strings.login),
+                    style = DnaTextStyle.SemiBold20
+                )
+                Icon(
+                    painterResource(MR.images.ic_logo_auth),
+                    contentDescription = null,
+                    tint = Color.Unspecified
+                )
+            }
             Spacer(modifier = Modifier.height(32.dp))
             LoginFields(
                 email = state.email,

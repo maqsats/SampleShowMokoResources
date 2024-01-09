@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -40,14 +38,14 @@ fun OverviewWidget(state: OverviewContract.State, overviewType: OverviewType) {
     val isCompactScreen = widthSizeClass == WindowWidthSizeClass.Compact
 
     if (isCompactScreen)
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
-            items(state.overviewWidgetItems.filter {
+            state.overviewWidgetItems.filter {
                 it.overviewType == overviewType
-            }) { widgetItem ->
+            }.forEach { widgetItem ->
                 OverviewWidgetContainer(
                     overviewWidgetItem = widgetItem,
                     state = state,
@@ -104,18 +102,23 @@ fun OverviewWidgetContainer(
             APPROVAL_RATE -> {
                 ApprovalRateWidget(state, overviewType)
             }
+
             AVERAGE_METRICS -> {
                 AverageMetricsWidget(state, overviewType)
             }
+
             CHARGED_TRANSACTIONS -> {
                 ChargedTransactionsWidget(state)
             }
+
             ALL_POS_TRANSACTIONS -> {
                 AllPosTransactionsWidget(state)
             }
+
             CHARGED_TRANSACTIONS_COMPARISON -> {
 
             }
+
             PRODUCT_GUIDE -> {
                 ProductGuideWidget(state)
             }
