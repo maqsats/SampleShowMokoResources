@@ -38,7 +38,7 @@ interface OverviewContract {
         val onlinePaymentsMetricList: ResourceUiState<List<Metric>>,
         val posPaymentsMetricList: ResourceUiState<List<Metric>>,
         val productGuideList: List<ProductGuide>,
-        val posPaymentsGraphSummary: ResourceUiState<HistogramEntry>,
+        val posPaymentsGraphSummary: ResourceUiState<Pair<HistogramEntry, HistogramEntry>>,
         val onlinePaymentsGraphSummary: ResourceUiState<HistogramEntry>
     ) : UiState
 

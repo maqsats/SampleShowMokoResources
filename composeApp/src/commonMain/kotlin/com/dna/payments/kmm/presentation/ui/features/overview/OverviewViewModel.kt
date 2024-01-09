@@ -1,7 +1,6 @@
 package com.dna.payments.kmm.presentation.ui.features.overview
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.dna.payments.kmm.data.model.overview.SummaryPosRequest
 import com.dna.payments.kmm.domain.interactors.data_factory.overview.OverviewDataFactory
 import com.dna.payments.kmm.domain.interactors.data_factory.product_guide.ProductGuideDataFactory
 import com.dna.payments.kmm.domain.interactors.use_cases.currency.CurrencyUseCase
@@ -161,12 +160,10 @@ class OverviewViewModel(
         screenModelScope.launch {
             val intervalType = dateHelper.findIntervalType(currentState.dateRange.second)
             val summary = when (val result = posSummaryGraphUseCase.getPosSummaryGraph(
-                SummaryPosRequest(
-                    from = currentState.dateRange.second.startDate.convertToServerFormat(),
-                    to = currentState.dateRange.second.endDate.convertToServerFormat(),
-                    interval = intervalType.key,
-                    currency = selectedCurrency.name
-                ), intervalType
+                startDate = currentState.dateRange.second.startDate,
+                endDate = currentState.dateRange.second.endDate,
+                currency = selectedCurrency.name,
+                intervalType = intervalType
             )) {
                 is Response.Success -> {
                     ResourceUiState.Success(

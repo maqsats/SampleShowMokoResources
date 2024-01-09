@@ -21,18 +21,26 @@ import androidx.compose.ui.unit.dp
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.dnaGreenLight
+import com.dna.payments.kmm.presentation.theme.dnaYellow
 import com.dna.payments.kmm.presentation.theme.grey6
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.utils.extension.toMoneyString
 
 @Composable
-fun <T : Number, V> HistogramChart(
+fun <T : Number, V> TwoHistogramChart(
     currency: String,
-    xPoints: List<V>,
-    yPoints: List<T>
+    xFirstPoints: List<V>,
+    xSecondPoints: List<V>,
+    yFirstPoints: List<T>,
+    ySecondPoints: List<T>,
 ) {
+    require(xFirstPoints.size == yFirstPoints.size) { "xPoints and yPoints must have the same size" }
+    require(xSecondPoints.size == ySecondPoints.size) { "xPoints and yPoints must have the same size" }
 
-    val yMax = yPoints.maxOf { it.toDouble() }.coerceAtLeast(0.0)
+    val yMaxFirst = yFirstPoints.maxOf { it.toDouble() }.coerceAtLeast(0.0)
+    val yMaxSecond = ySecondPoints.maxOf { it.toDouble() }.coerceAtLeast(0.0)
+
+    val yMax = maxOf(yMaxFirst, yMaxSecond)
 
     var yCurrent = yMax
 
@@ -40,10 +48,11 @@ fun <T : Number, V> HistogramChart(
 
     val yDifference = yMax / chartHeight
 
+
     val diff = Paddings.small
 
     val outlineColor = grey6
-    val primaryColor = dnaGreenLight
+
     val boxHeight = 200.dp
 
     val yPercent = yMax / 100.0
@@ -115,28 +124,70 @@ fun <T : Number, V> HistogramChart(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom
         ) {
-            items(xPoints.size) { key ->
+            items(xFirstPoints.size) { key ->
                 Column(
                     modifier = Modifier
                         .fillMaxHeight()
                         .padding(horizontal = diff)
                         .drawBehind {
-                            val chartValue = yPoints[key].toDouble()
+                            val firstChartValue = yFirstPoints[key].toDouble()
+                            val secondChartValue = ySecondPoints[key].toDouble()
 
-                            if (chartValue < 0.5)
-                                return@drawBehind
-
-                            calculateHeightAndDrawRect(
-                                chartValue = chartValue,
-                                diff = diff,
-                                yPercent = yPercent,
-                                color = primaryColor
-                            )
+                            when {
+                                firstChartValue > 0.5 && secondChartValue > 0.5 -> {
+                                    when {
+                                        firstChartValue > secondChartValue -> {
+                                            calculateHeightAndDrawRect(
+                                                chartValue = firstChartValue,
+                                                diff = diff,
+                                                yPercent = yPercent,
+                                                color = dnaGreenLight
+                                            )
+                                            calculateHeightAndDrawRect(
+                                                chartValue = secondChartValue,
+                                                diff = diff,
+                                                yPercent = yPercent,
+                                                color = dnaYellow
+                                            )
+                                        }
+                                        else -> {
+                                            calculateHeightAndDrawRect(
+                                                chartValue = secondChartValue,
+                                                diff = diff,
+                                                yPercent = yPercent,
+                                                color = dnaYellow
+                                            )
+                                            calculateHeightAndDrawRect(
+                                                chartValue = firstChartValue,
+                                                diff = diff,
+                                                yPercent = yPercent,
+                                                color = dnaGreenLight
+                                            )
+                                        }
+                                    }
+                                }
+                                firstChartValue > 0.5 -> {
+                                    calculateHeightAndDrawRect(
+                                        firstChartValue,
+                                        diff,
+                                        yPercent,
+                                        dnaGreenLight
+                                    )
+                                }
+                                secondChartValue > 0.5 -> {
+                                    calculateHeightAndDrawRect(
+                                        secondChartValue,
+                                        diff,
+                                        yPercent,
+                                        dnaYellow
+                                    )
+                                }
+                            }
                         },
                     verticalArrangement = Arrangement.Bottom
                 ) {
                     DNAText(
-                        text = xPoints[key].toString(),
+                        text = xFirstPoints[key].toString(),
                         style = DnaTextStyle.Normal10Grey5
                     )
                 }

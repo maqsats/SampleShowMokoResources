@@ -1,6 +1,5 @@
 package com.dna.payments.kmm.presentation.ui.features.overview.widgets
 
-import abm.co.designsystem.component.modifier.recomposeHighlighter
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -128,10 +127,14 @@ fun OverviewWidgetContainer(
                 ChargedTransactionsWidget(state.onlinePaymentsGraphSummary, state.selectedCurrency)
             }
             ALL_POS_TRANSACTIONS -> {
-                AllPosTransactionsWidget(state.posPaymentsGraphSummary, state.selectedCurrency)
+                PosTransactionsWidget(state.posPaymentsGraphSummary, state.selectedCurrency)
             }
             CHARGED_TRANSACTIONS_COMPARISON -> {
-
+                PosTransactionsWidget(
+                    state.posPaymentsGraphSummary,
+                    state.selectedCurrency,
+                    showComparison = true
+                )
             }
             PRODUCT_GUIDE -> {
                 ProductGuideWidget(state.productGuideList)
