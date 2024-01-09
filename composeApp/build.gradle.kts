@@ -71,12 +71,15 @@ kotlin {
     }
 
     sourceSets {
+
+        @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material)
                 implementation(compose.material3)
+                implementation(compose.components.resources)
                 implementation(libs.libres)
                 implementation(libs.voyager.koin)
                 implementation(libs.composeImageLoader)

@@ -67,9 +67,8 @@ class OnlinePaymentsScreen : DrawerScreen {
     override val key: ScreenKey = "OnlinePaymentsScreen"
     override val isFilterEnabled: Boolean = true
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    override fun Content() {  // Just for testing purposes
+    override fun Content() {
 
     }
 

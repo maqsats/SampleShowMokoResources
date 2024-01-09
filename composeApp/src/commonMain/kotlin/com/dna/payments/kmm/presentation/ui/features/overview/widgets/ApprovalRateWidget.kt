@@ -34,12 +34,15 @@ import com.dna.payments.kmm.presentation.ui.common.AnimatedCircularProgressIndic
 import com.dna.payments.kmm.presentation.ui.common.CircularIndicatorDiameter
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DnaTextSwitch
-import com.dna.payments.kmm.presentation.ui.features.overview.OverviewContract
 import com.dna.payments.kmm.utils.extension.toMoneyString
 
 @Composable
-fun ApprovalRateWidget(state: OverviewContract.State, overviewType: OverviewType) {
-
+fun ApprovalRateWidget(
+    posPaymentsSummaryList: ResourceUiState<List<PosPaymentSummary>>,
+    onlinePaymentsSummaryList: ResourceUiState<List<Summary>>,
+    selectedCurrency: Currency,
+    overviewType: OverviewType
+) {
     var selectedTabIndex by remember {
         mutableStateOf(DnaTextSwitchType.AMOUNT.index)
     }
@@ -65,15 +68,15 @@ fun ApprovalRateWidget(state: OverviewContract.State, overviewType: OverviewType
         when (overviewType) {
             OverviewType.POS_PAYMENTS -> {
                 PosPaymentsWidget(
-                    posPaymentsSummaryList = state.posPaymentsSummaryList,
-                    currency = state.selectedCurrency,
+                    posPaymentsSummaryList = posPaymentsSummaryList,
+                    currency = selectedCurrency,
                     dnaTextSwitchType = DnaTextSwitchType.values()[selectedTabIndex]
                 )
             }
             OverviewType.ONLINE_PAYMENTS -> {
                 OnlinePaymentsWidget(
-                    onlinePaymentsSummaryList = state.onlinePaymentsSummaryList,
-                    currency = state.selectedCurrency,
+                    onlinePaymentsSummaryList = onlinePaymentsSummaryList,
+                    currency = selectedCurrency,
                     dnaTextSwitchType = DnaTextSwitchType.values()[selectedTabIndex]
                 )
             }

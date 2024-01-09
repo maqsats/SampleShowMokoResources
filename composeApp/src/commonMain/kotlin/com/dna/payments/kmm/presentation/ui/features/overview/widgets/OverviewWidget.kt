@@ -1,12 +1,14 @@
 package com.dna.payments.kmm.presentation.ui.features.overview.widgets
 
+import abm.co.designsystem.component.modifier.recomposeHighlighter
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -33,19 +35,27 @@ import dev.icerock.moko.resources.compose.stringResource
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
-fun OverviewWidget(state: OverviewContract.State, overviewType: OverviewType) {
+fun OverviewWidget(
+    state: OverviewContract.State,
+    overviewType: OverviewType
+) {
     val widthSizeClass = calculateWindowSizeClass().widthSizeClass
     val isCompactScreen = widthSizeClass == WindowWidthSizeClass.Compact
 
     if (isCompactScreen)
-        Column(
+        LazyColumn(
             modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Top
+                .fillMaxSize()
         ) {
-            state.overviewWidgetItems.filter {
-                it.overviewType == overviewType
-            }.forEach { widgetItem ->
+            items(
+                items = state.overviewWidgetItems.filter {
+                    it.overviewType == overviewType
+                },
+                key = {
+                    it.overviewWidgetType.name
+                }
+            )
+            { widgetItem ->
                 OverviewWidgetContainer(
                     overviewWidgetItem = widgetItem,
                     state = state,
@@ -100,27 +110,31 @@ fun OverviewWidgetContainer(
 
         when (overviewWidgetItem.overviewWidgetType) {
             APPROVAL_RATE -> {
-                ApprovalRateWidget(state, overviewType)
+                ApprovalRateWidget(
+                    state.posPaymentsSummaryList,
+                    state.onlinePaymentsSummaryList,
+                    state.selectedCurrency,
+                    overviewType
+                )
             }
-
             AVERAGE_METRICS -> {
-                AverageMetricsWidget(state, overviewType)
+                val metricResourceUiState = when (overviewType) {
+                    OverviewType.POS_PAYMENTS -> state.posPaymentsMetricList
+                    OverviewType.ONLINE_PAYMENTS -> state.onlinePaymentsMetricList
+                }
+                AverageMetricsWidget(metricResourceUiState, state.selectedCurrency)
             }
-
             CHARGED_TRANSACTIONS -> {
-                ChargedTransactionsWidget(state)
+                ChargedTransactionsWidget(state.onlinePaymentsGraphSummary, state.selectedCurrency)
             }
-
             ALL_POS_TRANSACTIONS -> {
-                AllPosTransactionsWidget(state)
+                AllPosTransactionsWidget(state.posPaymentsGraphSummary, state.selectedCurrency)
             }
-
             CHARGED_TRANSACTIONS_COMPARISON -> {
 
             }
-
             PRODUCT_GUIDE -> {
-                ProductGuideWidget(state)
+                ProductGuideWidget(state.productGuideList)
             }
         }
     }
