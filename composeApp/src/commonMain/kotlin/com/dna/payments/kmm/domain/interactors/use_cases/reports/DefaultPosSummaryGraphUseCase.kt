@@ -8,7 +8,10 @@ import com.dna.payments.kmm.domain.model.reports.BarEntry
 import com.dna.payments.kmm.domain.model.reports.HistogramEntry
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.repository.TransactionRepository
+import com.dna.payments.kmm.utils.extension.convertToServerFormat
+import com.dna.payments.kmm.utils.extension.daysBetween
 import com.soywiz.klock.DateFormat
+import com.soywiz.klock.DateTime
 import com.soywiz.klock.DateTimeSpan
 import com.soywiz.klock.parse
 import com.soywiz.klock.weekOfYear1
@@ -17,21 +20,61 @@ class DefaultPosSummaryGraphUseCase(private val transactionRepository: Transacti
     PosSummaryGraphUseCase {
 
     override suspend fun getPosSummaryGraph(
-        summaryPosRequest: SummaryPosRequest, intervalType: IntervalType
-    ): Response<HistogramEntry> =
-        when (val response = transactionRepository.getPosGraphSummary(
-            summaryPosRequest
-        )) {
-            is Response.Error -> Response.Error(response.error)
-            is Response.NetworkError -> Response.NetworkError
-            is Response.Success -> Response.Success(
-                convertToBarEntries(
-                    response.data.all,
-                    intervalType
-                )
+        startDate: DateTime?,
+        endDate: DateTime?,
+        currency: String,
+        intervalType: IntervalType
+    ): Response<Pair<HistogramEntry, HistogramEntry>> {
+
+        val originalResponse = transactionRepository.getPosGraphSummary(
+            SummaryPosRequest(
+                startDate.convertToServerFormat(),
+                endDate.convertToServerFormat(),
+                intervalType.key,
+                currency
             )
-            is Response.TokenExpire -> Response.TokenExpire
+        )
+        val additionalDays =
+            if (intervalType == IntervalType.HOUR) 1 else startDate.daysBetween(endDate)
+
+        val newStartDate = startDate?.minus(DateTimeSpan(days = additionalDays))
+        val newEndDate = endDate?.minus(DateTimeSpan(days = additionalDays))
+
+        val secondResponse = transactionRepository.getPosGraphSummary(
+            SummaryPosRequest(
+                newStartDate.convertToServerFormat(),
+                newEndDate.convertToServerFormat(),
+                intervalType.key,
+                currency
+            )
+        )
+
+        return when {
+            originalResponse is Response.Success && secondResponse is Response.Success -> {
+                val originalData = originalResponse.data
+                val secondData = secondResponse.data
+
+                Response.Success(
+                    Pair(
+                        convertToBarEntries(
+                            originalData.all,
+                            intervalType
+                        ),
+                        convertToBarEntries(
+                            secondData.all,
+                            intervalType
+                        )
+                    )
+                )
+            }
+            originalResponse is Response.Error -> Response.Error(originalResponse.error)
+            secondResponse is Response.Error -> Response.Error(secondResponse.error)
+            originalResponse is Response.TokenExpire -> Response.TokenExpire
+            secondResponse is Response.TokenExpire -> Response.TokenExpire
+            else -> Response.NetworkError
         }
+    }
+
 
     private fun convertToBarEntries(
         summaryList: List<SummaryPosApiModel>,
