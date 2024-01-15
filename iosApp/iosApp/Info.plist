@@ -8,8 +8,6 @@
 	<array>
 		<string>en</string>
 	</array>
-	<key>FirebaseAutomaticScreenReportingEnabled</key>
-	<false/>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict/>
