@@ -314,4 +314,5 @@
     <string name="personal">Personal</string>
     <string name="corporate">Corporate</string>
     <string name="transactions_holder">Transactions: %d</string>
+    <string name="not_applicable">N/A</string>
 </resources>

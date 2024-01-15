@@ -458,7 +458,10 @@ class DetailPosPaymentScreen(private val posTransaction: PosTransaction) : Scree
                                 stringResource(MR.strings.card_type),
                                 style = DnaTextStyle.WithAlpha12
                             )
-                            DNAText(transaction.cardType, style = DnaTextStyle.Normal16)
+                            DNAText(
+                                transaction.cardType.ifEmpty { stringResource(MR.strings.not_applicable) },
+                                style = DnaTextStyle.Normal16
+                            )
                             Spacer(modifier = Modifier.height(Paddings.large))
                             DNAText(
                                 stringResource(MR.strings.card_category),
@@ -469,7 +472,7 @@ class DetailPosPaymentScreen(private val posTransaction: PosTransaction) : Scree
                                     when (transaction.isCorporateCard) {
                                         true -> MR.strings.corporate
                                         false -> MR.strings.personal
-                                        null -> MR.strings.empty_text
+                                        null -> MR.strings.not_applicable
                                     }
                                 ), style = DnaTextStyle.Normal16
                             )
