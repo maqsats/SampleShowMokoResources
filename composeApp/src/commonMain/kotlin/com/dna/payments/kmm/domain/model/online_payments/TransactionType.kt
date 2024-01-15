@@ -13,7 +13,7 @@ enum class TransactionType(
     val stringResource: StringResource,
     val key: String,
     val imageResource: ImageResource? = null,
-    val backgroundColor: Color? = Color.Unspecified,
+    val backgroundColor: Color = Color.Unspecified,
 ) {
     SALE("Sale", MR.strings.sale, "SALE", MR.images.ic_sale, peachBlossom),
     AUTH("Authorisation Only", MR.strings.auth, "AUTH", MR.images.ic_key, skyBlue),

@@ -7,7 +7,6 @@ import com.dna.payments.kmm.presentation.theme.darkGrey
 import com.dna.payments.kmm.presentation.theme.darkRed
 import com.dna.payments.kmm.presentation.theme.lightGreen
 import com.dna.payments.kmm.presentation.theme.lightGrey
-import com.dna.payments.kmm.presentation.theme.white
 import dev.icerock.moko.resources.ImageResource
 
 enum class PosPaymentStatusV2(
@@ -37,7 +36,7 @@ enum class PosPaymentStatusV2(
         key = "declined",
         displayName = "Declined",
         detailText = "Payment declined",
-        darkRed, white,
+        darkRed, Color.Unspecified,
         MR.images.ic_cancel
     ),
     REFUNDED(
@@ -51,7 +50,7 @@ enum class PosPaymentStatusV2(
         key = "cancelled",
         displayName = "Cancelled",
         detailText = "Payment cancelled",
-        darkRed, white,
+        darkRed, Color.Unspecified,
         MR.images.ic_cancel
     );
 
