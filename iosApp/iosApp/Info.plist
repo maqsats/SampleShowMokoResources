@@ -8,6 +8,10 @@
 	<array>
 		<string>en</string>
 	</array>
+	<key>FirebaseAutomaticScreenReportingEnabled</key>
+        <false/>
+        <key>NSFaceIDUsageDescription</key>
+        <string>Program requires FaceID to login</string>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict/>
