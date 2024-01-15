@@ -1,5 +1,3 @@
-@file:Suppress("UNCHECKED_CAST")
-
 package com.dna.payments.kmm.presentation.ui.features.overview.widgets
 
 import androidx.compose.foundation.layout.Arrangement
@@ -7,22 +5,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.currency.Currency
 import com.dna.payments.kmm.domain.model.overview.OverviewType
 import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentStatus
 import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentSummary
 import com.dna.payments.kmm.domain.model.status_summary.Summary
-import com.dna.payments.kmm.domain.model.text_switch.DnaTextSwitchType
-import com.dna.payments.kmm.domain.model.text_switch.TextSwitch
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.state.ComponentCircle
 import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
@@ -33,8 +25,8 @@ import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.AnimatedCircularProgressIndicator
 import com.dna.payments.kmm.presentation.ui.common.CircularIndicatorDiameter
 import com.dna.payments.kmm.presentation.ui.common.DNAText
-import com.dna.payments.kmm.presentation.ui.common.DnaTextSwitch
 import com.dna.payments.kmm.utils.extension.toMoneyString
+import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
 fun ApprovalRateWidget(
@@ -43,41 +35,20 @@ fun ApprovalRateWidget(
     selectedCurrency: Currency,
     overviewType: OverviewType
 ) {
-    var selectedTabIndex by remember {
-        mutableStateOf(DnaTextSwitchType.AMOUNT.index)
-    }
-
     Column(
         modifier = Modifier.padding(Paddings.medium)
     ) {
-
-        Row {
-            Spacer(modifier = Modifier.weight(1f))
-
-            DnaTextSwitch(
-                selectedIndex = selectedTabIndex,
-                items = DnaTextSwitchType.values() as Array<TextSwitch>,
-                onSelectionChange = { index ->
-                    selectedTabIndex = index
-                }
-            )
-        }
-
-        Spacer(modifier = Modifier.height(Paddings.small))
-
         when (overviewType) {
             OverviewType.POS_PAYMENTS -> {
                 PosPaymentsWidget(
                     posPaymentsSummaryList = posPaymentsSummaryList,
-                    currency = selectedCurrency,
-                    dnaTextSwitchType = DnaTextSwitchType.values()[selectedTabIndex]
+                    currency = selectedCurrency
                 )
             }
             OverviewType.ONLINE_PAYMENTS -> {
                 OnlinePaymentsWidget(
                     onlinePaymentsSummaryList = onlinePaymentsSummaryList,
-                    currency = selectedCurrency,
-                    dnaTextSwitchType = DnaTextSwitchType.values()[selectedTabIndex]
+                    currency = selectedCurrency
                 )
             }
         }
@@ -88,7 +59,6 @@ fun ApprovalRateWidget(
 @Composable
 fun PosPaymentsWidget(
     posPaymentsSummaryList: ResourceUiState<List<PosPaymentSummary>>,
-    dnaTextSwitchType: DnaTextSwitchType,
     currency: Currency
 ) {
     ManagementResourceUiState(
@@ -99,7 +69,6 @@ fun PosPaymentsWidget(
         successView = {
             PosPaymentsWidgetSuccess(
                 posPaymentsSummaryList = it,
-                dnaTextSwitchType = dnaTextSwitchType,
                 currency = currency
             )
         },
@@ -114,7 +83,6 @@ fun PosPaymentsWidget(
 @Composable
 fun OnlinePaymentsWidget(
     onlinePaymentsSummaryList: ResourceUiState<List<Summary>>,
-    dnaTextSwitchType: DnaTextSwitchType,
     currency: Currency
 ) {
     ManagementResourceUiState(
@@ -125,7 +93,6 @@ fun OnlinePaymentsWidget(
         successView = {
             OnlinePaymentsWidgetSuccess(
                 onlinePaymentsSummaryList = it,
-                dnaTextSwitchType = dnaTextSwitchType,
                 currency = currency
             )
         },
@@ -166,16 +133,16 @@ fun ApprovalRateWidgetLoading(
 @Composable
 fun OnlinePaymentsWidgetSuccess(
     onlinePaymentsSummaryList: List<Summary>,
-    dnaTextSwitchType: DnaTextSwitchType,
     currency: Currency
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(
-            Paddings.medium
-        )
-    ) {
+    Column {
         onlinePaymentsSummaryList.forEach { summary ->
-            Row {
+            Row(
+                modifier = Modifier.padding(
+                    top = if (onlinePaymentsSummaryList.first() == summary)
+                        Paddings.default else Paddings.medium
+                )
+            ) {
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.Center
@@ -185,13 +152,13 @@ fun OnlinePaymentsWidgetSuccess(
                         style = DnaTextStyle.Medium12Grey5
                     )
                     DNAText(
-                        text = when (dnaTextSwitchType) {
-                            DnaTextSwitchType.AMOUNT -> summary.amount.toMoneyString(currency.name)
-                            DnaTextSwitchType.COUNT -> summary.count.toString()
-                        },
+                        summary.amount.toMoneyString(currency.name),
                         style = DnaTextStyle.SemiBold20
                     )
-                    Spacer(modifier = Modifier.padding(Paddings.small))
+                    DNAText(
+                        text = stringResource(MR.strings.transactions_holder, summary.count),
+                        style = DnaTextStyle.Normal10Grey5
+                    )
                 }
                 AnimatedCircularProgressIndicator(
                     currentValue = summary.percentage.toInt()
@@ -204,16 +171,16 @@ fun OnlinePaymentsWidgetSuccess(
 @Composable
 fun PosPaymentsWidgetSuccess(
     posPaymentsSummaryList: List<PosPaymentSummary>,
-    dnaTextSwitchType: DnaTextSwitchType,
     currency: Currency
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(
-            Paddings.medium
-        )
-    ) {
+    Column {
         posPaymentsSummaryList.forEach { summary ->
-            Row {
+            Row(
+                modifier = Modifier.padding(
+                    top = if (posPaymentsSummaryList.first() == summary)
+                        Paddings.default else Paddings.medium
+                )
+            ) {
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.Center
@@ -223,13 +190,13 @@ fun PosPaymentsWidgetSuccess(
                         style = DnaTextStyle.Medium12Grey5
                     )
                     DNAText(
-                        text = when (dnaTextSwitchType) {
-                            DnaTextSwitchType.AMOUNT -> summary.amount.toMoneyString(currency.name)
-                            DnaTextSwitchType.COUNT -> summary.count.toString()
-                        },
+                        text = summary.amount.toMoneyString(currency.name),
                         style = DnaTextStyle.SemiBold20
                     )
-                    Spacer(modifier = Modifier.padding(Paddings.small))
+                    DNAText(
+                        text = stringResource(MR.strings.transactions_holder, summary.count),
+                        style = DnaTextStyle.Normal10Grey5
+                    )
                 }
                 if (summary.status != PosPaymentStatus.ALL) {
                     AnimatedCircularProgressIndicator(

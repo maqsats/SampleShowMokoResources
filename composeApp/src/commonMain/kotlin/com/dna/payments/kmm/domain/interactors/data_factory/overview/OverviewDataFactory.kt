@@ -43,11 +43,11 @@ class OverviewDataFactory {
 //                overviewType = OverviewType.ONLINE_PAYMENTS,
 //                title = MR.strings.charged_transactions_comparison
 //            ),
-//            OverviewWidgetItem(
-//                overviewWidgetType = OverviewWidgetType.CHARGED_TRANSACTIONS_COMPARISON,
-//                overviewType = OverviewType.POS_PAYMENTS,
-//                title = MR.strings.charged_transactions_comparison
-//            ),
+            OverviewWidgetItem(
+                overviewWidgetType = OverviewWidgetType.CHARGED_TRANSACTIONS_COMPARISON,
+                overviewType = OverviewType.POS_PAYMENTS,
+                title = MR.strings.charged_transactions_comparison
+            ),
             OverviewWidgetItem(
                 overviewWidgetType = OverviewWidgetType.PRODUCT_GUIDE,
                 overviewType = OverviewType.ONLINE_PAYMENTS,

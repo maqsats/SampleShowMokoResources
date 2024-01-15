@@ -73,8 +73,7 @@ fun ChargedTransactionsWidget(
                         else -> histogramEntry.countList.map { barEntry ->
                             barEntry.x
                         }
-                    },
-                    isCompact = true
+                    }
                 )
             },
             loadingView = {
