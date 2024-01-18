@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
@@ -68,6 +69,12 @@ class DrawerScreen(
         val drawerViewModel = getScreenModel<DrawerViewModel>()
 
         val state by drawerViewModel.uiState.collectAsState()
+
+        LifecycleEffect(
+            onStarted = {
+                drawerViewModel.setEvent(DrawerScreenContract.Event.OnStart)
+            }
+        )
 
         LaunchedEffect(key1 = Unit) {
             drawerViewModel.effect.collectLatest { effect ->

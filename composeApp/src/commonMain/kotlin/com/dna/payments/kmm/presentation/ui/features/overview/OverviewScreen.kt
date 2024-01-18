@@ -28,7 +28,6 @@ import com.dna.payments.kmm.presentation.ui.features.overview.widgets.OverviewWi
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
 import kotlinx.coroutines.flow.collectLatest
 
-
 @OptIn(ExperimentalFoundationApi::class)
 class OverviewScreen : DrawerScreen {
 
@@ -96,7 +95,7 @@ class OverviewScreen : DrawerScreen {
         val state by overviewScreen.uiState.collectAsState()
 
         DnaTabRow(
-            tabList = OverviewType.values().map { it.displayName },
+            tabList = OverviewType.entries.map { it.displayName },
             selectedPagePosition = state.selectedPage,
             onTabClick = {
                 overviewScreen.setEvent(OverviewContract.Event.OnPageChanged(it))
