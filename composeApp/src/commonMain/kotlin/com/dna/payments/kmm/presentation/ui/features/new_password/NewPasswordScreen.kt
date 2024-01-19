@@ -141,11 +141,6 @@ class NewPasswordScreen(private val id: String, private val email: String) : Scr
                 style = DnaTextStyle.Medium16,
             )
             Spacer(modifier = modifier.height(16.dp))
-            LazyColumn {
-                items(state.validationList.value) { it ->
-                    DNAPasswordRequirement(passwordRequirement = it)
-                }
-            }
         }
     }
 }

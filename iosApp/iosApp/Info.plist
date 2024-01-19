@@ -13,7 +13,7 @@
 		<dict/>
 	</array>
 	<key>FirebaseAutomaticScreenReportingEnabled</key>
-    <false/>
+	<false/>
     <key>NSFaceIDUsageDescription</key>
     <string>Program requires FaceID to login</string>
 </dict>

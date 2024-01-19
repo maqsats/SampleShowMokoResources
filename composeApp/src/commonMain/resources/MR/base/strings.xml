@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <string name="login">Log In</string>
+    <string name="login">Login</string>
+    <string name="success_new_password">You can now use new password to log in your account</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="email">Email address</string>
