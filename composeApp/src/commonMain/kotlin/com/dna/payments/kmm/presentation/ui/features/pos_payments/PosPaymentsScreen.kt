@@ -68,7 +68,6 @@ class PosPaymentsScreen : DrawerScreen {
     override val key: ScreenKey = "PosPaymentsScreen"
     override val isFilterEnabled: Boolean = true
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {  // Just for testing purposes
 

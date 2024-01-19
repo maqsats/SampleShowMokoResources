@@ -12,6 +12,7 @@ import com.dna.payments.kmm.presentation.ui.common.MerchantName
 interface DrawerScreenContract {
     sealed interface Event : UiEvent {
         data class OnMerchantChange(val data: Merchant) : Event
+        data object OnStart : Event
     }
 
     data class State(

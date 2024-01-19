@@ -1,4 +1,4 @@
-package com.dna.payments.kmm.presentation.ui.common
+package com.dna.payments.kmm.utils.navigation
 
 import androidx.compose.runtime.Composable
 

@@ -17,10 +17,6 @@ class DrawerViewModel(
 ) :
     BaseViewModel<DrawerScreenContract.Event, DrawerScreenContract.State, DrawerScreenContract.Effect>() {
 
-    init {
-        getMerchants()
-    }
-
     override fun createInitialState(): DrawerScreenContract.State =
         DrawerScreenContract.State(
             navItems = emptyList(),
@@ -33,6 +29,9 @@ class DrawerViewModel(
         when (event) {
             is DrawerScreenContract.Event.OnMerchantChange -> {
                 changeMerchant(event.data.merchantId)
+            }
+            DrawerScreenContract.Event.OnStart -> {
+                getMerchants()
             }
         }
     }
