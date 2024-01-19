@@ -88,7 +88,7 @@ object DnaTextStyle {
 
     val Normal16 = TextStyle(
         fontSize = 16.sp,
-        fontWeight = FontWeight.Normal
+        fontWeight = FontWeight(500)
     )
 
     val Bold = TextStyle(
@@ -113,6 +113,10 @@ object DnaTextStyle {
     val Bold22 = TextStyle(
         fontWeight = FontWeight.Bold,
         fontSize = 22.sp
+    )
+    val Bold32 = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 32.sp
     )
 
     val Medium20 = TextStyle(
@@ -155,6 +159,11 @@ object DnaTextStyle {
         color = greyColorAlpha,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
+    )
+    val WithAlphaNormal14 = TextStyle(
+        color = greyColorAlpha,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
     )
 
     val WithAlpha16 = TextStyle(

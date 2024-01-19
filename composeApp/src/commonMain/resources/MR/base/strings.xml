@@ -3,6 +3,7 @@
     <string name="login">Login</string>
     <string name="success_new_password">You can now use new password to log in your account</string>
     <string name="password">Password</string>
+    <string name="date">Date</string>
     <string name="confirm_password">Confirm password</string>
     <string name="email">Email address</string>
     <string name="restore_password">Forgot password?</string>
@@ -56,6 +57,7 @@
     <string name="back_to_login">Back to Login</string>
     <string name="back_to_email">Back to Email</string>
     <string name="back">Back</string>
+    <string name="close">Close</string>
     <string name="reset_password">Reset Password</string>
     <string name="password_must_contain">Password must contain</string>
     <string name="password_must_match">Passwords must match</string>
@@ -84,6 +86,8 @@
     <string name="payment_links">Payment links</string>
     <string name="payment_methods">Payment methods</string>
     <string name="payment_method">Payment method</string>
+    <string name="payment_detail">Payment details</string>
+    <string name="details">Details</string>
     <string name="team_management">Team Management</string>
     <string name="help_center">Help center</string>
 
@@ -302,6 +306,14 @@
     <string name="diners">Diners Club</string>
     <string name="terminal_id">Terminal ID</string>
     <string name="transaction_id">Transaction ID</string>
+    <string name="transaction_details">Transaction Details</string>
+    <string name="card_type">Card Type</string>
+    <string name="mid">MID</string>
+    <string name="card_category">Card Category</string>
+    <string name="transaction_type">Transaction type</string>
     <string name="no_teammates">No team members yet</string>
+    <string name="personal">Personal</string>
+    <string name="corporate">Corporate</string>
     <string name="transactions_holder">Transactions: %d</string>
+    <string name="not_applicable">N/A</string>
 </resources>

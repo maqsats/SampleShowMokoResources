@@ -49,7 +49,7 @@ import com.dna.payments.kmm.presentation.state.ComponentRectangleLineShort
 import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
-import com.dna.payments.kmm.presentation.theme.greyColor
+import com.dna.payments.kmm.presentation.theme.greyColorBackground
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithBackground
@@ -113,8 +113,9 @@ class DetailPaymentMethodsScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     modifier = modifier
+                        .shadow(1.dp, shape = RoundedCornerShape(4.dp))
                         .border(
-                            BorderStroke(width = 1.dp, color = greyColor),
+                            BorderStroke(width = 1.dp, color = greyColorBackground),
                             shape = RoundedCornerShape(4.dp)
                         ).height(48.dp)
                         .background(Color.White)

@@ -54,6 +54,7 @@ import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeBottomS
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeWidget
 import com.dna.payments.kmm.presentation.ui.features.pos_payments.status.StatusBottomSheet
 import com.dna.payments.kmm.presentation.ui.features.pos_payments.status.StatusWidget
+import com.dna.payments.kmm.presentation.ui.features.pos_payments_detail.DetailPosPaymentScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.extension.toCurrencySymbol
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
@@ -105,10 +106,10 @@ class PosPaymentsScreen : DrawerScreen {
             isToolbarCollapsed = isToolbarCollapsed,
             onRequestNextPage = {
                 posPaymentsViewModel.setEvent(PosPaymentsContract.Event.OnLoadMore)
-            }
-        ) {
-            posPaymentsViewModel.setEvent(PosPaymentsContract.Event.OnRefresh)
-        }
+            },
+            onClick = { navigator.push(DetailPosPaymentScreen(it)) },
+            onRefresh = { posPaymentsViewModel.setEvent(PosPaymentsContract.Event.OnRefresh) }
+        )
     }
 
     @Composable
@@ -117,7 +118,8 @@ class PosPaymentsScreen : DrawerScreen {
         state: PosPaymentsContract.State,
         isToolbarCollapsed: Boolean,
         onRequestNextPage: () -> Unit = {},
-        onRefresh: () -> Unit = {}
+        onRefresh: () -> Unit = {},
+        onClick: (posTransaction: PosTransaction) -> Unit
     ) {
         Column(
             modifier = modifier.padding(horizontal = Paddings.medium),
@@ -133,7 +135,7 @@ class PosPaymentsScreen : DrawerScreen {
                 successItemView = { transaction ->
                     PosPaymentItem(
                         transaction = transaction,
-                        onClick = {}
+                        onClick = onClick
                     )
 
                 },
@@ -147,7 +149,7 @@ class PosPaymentsScreen : DrawerScreen {
     private fun PosPaymentItem(
         transaction: PosTransaction,
         modifier: Modifier = Modifier,
-        onClick: () -> Unit
+        onClick: (posTransaction: PosTransaction) -> Unit
     ) {
         val clipboardManager: ClipboardManager = LocalClipboardManager.current
 
@@ -158,7 +160,7 @@ class PosPaymentsScreen : DrawerScreen {
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .noRippleClickable {
-
+                    onClick(transaction)
                 }
         ) {
             Column(modifier = modifier.padding(Paddings.medium)) {

@@ -57,8 +57,7 @@ class TeamManagementScreen : DrawerScreen {
     override val isFilterEnabled: Boolean = true
 
     @Composable
-    override fun Content() {
-    }
+    override fun Content() {}
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable

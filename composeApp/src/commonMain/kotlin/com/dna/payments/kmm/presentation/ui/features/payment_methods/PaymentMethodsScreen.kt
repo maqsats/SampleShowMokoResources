@@ -28,7 +28,7 @@ import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.payment_methods.PaymentMethod
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
-import com.dna.payments.kmm.presentation.theme.greyColor
+import com.dna.payments.kmm.presentation.theme.greyColorBackground
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.features.payment_methods_detail.DetailPaymentMethodsScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
@@ -119,8 +119,9 @@ class PaymentMethodsScreen : DrawerScreen {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = modifier
+                            .shadow(1.dp, shape = RoundedCornerShape(4.dp))
                             .border(
-                                BorderStroke(width = 1.dp, color = greyColor),
+                                BorderStroke(width = 1.dp, color = greyColorBackground),
                                 shape = RoundedCornerShape(4.dp)
                             ).height(36.dp)
                             .background(Color.White)
