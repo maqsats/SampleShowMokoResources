@@ -28,11 +28,13 @@ import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DnaTextSwitch
 import com.dna.payments.kmm.utils.chart.histogram.HistogramChart
+import com.dna.payments.kmm.utils.chart.histogram.TwoHistogramChart
 
 @Composable
 fun ChargedTransactionsWidget(
-    onlinePaymentsGraphSummary: ResourceUiState<HistogramEntry>,
-    selectedCurrency: Currency
+    onlinePaymentsGraphSummary: ResourceUiState<Pair<HistogramEntry, HistogramEntry>>,
+    selectedCurrency: Currency,
+    showComparison: Boolean = false
 ) {
 
     var selectedTabIndex by remember {
@@ -59,22 +61,48 @@ fun ChargedTransactionsWidget(
             resourceUiState = onlinePaymentsGraphSummary,
             onCheckAgain = {},
             onTryAgain = {},
-            successView = { histogramEntry ->
-                HistogramChart(
-                    currency = if (selectedTabIndex == DnaTextSwitchType.AMOUNT.index) CurrencyHelper(
-                        selectedCurrency.name
-                    ) else "",
-                    xPoints = histogramEntry.labelList,
-                    yPoints =
-                    when (selectedTabIndex) {
-                        DnaTextSwitchType.AMOUNT.index -> histogramEntry.amountList.map { barEntry ->
-                            barEntry.x
+            successView = { responsePair ->
+                if (showComparison) {
+                    TwoHistogramChart(
+                        currency = if (selectedTabIndex == DnaTextSwitchType.AMOUNT.index) CurrencyHelper(
+                            selectedCurrency.name
+                        ) else "",
+                        xFirstPoints = responsePair.first.labelList,
+                        yFirstPoints = when (selectedTabIndex) {
+                            DnaTextSwitchType.AMOUNT.index -> responsePair.first.amountList.map { barEntry ->
+                                barEntry.x
+                            }
+                            else -> responsePair.first.countList.map { barEntry ->
+                                barEntry.x
+                            }
+                        },
+                        xSecondPoints = responsePair.second.labelList,
+                        ySecondPoints = when (selectedTabIndex) {
+                            DnaTextSwitchType.AMOUNT.index -> responsePair.second.amountList.map { barEntry ->
+                                barEntry.x
+                            }
+                            else -> responsePair.second.countList.map { barEntry ->
+                                barEntry.x
+                            }
                         }
-                        else -> histogramEntry.countList.map { barEntry ->
-                            barEntry.x
+                    )
+                } else {
+                    HistogramChart(
+                        currency = if (selectedTabIndex == DnaTextSwitchType.AMOUNT.index) CurrencyHelper(
+                            selectedCurrency.name
+                        ) else "",
+                        xPoints = responsePair.first.labelList,
+                        yPoints =
+                        when (selectedTabIndex) {
+                            DnaTextSwitchType.AMOUNT.index -> responsePair.first.amountList.map { barEntry ->
+                                barEntry.x
+                            }
+                            else -> responsePair.first.countList.map { barEntry ->
+                                barEntry.x
+                            }
                         }
-                    }
-                )
+                    )
+                }
             },
             loadingView = {
                 HistogramLoading()

@@ -130,11 +130,22 @@ fun OverviewWidgetContainer(
                 PosTransactionsWidget(state.posPaymentsGraphSummary, state.selectedCurrency)
             }
             CHARGED_TRANSACTIONS_COMPARISON -> {
-                PosTransactionsWidget(
-                    state.posPaymentsGraphSummary,
-                    state.selectedCurrency,
-                    showComparison = true
-                )
+                when (overviewType) {
+                    OverviewType.POS_PAYMENTS -> {
+                        PosTransactionsWidget(
+                            state.posPaymentsGraphSummary,
+                            state.selectedCurrency,
+                            showComparison = true
+                        )
+                    }
+                    OverviewType.ONLINE_PAYMENTS -> {
+                        ChargedTransactionsWidget(
+                            state.onlinePaymentsGraphSummary,
+                            state.selectedCurrency,
+                            showComparison = true
+                        )
+                    }
+                }
             }
             PRODUCT_GUIDE -> {
                 ProductGuideWidget(state.productGuideList)
