@@ -50,9 +50,14 @@ import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.greyColorBackground
+import com.dna.payments.kmm.presentation.theme.outlineGreenColor
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithBackground
+import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
+import com.dna.payments.kmm.presentation.ui.common.SuccessPopup
+import com.dna.payments.kmm.presentation.ui.features.payment_methods_add_domain.first_step.AddDomainFirstStepScreen
+import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -60,7 +65,8 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
 class DetailPaymentMethodsScreen(
-    private val paymentMethod: PaymentMethod
+    private val paymentMethod: PaymentMethod,
+    private var showRegisterDomainSuccess: Boolean = false
 ) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
@@ -74,10 +80,17 @@ class DetailPaymentMethodsScreen(
             detailPaymentMethodsViewModel.setEvent(
                 DetailPaymentMethodsContract.Event.OnInit(
                     paymentMethodsType =
-                    paymentMethod.paymentMethodType
+                    paymentMethod.type
                 )
             )
         }
+
+        val showRegisterDomainSuccess = mutableStateOf(showRegisterDomainSuccess)
+
+        SuccessPopup(
+            UiText.StringResource(MR.strings.domain_added),
+            showRegisterDomainSuccess
+        )
 
         Column(
             modifier = Modifier
@@ -95,7 +108,10 @@ class DetailPaymentMethodsScreen(
             PaymentMethodsContent(
                 modifier = Modifier.wrapContentHeight(),
                 terminalSettings = state.terminalSettings,
-                domainList = state.domainList
+                domainList = state.domainList,
+                addNewDomainClicked = {
+                    navigator.push(AddDomainFirstStepScreen(paymentMethod))
+                }
             )
         }
     }
@@ -105,6 +121,7 @@ class DetailPaymentMethodsScreen(
         modifier: Modifier = Modifier,
         terminalSettings: ResourceUiState<List<TerminalSetting>>,
         domainList: ResourceUiState<List<Domain>>,
+        addNewDomainClicked: () -> Unit
     ) {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)
@@ -169,10 +186,26 @@ class DetailPaymentMethodsScreen(
                 onTryAgain = {},
             )
             Spacer(modifier = Modifier.height(32.dp))
-            DNAText(
-                style = DnaTextStyle.WithAlpha16,
-                text = stringResource(MR.strings.domains)
-            )
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                DNAText(
+                    style = DnaTextStyle.WithAlpha16,
+                    text = stringResource(MR.strings.domains)
+                )
+                DNATextWithIcon(
+                    style = DnaTextStyle.WithAlpha16,
+                    text = stringResource(MR.strings.add_new),
+                    icon = MR.images.ic_add,
+                    iconSize = 24.dp,
+                    textColor = outlineGreenColor,
+                    modifier = modifier.noRippleClickable {
+                        addNewDomainClicked()
+                    }
+                )
+            }
             Spacer(modifier = Modifier.height(Paddings.medium))
             ManagementResourceUiState(
                 modifier = modifier.padding(bottom = Paddings.medium),

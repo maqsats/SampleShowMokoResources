@@ -11,6 +11,6 @@ data class PaymentMethod(
     val title: StringResource,
     val icon: ImageResource,
     val description: StringResource,
-    val paymentMethodType: PaymentMethodType
+    val type: PaymentMethodType
 ) : Parcelable
 

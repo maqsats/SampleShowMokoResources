@@ -27,3 +27,26 @@ fun LogoutDialog(
         },
     )
 }
+
+
+@Composable
+fun AddNewDialog(
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        title = { DNAText(text = stringResource(MR.strings.settings_logout_dialog_title)) },
+        text = { DNAText(text = stringResource(MR.strings.settings_logout_dialog_body)) },
+        onDismissRequest = onDismiss,
+        dismissButton = {
+            TextButton(onClick = { onDismiss() }) {
+                DNAText(text = stringResource(MR.strings.settings_logout_dialog_dismiss))
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                DNAText(text = stringResource(MR.strings.settings_logout_dialog_confirm))
+            }
+        },
+    )
+}

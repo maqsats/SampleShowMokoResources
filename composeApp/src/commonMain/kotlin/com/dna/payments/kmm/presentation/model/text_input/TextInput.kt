@@ -16,5 +16,6 @@ enum class TextInput {
     CARD_NUMBER,
     EXPIRE_DATE,
     CVV_CVC,
-    EXPIRED_DATE;
+    EXPIRED_DATE,
+    DOMAIN;
 }

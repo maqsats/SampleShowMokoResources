@@ -68,7 +68,9 @@ fun DNAVerificationCodeTextField(textState: TextFieldUiState) {
 }
 
 @Composable
-fun DNAPasswordTextField(textState: TextFieldUiState) {
+fun DNAPasswordTextField(
+    textState: TextFieldUiState,
+) {
     var passwordVisibility by remember { mutableStateOf(false) }
     val icon = if (passwordVisibility)
         painterResource(MR.images.ic_visibility)
@@ -93,7 +95,7 @@ fun DNAPasswordTextField(textState: TextFieldUiState) {
             keyboardType = KeyboardType.Email,
             autoCorrect = false
         ),
-        visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
+        visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
     )
 }
 
@@ -105,7 +107,8 @@ fun DnaTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     trailingIcon: (@Composable () -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    maxLength: Int = 0
+    maxLength: Int = 0,
+    leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     OutlinedTextField(
         value = textState.input.value,
@@ -148,6 +151,7 @@ fun DnaTextField(
         singleLine = true,
         trailingIcon = trailingIcon,
         visualTransformation = visualTransformation,
+        leadingIcon = leadingIcon
     )
 }
 
