@@ -143,7 +143,7 @@ class AddDomainSecondStepScreen(
                     )
                     DNAYellowButton(
                         text = stringResource(MR.strings.next_step),
-                        onClick = { navigator.push(AddDomainThirdStepScreen(domain, paymentMethod)) },
+                        onClick = { navigator.replace(AddDomainThirdStepScreen(domain, paymentMethod)) },
                         icon = MR.images.product_guide_arrow,
                         textColor = Color.Black,
                         modifier = Modifier.weight(0.6f).padding(

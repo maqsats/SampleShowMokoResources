@@ -87,6 +87,8 @@ class DetailPaymentMethodsScreen(
         }
 
         val showRegisterDomainSuccess = mutableStateOf(navigator.getResult("12345").value != null)
+        println("showRegisterDomainSuccess $showRegisterDomainSuccess")
+        println("getResult ${navigator.getResult("12345").value}")
 
         SuccessPopup(
             UiText.StringResource(MR.strings.domain_added),

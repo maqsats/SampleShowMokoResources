@@ -106,7 +106,7 @@ class AddDomainFirstStepScreen(private val paymentMethod: PaymentMethod) : Scree
                 DNAYellowButton(
                     text = stringResource(MR.strings.next_step),
                     onClick = {
-                        navigator.push(
+                        navigator.replace(
                             AddDomainSecondStepScreen(
                                 state.domain.input.value,
                                 paymentMethod
