@@ -56,6 +56,8 @@ import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithBackground
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
 import com.dna.payments.kmm.presentation.ui.common.SuccessPopup
+import com.dna.payments.kmm.presentation.ui.common.UiStateController
+import com.dna.payments.kmm.presentation.ui.common.UnregisterDomainDialog
 import com.dna.payments.kmm.presentation.ui.features.payment_methods_add_domain.first_step.AddDomainFirstStepScreen
 import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.noRippleClickable
@@ -65,6 +67,7 @@ import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.getResult
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import kotlinx.coroutines.flow.collectLatest
 
 class DetailPaymentMethodsScreen(
     private val paymentMethod: PaymentMethod
@@ -76,7 +79,7 @@ class DetailPaymentMethodsScreen(
         val detailPaymentMethodsViewModel = getScreenModel<DetailPaymentMethodsViewModel>()
         val state by detailPaymentMethodsViewModel.uiState.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
-
+        val showUnregisterDomainSuccess = remember { mutableStateOf(false) }
         LaunchedEffect(key1 = Unit) {
             detailPaymentMethodsViewModel.setEvent(
                 DetailPaymentMethodsContract.Event.OnInit(
@@ -84,7 +87,18 @@ class DetailPaymentMethodsScreen(
                     paymentMethod.type
                 )
             )
+        }
 
+        UiStateController(state.domainUnregister)
+
+        LaunchedEffect(key1 = Unit) {
+            detailPaymentMethodsViewModel.effect.collectLatest { effect ->
+                when (effect) {
+                    DetailPaymentMethodsContract.Effect.OnUnregisterNewDomainSuccess -> {
+                        showUnregisterDomainSuccess.value = true
+                    }
+                }
+            }
         }
 
         val showRegisterDomainSuccess = remember { mutableStateOf(false) }
@@ -101,6 +115,11 @@ class DetailPaymentMethodsScreen(
         SuccessPopup(
             UiText.StringResource(MR.strings.domain_added),
             showRegisterDomainSuccess
+        )
+
+        SuccessPopup(
+            UiText.StringResource(MR.strings.domain_deleted),
+            showUnregisterDomainSuccess
         )
 
         Column(
@@ -122,6 +141,14 @@ class DetailPaymentMethodsScreen(
                 domainList = state.domainList,
                 addNewDomainClicked = {
                     navigator.push(AddDomainFirstStepScreen(paymentMethod))
+                },
+                onUnregisterDialog = {
+                    detailPaymentMethodsViewModel.setEvent(
+                        DetailPaymentMethodsContract.Event.OnUnregisterDomainItem(
+                            paymentMethodType = paymentMethod.type,
+                            domain = it
+                        )
+                    )
                 }
             )
         }
@@ -132,7 +159,8 @@ class DetailPaymentMethodsScreen(
         modifier: Modifier = Modifier,
         terminalSettings: ResourceUiState<List<TerminalSetting>>,
         domainList: ResourceUiState<List<Domain>>,
-        addNewDomainClicked: () -> Unit
+        addNewDomainClicked: () -> Unit,
+        onUnregisterDialog: (Domain) -> Unit
     ) {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)
@@ -225,7 +253,8 @@ class DetailPaymentMethodsScreen(
                     Column {
                         it.forEach {
                             DomainsItem(
-                                domain = it
+                                domain = it,
+                                onUnregisterDialog = { onUnregisterDialog(it) }
                             )
                         }
                     }
@@ -392,8 +421,21 @@ class DetailPaymentMethodsScreen(
     @Composable
     private fun DomainsItem(
         modifier: Modifier = Modifier,
-        domain: Domain
+        domain: Domain,
+        onUnregisterDialog: (Domain) -> Unit
     ) {
+        var showUnregisterDomain by remember { mutableStateOf(false) }
+
+        if (showUnregisterDomain) {
+            UnregisterDomainDialog(
+                onDismiss = { showUnregisterDomain = false },
+                onConfirm = {
+                    showUnregisterDomain = false
+                    onUnregisterDialog(domain)
+                }
+            )
+        }
+
         Box(
             modifier = modifier.padding(top = 8.dp)
                 .shadow(4.dp, shape = RoundedCornerShape(8.dp))
@@ -407,7 +449,17 @@ class DetailPaymentMethodsScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 DNAText(
-                    text = domain.name
+                    text = domain.name,
+                    maxLines = 1,
+                    style = DnaTextStyle.Normal14
+                )
+                Icon(
+                    painter = painterResource(MR.images.ic_trash),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.noRippleClickable {
+                        showUnregisterDomain = true
+                    }
                 )
             }
         }
