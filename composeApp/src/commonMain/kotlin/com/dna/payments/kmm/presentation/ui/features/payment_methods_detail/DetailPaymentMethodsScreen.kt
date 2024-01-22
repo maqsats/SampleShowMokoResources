@@ -60,6 +60,7 @@ import com.dna.payments.kmm.presentation.ui.features.payment_methods_add_domain.
 import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
+import com.dna.payments.kmm.utils.navigation.NavigatorResultString
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.getResult
 import dev.icerock.moko.resources.compose.painterResource
@@ -86,9 +87,16 @@ class DetailPaymentMethodsScreen(
 
         }
 
-        val showRegisterDomainSuccess = mutableStateOf(navigator.getResult("12345").value != null)
-        println("showRegisterDomainSuccess $showRegisterDomainSuccess")
-        println("getResult ${navigator.getResult("12345").value}")
+        val showRegisterDomainSuccess = remember { mutableStateOf(false) }
+
+        val result = getResult().value
+
+        LaunchedEffect(result) {
+            if (result == null) return@LaunchedEffect
+            if (result is NavigatorResultString) {
+                showRegisterDomainSuccess.value = result.value
+            }
+        }
 
         SuccessPopup(
             UiText.StringResource(MR.strings.domain_added),

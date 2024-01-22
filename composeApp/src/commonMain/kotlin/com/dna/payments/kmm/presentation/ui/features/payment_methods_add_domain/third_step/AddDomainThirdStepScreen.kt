@@ -74,7 +74,6 @@ class AddDomainThirdStepScreen(
                 when (effect) {
                     AddDomainThirdStepContract.Effect.OnRegisterNewDomainSuccess -> {
                         navigator.popWithResult(
-                            "12345",
                             NavigatorResultString(
                                 true
                             )

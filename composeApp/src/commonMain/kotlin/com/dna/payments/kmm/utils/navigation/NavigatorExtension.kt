@@ -3,7 +3,7 @@ package com.dna.payments.kmm.utils.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
@@ -12,13 +12,15 @@ import cafe.adriel.voyager.core.screen.uniqueScreenKey
 interface NavigatorResult
 
 data class NavigatorResultString(
-    val value: Boolean
+    val value: Boolean,
 ) : NavigatorResult
 
-private val results = mutableStateMapOf<String, NavigatorResult>()
+private val savedResult = mutableStateOf<NavigatorResult?>(
+    null
+)
 
-fun Navigator.popWithResult(key: String, result: NavigatorResult) {
-    results[key] = result
+fun Navigator.popWithResult(result: NavigatorResult) {
+    savedResult.value = result
     pop()
 }
 
@@ -37,21 +39,20 @@ fun Navigator.replaceAllX(screen: Screen) {
 
 fun Navigator.popUntilWithResult(predicate: (Screen) -> Boolean, result: NavigatorResult) {
     val currentScreen = lastItem
-    results[currentScreen.key] = result
+    savedResult.value = result
     popUntil(predicate)
 }
 
 fun Navigator.clearResults() {
-    results.clear()
+    savedResult.value = null
 }
 
 @Composable
-fun Navigator.getResult(screenKey: String): State<NavigatorResult?> {
-    val result = results[screenKey]
-    val resultState = remember(screenKey, result) {
+fun getResult(): State<NavigatorResult?> {
+    val result = savedResult
+    val resultState = remember(result) {
         derivedStateOf {
-            results.remove(screenKey)
-            result
+            result.value
         }
     }
     return resultState
