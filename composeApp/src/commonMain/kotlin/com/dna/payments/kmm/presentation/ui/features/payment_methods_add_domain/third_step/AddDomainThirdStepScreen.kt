@@ -44,10 +44,11 @@ import com.dna.payments.kmm.presentation.ui.common.DNAOutlinedGreenButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
-import com.dna.payments.kmm.presentation.ui.features.payment_methods_detail.DetailPaymentMethodsScreen
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
+import com.dna.payments.kmm.utils.navigation.NavigatorResultString
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
+import com.dna.payments.kmm.utils.navigation.popWithResult
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
@@ -72,7 +73,12 @@ class AddDomainThirdStepScreen(
             viewModel.effect.collectLatest { effect ->
                 when (effect) {
                     AddDomainThirdStepContract.Effect.OnRegisterNewDomainSuccess -> {
-                        navigator.push(DetailPaymentMethodsScreen(paymentMethod, true))
+                        navigator.popWithResult(
+                            "12345",
+                            NavigatorResultString(
+                                true
+                            )
+                        )
                     }
                 }
             }

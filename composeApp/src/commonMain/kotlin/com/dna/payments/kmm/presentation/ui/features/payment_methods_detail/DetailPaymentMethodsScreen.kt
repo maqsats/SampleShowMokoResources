@@ -61,12 +61,12 @@ import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
+import com.dna.payments.kmm.utils.navigation.getResult
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
 class DetailPaymentMethodsScreen(
-    private val paymentMethod: PaymentMethod,
-    private var showRegisterDomainSuccess: Boolean = false
+    private val paymentMethod: PaymentMethod
 ) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
@@ -83,9 +83,10 @@ class DetailPaymentMethodsScreen(
                     paymentMethod.type
                 )
             )
+
         }
 
-        val showRegisterDomainSuccess = mutableStateOf(showRegisterDomainSuccess)
+        val showRegisterDomainSuccess = mutableStateOf(navigator.getResult("12345").value != null)
 
         SuccessPopup(
             UiText.StringResource(MR.strings.domain_added),
