@@ -2,7 +2,6 @@ package com.dna.payments.kmm
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -17,7 +16,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.logger.Level
 
-
 class AndroidApp : Application() {
     override fun onCreate() {
         super.onCreate()
@@ -28,21 +26,11 @@ class AndroidApp : Application() {
         // Init App Check
         FirebaseApp.initializeApp(applicationContext)
         Firebase.analytics.setAnalyticsCollectionEnabled(true)
-        startNewActivity(this)
 //        logEvent(
 //            "app_open", mapOf(
 //                "app_open" to true
 //            )
 //        )
-    }
-}
-
-fun startNewActivity(context: Context) {
-    val intent = context.packageManager.getLaunchIntentForPackage("com.optomany.odin.dev")
-    intent?.putExtra("REGISTER_DEVICE", true)
-    intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    intent?.let {
-        context.startActivity(intent)
     }
 }
 
