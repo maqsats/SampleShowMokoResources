@@ -342,4 +342,5 @@
     </string>
     <string name="add">Add</string>
     <string name="domain_added">Domain was added</string>
+    <string name="domain_deleted">Domain was deleted</string>
 </resources>
