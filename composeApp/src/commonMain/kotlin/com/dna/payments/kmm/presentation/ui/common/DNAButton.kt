@@ -31,6 +31,7 @@ import com.dna.payments.kmm.presentation.theme.yellowButton
 import com.dna.payments.kmm.utils.constants.Constants.delayInMillis
 import com.dna.payments.kmm.utils.constants.Constants.initialTime
 import com.dna.payments.kmm.utils.extension.noRippleClickable
+import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.delay
@@ -40,7 +41,9 @@ fun DNAYellowButton(
     text: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    icon: ImageResource? = null,
+    textColor: Color = Color.Black
 ) {
     Button(
         onClick = onClick,
@@ -53,10 +56,13 @@ fun DNAYellowButton(
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
-        DNAText(
+        DNATextWithIcon(
             text = text,
-            style = DnaTextStyle.SemiBold18,
-            modifier = Modifier.padding(vertical = 4.dp)
+            style = DnaTextStyle.Medium16,
+            modifier = Modifier.padding(vertical = 4.dp),
+            secondIcon = icon,
+            iconSize = 24.dp,
+            textColor = textColor
         )
     }
 }
@@ -77,7 +83,7 @@ fun DNAYellowButton(
             contentColor = black,
             disabledBackgroundColor = backgroundBtnNotEnabled
         ),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
     ) {
         content()
     }

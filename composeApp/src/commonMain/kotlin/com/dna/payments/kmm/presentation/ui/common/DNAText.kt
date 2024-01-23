@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.poppinsFontFamily
@@ -63,15 +64,17 @@ fun DNATextWithBackground(
 fun DNATextWithIcon(
     text: String,
     modifier: Modifier = Modifier,
-    icon: ImageResource?,
+    icon: ImageResource? = null,
+    iconSize: Dp = 14.dp,
     secondIcon: ImageResource? = null,
     style: TextStyle = DnaTextStyle.Normal16,
     textColor: Color = style.color,
     backgroundColor: Color = style.background,
-    textAlign: TextAlign = TextAlign.Start
+    textAlign: TextAlign = TextAlign.Start,
+    maxLines: Int? = null
 ) {
     Row(
-        modifier = modifier.height(24.dp).background(
+        modifier = modifier.background(
             color = backgroundColor,
             shape = RoundedCornerShape(8.dp)
         ).padding(horizontal = 8.dp),
@@ -82,7 +85,7 @@ fun DNATextWithIcon(
                 painter = painterResource(icon),
                 contentDescription = null,
                 tint = textColor,
-                modifier = Modifier.height(14.dp).width(14.dp)
+                modifier = Modifier.height(iconSize).width(iconSize)
             )
         }
         Text(
@@ -91,14 +94,15 @@ fun DNATextWithIcon(
             color = textColor,
             modifier = modifier.padding(horizontal = 4.dp),
             fontFamily = poppinsFontFamily(),
-            textAlign = textAlign
+            textAlign = textAlign,
+            maxLines = maxLines ?: Int.MAX_VALUE,
         )
         if (secondIcon != null) {
             Icon(
                 painter = painterResource(secondIcon),
                 contentDescription = null,
-                tint = Color.Unspecified,
-                modifier = Modifier.height(14.dp).width(14.dp)
+                tint = textColor,
+                modifier = Modifier.height(iconSize).width(iconSize)
             )
         }
     }

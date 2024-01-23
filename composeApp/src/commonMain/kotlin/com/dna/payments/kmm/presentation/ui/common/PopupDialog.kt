@@ -27,3 +27,26 @@ fun LogoutDialog(
         },
     )
 }
+
+
+@Composable
+fun UnregisterDomainDialog(
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        title = { DNAText(text = stringResource(MR.strings.delete_domain)) },
+        text = { DNAText(text = stringResource(MR.strings.delete_domain_description)) },
+        onDismissRequest = onDismiss,
+        dismissButton = {
+            TextButton(onClick = { onDismiss() }) {
+                DNAText(text = stringResource(MR.strings.cancel))
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                DNAText(text = stringResource(MR.strings.delete))
+            }
+        },
+    )
+}

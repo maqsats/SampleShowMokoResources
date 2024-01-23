@@ -198,6 +198,12 @@ object DnaTextStyle {
         color = greenButtonNotFilled
     )
 
+    val GreenMedium14 = TextStyle(
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Medium,
+        color = greenButtonNotFilled
+    )
+
     val GreenBold20 = TextStyle(
         fontSize = 20.sp,
         fontWeight = FontWeight.Bold,
