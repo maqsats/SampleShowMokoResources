@@ -36,10 +36,12 @@ import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
-import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.*
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.KLARNA
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.OPEN_BANK
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.PAY_BY_BANK
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.UNDEFINED
 import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentCard
 import com.dna.payments.kmm.domain.model.transactions.pos.PosTransaction
 import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
@@ -65,13 +67,11 @@ import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
 class PosPaymentsScreen : DrawerScreen {
-    override val key: ScreenKey = "PosPaymentsScreen"
+
     override val isFilterEnabled: Boolean = true
 
     @Composable
-    override fun Content() {  // Just for testing purposes
-
-    }
+    override fun Content() {}
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
@@ -171,7 +171,7 @@ class PosPaymentsScreen : DrawerScreen {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        if (transaction.transactionType.backgroundColor != null && transaction.transactionType.imageResource != null) {
+                        if (transaction.transactionType.imageResource != null) {
                             Box(
                                 modifier = Modifier
                                     .background(
@@ -350,7 +350,7 @@ class PosPaymentsScreen : DrawerScreen {
     }
 
     @Composable
-    override fun DrawerFilter() {  // Just for testing purposes
+    override fun DrawerFilter() {
         val onlinePaymentsViewModel = getScreenModel<PosPaymentsViewModel>()
         val state by onlinePaymentsViewModel.uiState.collectAsState()
         val statusFilter = rememberSaveable { mutableStateOf(false) }

@@ -56,7 +56,7 @@ enum class PosPaymentStatusV2(
 
     companion object {
         fun fromString(status: String): PosPaymentStatusV2 {
-            return values().find { it.key == status } ?: ALL
+            return entries.find { it.key == status } ?: ALL
         }
     }
 }

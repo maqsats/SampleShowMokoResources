@@ -39,3 +39,11 @@ fun DrawScope.calculateHeightAndDrawRect(
         )
     )
 }
+
+fun List<Number>.getValueAtIndexOrReturnDefault(index: Int): Double {
+    return if (this.size > index) {
+        this[index].toDouble()
+    } else {
+        0.0
+    }
+}

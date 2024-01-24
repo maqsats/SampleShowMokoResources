@@ -8,5 +8,5 @@ data class SummaryPosRequest(
     val to: String,
     val interval: String,
     val currency: String,
-    val status: String = "All"
+    val status: String,
 )

@@ -162,6 +162,11 @@ fun Double.toMoneyString(): String {
     }
 }
 
+
+fun String.addSpace(): String {
+    return "$this "
+}
+
 fun Int.toMoneyString(): String {
     return if (this >= 1000000) {
         "${(this / 1000000)}m"

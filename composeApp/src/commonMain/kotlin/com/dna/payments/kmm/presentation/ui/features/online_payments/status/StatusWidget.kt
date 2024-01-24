@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.dna.payments.kmm.MR
-import com.dna.payments.kmm.domain.model.status_summary.PaymentStatus
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentStatus
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.white
@@ -76,7 +76,7 @@ fun StatusBottomSheet(
 }
 
 @Composable
-fun StatusItem(status: PaymentStatus, isSelected: Boolean, onItemClick: () -> Unit) {
+fun StatusItem(status: OnlinePaymentStatus, isSelected: Boolean, onItemClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

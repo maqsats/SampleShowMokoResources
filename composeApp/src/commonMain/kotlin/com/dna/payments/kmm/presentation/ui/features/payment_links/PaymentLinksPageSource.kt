@@ -4,7 +4,7 @@ import com.dna.payments.kmm.domain.interactors.use_cases.payment_link.PaymentLin
 import com.dna.payments.kmm.domain.model.payment_links.PaymentLinkByPeriod
 import com.dna.payments.kmm.domain.model.payment_links.PaymentLinksSearchParameters
 import com.dna.payments.kmm.domain.network.Response
-import com.dna.payments.kmm.domain.use_case.pagination.PageSource
+import com.dna.payments.kmm.domain.interactors.page_source.PageSource
 
 class PaymentLinksPageSource(
     private val paymentLinkUseCase: PaymentLinkUseCase
