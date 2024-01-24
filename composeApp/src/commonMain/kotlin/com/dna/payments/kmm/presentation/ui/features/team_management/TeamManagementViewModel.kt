@@ -48,7 +48,6 @@ class TeamManagementViewModel(
     override fun handleEvent(event: TeamManagementContract.Event) {
         when (event) {
             is TeamManagementContract.Event.OnInit -> {
-                println("OnInit")
                 teamManagementByUserPageSource.onReset()
                 teamManagementInvitedPageSource.onReset()
                 getTeammateList()
