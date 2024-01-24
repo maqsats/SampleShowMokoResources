@@ -25,6 +25,7 @@ interface TeamManagementContract {
         val teammateListAll: List<Teammate>,
         val teammateListInvited: List<Teammate>,
         val pagingUiState: PagingUiState,
+        val pagingUiStateInvited: PagingUiState,
         val hasPermission: Boolean,
         val selectedPage: Int = 0,
         val roleList: ResourceUiState<List<String>>,
