@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -40,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.dna.payments.kmm.MR
@@ -53,17 +55,23 @@ import com.dna.payments.kmm.presentation.theme.greyFirst
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
+import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.extension.toMoneyString
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import kotlin.math.roundToInt
 
 class DetailPosPaymentScreen(private val posTransaction: PosTransaction) : Screen {
     @Composable
     override fun Content() {
+
+        changePlatformColor(true)
+
         val navigator = LocalNavigator.currentOrThrow
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -76,7 +84,9 @@ class DetailPosPaymentScreen(private val posTransaction: PosTransaction) : Scree
             ) {
                 DNAGreenBackButton(
                     text = stringResource(MR.strings.close),
-                    onClick = { navigator.pop() },
+                    onClick = {
+                        navigator.pop()
+                    },
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )
                 DNAText(

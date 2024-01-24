@@ -55,6 +55,7 @@ import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeWidget
 import com.dna.payments.kmm.presentation.ui.features.pos_payments.status.StatusBottomSheet
 import com.dna.payments.kmm.presentation.ui.features.pos_payments.status.StatusWidget
 import com.dna.payments.kmm.presentation.ui.features.pos_payments_detail.DetailPosPaymentScreen
+import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.extension.toCurrencySymbol
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
@@ -76,6 +77,7 @@ class PosPaymentsScreen : DrawerScreen {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun DrawerContent(isToolbarCollapsed: Boolean) {
+        changePlatformColor()
         val posPaymentsViewModel = getScreenModel<PosPaymentsViewModel>()
         val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
         val state by posPaymentsViewModel.uiState.collectAsState()
