@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
@@ -27,7 +28,6 @@ import com.dna.payments.kmm.presentation.ui.features.currency.CurrencyWidget
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeBottomSheet
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeWidget
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
-import kotlinx.coroutines.flow.collectLatest
 import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -50,14 +50,8 @@ class OverviewReportScreen(private val menu: Menu) : DrawerScreen {
         val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
         val state by overviewReportViewModel.uiState.collectAsState()
 
-        LaunchedEffect(key1 = Unit) {
-            overviewReportViewModel.effect.collectLatest { effect ->
-                when (effect) {
-                    is OverviewReportContract.Effect.OnPageChanged -> {
-                        pagerState.animateScrollToPage(effect.position)
-                    }
-                }
-            }
+        LaunchedEffect(key1 = state.selectedPage) {
+            pagerState.animateScrollToPage(state.selectedPage)
         }
 
         LaunchedEffect(
@@ -95,14 +89,19 @@ class OverviewReportScreen(private val menu: Menu) : DrawerScreen {
                 menu
             )
         }
+
         val state by overviewReportViewModel.uiState.collectAsState()
+
+        val changePage = remember {
+            { position: Int ->
+                overviewReportViewModel.setEvent(OverviewReportContract.Event.OnPageChanged(position))
+            }
+        }
 
         DnaTabRow(
             tabList = OverviewReportType.entries.map { it.displayName },
             selectedPagePosition = state.selectedPage,
-            onTabClick = {
-                overviewReportViewModel.setEvent(OverviewReportContract.Event.OnPageChanged(it))
-            }
+            onTabClick = changePage
         )
     }
 

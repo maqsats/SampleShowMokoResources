@@ -1,7 +1,7 @@
 package com.dna.payments.kmm.presentation.ui.features.overview_report
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.dna.payments.kmm.domain.interactors.data_factory.overview.OverviewReportDataFactory
+import com.dna.payments.kmm.domain.interactors.data_factory.overview_report.OverviewReportDataFactory
 import com.dna.payments.kmm.domain.interactors.use_cases.currency.CurrencyUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.GetDateRangeUseCase
 import com.dna.payments.kmm.domain.model.currency.Currency
@@ -45,9 +45,6 @@ class OverviewReportViewModel(
             is OverviewReportContract.Event.OnPageChanged -> {
                 setState {
                     copy(selectedPage = event.position)
-                }
-                setEffect {
-                    OverviewReportContract.Effect.OnPageChanged(event.position)
                 }
             }
             is OverviewReportContract.Event.OnDateSelection -> {

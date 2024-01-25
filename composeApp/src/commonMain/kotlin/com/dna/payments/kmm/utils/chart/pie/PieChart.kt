@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.unit.dp
 import com.dna.payments.kmm.presentation.theme.greyColorBackground
 import com.dna.payments.kmm.utils.chart.ChartAnimation
-import com.dna.payments.kmm.utils.chart.StartAnimation
 import com.dna.payments.kmm.utils.chart.mapValueToDifferentRange
 import com.dna.payments.kmm.utils.chart.pie.PieDefaults.FULL_CIRCLE_DEGREES
 import com.dna.payments.kmm.utils.chart.pie.PieDefaults.START_ANGLE
@@ -55,14 +54,13 @@ fun PieChart(
     config: PieChartConfig = PieChartConfig(),
     centerContent: @Composable BoxScope.() -> Unit = {}
 ) {
-    val animationPlayed = StartAnimation(animation, data)
     val maxAngle = when (animation) {
         ChartAnimation.Disabled -> {
             1f
         }
         is ChartAnimation.Simple -> {
             animateFloatAsState(
-                targetValue = if (animationPlayed) FULL_CIRCLE_DEGREES else 0f,
+                targetValue = FULL_CIRCLE_DEGREES,
                 animationSpec = animation.animationSpec()
             ).value
         }
@@ -114,10 +112,10 @@ fun PieChart(
     )
 }
 
-private fun emptyPieChartList() =
+fun emptyPieChartList() =
     listOf(PieChartData(name = "", value = 1.0, color = greyColorBackground))
 
-private fun calculateSweepAngles(
+fun calculateSweepAngles(
     data: List<PieChartData>,
     sumOfData: Double,
     maxAngle: Float
@@ -131,7 +129,7 @@ private fun calculateSweepAngles(
 }
 
 
-private fun DrawScope.drawArc(
+fun DrawScope.drawArc(
     color: Color,
     startAngle: Float,
     sweepAngle: Float,

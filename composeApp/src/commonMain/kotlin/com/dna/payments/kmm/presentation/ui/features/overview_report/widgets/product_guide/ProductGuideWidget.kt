@@ -31,6 +31,7 @@ import com.dna.payments.kmm.domain.model.product_guide.ProductGuide
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DNAText
+import com.seiko.imageloader.rememberImagePainter
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.delay
@@ -88,7 +89,7 @@ object ProductGuideWidget : Screen {
                         .fillMaxWidth().zIndex(1f)
                 ) {
                     Image(
-                        painter = painterResource(productGuide.imageBackground),
+                        painter = rememberImagePainter(productGuide.imageBackground),
                         contentDescription = null,
                         contentScale = ContentScale.FillBounds,
                         modifier = Modifier
@@ -101,7 +102,7 @@ object ProductGuideWidget : Screen {
                         .fillMaxWidth().zIndex(2f).align(Alignment.BottomEnd)
                 ) {
                     Image(
-                        painter = painterResource(MR.images.pay_by_link_guide),
+                        painter = rememberImagePainter(PAY_BY_LINK_IMAGE),
                         contentDescription = null,
                         modifier = Modifier
                             .aspectRatio(ratio = 9f / 4f)
@@ -151,4 +152,6 @@ object ProductGuideWidget : Screen {
         }
     }
 
+    private const val PAY_BY_LINK_IMAGE =
+        "https://firebasestorage.googleapis.com/v0/b/diploma-c971d.appspot.com/o/pay_by_link_guide%401x.png?alt=media&token=0bed8a17-8a88-4f13-9a2f-42c02c68d3c5"
 }

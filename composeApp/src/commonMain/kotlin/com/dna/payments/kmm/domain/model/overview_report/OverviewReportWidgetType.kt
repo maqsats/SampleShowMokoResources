@@ -1,6 +1,8 @@
 package com.dna.payments.kmm.domain.model.overview_report
 
+import androidx.compose.runtime.Immutable
 
+@Immutable
 enum class OverviewReportWidgetType {
     APPROVAL_RATE,
     AVERAGE_METRICS,

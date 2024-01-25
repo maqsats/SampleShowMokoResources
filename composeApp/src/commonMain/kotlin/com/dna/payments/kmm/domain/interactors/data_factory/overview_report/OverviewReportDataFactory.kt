@@ -1,4 +1,4 @@
-package com.dna.payments.kmm.domain.interactors.data_factory.overview
+package com.dna.payments.kmm.domain.interactors.data_factory.overview_report
 
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.date_picker.Menu

@@ -41,7 +41,7 @@ internal fun PieChartLegend(
         ChartAnimation.Disabled -> data.indices.map { 1f }
         is ChartAnimation.Simple -> data.indices.map {
             animateFloatAsState(
-                targetValue = if (animationPlayed) 1f else 0f,
+                targetValue = 1f,
                 animationSpec = animation.animationSpec()
             ).value
         }
