@@ -227,7 +227,7 @@ class DetailPosPaymentScreen(private val posTransaction: PosTransaction) : Scree
                                 verticalAlignment = Alignment.CenterVertically
 
                             ) {
-                                Column(modifier = Modifier.wrapContentHeight()) {
+                                Column(modifier = Modifier.wrapContentHeight().weight(1f)) {
                                     DNAText(
                                         stringResource(MR.strings.transaction_id),
                                         style = DnaTextStyle.WithAlpha12
@@ -236,14 +236,14 @@ class DetailPosPaymentScreen(private val posTransaction: PosTransaction) : Scree
                                         transaction.transactionId,
                                         style = DnaTextStyle.Normal16,
                                         maxLines = 1,
-                                        modifier = Modifier.width(220.dp)
                                     )
                                 }
                                 Icon(
                                     painter = painterResource(MR.images.ic_copy),
                                     contentDescription = null,
                                     tint = Color.Unspecified,
-                                    modifier = Modifier.height(24.dp).width(24.dp)
+                                    modifier = Modifier.padding(start = Paddings.small)
+                                        .height(24.dp).width(24.dp)
                                 )
                             }
                             Spacer(modifier = Modifier.height(Paddings.large))
@@ -400,7 +400,7 @@ class DetailPosPaymentScreen(private val posTransaction: PosTransaction) : Scree
                                 verticalAlignment = Alignment.CenterVertically
 
                             ) {
-                                Column(modifier = Modifier.wrapContentHeight()) {
+                                Column(modifier = Modifier.wrapContentHeight().weight(1f)) {
                                     DNAText(
                                         stringResource(MR.strings.terminal_id),
                                         style = DnaTextStyle.WithAlpha12
@@ -408,15 +408,15 @@ class DetailPosPaymentScreen(private val posTransaction: PosTransaction) : Scree
                                     DNAText(
                                         transaction.terminalId,
                                         style = DnaTextStyle.Normal16,
-                                        maxLines = 1,
-                                        modifier = Modifier.width(220.dp)
+                                        maxLines = 1
                                     )
                                 }
                                 Icon(
                                     painter = painterResource(MR.images.ic_copy),
                                     contentDescription = null,
                                     tint = Color.Unspecified,
-                                    modifier = Modifier.height(24.dp).width(24.dp)
+                                    modifier = Modifier.padding(start = Paddings.small)
+                                        .height(24.dp).width(24.dp)
                                 )
                             }
                             Spacer(modifier = Modifier.height(Paddings.large))

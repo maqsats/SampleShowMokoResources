@@ -69,7 +69,7 @@ class PosPaymentsScreen : DrawerScreen {
     override val isFilterEnabled: Boolean = true
 
     @Composable
-    override fun Content() {  // Just for testing purposes
+    override fun Content() {
 
     }
 

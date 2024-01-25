@@ -21,6 +21,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -49,9 +52,11 @@ import com.dna.payments.kmm.presentation.state.ComponentRectangleLineShort
 import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
+import com.dna.payments.kmm.presentation.theme.greyColorAlpha
 import com.dna.payments.kmm.presentation.theme.greyColorBackground
 import com.dna.payments.kmm.presentation.theme.outlineGreenColor
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
+import com.dna.payments.kmm.presentation.ui.common.DNASwitch
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithBackground
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
@@ -504,8 +509,9 @@ class DetailPaymentMethodsScreen(
                 DNAText(
                     text = detailTerminalSetting.id,
                     maxLines = 1,
-                    modifier = modifier.padding(end = 16.dp)
+                    modifier = modifier.padding(end = Paddings.small).weight(1f)
                 )
+                DNASwitch()
             }
         }
     }
