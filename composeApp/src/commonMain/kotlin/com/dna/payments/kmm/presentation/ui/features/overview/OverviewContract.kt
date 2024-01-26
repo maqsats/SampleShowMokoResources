@@ -39,7 +39,7 @@ interface OverviewContract {
         val posPaymentsMetricList: ResourceUiState<List<Metric>>,
         val productGuideList: List<ProductGuide>,
         val posPaymentsGraphSummary: ResourceUiState<Pair<HistogramEntry, HistogramEntry>>,
-        val onlinePaymentsGraphSummary: ResourceUiState<HistogramEntry>
+        val onlinePaymentsGraphSummary: ResourceUiState<Pair<HistogramEntry, HistogramEntry>>
     ) : UiState
 
     sealed interface Effect : UiEffect {

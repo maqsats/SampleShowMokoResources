@@ -199,9 +199,8 @@ class OverviewViewModel(
         screenModelScope.launch {
             val intervalType = dateHelper.findIntervalType(currentState.dateRange.second)
             val summary = when (val result = onlineSummaryGraphUseCase.getOnlineSummaryGraph(
-                startDate = currentState.dateRange.second.startDate.convertToServerFormat(),
-                endDate = currentState.dateRange.second.endDate.convertToServerFormat(),
-                interval = intervalType.key,
+                startDate = currentState.dateRange.second.startDate,
+                endDate = currentState.dateRange.second.endDate,
                 currency = selectedCurrency.name,
                 status = PaymentStatus.CHARGE.name,
                 intervalType = intervalType

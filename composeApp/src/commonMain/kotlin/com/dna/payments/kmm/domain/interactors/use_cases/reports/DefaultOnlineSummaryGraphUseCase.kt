@@ -2,13 +2,17 @@ package com.dna.payments.kmm.domain.interactors.use_cases.reports
 
 import com.dna.payments.kmm.data.model.overview.SummaryOnlinePaymentsApiModel
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants
+import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.DATE_FORMAT_WITHOUT_HOUR
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.DATE_FORMAT_WITH_HOUR
 import com.dna.payments.kmm.domain.model.date_picker.IntervalType
 import com.dna.payments.kmm.domain.model.reports.BarEntry
 import com.dna.payments.kmm.domain.model.reports.HistogramEntry
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.repository.TransactionRepository
+import com.dna.payments.kmm.utils.extension.convertToServerFormat
+import com.dna.payments.kmm.utils.extension.daysBetween
 import com.soywiz.klock.DateFormat
+import com.soywiz.klock.DateTime
 import com.soywiz.klock.DateTimeSpan
 import com.soywiz.klock.parse
 import com.soywiz.klock.weekOfYear1
@@ -17,29 +21,58 @@ class DefaultOnlineSummaryGraphUseCase(private val transactionRepository: Transa
     OnlineSummaryGraphUseCase {
 
     override suspend fun getOnlineSummaryGraph(
-        startDate: String,
-        endDate: String,
+        startDate: DateTime?,
+        endDate: DateTime?,
         currency: String,
-        interval: String,
-        status: String, intervalType: IntervalType
-    ): Response<HistogramEntry> =
-        when (val response = transactionRepository.getOnlineGraphSummary(
-            startDate,
-            endDate,
+        intervalType: IntervalType,
+        status: String
+    ): Response<Pair<HistogramEntry, HistogramEntry>> {
+        val originalResponse = transactionRepository.getOnlineGraphSummary(
+            startDate.convertToServerFormat(),
+            endDate.convertToServerFormat(),
             currency,
-            interval,
+            intervalType.key,
             status
-        )) {
-            is Response.Error -> Response.Error(response.error)
-            is Response.NetworkError -> Response.NetworkError
-            is Response.TokenExpire -> Response.TokenExpire
-            is Response.Success -> Response.Success(
-                convertToBarEntries(
-                    response.data,
-                    intervalType
+        )
+        val additionalDays =
+            if (intervalType == IntervalType.HOUR) 1 else startDate.daysBetween(endDate)
+
+        val newStartDate = startDate?.minus(DateTimeSpan(days = additionalDays))
+        val newEndDate = endDate?.minus(DateTimeSpan(days = additionalDays))
+
+        val secondResponse = transactionRepository.getOnlineGraphSummary(
+            newStartDate.convertToServerFormat(),
+            newEndDate.convertToServerFormat(),
+            currency,
+            intervalType.key,
+            status
+        )
+
+        return when {
+            originalResponse is Response.Success && secondResponse is Response.Success -> {
+                val originalData = originalResponse.data
+                val secondData = secondResponse.data
+
+                Response.Success(
+                    Pair(
+                        convertToBarEntries(
+                            originalData,
+                            intervalType
+                        ),
+                        convertToBarEntries(
+                            secondData,
+                            intervalType
+                        )
+                    )
                 )
-            )
+            }
+            originalResponse is Response.Error -> Response.Error(originalResponse.error)
+            secondResponse is Response.Error -> Response.Error(secondResponse.error)
+            originalResponse is Response.TokenExpire -> Response.TokenExpire
+            secondResponse is Response.TokenExpire -> Response.TokenExpire
+            else -> Response.NetworkError
         }
+    }
 
     private fun convertToBarEntries(
         summaryList: List<SummaryOnlinePaymentsApiModel>,
@@ -89,7 +122,9 @@ class DefaultOnlineSummaryGraphUseCase(private val transactionRepository: Transa
             amountList.add(BarEntry(summary.amount.toFloat(), yValue))
             countList.add(BarEntry(summary.count.toFloat(), yValue))
         }
-
+        println("summaryList: $summaryList")
+        println("amountList: $amountList")
+        println("countList: $countList")
         return HistogramEntry(amountList, countList, labelList)
     }
 }
