@@ -10,7 +10,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.GenericShape
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
@@ -19,6 +23,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
+import cafe.adriel.voyager.core.screen.Screen
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.data.model.Error
 import com.dna.payments.kmm.domain.interactors.use_cases.currency.CurrencyHelper
@@ -31,8 +37,10 @@ import com.dna.payments.kmm.domain.model.currency.Currency
 import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod
 import com.dna.payments.kmm.domain.model.date_picker.DateSelection
 import com.dna.payments.kmm.domain.network.Response
+import com.dna.payments.kmm.presentation.theme.greyFirst
 import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.constants.Constants
+import com.dna.payments.kmm.utils.platform_colors.PlatformColors
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.DateTimeTz
 import io.ktor.client.call.body
@@ -267,4 +275,21 @@ fun String.toCurrencySymbol(): String {
         "EUR" -> "€"
         else -> this // Return the input code if no match is found
     }
+}
+
+@Composable
+fun Screen.changePlatformColor(isGrey: Boolean = false) {
+
+    var changePlatformColor by remember { mutableStateOf(false) }
+
+    LifecycleEffect(
+        onStarted = {
+            changePlatformColor = isGrey
+        }
+    )
+
+    PlatformColors(
+        statusBarColor = if (changePlatformColor) greyFirst else Color.White,
+        navBarColor = if (changePlatformColor) greyFirst else Color.White
+    )
 }
