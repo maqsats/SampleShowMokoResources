@@ -15,7 +15,6 @@ data class Teammate(
     val status: UserStatus,
     @SerialName("permissions")
     val permissionList: List<String>,
-    val systemRoles: List<String>,
     val type: String,
     val isUserAdmin: Boolean = true
 ) : Parcelable

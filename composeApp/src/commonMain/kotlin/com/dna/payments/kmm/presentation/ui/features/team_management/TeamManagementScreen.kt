@@ -136,7 +136,7 @@ class TeamManagementScreen : DrawerScreen {
         ) {
             PaginationUiStateManager(
                 modifier = modifier.fillMaxSize(),
-                resourceUiState = state.pagingUiState,
+                resourceUiState = state.pagingUiStateInvited,
                 pagingList = state.teammateListAll,
                 onRequestNextPage = onRequestNextPage,
                 onRefresh = onRefresh,
@@ -263,7 +263,8 @@ class TeamManagementScreen : DrawerScreen {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             DNAText(
                                 style = DnaTextStyle.WithAlpha12,
-                                text = teammate.roles[0].capitalizeFirstLetter()
+                                text = teammate.roles.firstOrNull()?.capitalizeFirstLetter()
+                                    .orEmpty()
                             )
                         }
                     }
