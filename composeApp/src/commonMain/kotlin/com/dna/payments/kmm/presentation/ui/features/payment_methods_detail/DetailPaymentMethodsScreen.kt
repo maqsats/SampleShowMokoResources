@@ -21,9 +21,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -39,7 +36,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.payment_methods.PaymentMethod
@@ -52,9 +48,9 @@ import com.dna.payments.kmm.presentation.state.ComponentRectangleLineShort
 import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
-import com.dna.payments.kmm.presentation.theme.greyColorAlpha
 import com.dna.payments.kmm.presentation.theme.greyColorBackground
 import com.dna.payments.kmm.presentation.theme.outlineGreenColor
+import com.dna.payments.kmm.presentation.ui.common.ChangeTerminalSettingDialog
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.presentation.ui.common.DNASwitch
 import com.dna.payments.kmm.presentation.ui.common.DNAText
@@ -154,6 +150,14 @@ class DetailPaymentMethodsScreen(
                             domain = it
                         )
                     )
+                },
+                onChangeSetting = {
+                    detailPaymentMethodsViewModel.setEvent(
+                        DetailPaymentMethodsContract.Event.OnChangeTerminalSetting(
+                            paymentMethodType = paymentMethod.type,
+                            detailTerminalSetting = it
+                        )
+                    )
                 }
             )
         }
@@ -165,7 +169,8 @@ class DetailPaymentMethodsScreen(
         terminalSettings: ResourceUiState<List<TerminalSetting>>,
         domainList: ResourceUiState<List<Domain>>,
         addNewDomainClicked: () -> Unit,
-        onUnregisterDialog: (Domain) -> Unit
+        onUnregisterDialog: (Domain) -> Unit,
+        onChangeSetting: (DetailTerminalSetting) -> Unit
     ) {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)
@@ -214,7 +219,7 @@ class DetailPaymentMethodsScreen(
                         it.forEach {
                             TerminalSettingItem(
                                 terminalSetting = it,
-                                onItemClicked = {}
+                                onChangeSetting = onChangeSetting
                             )
                         }
                     }
@@ -282,7 +287,7 @@ class DetailPaymentMethodsScreen(
     private fun TerminalSettingItem(
         modifier: Modifier = Modifier,
         terminalSetting: TerminalSetting,
-        onItemClicked: (PaymentMethod) -> Unit
+        onChangeSetting: (DetailTerminalSetting) -> Unit
     ) {
         var isExpanded by remember { mutableStateOf<Boolean?>(null) }
         var currentRotation by remember { mutableStateOf(0f) }
@@ -384,7 +389,8 @@ class DetailPaymentMethodsScreen(
                     Column {
                         terminalSetting.detailTerminalSettingList.forEachIndexed { index, item ->
                             DetailTerminalSettingItem(
-                                detailTerminalSetting = item
+                                detailTerminalSetting = item,
+                                onChangeSetting = onChangeSetting
                             )
                         }
                     }
@@ -494,8 +500,21 @@ class DetailPaymentMethodsScreen(
     @Composable
     private fun DetailTerminalSettingItem(
         modifier: Modifier = Modifier,
-        detailTerminalSetting: DetailTerminalSetting
+        detailTerminalSetting: DetailTerminalSetting,
+        onChangeSetting: (DetailTerminalSetting) -> Unit
     ) {
+        var showChangeSetting by remember { mutableStateOf(false) }
+
+        if (showChangeSetting) {
+            ChangeTerminalSettingDialog(
+                isEnabled = detailTerminalSetting.status,
+                onDismiss = { showChangeSetting = false },
+                onConfirm = {
+                    showChangeSetting = false
+                    onChangeSetting(detailTerminalSetting)
+                }
+            )
+        }
         Box(
             modifier = modifier.padding(top = 16.dp)
                 .fillMaxWidth()

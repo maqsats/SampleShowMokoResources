@@ -14,7 +14,6 @@ import com.dna.payments.kmm.domain.use_case.GetTerminalSettingsUseCase
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
 import com.dna.payments.kmm.utils.UiText
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class DetailPaymentMethodsViewModel(
@@ -40,6 +39,10 @@ class DetailPaymentMethodsViewModel(
 
             is DetailPaymentMethodsContract.Event.OnUnregisterDomainItem -> {
                 unregisterDomain(event.paymentMethodType, event.domain)
+
+            }
+
+            is DetailPaymentMethodsContract.Event.OnChangeTerminalSetting -> {
 
             }
         }
