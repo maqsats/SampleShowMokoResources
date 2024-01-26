@@ -21,7 +21,19 @@ data class DateSelection(
         }
     }
 
-    override fun toString(): String {
-        return "DateSelection(startDate=$startDate, endDate=$endDate)"
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as DateSelection
+
+        if (startDate != other.startDate) return false
+        return endDate == other.endDate
+    }
+
+    override fun hashCode(): Int {
+        var result = startDate?.hashCode() ?: 0
+        result = 31 * result + (endDate?.hashCode() ?: 0)
+        return result
     }
 }

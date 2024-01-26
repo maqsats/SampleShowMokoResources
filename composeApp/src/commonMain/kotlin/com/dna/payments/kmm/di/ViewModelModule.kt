@@ -5,7 +5,11 @@ import com.dna.payments.kmm.presentation.ui.features.login.LoginViewModel
 import com.dna.payments.kmm.presentation.ui.features.nav_auth.NavAuthViewModel
 import com.dna.payments.kmm.presentation.ui.features.new_password.NewPasswordViewModel
 import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsViewModel
-import com.dna.payments.kmm.presentation.ui.features.overview.OverviewViewModel
+import com.dna.payments.kmm.presentation.ui.features.overview_report.OverviewReportViewModel
+import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.approval_average_metrics.ApprovalAverageMetricsViewModel
+import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.chart.ChartViewModel
+import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.product_guide.ProductGuideViewModel
+import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.transactions.TransactionsViewModel
 import com.dna.payments.kmm.presentation.ui.features.payment_links.PaymentLinksViewModel
 import com.dna.payments.kmm.presentation.ui.features.payment_methods_add_domain.first_step.AddDomainFirstStepViewModel
 import com.dna.payments.kmm.presentation.ui.features.payment_methods_add_domain.third_step.AddDomainThirdStepViewModel
@@ -30,6 +34,7 @@ val viewModelModule = module {
             params.get()
         )
     }
+
     factoryOf(::NavAuthViewModel)
     factoryOf(::TeamManagementViewModel)
     factoryOf(::RestorePasswordViewModel)
@@ -37,7 +42,40 @@ val viewModelModule = module {
     factoryOf(::NewPasswordViewModel)
     factoryOf(::DrawerViewModel)
     factoryOf(::DetailPaymentMethodsViewModel)
-    factoryOf(::OverviewViewModel)
+    factoryOf(::OverviewReportViewModel)
+    factoryOf(::ProductGuideViewModel)
+
+    factory { params ->
+        OverviewReportViewModel(
+            params.get(),
+            get(),
+            get(),
+            get()
+        )
+    }
+    factory { params ->
+        ChartViewModel(
+            get(),
+            get(),
+            get(),
+            params.get(),
+            params.get()
+        )
+    }
+    factory { params ->
+        TransactionsViewModel(
+            get(),
+            get(),
+            get(),
+            params.get()
+        )
+    }
+    factory { params ->
+        ApprovalAverageMetricsViewModel(
+            get(),
+            params.get()
+        )
+    }
     factoryOf(::PaymentLinksViewModel)
     factoryOf(::OnlinePaymentsViewModel)
     factoryOf(::PosPaymentsViewModel)

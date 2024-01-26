@@ -3,12 +3,13 @@ package com.dna.payments.kmm.domain.repository
 import com.dna.payments.kmm.data.model.overview.SummaryListApiModel
 import com.dna.payments.kmm.data.model.overview.SummaryOnlinePaymentsApiModel
 import com.dna.payments.kmm.data.model.overview.SummaryPosRequest
-import com.dna.payments.kmm.data.model.report.ReportApiModel
-import com.dna.payments.kmm.data.model.report.ReportRequest
+import com.dna.payments.kmm.data.model.report.ReportItem
+import com.dna.payments.kmm.data.model.report.ReportOnlinePaymentsRequest
+import com.dna.payments.kmm.data.model.report.ReportPosPaymentsApiModel
+import com.dna.payments.kmm.data.model.report.ReportPosPaymentsRequest
 import com.dna.payments.kmm.data.model.search.Search
 import com.dna.payments.kmm.data.model.transactions.pos.PosRequestParam
-import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentSummary
-import com.dna.payments.kmm.domain.model.status_summary.Summary
+import com.dna.payments.kmm.domain.model.overview_report.Summary
 import com.dna.payments.kmm.domain.model.transactions.TransactionPayload
 import com.dna.payments.kmm.domain.model.transactions.pos.PosTransactions
 import com.dna.payments.kmm.domain.network.Response
@@ -25,13 +26,17 @@ interface TransactionRepository {
         summaryPosRequest: SummaryPosRequest
     ): Response<SummaryListApiModel>
 
-    suspend fun getIssuer(
-        reportRequest: ReportRequest
-    ): Response<ReportApiModel>
+    suspend fun getPosPaymentIssuer(
+        reportPosPaymentsRequest: ReportPosPaymentsRequest
+    ): Response<ReportPosPaymentsApiModel>
 
-    suspend fun getCardScheme(
-        reportRequest: ReportRequest
-    ): Response<ReportApiModel>
+    suspend fun getOnlinePaymentIssuer(
+        request: ReportOnlinePaymentsRequest
+    ): Response<List<ReportItem>>
+
+    suspend fun getPosPaymentsCardScheme(
+        reportPosPaymentsRequest: ReportPosPaymentsRequest
+    ): Response<ReportPosPaymentsApiModel>
 
     suspend fun getOnlineGraphSummary(
         startDate: String,
@@ -53,5 +58,8 @@ interface TransactionRepository {
         startDate: String,
         endDate: String,
         currency: String
-    ): Response<List<PosPaymentSummary>>
+    ): Response<List<Summary>>
+
+    suspend fun getOnlinePaymentsCardScheme(request: ReportOnlinePaymentsRequest): Response<List<ReportItem>>
+    suspend fun getOnlinePaymentMethods(request: ReportOnlinePaymentsRequest): Response<List<ReportItem>>
 }

@@ -246,6 +246,15 @@
     <string name="charged_transactions">Charged transactions</string>
     <string name="all_pos_transactions">All POS Transactions</string>
     <string name="charged_transactions_comparison">Charged transactions comparison</string>
+    <string name="all_transactions_comparison">All transactions comparison</string>
+    <string name="transactions">Transactions</string>
+    <string name="pos_transactions">POS Transactions</string>
+    <string name="transactions_comparison">Transactions comparison</string>
+    <string name="card_scheme">Card scheme</string>
+    <string name="card_methods">Card methods</string>
+    <string name="issuing_banks">Issuing banks (card payments only)</string>
+    <string name="volume">Volume</string>
+    <string name="volume_count">Volume count</string>
     <string name="total_transactions">Total transactions</string>
     <string name="amount">Amount</string>
     <string name="count">Count</string>

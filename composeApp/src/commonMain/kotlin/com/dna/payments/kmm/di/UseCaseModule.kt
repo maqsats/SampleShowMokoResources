@@ -4,7 +4,7 @@ import com.dna.payments.kmm.data.use_case.ChangePasswordUseCaseImpl
 import com.dna.payments.kmm.data.use_case.PaymentLinkStatusUseCaseImpl
 import com.dna.payments.kmm.data.use_case.SendOtpInstructionsUseCaseImpl
 import com.dna.payments.kmm.data.use_case.VerifyOtpCodeUseCaseImpl
-import com.dna.payments.kmm.domain.interactors.data_factory.overview.OverviewDataFactory
+import com.dna.payments.kmm.domain.interactors.data_factory.overview.OverviewReportDataFactory
 import com.dna.payments.kmm.domain.interactors.data_factory.product_guide.ProductGuideDataFactory
 import com.dna.payments.kmm.domain.interactors.page_source.OnlinePaymentsPageSource
 import com.dna.payments.kmm.domain.interactors.page_source.PosPaymentsPageSource
@@ -21,12 +21,15 @@ import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.Unregist
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pos_payments.GetPosTransactionsUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.profile.MerchantUseCase
-import com.dna.payments.kmm.domain.interactors.use_cases.reports.DefaultOnlineSummaryGraphUseCase
-import com.dna.payments.kmm.domain.interactors.use_cases.reports.DefaultPosSummaryGraphUseCase
-import com.dna.payments.kmm.domain.interactors.use_cases.reports.OnlineSummaryGraphUseCase
-import com.dna.payments.kmm.domain.interactors.use_cases.reports.PosSummaryGraphUseCase
-import com.dna.payments.kmm.domain.interactors.use_cases.transaction.DefaultTransactionUseCase
-import com.dna.payments.kmm.domain.interactors.use_cases.transaction.TransactionUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.approval_average_metrics.DefaultGetReportUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.approval_average_metrics.GetReportUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.card_scheme.GetCardSchemeUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.issuing_banks.GetIssuingBanksUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.payment_methods.GetPaymentMethodsUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.transactions.DefaultOnlineSummaryGraphUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.transactions.DefaultPosSummaryGraphUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.transactions.OnlineSummaryGraphUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.transactions.PosSummaryGraphUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidateCode
 import com.dna.payments.kmm.domain.interactors.validation.ValidateDomain
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
@@ -50,7 +53,7 @@ import org.koin.dsl.module
 
 val useCasesModule: Module = module {
     //data factory
-    factoryOf(::OverviewDataFactory)
+    factoryOf(::OverviewReportDataFactory)
     factoryOf(::ProductGuideDataFactory)
     factoryOf(::AuthorizationUseCase)
     factoryOf(::PinUseCase)
@@ -66,11 +69,9 @@ val useCasesModule: Module = module {
     singleOf(::DateHelper)
     singleOf(::GetDateRangeUseCase)
 
-    //validation
-    factoryOf(::ValidatePassword)
-    factoryOf(::ValidateEmail)
-    factoryOf(::ValidateDomain)
-    factoryOf(::ValidateCode)
+    factoryOf(::GetIssuingBanksUseCase)
+    factoryOf(::GetPaymentMethodsUseCase)
+    factoryOf(::GetCardSchemeUseCase)
     factoryOf(::PaymentLinkUseCase)
     factoryOf(::RegisterDomainUseCase)
     factoryOf(::UnregisterDomainUseCase)
@@ -80,11 +81,18 @@ val useCasesModule: Module = module {
     factoryOf(::DefaultCurrencyUseCase).bind(CurrencyUseCase::class)
     factoryOf(::DefaultPosSummaryGraphUseCase).bind(PosSummaryGraphUseCase::class)
     factoryOf(::DefaultOnlineSummaryGraphUseCase).bind(OnlineSummaryGraphUseCase::class)
-    factoryOf(::DefaultTransactionUseCase).bind(TransactionUseCase::class)
+    factoryOf(::DefaultGetReportUseCase).bind(GetReportUseCase::class)
     factoryOf(::SendOtpInstructionsUseCaseImpl).bind(SendOtpInstructionsUseCase::class)
     factoryOf(::VerifyOtpCodeUseCaseImpl).bind(VerifyOtpCodeUseCase::class)
     factoryOf(::ChangePasswordUseCaseImpl).bind(ChangePasswordUseCase::class)
     factoryOf(::PaymentLinkStatusUseCaseImpl).bind(PaymentLinkStatusUseCase::class)
+
+    //validation
+    factoryOf(::ValidatePassword)
+    factoryOf(::ValidateEmail)
+    factoryOf(::ValidateDomain)
+    factoryOf(::ValidateCode)
+
 }
 
 

@@ -1,0 +1,172 @@
+package com.dna.payments.kmm.presentation.ui.features.overview_report
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.unit.dp
+import com.dna.payments.kmm.domain.model.overview_report.OverviewReportType
+import com.dna.payments.kmm.domain.model.overview_report.OverviewReportWidgetItem
+import com.dna.payments.kmm.domain.model.overview_report.OverviewReportWidgetType.APPROVAL_RATE
+import com.dna.payments.kmm.domain.model.overview_report.OverviewReportWidgetType.AVERAGE_METRICS
+import com.dna.payments.kmm.domain.model.overview_report.OverviewReportWidgetType.CARD_SCHEMES_CHART
+import com.dna.payments.kmm.domain.model.overview_report.OverviewReportWidgetType.CHARGED_TRANSACTIONS_COMPARISON
+import com.dna.payments.kmm.domain.model.overview_report.OverviewReportWidgetType.ISSUING_BANKS_CHART
+import com.dna.payments.kmm.domain.model.overview_report.OverviewReportWidgetType.PAYMENT_METHODS_CHART
+import com.dna.payments.kmm.domain.model.overview_report.OverviewReportWidgetType.PRODUCT_GUIDE
+import com.dna.payments.kmm.domain.model.overview_report.OverviewReportWidgetType.TRANSACTIONS
+import com.dna.payments.kmm.presentation.theme.Dimens
+import com.dna.payments.kmm.presentation.theme.DnaTextStyle
+import com.dna.payments.kmm.presentation.theme.Paddings
+import com.dna.payments.kmm.presentation.theme.white
+import com.dna.payments.kmm.presentation.ui.common.DNAText
+import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.approval_average_metrics.ApprovalAverageMetricsWidget
+import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.chart.ChartWidget
+import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.product_guide.ProductGuideWidget
+import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.transactions.TransactionsWidget
+import dev.icerock.moko.resources.StringResource
+import dev.icerock.moko.resources.compose.stringResource
+
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@Composable
+fun OverviewWidget(
+    state: OverviewReportContract.State,
+    overviewReportType: OverviewReportType
+) {
+    val widthSizeClass = calculateWindowSizeClass().widthSizeClass
+    val isCompactScreen = widthSizeClass == WindowWidthSizeClass.Compact
+
+    if (isCompactScreen)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            items(
+                items = state.overviewReportWidgetItems.filter {
+                    it.overviewReportType == overviewReportType
+                },
+                key = {
+                    it.overviewReportWidgetType.name
+                }
+            )
+            { widgetItem ->
+                OverviewWidgetContainer(
+                    overviewReportWidgetItem = widgetItem,
+                    state = state,
+                    overviewReportType = overviewReportType
+                )
+            }
+        }
+    else {
+        LazyVerticalStaggeredGrid(
+            modifier = Modifier
+                .fillMaxSize().padding(bottom = Dimens.toolbarHeight),
+            columns = StaggeredGridCells.Fixed(2),
+            contentPadding = PaddingValues(0.dp),
+        ) {
+            items(state.overviewReportWidgetItems.filter {
+                it.overviewReportType == overviewReportType
+            }) { widgetItem ->
+                OverviewWidgetContainer(
+                    overviewReportWidgetItem = widgetItem,
+                    state = state,
+                    overviewReportType = overviewReportType
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun OverviewWidgetContainer(
+    modifier: Modifier = Modifier,
+    overviewReportWidgetItem: OverviewReportWidgetItem,
+    state: OverviewReportContract.State,
+    overviewReportType: OverviewReportType
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = Paddings.medium, vertical = Paddings.small)
+            .shadow(Paddings.extraSmall, RoundedCornerShape(Paddings.extraSmall))
+            .background(
+                color = white,
+                shape = RoundedCornerShape(Paddings.small)
+            ).then(modifier),
+    ) {
+
+        if (overviewReportWidgetItem.overviewReportWidgetType != PRODUCT_GUIDE) {
+            OverviewWidgetHeader(
+                title = overviewReportWidgetItem.title,
+                hint = overviewReportWidgetItem.hint
+            )
+        }
+
+        when (overviewReportWidgetItem.overviewReportWidgetType) {
+            APPROVAL_RATE, AVERAGE_METRICS -> {
+                ApprovalAverageMetricsWidget(
+                    overviewReportType = overviewReportType,
+                    dateSelection = state.dateRange.second,
+                    selectedCurrency = state.selectedCurrency,
+                    isApprovalRate = overviewReportWidgetItem.overviewReportWidgetType == APPROVAL_RATE
+                ).Content()
+            }
+            TRANSACTIONS, CHARGED_TRANSACTIONS_COMPARISON -> {
+                TransactionsWidget(
+                    overviewReportType = overviewReportType,
+                    dateSelection = state.dateRange.second,
+                    selectedCurrency = state.selectedCurrency,
+                    showComparison = overviewReportWidgetItem.overviewReportWidgetType == CHARGED_TRANSACTIONS_COMPARISON,
+                    menuType = state.menuType
+                ).Content()
+            }
+            PRODUCT_GUIDE -> {
+                ProductGuideWidget.Content()
+            }
+            PAYMENT_METHODS_CHART, CARD_SCHEMES_CHART, ISSUING_BANKS_CHART -> {
+                ChartWidget(
+                    overviewReportType = overviewReportType,
+                    dateSelection = state.dateRange.second,
+                    selectedCurrency = state.selectedCurrency,
+                    widgetType = overviewReportWidgetItem.overviewReportWidgetType
+                ).Content()
+            }
+        }
+    }
+}
+
+
+@Composable
+fun OverviewWidgetHeader(title: StringResource, hint: StringResource? = null) {
+    Column {
+        DNAText(
+            modifier = Modifier.padding(
+                top = Paddings.medium,
+                bottom = Paddings.small,
+                start = Paddings.medium,
+                end = Paddings.medium
+            ),
+            text = stringResource(title),
+            style = DnaTextStyle.Medium16
+        )
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+    }
+}

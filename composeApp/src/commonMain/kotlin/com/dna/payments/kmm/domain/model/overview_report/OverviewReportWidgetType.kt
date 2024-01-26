@@ -1,0 +1,13 @@
+package com.dna.payments.kmm.domain.model.overview_report
+
+
+enum class OverviewReportWidgetType {
+    APPROVAL_RATE,
+    AVERAGE_METRICS,
+    TRANSACTIONS,
+    CHARGED_TRANSACTIONS_COMPARISON,
+    PRODUCT_GUIDE,
+    PAYMENT_METHODS_CHART,
+    CARD_SCHEMES_CHART,
+    ISSUING_BANKS_CHART
+}

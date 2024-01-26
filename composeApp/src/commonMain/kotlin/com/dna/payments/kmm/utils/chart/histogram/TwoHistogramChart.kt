@@ -24,11 +24,11 @@ import com.dna.payments.kmm.presentation.theme.dnaGreenLight
 import com.dna.payments.kmm.presentation.theme.dnaYellow
 import com.dna.payments.kmm.presentation.theme.grey6
 import com.dna.payments.kmm.presentation.ui.common.DNAText
+import com.dna.payments.kmm.utils.extension.addSpace
 import com.dna.payments.kmm.utils.extension.toMoneyString
 
 @Composable
 fun <T : Number, V> TwoHistogramChart(
-    currency: String,
     xFirstPoints: List<V>,
     xSecondPoints: List<V>,
     yFirstPoints: List<T>,
@@ -84,7 +84,7 @@ fun <T : Number, V> TwoHistogramChart(
                     horizontalArrangement = Arrangement.Start
                 ) {
                     DNAText(
-                        text = "${yCurrent.toMoneyString()}$currency ",
+                        text = yCurrent.toMoneyString().addSpace(),
                         style = DnaTextStyle.Normal10Grey5,
                         textAlign = TextAlign.End,
                         modifier = Modifier.defaultMinSize(35.dp)
@@ -106,7 +106,7 @@ fun <T : Number, V> TwoHistogramChart(
                 horizontalArrangement = Arrangement.Start
             ) {
                 DNAText(
-                    text = "0$currency ",
+                    text = "0".addSpace(),
                     style = DnaTextStyle.Normal10Grey5,
                     textAlign = TextAlign.End,
                     modifier = Modifier.defaultMinSize(35.dp)
@@ -130,8 +130,8 @@ fun <T : Number, V> TwoHistogramChart(
                         .fillMaxHeight()
                         .padding(horizontal = diff)
                         .drawBehind {
-                            val firstChartValue = yFirstPoints[key].toDouble()
-                            val secondChartValue = ySecondPoints[key].toDouble()
+                            val firstChartValue = yFirstPoints.getValueAtIndexOrReturnDefault(key)
+                            val secondChartValue = ySecondPoints.getValueAtIndexOrReturnDefault(key)
 
                             when {
                                 firstChartValue > 0.5 && secondChartValue > 0.5 -> {

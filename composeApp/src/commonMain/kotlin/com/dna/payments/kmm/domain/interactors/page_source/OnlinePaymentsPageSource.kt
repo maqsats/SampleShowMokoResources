@@ -5,7 +5,6 @@ import com.dna.payments.kmm.domain.model.transactions.Transaction
 import com.dna.payments.kmm.domain.model.transactions.TransactionPayload
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.repository.TransactionRepository
-import com.dna.payments.kmm.domain.use_case.pagination.PageSource
 
 class OnlinePaymentsPageSource(
     private val transactionRepository: TransactionRepository

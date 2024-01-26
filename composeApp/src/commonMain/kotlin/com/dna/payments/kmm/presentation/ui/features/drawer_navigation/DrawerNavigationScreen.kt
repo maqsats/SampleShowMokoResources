@@ -18,12 +18,13 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.date_picker.Menu
 import com.dna.payments.kmm.domain.model.nav_item.NavItemPosition
 import com.dna.payments.kmm.domain.model.nav_item.SettingsPosition
 import com.dna.payments.kmm.presentation.ui.common.LocalSelectedMerchant
 import com.dna.payments.kmm.presentation.ui.features.help_center.HelpCenterScreen
 import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsScreen
-import com.dna.payments.kmm.presentation.ui.features.overview.OverviewScreen
+import com.dna.payments.kmm.presentation.ui.features.overview_report.OverviewReportScreen
 import com.dna.payments.kmm.presentation.ui.features.payment_links.PaymentLinksScreen
 import com.dna.payments.kmm.presentation.ui.features.payment_methods.PaymentMethodsScreen
 import com.dna.payments.kmm.presentation.ui.features.pos_payments.PosPaymentsScreen
@@ -131,14 +132,15 @@ class DrawerNavigationScreen : Screen {
 
     private fun getScreenByNavItem(navPosition: NavItemPosition) =
         when (navPosition) {
-            NavItemPosition.OVERVIEW -> OverviewScreen()
+            NavItemPosition.OVERVIEW -> OverviewReportScreen(Menu.OVERVIEW)
             NavItemPosition.ONLINE_PAYMENTS -> OnlinePaymentsScreen()
             NavItemPosition.PAYMENT_METHODS -> PaymentMethodsScreen()
             NavItemPosition.TEAM_MANAGEMENT -> TeamManagementScreen()
             NavItemPosition.PAYMENT_LINKS -> PaymentLinksScreen()
             NavItemPosition.POS_PAYMENTS -> PosPaymentsScreen()
+            NavItemPosition.REPORTS -> OverviewReportScreen(Menu.REPORTS)
             else -> {
-                OverviewScreen()
+                getInitialScreen()
             }
         }
 
@@ -149,5 +151,5 @@ class DrawerNavigationScreen : Screen {
             }
         }
 
-    private fun getInitialScreen() = OverviewScreen()
+    private fun getInitialScreen() = OverviewReportScreen(Menu.OVERVIEW)
 }

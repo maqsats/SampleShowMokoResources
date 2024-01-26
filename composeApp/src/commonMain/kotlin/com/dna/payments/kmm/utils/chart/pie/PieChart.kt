@@ -2,11 +2,13 @@ package com.dna.payments.kmm.utils.chart.pie
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -18,6 +20,8 @@ import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.unit.dp
+import com.dna.payments.kmm.presentation.theme.greyColorBackground
 import com.dna.payments.kmm.utils.chart.ChartAnimation
 import com.dna.payments.kmm.utils.chart.StartAnimation
 import com.dna.payments.kmm.utils.chart.mapValueToDifferentRange
@@ -49,6 +53,7 @@ fun PieChart(
     modifier: Modifier = Modifier,
     animation: ChartAnimation = ChartAnimation.Simple(),
     config: PieChartConfig = PieChartConfig(),
+    centerContent: @Composable BoxScope.() -> Unit = {}
 ) {
     val animationPlayed = StartAnimation(animation, data)
     val maxAngle = when (animation) {
@@ -73,9 +78,9 @@ fun PieChart(
     val sweepAngles by remember(maxAngle, data) {
         mutableStateOf(
             calculateSweepAngles(
-                data = data,
+                data = data.ifEmpty { emptyPieChartList() },
                 maxAngle = maxAngle,
-                sumOfData = sumOfData
+                sumOfData = if (sumOfData == 0.0) 1.0 else sumOfData
             )
         )
     }
@@ -86,13 +91,16 @@ fun PieChart(
             .drawBehind {
                 val clipPath = calculateClipPath(
                     angles = sweepAngles,
-                    config = config,
+                    config = if (data.isEmpty()) config.copy(gap = 0.dp) else config,
                 )
                 clipPath(clipPath) {
                     var startAngle = START_ANGLE
                     sweepAngles.forEachIndexed { index, sweepAngle ->
                         drawArc(
-                            color = data[index].color,
+                            color = when {
+                                data.isEmpty() -> emptyPieChartList()[index].color
+                                else -> data[index].color
+                            },
                             startAngle = startAngle.toFloat(),
                             sweepAngle = sweepAngle.toFloat(),
                             config = config,
@@ -100,19 +108,28 @@ fun PieChart(
                         startAngle += sweepAngle
                     }
                 }
-            }
+            },
+        contentAlignment = Alignment.Center,
+        content = centerContent
     )
 }
 
-private fun calculateSweepAngles(data: List<PieChartData>, sumOfData: Double, maxAngle: Float) =
-    data.map { pieChartData ->
-        pieChartData.value.mapValueToDifferentRange(
-            inMin = 0.0,
-            inMax = sumOfData,
-            outMin = 0.0,
-            outMax = maxAngle.toDouble()
-        )
-    }
+private fun emptyPieChartList() =
+    listOf(PieChartData(name = "", value = 1.0, color = greyColorBackground))
+
+private fun calculateSweepAngles(
+    data: List<PieChartData>,
+    sumOfData: Double,
+    maxAngle: Float
+) = data.map { pieChartData ->
+    pieChartData.value.mapValueToDifferentRange(
+        inMin = 0.0,
+        inMax = sumOfData,
+        outMin = 0.0,
+        outMax = maxAngle.toDouble()
+    )
+}
+
 
 private fun DrawScope.drawArc(
     color: Color,
