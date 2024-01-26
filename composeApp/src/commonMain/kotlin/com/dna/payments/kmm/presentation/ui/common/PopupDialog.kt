@@ -62,8 +62,8 @@ fun ChangeTerminalSettingDialog(
         text = {
             DNAText(
                 text = stringResource(
-                    if (isEnabled) MR.strings.enable_to_payment_method
-                    else MR.strings.disable_to_payment_method
+                    if (isEnabled) MR.strings.disable_to_payment_method
+                    else MR.strings.enable_to_payment_method
                 )
             )
         },

@@ -12,8 +12,8 @@ class ChangeTerminalStatusUseCase(val repository: SettingRepository) {
             newTerminalStatusRequest = NewTerminalStatusRequest(
                 terminalId = detailTerminalSetting.id,
                 when (detailTerminalSetting.status) {
-                    true -> SettingStatus.ACTIVE.status
-                    false -> SettingStatus.DISABLED.status
+                    false -> SettingStatus.ACTIVE.status
+                    true -> SettingStatus.DISABLED.status
                 }
             ), detailTerminalSetting.paymentTypeUrl
         )

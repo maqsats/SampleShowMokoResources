@@ -11,6 +11,7 @@ import com.dna.payments.kmm.utils.extension.toBearerToken
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.header
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
@@ -26,7 +27,7 @@ class DefaultSettingRepository(
         paymentMethodTypeUrl: PaymentMethodType
     ): Response<Unit> =
         handleApiCall {
-            httpClient.post {
+            httpClient.patch {
                 url("${Constants.BASE_URL}v1/${paymentMethodTypeUrl.url}/settings")
                 header(Constants.CREDENTIALS_HEADER, preferences.getAuthToken().toBearerToken())
                 header(HttpHeaders.ContentType, ContentType.Application.Json)

@@ -530,7 +530,9 @@ class DetailPaymentMethodsScreen(
                     maxLines = 1,
                     modifier = modifier.padding(end = Paddings.small).weight(1f)
                 )
-                DNASwitch()
+                DNASwitch(isChecked = detailTerminalSetting.status, onChanged = {
+                    showChangeSetting = true
+                })
             }
         }
     }

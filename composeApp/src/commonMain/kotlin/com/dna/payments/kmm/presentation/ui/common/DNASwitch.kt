@@ -1,7 +1,6 @@
 package com.dna.payments.kmm.presentation.ui.common
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
@@ -14,13 +13,17 @@ import com.dna.payments.kmm.presentation.theme.outlineGreenColor
 import com.dna.payments.kmm.presentation.theme.white
 
 @Composable
-fun DNASwitch() {
-    var checked by remember { mutableStateOf(true) }
+fun DNASwitch(
+    isChecked: Boolean = true,
+    onChanged: (Boolean) -> Unit
+) {
+    var checked by remember { mutableStateOf(isChecked) }
 
     Switch(
         checked = checked,
         onCheckedChange = {
-            checked = it
+//            checked = it
+            onChanged(it)
         },
         interactionSource = MutableInteractionSource(),
         colors = SwitchDefaults.colors(
@@ -30,7 +33,6 @@ fun DNASwitch() {
             uncheckedTrackColor = darkGrey,
             uncheckedBorderColor = darkGrey,
             checkedBorderColor = outlineGreenColor,
-
         )
     )
 }

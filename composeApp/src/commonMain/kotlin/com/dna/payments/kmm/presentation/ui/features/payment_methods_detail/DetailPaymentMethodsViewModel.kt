@@ -3,8 +3,10 @@ package com.dna.payments.kmm.presentation.ui.features.payment_methods_detail
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.data.model.payment_methods.UnregisterDomainRequest
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.ChangeTerminalStatusUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.UnregisterDomainUseCase
 import com.dna.payments.kmm.domain.model.payment_methods.domain.Domain
+import com.dna.payments.kmm.domain.model.payment_methods.setting.DetailTerminalSetting
 import com.dna.payments.kmm.domain.model.payment_methods.setting.PaymentMethodType
 import com.dna.payments.kmm.domain.model.permissions.AccessLevel
 import com.dna.payments.kmm.domain.model.permissions.Section
@@ -20,7 +22,8 @@ class DetailPaymentMethodsViewModel(
     private val getTerminalSettingsUseCase: GetTerminalSettingsUseCase,
     private val accessLevelUseCase: AccessLevelUseCase,
     private val getDomainsUseCase: GetDomainsUseCase,
-    private val unregisterDomainUseCase: UnregisterDomainUseCase
+    private val unregisterDomainUseCase: UnregisterDomainUseCase,
+    private val changeTerminalStatusUseCase: ChangeTerminalStatusUseCase
 ) : BaseViewModel<DetailPaymentMethodsContract.Event, DetailPaymentMethodsContract.State, DetailPaymentMethodsContract.Effect>() {
 
     override fun createInitialState(): DetailPaymentMethodsContract.State =
@@ -43,7 +46,39 @@ class DetailPaymentMethodsViewModel(
             }
 
             is DetailPaymentMethodsContract.Event.OnChangeTerminalSetting -> {
+                onChangeTerminalSetting(event.paymentMethodType, event.detailTerminalSetting)
+            }
+        }
+    }
 
+    private fun onChangeTerminalSetting(paymentMethodType: PaymentMethodType, detailTerminalSetting: DetailTerminalSetting) {
+        setState { copy(domainUnregister = ResourceUiState.Loading) }
+        screenModelScope.launch {
+            val result = changeTerminalStatusUseCase(detailTerminalSetting)
+            setState {
+                copy(
+                    domainUnregister = when (result) {
+                        is Response.Success -> {
+                            fetchData(paymentMethodType)
+                            ResourceUiState.Success(
+                                result.data
+                            )
+                        }
+
+                        is Response.Error -> {
+                            ResourceUiState.Error(result.error)
+                        }
+
+                        is Response.NetworkError -> {
+                            ResourceUiState.Error(UiText.DynamicString("Network error"))
+                        }
+
+                        is Response.TokenExpire -> {
+                            ResourceUiState.Error(UiText.DynamicString("Token expired"))
+                        }
+                    },
+                    terminalSettings = ResourceUiState.Loading
+                )
             }
         }
     }
