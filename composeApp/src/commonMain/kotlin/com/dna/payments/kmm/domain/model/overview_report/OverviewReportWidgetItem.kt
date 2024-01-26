@@ -1,7 +1,9 @@
 package com.dna.payments.kmm.domain.model.overview_report
 
+import androidx.compose.runtime.Immutable
 import dev.icerock.moko.resources.StringResource
 
+@Immutable
 data class OverviewReportWidgetItem(
     val overviewReportWidgetType: OverviewReportWidgetType,
     val overviewReportType: OverviewReportType,

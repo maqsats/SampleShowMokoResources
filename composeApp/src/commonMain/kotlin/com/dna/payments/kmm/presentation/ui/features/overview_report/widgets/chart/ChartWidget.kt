@@ -111,13 +111,14 @@ class ChartWidget(
                 onCheckAgain = {},
                 onTryAgain = {},
                 successView = { responsePair ->
-                    when (selectedTabIndex) {
-                        DnaOrderByType.AMOUNT.index -> DnaChartWidget(
-                            responsePair.first,
-                            selectedCurrency
-                        )
-                        else -> DnaChartWidget(responsePair.second)
+                    val dataPair = when (selectedTabIndex) {
+                        DnaOrderByType.AMOUNT.index -> Pair(responsePair.first, selectedCurrency)
+                        else -> Pair(responsePair.second, null)
                     }
+                    DnaChartWidget(
+                        dataPair.first,
+                        dataPair.second
+                    )
                 },
                 loadingView = {
                     DnaChartLoading()

@@ -181,7 +181,7 @@ class ApprovalAverageMetricsWidget(
                 Paddings.medium
             )
         ) {
-            repeat(3) {
+            repeat(4) {
                 Row {
                     Column(
                         modifier = Modifier.weight(1f),

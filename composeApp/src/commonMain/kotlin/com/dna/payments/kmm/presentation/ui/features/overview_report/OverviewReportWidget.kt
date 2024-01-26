@@ -61,7 +61,7 @@ fun OverviewWidget(
                     it.overviewReportType == overviewReportType
                 },
                 key = {
-                    it.overviewReportWidgetType.name
+                    "${it.overviewReportWidgetType.name}${it.overviewReportType}"
                 }
             )
             { widgetItem ->

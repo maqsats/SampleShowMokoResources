@@ -4,7 +4,7 @@ import com.dna.payments.kmm.data.use_case.ChangePasswordUseCaseImpl
 import com.dna.payments.kmm.data.use_case.PaymentLinkStatusUseCaseImpl
 import com.dna.payments.kmm.data.use_case.SendOtpInstructionsUseCaseImpl
 import com.dna.payments.kmm.data.use_case.VerifyOtpCodeUseCaseImpl
-import com.dna.payments.kmm.domain.interactors.data_factory.overview.OverviewReportDataFactory
+import com.dna.payments.kmm.domain.interactors.data_factory.overview_report.OverviewReportDataFactory
 import com.dna.payments.kmm.domain.interactors.data_factory.product_guide.ProductGuideDataFactory
 import com.dna.payments.kmm.domain.interactors.page_source.OnlinePaymentsPageSource
 import com.dna.payments.kmm.domain.interactors.page_source.PosPaymentsPageSource

@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
@@ -62,7 +63,9 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
      */
     protected fun setState(reduce: State.() -> State) {
         val newState = currentState.reduce()
-        _uiState.value = newState
+        _uiState.update {
+            newState
+        }
     }
 
     /**
