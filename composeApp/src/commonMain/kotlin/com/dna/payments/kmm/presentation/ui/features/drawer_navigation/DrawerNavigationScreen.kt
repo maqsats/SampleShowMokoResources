@@ -6,6 +6,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -59,6 +60,11 @@ class DrawerNavigationScreen : Screen {
         val loading = stringResource(MR.strings.loading)
 
         var merchantState by rememberSaveable { mutableStateOf(loading) }
+
+
+        LaunchedEffect(drawerState) {
+            println(drawerState.offset.value)
+        }
 
         CompositionLocalProvider(
             LocalDrawerNavigatorStateHolder providesDefault rememberSaveableStateHolder()

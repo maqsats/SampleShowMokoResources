@@ -1,7 +1,6 @@
 package com.dna.payments.kmm.presentation.ui.features.payment_methods_detail
 
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.dna.payments.kmm.data.model.payment_methods.RegistrationDomainRequest
 import com.dna.payments.kmm.data.model.payment_methods.UnregisterDomainRequest
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.UnregisterDomainUseCase
@@ -14,8 +13,8 @@ import com.dna.payments.kmm.domain.use_case.GetDomainsUseCase
 import com.dna.payments.kmm.domain.use_case.GetTerminalSettingsUseCase
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
-import com.dna.payments.kmm.presentation.ui.features.payment_methods_add_domain.third_step.AddDomainThirdStepContract
 import com.dna.payments.kmm.utils.UiText
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class DetailPaymentMethodsViewModel(
@@ -78,7 +77,8 @@ class DetailPaymentMethodsViewModel(
                         is Response.TokenExpire -> {
                             ResourceUiState.Error(UiText.DynamicString("Token expired"))
                         }
-                    }
+                    },
+                    domainList = ResourceUiState.Loading
                 )
             }
         }

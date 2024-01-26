@@ -72,7 +72,7 @@ import kotlinx.coroutines.flow.collectLatest
 class DetailPaymentMethodsScreen(
     private val paymentMethod: PaymentMethod
 ) : Screen {
-    override val key: ScreenKey = uniqueScreenKey
+    override val key: ScreenKey = "DetailPaymentMethodsScreen"
 
     @Composable
     override fun Content() {
@@ -261,7 +261,7 @@ class DetailPaymentMethodsScreen(
                 },
                 loadingView = {
                     Column {
-                        for (i in 1..3) {
+                        for (i in 1..20) {
                             DomainsItemOnLoading()
                         }
                     }
