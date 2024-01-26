@@ -23,7 +23,6 @@ class TeamManagementMapper : Mapper<TeamManagementApiModel, TeamManagement>() {
                 merchantId = it.merchantId,
                 roles = it.roles,
                 status = UserStatus.fromString(it.status),
-                systemRoles = it.systemRoles,
                 type = it.type,
                 id = it.id,
                 permissionList = it.permissionList

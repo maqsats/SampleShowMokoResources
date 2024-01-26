@@ -15,6 +15,5 @@ data class TeammateApiModel(
     val permissionList: List<String>,
     val roles: List<String>,
     val status: String,
-    val systemRoles: List<String>,
     val type: String
 )

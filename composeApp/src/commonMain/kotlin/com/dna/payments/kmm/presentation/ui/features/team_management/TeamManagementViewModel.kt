@@ -42,6 +42,7 @@ class TeamManagementViewModel(
             selectedPage = 0,
             roleList = ResourceUiState.Idle,
             pagingUiState = PagingUiState.Loading,
+            pagingUiStateInvited = PagingUiState.Loading
         )
 
     override fun handleEvent(event: TeamManagementContract.Event) {
@@ -95,7 +96,7 @@ class TeamManagementViewModel(
         screenModelScope.launch {
             setState {
                 copy(
-                    pagingUiState = PagingUiState.Loading
+                    pagingUiStateInvited = PagingUiState.Loading
                 )
             }
             teamManagementInvitedPageSource.updateParameters(
@@ -107,7 +108,7 @@ class TeamManagementViewModel(
             val result = teamManagementInvitedPageSource.onLoadMore()
             setState {
                 copy(
-                    pagingUiState = when (result) {
+                    pagingUiStateInvited = when (result) {
                         is Response.Success -> {
                             PagingUiState.Idle
                         }
