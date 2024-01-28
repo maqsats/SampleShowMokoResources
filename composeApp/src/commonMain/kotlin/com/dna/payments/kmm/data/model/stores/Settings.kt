@@ -8,6 +8,7 @@ data class Settings(
     val ecospend: Setting,
     val googlepay: Setting,
     val klarna: Setting,
+    val card: Card,
     val payByBankApp: Setting,
     val paypal: Setting
 )

@@ -42,6 +42,7 @@ import com.dna.payments.kmm.utils.navigation.internal.DrawerStepDisposableEffect
 import com.dna.payments.kmm.utils.navigation.internal.LocalDrawerNavigatorStateHolder
 import com.dna.payments.kmm.utils.navigation.internal.rememberDrawerNavigator
 import dev.icerock.moko.resources.compose.stringResource
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class DrawerNavigationScreen : Screen {
@@ -93,8 +94,9 @@ class DrawerNavigationScreen : Screen {
                         DrawerScreen(
                             onNavItemClick = {
                                 scope.launch {
-                                    navigator.replaceAll(getScreenByNavItem(it))
                                     drawerState.close()
+                                    delay(200)
+                                    navigator.replaceAll(getScreenByNavItem(it))
                                 }
                             },
                             onSettingsClick = {

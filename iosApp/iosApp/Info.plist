@@ -16,5 +16,7 @@
 	<false/>
     <key>NSFaceIDUsageDescription</key>
     <string>Program requires FaceID to login</string>
+    <key>UIUserInterfaceStyle</key>
+    <string>Light</string>
 </dict>
 </plist>

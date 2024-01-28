@@ -1,5 +1,6 @@
 package com.dna.payments.kmm.di
 
+import com.dna.payments.kmm.data.model.create_new_link.CreateNewLinkMapper
 import com.dna.payments.kmm.data.model.payment_links.PaymentLinkMapper
 import com.dna.payments.kmm.data.model.status_summary.StatusSummaryMapper
 import com.dna.payments.kmm.data.model.status_summary.pos_payments.PosPaymentsStatusSummaryMapper
@@ -17,4 +18,5 @@ val mapperModule = module {
     singleOf(::TransactionPayLoadMapper)
     singleOf(::PosPaymentsStatusSummaryMapper)
     singleOf(::PosTransactionMapper)
+    singleOf(::CreateNewLinkMapper)
 }

@@ -298,3 +298,11 @@ fun Screen.changePlatformColor(isGrey: Boolean = false) {
         navBarColor = if (changePlatformColor) greyFirst else Color.White
     )
 }
+
+private fun getFormattedTimestamp(): String {
+    return DateTime.nowUnixLong().toString()
+}
+
+fun generateRandomOrderNumber(): String {
+    return "PL-${getFormattedTimestamp()}"
+}

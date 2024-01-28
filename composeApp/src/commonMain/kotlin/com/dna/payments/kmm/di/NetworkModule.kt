@@ -16,7 +16,7 @@ val ktorModule = module {
             install(Logging) {
                 logger = object : Logger {
                     override fun log(message: String) {
-//                        println("Ktor $message")
+                        println("Ktor $message")
                     }
                 }
                 level = LogLevel.ALL
