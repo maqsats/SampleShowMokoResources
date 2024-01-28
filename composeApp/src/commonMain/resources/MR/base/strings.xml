@@ -90,6 +90,7 @@
     <string name="details">Details</string>
     <string name="team_management">Team Management</string>
     <string name="help_center">Help center</string>
+    <string name="no_payment_links">No payment links yet</string>
 
     <!--    payment methods-->
     <string name="apple_pay">Apple Pay</string>
