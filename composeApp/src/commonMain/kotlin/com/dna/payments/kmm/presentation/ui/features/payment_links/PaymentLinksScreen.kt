@@ -139,7 +139,10 @@ class PaymentLinksScreen : DrawerScreen {
             DNAText(
                 text = stringResource(MR.strings.payment_links),
                 style = DnaTextStyle.Bold20,
-                modifier = Modifier.padding(horizontal = Paddings.medium)
+                modifier = Modifier.padding(
+                    horizontal = Paddings.medium,
+                    vertical = Paddings.standard
+                )
             )
         }
     }
