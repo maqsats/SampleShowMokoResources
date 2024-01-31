@@ -63,6 +63,8 @@ class DrawerScreen(
     private val onMerchantChange: () -> Unit = {}
 ) : Screen {
 
+    override val key: String = "DrawerScreen"
+
     @Composable
     override fun Content() {
 

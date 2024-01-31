@@ -42,7 +42,8 @@ import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.*
 import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentCard
 import com.dna.payments.kmm.domain.model.transactions.Transaction
-import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
+import com.dna.payments.kmm.presentation.state.ComponentCircle
+import com.dna.payments.kmm.presentation.state.ComponentRectangleLineShort
 import com.dna.payments.kmm.presentation.state.Empty
 import com.dna.payments.kmm.presentation.state.PaginationUiStateManager
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
@@ -320,18 +321,65 @@ class OnlinePaymentsScreen : DrawerScreen {
         modifier: Modifier = Modifier,
     ) {
         Box(
-            modifier = modifier.padding(top = 8.dp)
-                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+            modifier = modifier.padding(top = 2.dp, bottom = 6.dp)
+                .shadow(2.dp, shape = RoundedCornerShape(8.dp))
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            Row(
-                modifier = modifier.fillMaxWidth().padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                ComponentRectangleLineLong()
+            Column(modifier = modifier.padding(Paddings.medium)) {
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        ComponentCircle(modifier = Modifier.size(40.dp))
+                        ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                    }
+                    ComponentRectangleLineShort()
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Divider()
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ComponentRectangleLineShort()
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                    }
+
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ComponentRectangleLineShort()
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                    }
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ComponentRectangleLineShort()
+                    ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                }
+                Spacer(modifier = Modifier.height(Paddings.small))
             }
         }
     }

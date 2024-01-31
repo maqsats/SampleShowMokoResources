@@ -6,7 +6,6 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -17,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.screen.ScreenKey
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.date_picker.Menu
 import com.dna.payments.kmm.domain.model.nav_item.NavItemPosition
@@ -60,11 +60,6 @@ class DrawerNavigationScreen : Screen {
         val loading = stringResource(MR.strings.loading)
 
         var merchantState by rememberSaveable { mutableStateOf(loading) }
-
-
-        LaunchedEffect(drawerState) {
-            println(drawerState.offset.value)
-        }
 
         CompositionLocalProvider(
             LocalDrawerNavigatorStateHolder providesDefault rememberSaveableStateHolder()

@@ -31,11 +31,11 @@ class PosPaymentsViewModel(
                     Section.POS_PAYMENTS,
                     AccessLevel.FULL
                 ),
-                dateRange = getDateRangeUseCase(Menu.POS_PAYMENTS),
-                statusList = PosPaymentStatusV2.values().toList(),
-                indexOfSelectedStatus = 0
+                dateRange = getDateRangeUseCase(Menu.POS_PAYMENTS)
             )
         }
+        posPaymentsPageSource.onReset()
+        getPosPaymentList()
     }
 
     override fun createInitialState(): PosPaymentsContract.State =
@@ -45,8 +45,8 @@ class PosPaymentsViewModel(
             hasPermission = false,
             selectedPage = 0,
             dateRange = getDefaultDateRange(),
-            statusList = emptyList(),
-            indexOfSelectedStatus = 0
+            statusList = PosPaymentStatusV2.entries,
+            selectedStatus = PosPaymentStatusV2.ALL,
         )
 
     override fun handleEvent(event: PosPaymentsContract.Event) {
@@ -61,12 +61,11 @@ class PosPaymentsViewModel(
                     )
                 }
                 posPaymentsPageSource.onReset()
-                getOnlinePaymentList()
+                getPosPaymentList()
             }
 
             PosPaymentsContract.Event.OnInit -> {
-                posPaymentsPageSource.onReset()
-                getOnlinePaymentList()
+
             }
 
             is PosPaymentsContract.Event.OnPageChanged -> {
@@ -80,25 +79,25 @@ class PosPaymentsViewModel(
 
             is PosPaymentsContract.Event.OnStatusChange -> {
                 setState {
-                    copy(indexOfSelectedStatus = event.selectedStatusIndex)
+                    copy(selectedStatus = event.selectedStatus)
                 }
                 posPaymentsPageSource.onReset()
-                getOnlinePaymentList()
+                getPosPaymentList()
             }
 
             PosPaymentsContract.Event.OnLoadMore -> {
                 if (posPaymentsPageSource.getIsLastPage()) return
-                getOnlinePaymentList()
+                getPosPaymentList()
             }
 
             PosPaymentsContract.Event.OnRefresh -> {
                 posPaymentsPageSource.onReset()
-                getOnlinePaymentList()
+                getPosPaymentList()
             }
         }
     }
 
-    private fun getOnlinePaymentList() {
+    private fun getPosPaymentList() {
         screenModelScope.launch {
             setState {
                 copy(
@@ -109,7 +108,7 @@ class PosPaymentsViewModel(
                 PosRequestParam(
                     startDate = currentState.dateRange.second.startDate.convertToServerFormat(),
                     endDate = currentState.dateRange.second.endDate.convertToServerFormat(),
-                    status = currentState.statusList[currentState.indexOfSelectedStatus].key,
+                    status = currentState.selectedStatus.key,
                     page = 0,
                     size = 0
                 )
