@@ -64,6 +64,7 @@ import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.NavigatorResultString
+import com.dna.payments.kmm.utils.navigation.clearResults
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.getResult
 import dev.icerock.moko.resources.compose.painterResource
@@ -110,6 +111,7 @@ class DetailPaymentMethodsScreen(
             if (result == null) return@LaunchedEffect
             if (result is NavigatorResultString) {
                 showRegisterDomainSuccess.value = result.value
+                navigator.clearResults()
             }
         }
 
