@@ -70,7 +70,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
 class PosPaymentsScreen : DrawerScreen {
-
+    override val key: ScreenKey = "PosPaymentsScreen"
     override val isFilterEnabled: Boolean = true
 
     @Composable
@@ -86,9 +86,6 @@ class PosPaymentsScreen : DrawerScreen {
         val navigator = LocalNavigator.currentOrThrow
 
         LaunchedEffect(key1 = Unit) {
-//            posPaymentsViewModel.setEvent(
-//                PosPaymentsContract.Event.OnInit
-//            )
             posPaymentsViewModel.effect.collectLatest { effect ->
                 when (effect) {
                     is PosPaymentsContract.Effect.OnPageChanged -> {

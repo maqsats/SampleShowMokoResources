@@ -1,6 +1,7 @@
 package com.dna.payments.kmm.presentation.ui.features.payment_methods_detail
 
 import com.dna.payments.kmm.domain.model.payment_methods.domain.Domain
+import com.dna.payments.kmm.domain.model.payment_methods.setting.DetailTerminalSetting
 import com.dna.payments.kmm.domain.model.payment_methods.setting.PaymentMethodType
 import com.dna.payments.kmm.domain.model.payment_methods.setting.TerminalSetting
 import com.dna.payments.kmm.presentation.model.ResourceUiState
@@ -16,6 +17,12 @@ interface DetailPaymentMethodsContract {
             val paymentMethodType: PaymentMethodType,
             val domain: Domain
         ) : Event
+
+        data class OnChangeTerminalSetting(
+            val paymentMethodType: PaymentMethodType,
+            val detailTerminalSetting: DetailTerminalSetting
+        ) : Event
+
     }
 
     data class State(

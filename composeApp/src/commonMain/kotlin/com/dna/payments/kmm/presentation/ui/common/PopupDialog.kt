@@ -50,3 +50,33 @@ fun UnregisterDomainDialog(
         },
     )
 }
+
+@Composable
+fun ChangeTerminalSettingDialog(
+    isEnabled: Boolean = false,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        title = null,
+        text = {
+            DNAText(
+                text = stringResource(
+                    if (isEnabled) MR.strings.disable_to_payment_method
+                    else MR.strings.enable_to_payment_method
+                )
+            )
+        },
+        onDismissRequest = onDismiss,
+        dismissButton = {
+            TextButton(onClick = { onDismiss() }) {
+                DNAText(text = stringResource(MR.strings.no))
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                DNAText(text = stringResource(MR.strings.yes))
+            }
+        },
+    )
+}
