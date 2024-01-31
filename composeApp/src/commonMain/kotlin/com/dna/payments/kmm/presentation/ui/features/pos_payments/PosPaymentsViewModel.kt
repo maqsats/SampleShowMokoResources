@@ -64,10 +64,6 @@ class PosPaymentsViewModel(
                 getPosPaymentList()
             }
 
-            PosPaymentsContract.Event.OnInit -> {
-
-            }
-
             is PosPaymentsContract.Event.OnPageChanged -> {
                 setState {
                     copy(selectedPage = event.position)

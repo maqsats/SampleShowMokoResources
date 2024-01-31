@@ -11,7 +11,6 @@ import com.dna.payments.kmm.presentation.mvi.UiState
 
 interface PosPaymentsContract {
     sealed interface Event : UiEvent {
-        data object OnInit : Event
         data class OnPageChanged(
             val position: Int
         ) : Event
