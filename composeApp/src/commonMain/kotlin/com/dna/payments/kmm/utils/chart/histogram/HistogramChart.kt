@@ -23,11 +23,11 @@ import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.dnaGreenLight
 import com.dna.payments.kmm.presentation.theme.grey6
 import com.dna.payments.kmm.presentation.ui.common.DNAText
+import com.dna.payments.kmm.utils.extension.addSpace
 import com.dna.payments.kmm.utils.extension.toMoneyString
 
 @Composable
 fun <T : Number, V> HistogramChart(
-    currency: String,
     xPoints: List<V>,
     yPoints: List<T>
 ) {
@@ -75,7 +75,7 @@ fun <T : Number, V> HistogramChart(
                     horizontalArrangement = Arrangement.Start
                 ) {
                     DNAText(
-                        text = "${yCurrent.toMoneyString()}$currency ",
+                        text = yCurrent.toMoneyString().addSpace(),
                         style = DnaTextStyle.Normal10Grey5,
                         textAlign = TextAlign.End,
                         modifier = Modifier.defaultMinSize(35.dp)
@@ -97,7 +97,7 @@ fun <T : Number, V> HistogramChart(
                 horizontalArrangement = Arrangement.Start
             ) {
                 DNAText(
-                    text = "0$currency ",
+                    text = "0".addSpace(),
                     style = DnaTextStyle.Normal10Grey5,
                     textAlign = TextAlign.End,
                     modifier = Modifier.defaultMinSize(35.dp)
@@ -121,7 +121,7 @@ fun <T : Number, V> HistogramChart(
                         .fillMaxHeight()
                         .padding(horizontal = diff)
                         .drawBehind {
-                            val chartValue = yPoints[key].toDouble()
+                            val chartValue = yPoints.getValueAtIndexOrReturnDefault(key)
 
                             if (chartValue < 0.5)
                                 return@drawBehind

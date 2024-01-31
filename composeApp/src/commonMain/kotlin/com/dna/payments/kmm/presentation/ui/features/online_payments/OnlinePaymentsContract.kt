@@ -2,10 +2,9 @@ package com.dna.payments.kmm.presentation.ui.features.online_payments
 
 import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod
 import com.dna.payments.kmm.domain.model.date_picker.DateSelection
-import com.dna.payments.kmm.domain.model.status_summary.PaymentStatus
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentStatus
 import com.dna.payments.kmm.domain.model.transactions.Transaction
 import com.dna.payments.kmm.presentation.model.PagingUiState
-import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.mvi.UiEffect
 import com.dna.payments.kmm.presentation.mvi.UiEvent
 import com.dna.payments.kmm.presentation.mvi.UiState
@@ -29,7 +28,7 @@ interface OnlinePaymentsContract {
         val pagingUiState: PagingUiState,
         val selectedPage: Int = 0,
         val dateRange: Pair<DatePickerPeriod, DateSelection>,
-        val statusList: List<PaymentStatus>,
+        val statusList: List<OnlinePaymentStatus>,
         val indexOfSelectedStatus: Int = 0
     ) : UiState
 

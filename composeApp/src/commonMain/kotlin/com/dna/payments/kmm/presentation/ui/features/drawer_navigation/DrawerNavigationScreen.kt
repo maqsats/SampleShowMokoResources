@@ -6,7 +6,6 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -17,13 +16,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.screen.ScreenKey
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.date_picker.Menu
 import com.dna.payments.kmm.domain.model.nav_item.NavItemPosition
 import com.dna.payments.kmm.domain.model.nav_item.SettingsPosition
 import com.dna.payments.kmm.presentation.ui.common.LocalSelectedMerchant
 import com.dna.payments.kmm.presentation.ui.features.help_center.HelpCenterScreen
 import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsScreen
-import com.dna.payments.kmm.presentation.ui.features.overview.OverviewScreen
+import com.dna.payments.kmm.presentation.ui.features.overview_report.OverviewReportScreen
 import com.dna.payments.kmm.presentation.ui.features.payment_links.PaymentLinksScreen
 import com.dna.payments.kmm.presentation.ui.features.payment_methods.PaymentMethodsScreen
 import com.dna.payments.kmm.presentation.ui.features.pos_payments.PosPaymentsScreen
@@ -59,11 +60,6 @@ class DrawerNavigationScreen : Screen {
         val loading = stringResource(MR.strings.loading)
 
         var merchantState by rememberSaveable { mutableStateOf(loading) }
-
-
-        LaunchedEffect(drawerState) {
-            println(drawerState.offset.value)
-        }
 
         CompositionLocalProvider(
             LocalDrawerNavigatorStateHolder providesDefault rememberSaveableStateHolder()
@@ -131,14 +127,15 @@ class DrawerNavigationScreen : Screen {
 
     private fun getScreenByNavItem(navPosition: NavItemPosition) =
         when (navPosition) {
-            NavItemPosition.OVERVIEW -> OverviewScreen()
+            NavItemPosition.OVERVIEW -> OverviewReportScreen(Menu.OVERVIEW)
             NavItemPosition.ONLINE_PAYMENTS -> OnlinePaymentsScreen()
             NavItemPosition.PAYMENT_METHODS -> PaymentMethodsScreen()
             NavItemPosition.TEAM_MANAGEMENT -> TeamManagementScreen()
             NavItemPosition.PAYMENT_LINKS -> PaymentLinksScreen()
             NavItemPosition.POS_PAYMENTS -> PosPaymentsScreen()
+            NavItemPosition.REPORTS -> OverviewReportScreen(Menu.REPORTS)
             else -> {
-                OverviewScreen()
+                getInitialScreen()
             }
         }
 
@@ -149,5 +146,5 @@ class DrawerNavigationScreen : Screen {
             }
         }
 
-    private fun getInitialScreen() = OverviewScreen()
+    private fun getInitialScreen() = OverviewReportScreen(Menu.OVERVIEW)
 }

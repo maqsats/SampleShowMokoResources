@@ -6,18 +6,18 @@ import com.dna.payments.kmm.data.model.search.OrderParameter
 import com.dna.payments.kmm.data.model.search.Paging
 import com.dna.payments.kmm.data.model.search.Search
 import com.dna.payments.kmm.data.model.search.SearchParameter
+import com.dna.payments.kmm.domain.interactors.page_source.OnlinePaymentsPageSource
 import com.dna.payments.kmm.domain.interactors.use_cases.access_level.AccessLevelUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.GetDateRangeUseCase
-import com.dna.payments.kmm.domain.interactors.use_cases.transaction.TransactionUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.reports.approval_average_metrics.GetReportUseCase
 import com.dna.payments.kmm.domain.model.date_picker.Menu
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentStatus
 import com.dna.payments.kmm.domain.model.permissions.AccessLevel
 import com.dna.payments.kmm.domain.model.permissions.Section
 import com.dna.payments.kmm.domain.model.search.field.Field
 import com.dna.payments.kmm.domain.model.search.method.MethodType
 import com.dna.payments.kmm.domain.model.search.type_order.TypeOrder
-import com.dna.payments.kmm.domain.model.status_summary.PaymentStatus
 import com.dna.payments.kmm.domain.network.Response
-import com.dna.payments.kmm.domain.interactors.page_source.OnlinePaymentsPageSource
 import com.dna.payments.kmm.presentation.model.PagingUiState
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
 import com.dna.payments.kmm.utils.extension.convertToServerFormat
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 class OnlinePaymentsViewModel(
     private val onlinePaymentsPageSource: OnlinePaymentsPageSource,
-    private val transactionUseCase: TransactionUseCase,
+    private val getReportUseCase: GetReportUseCase,
     private val getDateRangeUseCase: GetDateRangeUseCase,
     private val accessLevelUseCase: AccessLevelUseCase,
 ) : BaseViewModel<OnlinePaymentsContract.Event, OnlinePaymentsContract.State, OnlinePaymentsContract.Effect>() {
@@ -40,7 +40,7 @@ class OnlinePaymentsViewModel(
                     AccessLevel.FULL
                 ),
                 dateRange = getDateRangeUseCase(Menu.ONLINE_PAYMENTS),
-                statusList = transactionUseCase.getOrderedPaymentStatus(),
+                statusList = getReportUseCase.getOrderedPaymentStatus(),
                 indexOfSelectedStatus = 0
             )
         }
@@ -174,7 +174,7 @@ class OnlinePaymentsViewModel(
             )
         )
 
-        if (currentState.statusList[currentState.indexOfSelectedStatus] == PaymentStatus.ALL) {
+        if (currentState.statusList[currentState.indexOfSelectedStatus] == OnlinePaymentStatus.ALL) {
             return searchParameters
         }
 

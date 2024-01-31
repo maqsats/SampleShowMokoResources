@@ -1,14 +1,11 @@
 package com.dna.payments.kmm.utils.chart.pie
 
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import com.dna.payments.kmm.utils.chart.ChartAnimation
-import kotlin.random.Random
 
 @Composable
 internal fun PieChartLegend(
@@ -45,7 +41,7 @@ internal fun PieChartLegend(
         ChartAnimation.Disabled -> data.indices.map { 1f }
         is ChartAnimation.Simple -> data.indices.map {
             animateFloatAsState(
-                targetValue = if (animationPlayed) 1f else 0f,
+                targetValue = 1f,
                 animationSpec = animation.animationSpec()
             ).value
         }
@@ -56,25 +52,23 @@ internal fun PieChartLegend(
             ).value
         }
     }
-    val columnsPerRow = when (config.legendOrientation) {
-        LegendOrientation.HORIZONTAL -> config.numberOfColsInLegend
-        LegendOrientation.VERTICAL -> 1
-    }
-    LazyVerticalGrid(
-        horizontalArrangement = Arrangement.SpaceAround,
+
+    Column(
         verticalArrangement = Arrangement.SpaceAround,
-        columns = GridCells.Fixed(columnsPerRow),
         content = {
-            items(data.count()) { index ->
+            if (data.sumOf { it.value } == 0.0)
+                return@Column
+
+            data.forEachIndexed { index, item ->
                 LegendItem(
-                    pieChartData = data[index],
+                    pieChartData = item,
                     alpha = animatedAlpha[index],
                     config = config,
-                    legendItemLabel = legendItemLabel,
+                    legendItemLabel = legendItemLabel
                 )
             }
         },
-        modifier = modifier,
+        modifier = modifier
     )
 }
 
@@ -85,41 +79,21 @@ private fun LegendItem(
     config: PieChartConfig,
     legendItemLabel: @Composable (PieChartData) -> Unit,
 ) {
-    when (config.legendOrientation) {
-        LegendOrientation.HORIZONTAL ->
-            Column(
-                modifier = Modifier.alpha(alpha),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(config.legendIconSize)
-                        .drawBehind {
-                            drawLegendIcon(
-                                color = pieChartData.color,
-                                config = config,
-                            )
-                        }
-                )
-                legendItemLabel(pieChartData)
-            }
-        LegendOrientation.VERTICAL ->
-            Row(
-                modifier = Modifier.alpha(alpha),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(config.legendIconSize)
-                        .drawBehind {
-                            drawLegendIcon(
-                                color = pieChartData.color,
-                                config = config,
-                            )
-                        }
-                )
-                legendItemLabel(pieChartData)
-            }
+    Row(
+        modifier = Modifier.alpha(alpha),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(config.legendIconSize)
+                .drawBehind {
+                    drawLegendIcon(
+                        color = pieChartData.color,
+                        config = config,
+                    )
+                }
+        )
+        legendItemLabel(pieChartData)
     }
 }
 
@@ -148,16 +122,4 @@ private fun DrawScope.drawLegendIcon(
             )
         }
     }
-}
-
-@Composable
-private fun LegendPreview() {
-    val data = listOf(
-        PieChartData("Solar", Random.nextDouble(0.0, 100.0), Color.Yellow),
-        PieChartData("Grid", Random.nextDouble(0.0, 100.0), Color.Red),
-        PieChartData("Fossil", Random.nextDouble(0.0, 100.0), Color.Black),
-        PieChartData("Battery Storage", Random.nextDouble(0.0, 100.0), Color.Blue),
-        PieChartData("Other", Random.nextDouble(0.0, 100.0), Color.Gray)
-    )
-    PieChartLegend(data = data, modifier = Modifier.background(Color.White))
 }

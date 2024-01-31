@@ -19,7 +19,7 @@ interface PosPaymentsContract {
         data object OnLoadMore : Event
         data object OnRefresh : Event
         data class OnDateSelection(val datePickerPeriod: DatePickerPeriod) : Event
-        data class OnStatusChange(val selectedStatusIndex: Int) : Event
+        data class OnStatusChange(val selectedStatus: PosPaymentStatusV2) : Event
     }
 
     data class State(
@@ -29,7 +29,7 @@ interface PosPaymentsContract {
         val selectedPage: Int = 0,
         val dateRange: Pair<DatePickerPeriod, DateSelection>,
         val statusList: List<PosPaymentStatusV2>,
-        val indexOfSelectedStatus: Int = 0
+        val selectedStatus: PosPaymentStatusV2,
     ) : UiState
 
     sealed interface Effect : UiEffect {

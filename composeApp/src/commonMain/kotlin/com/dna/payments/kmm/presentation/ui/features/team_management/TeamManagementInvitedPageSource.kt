@@ -5,7 +5,7 @@ import com.dna.payments.kmm.domain.model.team_management.TeamManagementSearchPar
 import com.dna.payments.kmm.domain.model.team_management.Teammate
 import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.repository.TeamManagementRepository
-import com.dna.payments.kmm.domain.use_case.pagination.PageSource
+import com.dna.payments.kmm.domain.interactors.page_source.PageSource
 
 class TeamManagementInvitedPageSource(
     private val teamManagementRepository: TeamManagementRepository

@@ -1,11 +1,13 @@
 package com.dna.payments.kmm.domain.model.pos_payments
 
+import com.dna.payments.kmm.domain.model.payment_status.PaymentStatus
+
 enum class PosPaymentStatus(
-    val key: String?,
+    val key: String,
     val displayName: String,
     val detailText: String?
-) {
-    ALL(null, "Total transactions", null),
+) : PaymentStatus {
+    ALL("all", "All statuses", null),
     CHARGE(
         key = "success",
         displayName = "Successful",
@@ -19,7 +21,7 @@ enum class PosPaymentStatus(
 
     companion object {
         fun fromString(status: String): PosPaymentStatus? {
-            return values().find { it.key == status }
+            return entries.find { it.key == status }
         }
     }
 }

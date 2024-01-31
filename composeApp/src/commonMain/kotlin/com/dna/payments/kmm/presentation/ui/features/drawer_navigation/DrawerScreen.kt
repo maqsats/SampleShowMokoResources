@@ -63,6 +63,8 @@ class DrawerScreen(
     private val onMerchantChange: () -> Unit = {}
 ) : Screen {
 
+    override val key: String = "DrawerScreen"
+
     @Composable
     override fun Content() {
 
@@ -329,10 +331,12 @@ private fun DrawerItem(
     onNavItemClick: (NavItemPosition) -> Unit = {}
 ) {
     Row(
-        modifier = Modifier.padding(
-            horizontal = Paddings.extraLarge,
-            vertical = Paddings.standard
-        )
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = Paddings.extraLarge,
+                vertical = Paddings.standard
+            )
             .noRippleClickable { onNavItemClick(navItem.position) }) {
         Icon(
             modifier = Modifier.size(24.dp),
@@ -342,6 +346,7 @@ private fun DrawerItem(
         )
         Spacer(modifier = Modifier.width(Paddings.medium))
         DNAText(text = stringResource(navItem.title), style = DnaTextStyle.Medium16)
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 

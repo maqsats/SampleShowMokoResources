@@ -25,14 +25,14 @@ import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.white
 import com.dna.payments.kmm.presentation.ui.common.DNAText
-import com.dna.payments.kmm.presentation.ui.features.overview.OverviewContract
+import com.dna.payments.kmm.presentation.ui.features.overview_report.OverviewReportContract
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
 fun CurrencyWidget(
-    state: OverviewContract.State
+    state: OverviewReportContract.State
 ) {
     ManagementResourceUiState(
         resourceUiState = state.currencies,
@@ -59,7 +59,7 @@ fun CurrencyWidget(
 
 @Composable
 fun CurrencyBottomSheet(
-    state: OverviewContract.State,
+    state: OverviewReportContract.State,
     onCurrencyChange: (Currency) -> Unit
 ) {
     ManagementResourceUiState(

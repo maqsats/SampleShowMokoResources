@@ -4,7 +4,6 @@ import com.dna.payments.kmm.data.model.transactions.pos.PosRequestParam
 import com.dna.payments.kmm.domain.interactors.use_cases.pos_payments.GetPosTransactionsUseCase
 import com.dna.payments.kmm.domain.model.transactions.pos.PosTransaction
 import com.dna.payments.kmm.domain.network.Response
-import com.dna.payments.kmm.domain.use_case.pagination.PageSource
 
 class PosPaymentsPageSource(
     private val getPosTransactionsUseCase: GetPosTransactionsUseCase,

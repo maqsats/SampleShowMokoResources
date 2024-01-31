@@ -9,9 +9,7 @@ data class Currency(
 
         other as Currency
 
-        if (name != other.name) return false
-
-        return true
+        return name == other.name
     }
 
     override fun hashCode(): Int {

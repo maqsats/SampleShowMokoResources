@@ -1,5 +1,6 @@
 package com.dna.payments.kmm.presentation.ui.features.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -83,7 +84,7 @@ class LoginScreen(private var showSuccess: Boolean = false) : Screen {
                 .fillMaxSize()
                 .noRippleClickable {
                     controller?.hide()
-                },
+                }.background(Color.White),
             verticalArrangement = Arrangement.Top
         ) {
             Spacer(modifier = Modifier.weight(0.2f))
