@@ -118,12 +118,12 @@ class DetailPosPaymentScreen(private val posTransaction: PosTransaction) : Scree
             )
             Spacer(modifier = Modifier.height(Paddings.medium))
             DNATextWithIcon(
-                modifier = modifier.align(Alignment.CenterHorizontally),
+                modifier = modifier.align(Alignment.CenterHorizontally).padding(vertical = Paddings.extraSmall),
                 text = transaction.status.displayName,
                 style = DnaTextStyle.WithAlphaNormal12,
                 icon = transaction.status.imageResource,
                 textColor = transaction.status.textColor,
-                backgroundColor = transaction.status.backgroundColor
+                backgroundColor = transaction.status.backgroundColor,
             )
             Spacer(modifier = Modifier.height(Paddings.standard12dp))
             DNATextWithIcon(

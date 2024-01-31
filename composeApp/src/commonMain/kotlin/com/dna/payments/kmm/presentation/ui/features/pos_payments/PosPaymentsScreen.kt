@@ -203,7 +203,8 @@ class PosPaymentsScreen : DrawerScreen {
                         style = DnaTextStyle.WithAlphaNormal12,
                         icon = transaction.status.imageResource,
                         textColor = transaction.status.textColor,
-                        backgroundColor = transaction.status.backgroundColor
+                        backgroundColor = transaction.status.backgroundColor,
+                        modifier = Modifier.padding(vertical = Paddings.extraSmall)
                     )
                 }
                 Spacer(modifier = Modifier.height(Paddings.medium))

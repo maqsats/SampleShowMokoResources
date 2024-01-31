@@ -53,6 +53,7 @@ import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
 import com.dna.payments.kmm.presentation.ui.common.DnaFilter
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeBottomSheet
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeWidget
+import com.dna.payments.kmm.presentation.ui.features.online_payments.detail.DetailOnlinePaymentScreen
 import com.dna.payments.kmm.presentation.ui.features.online_payments.status.StatusBottomSheet
 import com.dna.payments.kmm.presentation.ui.features.online_payments.status.StatusWidget
 import com.dna.payments.kmm.utils.extension.noRippleClickable
@@ -105,7 +106,8 @@ class OnlinePaymentsScreen : DrawerScreen {
             isToolbarCollapsed = isToolbarCollapsed,
             onRequestNextPage = {
                 onlinePaymentsViewModel.setEvent(OnlinePaymentsContract.Event.OnLoadMore)
-            }
+            },
+            onClick = { navigator.push(DetailOnlinePaymentScreen(it)) }
         ) {
             onlinePaymentsViewModel.setEvent(OnlinePaymentsContract.Event.OnRefresh)
         }
@@ -117,7 +119,9 @@ class OnlinePaymentsScreen : DrawerScreen {
         state: OnlinePaymentsContract.State,
         isToolbarCollapsed: Boolean,
         onRequestNextPage: () -> Unit = {},
+        onClick: (Transaction) -> Unit,
         onRefresh: () -> Unit = {}
+
     ) {
         Column(
             modifier = modifier.padding(horizontal = Paddings.medium),
@@ -133,7 +137,7 @@ class OnlinePaymentsScreen : DrawerScreen {
                 successItemView = { transaction ->
                     OnlinePaymentItem(
                         transaction = transaction,
-                        onClick = {}
+                        onClick = onClick
                     )
 
                 },
@@ -147,7 +151,7 @@ class OnlinePaymentsScreen : DrawerScreen {
     private fun OnlinePaymentItem(
         transaction: Transaction,
         modifier: Modifier = Modifier,
-        onClick: () -> Unit
+        onClick: (Transaction) -> Unit
     ) {
         val clipboardManager: ClipboardManager = LocalClipboardManager.current
 
@@ -158,7 +162,7 @@ class OnlinePaymentsScreen : DrawerScreen {
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .noRippleClickable {
-
+                    onClick(transaction)
                 }
         ) {
             Column(modifier = modifier.padding(Paddings.medium)) {
@@ -201,7 +205,8 @@ class OnlinePaymentsScreen : DrawerScreen {
                         style = DnaTextStyle.WithAlphaNormal12,
                         icon = transaction.status.icon,
                         textColor = transaction.status.textColor,
-                        backgroundColor = transaction.status.backgroundColor
+                        backgroundColor = transaction.status.backgroundColor,
+                        modifier = Modifier.padding(vertical = Paddings.extraSmall)
                     )
                 }
                 Spacer(modifier = Modifier.height(Paddings.medium))
