@@ -380,4 +380,14 @@
     <string name="card_expiry_date">Card expiry date</string>
     <string name="acquirer_response_code">Acquirer response code</string>
     <string name="auth_code">Auth code</string>
+    <string name="customer_details">Customer Details</string>
+    <string name="name">Name</string>
+    <string name="account_id">Account ID</string>
+    <string name="phone">Phone</string>
+    <string name="location">Location</string>
+    <string name="payer_ip">Payer IP</string>
+    <string name="payment_page">Payment Page</string>
+    <string name="language">Language</string>
+    <string name="post_link_address">PostLink address</string>
+    <string name="post_link">PostLink</string>
 </resources>

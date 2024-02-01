@@ -65,18 +65,34 @@ fun DNADots(
 }
 
 @Composable
+fun MessageDotsContent(
+    title: StringResource,
+    value: String,
+    modifier: Modifier = Modifier,
+) {
+    DNAText(
+        stringResource(title),
+        style = DnaTextStyle.WithAlpha12
+    )
+    DNATextWithIcon(
+        value.ifEmpty { stringResource(MR.strings.not_applicable) },
+        style = DnaTextStyle.Normal16,
+        icon = MR.images.ic_message
+    )
+}
+
+@Composable
 fun DefaultDotsContent(
     title: StringResource,
     value: String,
     modifier: Modifier = Modifier,
-
-    ) {
+) {
     DNAText(
         stringResource(title),
         style = DnaTextStyle.WithAlpha12
     )
     DNAText(
-        value,
+        value.ifEmpty { stringResource(MR.strings.not_applicable) },
         style = DnaTextStyle.Normal16
     )
 }
@@ -104,7 +120,7 @@ fun PainterDotsContent(
         DNAText(
             modifier = modifier.padding(start = Paddings.small),
             style = DnaTextStyle.Medium14,
-            text = value
+            text = value.ifEmpty { stringResource(MR.strings.not_applicable) }
         )
     }
 }
@@ -145,7 +161,7 @@ fun PainterWithBackgroundDotsContent(
                 )
             }
             DNAText(
-                value,
+                value.ifEmpty { stringResource(MR.strings.not_applicable) },
                 style = DnaTextStyle.Normal16,
                 modifier = Modifier.padding(start = Paddings.small)
             )
@@ -175,7 +191,7 @@ fun ClipboardDotsContent(
                 style = DnaTextStyle.WithAlpha12
             )
             DNAText(
-                value,
+                value.ifEmpty { stringResource(MR.strings.not_applicable) },
                 style = DnaTextStyle.Normal16,
                 maxLines = 1,
             )
@@ -187,5 +203,35 @@ fun ClipboardDotsContent(
             modifier = Modifier.padding(start = Paddings.small)
                 .height(24.dp).width(24.dp)
         )
+    }
+}
+
+@Composable
+fun LinkDotsContent(
+    title: StringResource,
+    value: String,
+    clipboardManager: ClipboardManager,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .noRippleClickable {
+                clipboardManager.setText(AnnotatedString(value))
+            },
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        Column(modifier = Modifier.wrapContentHeight()) {
+            DNAText(
+                stringResource(title),
+                style = DnaTextStyle.WithAlpha12
+            )
+            DNAText(
+                value.ifEmpty { stringResource(MR.strings.not_applicable) },
+                style = DnaTextStyle.GreenMedium14,
+                maxLines = 2,
+            )
+        }
     }
 }
