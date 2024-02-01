@@ -25,10 +25,10 @@ import androidx.compose.ui.unit.dp
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.black
-import com.dna.payments.kmm.presentation.ui.common.SbTopAppBarConstants.ACTION_LAYOUT_ID
-import com.dna.payments.kmm.presentation.ui.common.SbTopAppBarConstants.NAVIGATION_LAYOUT_ID
-import com.dna.payments.kmm.presentation.ui.common.SbTopAppBarConstants.SB_TOP_APP_BAR
-import com.dna.payments.kmm.presentation.ui.common.SbTopAppBarConstants.TITLE_LAYOUT_ID
+import com.dna.payments.kmm.presentation.ui.common.DNATopAppBarConstants.ACTION_LAYOUT_ID
+import com.dna.payments.kmm.presentation.ui.common.DNATopAppBarConstants.NAVIGATION_LAYOUT_ID
+import com.dna.payments.kmm.presentation.ui.common.DNATopAppBarConstants.SB_TOP_APP_BAR
+import com.dna.payments.kmm.presentation.ui.common.DNATopAppBarConstants.TITLE_LAYOUT_ID
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 
 @Composable
@@ -44,7 +44,7 @@ fun DNATopAppBar(
     navigationIconContentDescription: String? = null,
     actionIcon: Painter? = null,
     actionIconContentDescription: String? = null,
-    colors: SbTopAppBarColors = SbTopAppBarDefaults.topAppBarColors(),
+    colors: DNATopAppBarColors = DNATopAppBarDefaults.topAppBarColors(),
     onNavigationClick: () -> Unit = {},
     onActionClick: () -> Unit = {},
 ) {
@@ -154,14 +154,14 @@ fun DNATopAppBar(
     }
 }
 
-private object SbTopAppBarConstants {
+private object DNATopAppBarConstants {
     const val NAVIGATION_LAYOUT_ID = "navigationIcon"
     const val TITLE_LAYOUT_ID = "title"
     const val SB_TOP_APP_BAR = "smartBankTopAppBar"
     const val ACTION_LAYOUT_ID = "actionIcons"
 }
 
-object SbTopAppBarDefaults {
+object DNATopAppBarDefaults {
 
     /**
      * @param containerColor the container color
@@ -176,8 +176,8 @@ object SbTopAppBarDefaults {
         navigationIconContentColor: Color = Color.Unspecified,
         titleContentColor: Color = black,
         actionIconContentColor: Color = Color.Unspecified,
-    ): SbTopAppBarColors =
-        SbTopAppBarColors(
+    ): DNATopAppBarColors =
+        DNATopAppBarColors(
             containerColor,
             navigationIconContentColor,
             titleContentColor,
@@ -186,7 +186,7 @@ object SbTopAppBarDefaults {
 }
 
 @Stable
-class SbTopAppBarColors internal constructor(
+class DNATopAppBarColors internal constructor(
     internal val containerColor: Color,
     internal val navigationIconContentColor: Color,
     internal val titleContentColor: Color,
