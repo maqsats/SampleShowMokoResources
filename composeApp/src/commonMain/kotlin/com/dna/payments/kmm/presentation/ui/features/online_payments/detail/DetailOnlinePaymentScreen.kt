@@ -25,6 +25,7 @@ import com.dna.payments.kmm.domain.model.transactions.Transaction
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.greyFirst
+import com.dna.payments.kmm.presentation.theme.lightGrey
 import com.dna.payments.kmm.presentation.ui.common.ClipboardDotsContent
 import com.dna.payments.kmm.presentation.ui.common.DNADots
 import com.dna.payments.kmm.presentation.ui.common.DNAExpandBox
@@ -63,6 +64,10 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
                 navigationText = stringResource(MR.strings.close),
                 onNavigationClick = {
                     navigator.pop()
+                },
+                actionIcon = painterResource(MR.images.ic_actions),
+                onActionClick = {
+
                 }
             )
             OnlinePaymentDetailContent(
@@ -79,6 +84,7 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
     ) {
         Column(
             modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+                .padding(start = Paddings.medium, end = Paddings.medium)
         ) {
             Spacer(modifier = Modifier.height(Paddings.medium))
             DNAText(
@@ -105,15 +111,30 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
             )
             Spacer(modifier = Modifier.height(Paddings.large))
             PaymentDetails(modifier.padding(top = Paddings.small), transaction)
-            Divider(modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium))
+            Divider(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
             VerificationDetails(modifier, transaction)
-            Divider(modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium))
+            Divider(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
             SummaryDetails(modifier, transaction)
-            Divider(modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium))
+            Divider(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
             CustomerDetails(modifier, transaction)
-            Divider(modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium))
+            Divider(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
             LocationDetails(modifier, transaction)
-            Divider(modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium))
+            Divider(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
             PaymentPageDetails(modifier.padding(bottom = Paddings.small), transaction)
         }
     }
