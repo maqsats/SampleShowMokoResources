@@ -40,7 +40,8 @@ fun DNADots(
         modifier = modifier.fillMaxWidth().padding(start = Paddings.medium, end = Paddings.medium)
     ) {
         Column(
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
                 painter = painterResource(MR.images.ic_ellipse),
@@ -54,7 +55,7 @@ fun DNADots(
                     contentDescription = null,
                     tint = Color.Unspecified,
                     modifier = modifier.height(52.dp)
-                        .padding(top = Paddings.extraSmall, start = Paddings.extraSmall)
+                        .padding(top = Paddings.extraSmall)
                 )
             }
         }
