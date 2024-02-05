@@ -8,10 +8,5 @@ plugins {
     alias(libs.plugins.parcelize).apply(false)
     alias(libs.plugins.sqlDelight).apply(false)
     alias(libs.plugins.resource.generator).apply(false)
-}
-
-buildscript {
-    dependencies {
-        classpath(libs.google.services)
-    }
+    alias(libs.plugins.gms).apply(false)
 }

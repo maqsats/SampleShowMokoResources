@@ -5,12 +5,13 @@ composeMaterialDialogsCore = "0.9.4"
 composeShimmer = "1.2.0"
 kotlin = "1.9.20"
 agp = "8.1.0"
-compose = "1.5.11"
+compose = "1.6.0-dev1397"
 androidx-appcompat = "1.6.1"
 androidx-activityCompose = "1.8.1"
-compose-uitooling = "1.6.0-beta02"
+compose-uitooling = "1.6.0"
 libres = "1.1.8"
 mapsCompose = "3.1.1"
+material3WindowSizeClassMultiplatform = "0.3.1"
 multiplatformSettingsNoArg = "1.1.0"
 playServicesMaps = "18.2.0"
 resourcesCompose = "0.23.0"
@@ -29,14 +30,22 @@ resource-generator = "0.23.0"
 playServicesLocationVersion = "21.0.1"
 androidBiometricVersion = "1.1.0"
 klock = "2.4.13"
-googleServices = "4.3.15"
+
+#*** Google services ***#
+gms-service = "4.3.15"
 firebaseBom = "32.2.2"
+
+#*** Compose webview ***#
+composeWebviewMultiplatform = "1.8.6"
+
 [libraries]
 
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 biometric = { module = "androidx.biometric:biometric", version.ref = "androidBiometricVersion" }
 compose-material-dialogs-core = { module = "ca.gosyer:compose-material-dialogs-core", version.ref = "composeMaterialDialogsCore" }
 compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "composeShimmer" }
+compose-webview-multiplatform = { module = "io.github.kevinnzou:compose-webview-multiplatform", version.ref = "composeWebviewMultiplatform" }
+material3-window-size-classMultiplatform = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "material3WindowSizeClassMultiplatform" }
 image-loader-extension-moko-resources = { module = "io.github.qdsfdhvh:image-loader-extension-moko-resources", version.ref = "composeImageLoader" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettingsNoArg" }
@@ -48,7 +57,6 @@ compose-uitooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "
 libres = { module = "io.github.skeptick.libres:libres-compose", version.ref = "libres" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
-google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "resourcesCompose" }
 ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
@@ -88,3 +96,5 @@ kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", vers
 resource-generator = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "resource-generator" }
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
 parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+#*** Google services plugin ***#
+gms = { id = "com.google.gms.google-services", version.ref = "gms-service" }
