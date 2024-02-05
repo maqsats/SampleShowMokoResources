@@ -15,20 +15,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.screen.ScreenKey
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.date_picker.Menu
+import com.dna.payments.kmm.domain.model.main_screens.ScreenName
 import com.dna.payments.kmm.domain.model.nav_item.NavItemPosition
 import com.dna.payments.kmm.domain.model.nav_item.SettingsPosition
 import com.dna.payments.kmm.presentation.ui.common.LocalSelectedMerchant
 import com.dna.payments.kmm.presentation.ui.features.help_center.HelpCenterScreen
+import com.dna.payments.kmm.presentation.ui.features.new_payment_link.NewPaymentLinkScreen
 import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsScreen
 import com.dna.payments.kmm.presentation.ui.features.overview_report.OverviewReportScreen
 import com.dna.payments.kmm.presentation.ui.features.payment_links.PaymentLinksScreen
 import com.dna.payments.kmm.presentation.ui.features.payment_methods.PaymentMethodsScreen
 import com.dna.payments.kmm.presentation.ui.features.pos_payments.PosPaymentsScreen
 import com.dna.payments.kmm.presentation.ui.features.team_management.TeamManagementScreen
+import com.dna.payments.kmm.utils.constants.Constants.NAV_ITEM
+import com.dna.payments.kmm.utils.constants.Constants.SCREEN_NAME
+import com.dna.payments.kmm.utils.constants.Constants.SCREEN_OPEN_EVENT
+import com.dna.payments.kmm.utils.firebase.logEvent
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.NavigatorDisposeBehavior
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -37,7 +43,6 @@ import com.dna.payments.kmm.utils.navigation.drawer_navigation.LocalDrawerNaviga
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.NavigatorContent
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.compositionUniqueId
 import com.dna.payments.kmm.utils.navigation.internal.ChildrenNavigationDisposableEffect
-import com.dna.payments.kmm.utils.navigation.internal.DrawerNavigatorDisposableEffect
 import com.dna.payments.kmm.utils.navigation.internal.DrawerStepDisposableEffect
 import com.dna.payments.kmm.utils.navigation.internal.LocalDrawerNavigatorStateHolder
 import com.dna.payments.kmm.utils.navigation.internal.rememberDrawerNavigator
@@ -61,6 +66,12 @@ class DrawerNavigationScreen : Screen {
         val loading = stringResource(MR.strings.loading)
 
         var merchantState by rememberSaveable { mutableStateOf(loading) }
+
+        LifecycleEffect(
+            onStarted = {
+                logEvent(SCREEN_OPEN_EVENT, mapOf(SCREEN_NAME to ScreenName.MAIN_SCREEN))
+            }
+        )
 
         CompositionLocalProvider(
             LocalDrawerNavigatorStateHolder providesDefault rememberSaveableStateHolder()
@@ -87,6 +98,7 @@ class DrawerNavigationScreen : Screen {
                     ) {
                         DrawerScreen(
                             onNavItemClick = {
+                                logEvent(SCREEN_OPEN_EVENT, mapOf(NAV_ITEM to it.name))
                                 scope.launch {
                                     drawerState.close()
                                     delay(200)
@@ -94,6 +106,7 @@ class DrawerNavigationScreen : Screen {
                                 }
                             },
                             onSettingsClick = {
+                                logEvent(SCREEN_OPEN_EVENT, mapOf(SCREEN_NAME to it.name))
                                 scope.launch {
                                     drawerState.close()
                                     parentNavigator.push(getScreenBySettingsItem(it))
@@ -134,6 +147,7 @@ class DrawerNavigationScreen : Screen {
             NavItemPosition.TEAM_MANAGEMENT -> TeamManagementScreen()
             NavItemPosition.PAYMENT_LINKS -> PaymentLinksScreen()
             NavItemPosition.POS_PAYMENTS -> PosPaymentsScreen()
+            NavItemPosition.ADD_NEW_PAYMENT_LINK -> NewPaymentLinkScreen()
             NavItemPosition.REPORTS -> OverviewReportScreen(Menu.REPORTS)
             else -> {
                 getInitialScreen()

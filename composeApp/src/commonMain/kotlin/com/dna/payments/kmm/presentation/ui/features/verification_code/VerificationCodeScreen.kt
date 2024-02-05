@@ -12,16 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.main_screens.ScreenName
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.ui.common.BasicCountdownTimer
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
@@ -30,7 +31,9 @@ import com.dna.payments.kmm.presentation.ui.common.DNAVerificationCodeTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
 import com.dna.payments.kmm.presentation.ui.features.new_password.NewPasswordScreen
+import com.dna.payments.kmm.utils.constants.Constants
 import com.dna.payments.kmm.utils.extension.noRippleClickable
+import com.dna.payments.kmm.utils.firebase.logEvent
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.stringResource
@@ -41,7 +44,6 @@ class VerificationCodeScreen(
 ) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
         val verificationCodeViewModel = getScreenModel<VerificationCodeViewModel>()
@@ -51,6 +53,15 @@ class VerificationCodeScreen(
         val controller = LocalSoftwareKeyboardController.current
         val navigator = LocalNavigator.currentOrThrow
 
+
+        LifecycleEffect(
+            onStarted = {
+                logEvent(
+                    Constants.SCREEN_OPEN_EVENT,
+                    mapOf(Constants.SCREEN_NAME to ScreenName.VERIFICATION_CODE)
+                )
+            }
+        )
 
         UiStateController(state.sendCode)
 
@@ -136,6 +147,7 @@ class VerificationCodeScreen(
             DNAYellowButton(
                 text = stringResource(MR.strings.confirm),
                 onClick = onSendClicked,
+                screenName = ScreenName.VERIFICATION_CODE,
                 enabled = state.isButtonEnabled.value
             )
             Spacer(modifier = modifier.height(24.dp))

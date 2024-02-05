@@ -18,7 +18,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,7 +50,7 @@ import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.MerchantName
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
-import com.dna.payments.kmm.utils.extension.bottomShadow
+import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
@@ -67,7 +67,7 @@ class DrawerScreen(
 
     @Composable
     override fun Content() {
-
+        changePlatformColor()
         val drawerViewModel = getScreenModel<DrawerViewModel>()
 
         val state by drawerViewModel.uiState.collectAsState()
@@ -129,11 +129,19 @@ class DrawerScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 item {
-                    AddButton()
+                    AddNewLinkButton(
+                        onCreateNewLinkClick = {
+                            onNavItemClick(NavItemPosition.ADD_NEW_PAYMENT_LINK)
+                        }
+                    )
                     Spacer(modifier = Modifier.height(Paddings.small))
                 }
                 item {
-                    VirtualTerminalButton()
+                    VirtualTerminalButton(
+                        onVirtualTerminalClick = {
+                            onNavItemClick(NavItemPosition.VIRTUAL_TERMINAL)
+                        }
+                    )
                     Spacer(modifier = Modifier.height(Paddings.medium))
                 }
                 items(
@@ -144,7 +152,7 @@ class DrawerScreen(
                 }
                 item {
                     Spacer(modifier = Modifier.height(Paddings.small))
-                    Divider(modifier = Modifier.fillMaxWidth())
+                    HorizontalDivider()
                     Spacer(modifier = Modifier.height(Paddings.medium))
                 }
                 items(
@@ -157,7 +165,7 @@ class DrawerScreen(
                 }
                 item {
                     Spacer(modifier = Modifier.height(Paddings.medium))
-                    Divider(modifier = Modifier.fillMaxWidth().bottomShadow(1.dp))
+                    HorizontalDivider()
                     ProfileItem()
                 }
             }
@@ -166,16 +174,16 @@ class DrawerScreen(
 }
 
 @Composable
-fun VirtualTerminalButton() {
+fun VirtualTerminalButton(
+    onVirtualTerminalClick: () -> Unit
+) {
     DNAOutlinedGreenButton(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 horizontal = Paddings.medium,
             ),
-        onClick = {
-
-        },
+        onClick = onVirtualTerminalClick,
         content = {
             Row(modifier = Modifier.wrapContentWidth().wrapContentHeight()) {
                 Icon(
@@ -195,16 +203,16 @@ fun VirtualTerminalButton() {
 }
 
 @Composable
-fun AddButton() {
+fun AddNewLinkButton(
+    onCreateNewLinkClick: () -> Unit
+) {
     DNAYellowButton(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 horizontal = Paddings.medium,
             ),
-        onClick = {
-
-        },
+        onClick = onCreateNewLinkClick,
         content = {
             Row(modifier = Modifier.wrapContentWidth().wrapContentHeight()) {
                 Icon(

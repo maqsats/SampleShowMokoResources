@@ -32,6 +32,7 @@ import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.main_screens.ScreenName
 import com.dna.payments.kmm.domain.model.pincode.Code
 import com.dna.payments.kmm.domain.model.pincode.KeyboardItem
 import com.dna.payments.kmm.domain.model.pincode.PinState.ERROR
@@ -49,7 +50,9 @@ import com.dna.payments.kmm.presentation.ui.features.login.LoginScreen
 import com.dna.payments.kmm.utils.biometry.BindBiometryAuthenticatorEffect
 import com.dna.payments.kmm.utils.biometry.BiometryAuthenticatorFactory
 import com.dna.payments.kmm.utils.biometry.rememberBiometryAuthenticatorFactory
+import com.dna.payments.kmm.utils.constants.Constants
 import com.dna.payments.kmm.utils.extension.noRippleClickable
+import com.dna.payments.kmm.utils.firebase.logEvent
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
@@ -81,6 +84,7 @@ class PinScreen : Screen {
 
         LifecycleEffect(
             onStarted = {
+                logEvent(Constants.SCREEN_OPEN_EVENT, mapOf(Constants.SCREEN_NAME to ScreenName.PIN_CODE))
                 pinViewModel.setEvent(PinContract.Event.OnDispose)
             }
         )

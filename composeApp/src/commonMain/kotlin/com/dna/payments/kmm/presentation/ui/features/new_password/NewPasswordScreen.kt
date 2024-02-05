@@ -7,30 +7,30 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.main_screens.ScreenName
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
-import com.dna.payments.kmm.presentation.ui.common.DNAPasswordRequirement
 import com.dna.payments.kmm.presentation.ui.common.DNAPasswordTextField
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
 import com.dna.payments.kmm.presentation.ui.features.login.LoginScreen
+import com.dna.payments.kmm.utils.constants.Constants
 import com.dna.payments.kmm.utils.extension.noRippleClickable
+import com.dna.payments.kmm.utils.firebase.logEvent
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.stringResource
@@ -39,7 +39,6 @@ import kotlinx.coroutines.flow.collectLatest
 class NewPasswordScreen(private val id: String, private val email: String) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
         val newPasswordViewModel = getScreenModel<NewPasswordViewModel>()
@@ -47,6 +46,15 @@ class NewPasswordScreen(private val id: String, private val email: String) : Scr
         val state by newPasswordViewModel.uiState.collectAsState()
         val controller = LocalSoftwareKeyboardController.current
         val navigator = LocalNavigator.currentOrThrow
+
+        LifecycleEffect(
+            onStarted = {
+                logEvent(
+                    Constants.SCREEN_OPEN_EVENT,
+                    mapOf(Constants.SCREEN_NAME to ScreenName.NEW_PASSWORD_SCREEN)
+                )
+            }
+        )
 
 
         UiStateController(state.newPassword)
@@ -133,7 +141,8 @@ class NewPasswordScreen(private val id: String, private val email: String) : Scr
             DNAYellowButton(
                 text = stringResource(MR.strings.confirm),
                 onClick = onSendClicked,
-                enabled = state.isButtonEnabled.value
+                enabled = state.isButtonEnabled.value,
+                screenName = ScreenName.NEW_PASSWORD_SCREEN
             )
             Spacer(modifier = modifier.height(24.dp))
             DNAText(

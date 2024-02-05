@@ -34,10 +34,12 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.main_screens.ScreenName
 import com.dna.payments.kmm.domain.model.payment_methods.PaymentMethod
 import com.dna.payments.kmm.domain.model.payment_methods.domain.Domain
 import com.dna.payments.kmm.domain.model.payment_methods.setting.DetailTerminalSetting
@@ -61,7 +63,9 @@ import com.dna.payments.kmm.presentation.ui.common.UiStateController
 import com.dna.payments.kmm.presentation.ui.common.UnregisterDomainDialog
 import com.dna.payments.kmm.presentation.ui.features.payment_methods_add_domain.first_step.AddDomainFirstStepScreen
 import com.dna.payments.kmm.utils.UiText
+import com.dna.payments.kmm.utils.constants.Constants
 import com.dna.payments.kmm.utils.extension.noRippleClickable
+import com.dna.payments.kmm.utils.firebase.logEvent
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.NavigatorResultString
 import com.dna.payments.kmm.utils.navigation.clearResults
@@ -82,6 +86,16 @@ class DetailPaymentMethodsScreen(
         val state by detailPaymentMethodsViewModel.uiState.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
         val showUnregisterDomainSuccess = remember { mutableStateOf(false) }
+
+        LifecycleEffect(
+            onStarted = {
+                logEvent(
+                    Constants.SCREEN_OPEN_EVENT,
+                    mapOf(Constants.SCREEN_NAME to ScreenName.DETAIL_PAYMENT_METHODS)
+                )
+            }
+        )
+
         LaunchedEffect(key1 = Unit) {
             detailPaymentMethodsViewModel.setEvent(
                 DetailPaymentMethodsContract.Event.OnInit(

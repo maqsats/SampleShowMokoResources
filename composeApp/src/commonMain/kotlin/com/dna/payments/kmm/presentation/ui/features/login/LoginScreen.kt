@@ -18,16 +18,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.main_screens.ScreenName
 import com.dna.payments.kmm.presentation.model.TextFieldUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.ui.common.DNAEmailTextField
@@ -39,7 +40,9 @@ import com.dna.payments.kmm.presentation.ui.common.UiStateController
 import com.dna.payments.kmm.presentation.ui.features.pincode.PinScreen
 import com.dna.payments.kmm.presentation.ui.features.restore_password.RestorePasswordScreen
 import com.dna.payments.kmm.utils.UiText
+import com.dna.payments.kmm.utils.constants.Constants
 import com.dna.payments.kmm.utils.extension.noRippleClickable
+import com.dna.payments.kmm.utils.firebase.logEvent
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
@@ -49,12 +52,20 @@ import kotlinx.coroutines.flow.collectLatest
 class LoginScreen(private var showSuccess: Boolean = false) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
         val loginViewModel = getScreenModel<LoginViewModel>()
 
         val state by loginViewModel.uiState.collectAsState()
+
+        LifecycleEffect(
+            onStarted = {
+                logEvent(
+                    Constants.SCREEN_OPEN_EVENT,
+                    mapOf(Constants.SCREEN_NAME to ScreenName.LOGIN)
+                )
+            }
+        )
 
         val controller = LocalSoftwareKeyboardController.current
 
@@ -159,7 +170,8 @@ class LoginScreen(private var showSuccess: Boolean = false) : Screen {
         DNAYellowButton(
             text = stringResource(MR.strings.login),
             onClick = onLoginClicked,
-            enabled = state.isLoginEnabled.value
+            enabled = state.isLoginEnabled.value,
+            screenName = ScreenName.LOGIN
         )
     }
 
