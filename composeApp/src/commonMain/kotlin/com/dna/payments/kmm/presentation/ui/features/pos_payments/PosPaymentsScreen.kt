@@ -36,6 +36,7 @@ import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.KLARNA
@@ -44,7 +45,8 @@ import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.PAY
 import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.UNDEFINED
 import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentCard
 import com.dna.payments.kmm.domain.model.transactions.pos.PosTransaction
-import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
+import com.dna.payments.kmm.presentation.state.ComponentCircle
+import com.dna.payments.kmm.presentation.state.ComponentRectangleLineShort
 import com.dna.payments.kmm.presentation.state.Empty
 import com.dna.payments.kmm.presentation.state.PaginationUiStateManager
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
@@ -68,7 +70,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
 class PosPaymentsScreen : DrawerScreen {
-
+    override val key: ScreenKey = "PosPaymentsScreen"
     override val isFilterEnabled: Boolean = true
 
     @Composable
@@ -84,9 +86,6 @@ class PosPaymentsScreen : DrawerScreen {
         val navigator = LocalNavigator.currentOrThrow
 
         LaunchedEffect(key1 = Unit) {
-            posPaymentsViewModel.setEvent(
-                PosPaymentsContract.Event.OnInit
-            )
             posPaymentsViewModel.effect.collectLatest { effect ->
                 when (effect) {
                     is PosPaymentsContract.Effect.OnPageChanged -> {
@@ -204,7 +203,8 @@ class PosPaymentsScreen : DrawerScreen {
                         style = DnaTextStyle.WithAlphaNormal12,
                         icon = transaction.status.imageResource,
                         textColor = transaction.status.textColor,
-                        backgroundColor = transaction.status.backgroundColor
+                        backgroundColor = transaction.status.backgroundColor,
+                        modifier = Modifier.padding(vertical = Paddings.extraSmall)
                     )
                 }
                 Spacer(modifier = Modifier.height(Paddings.medium))
@@ -319,27 +319,6 @@ class PosPaymentsScreen : DrawerScreen {
     }
 
     @Composable
-    private fun PosPaymentOnLoading(
-        modifier: Modifier = Modifier,
-    ) {
-        Box(
-            modifier = modifier.padding(top = 8.dp)
-                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
-                .background(Color.White, RoundedCornerShape(8.dp))
-                .fillMaxWidth()
-                .wrapContentHeight()
-        ) {
-            Row(
-                modifier = modifier.fillMaxWidth().padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                ComponentRectangleLineLong()
-            }
-        }
-    }
-
-    @Composable
     override fun DrawerHeader() {  // Just for testing purposes
         Column {
             Spacer(modifier = Modifier.height(24.dp))
@@ -363,11 +342,12 @@ class PosPaymentsScreen : DrawerScreen {
                 DnaFilter(
                     openBottomSheet = statusFilter,
                     dropDownContent = {
-                        StatusWidget(state)
+                        StatusWidget(state.selectedStatus)
                     },
                     bottomSheetContent = {
                         StatusBottomSheet(
-                            state = state,
+                            statusList = state.statusList,
+                            selectedStatus = state.selectedStatus,
                             onItemChange = {
                                 statusFilter.value = false
                                 onlinePaymentsViewModel.setEvent(
@@ -402,6 +382,74 @@ class PosPaymentsScreen : DrawerScreen {
                         )
                     }
                 )
+            }
+        }
+    }
+
+    @Composable
+    private fun PosPaymentOnLoading(
+        modifier: Modifier = Modifier,
+    ) {
+        Box(
+            modifier = modifier.padding(top = 2.dp, bottom = 6.dp)
+                .shadow(2.dp, shape = RoundedCornerShape(8.dp))
+                .background(Color.White, RoundedCornerShape(8.dp))
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+            Column(modifier = modifier.padding(Paddings.medium)) {
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        ComponentCircle(modifier = Modifier.size(40.dp))
+                        ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                    }
+                    ComponentRectangleLineShort()
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Divider()
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ComponentRectangleLineShort()
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                    }
+
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ComponentRectangleLineShort()
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                    }
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ComponentRectangleLineShort()
+                    ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                }
+                Spacer(modifier = Modifier.height(Paddings.small))
             }
         }
     }

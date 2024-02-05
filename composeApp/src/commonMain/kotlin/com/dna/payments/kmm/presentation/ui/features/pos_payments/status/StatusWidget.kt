@@ -22,20 +22,17 @@ import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.white
 import com.dna.payments.kmm.presentation.ui.common.DNAText
-import com.dna.payments.kmm.presentation.ui.features.pos_payments.PosPaymentsContract
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
 fun StatusWidget(
-    state: PosPaymentsContract.State
+    status: PosPaymentStatusV2
 ) {
-    if (state.statusList.isEmpty())
-        return
     DNAText(
         modifier = Modifier.wrapContentWidth(),
-        text = state.statusList[state.indexOfSelectedStatus].displayName,
+        text = status.displayName,
         style = DnaTextStyle.Medium14
     )
 }
@@ -43,8 +40,9 @@ fun StatusWidget(
 
 @Composable
 fun StatusBottomSheet(
-    state: PosPaymentsContract.State,
-    onItemChange: (Int) -> Unit
+    onItemChange: (PosPaymentStatusV2) -> Unit,
+    statusList: List<PosPaymentStatusV2>,
+    selectedStatus: PosPaymentStatusV2
 ) {
     Column(
         modifier = Modifier
@@ -61,12 +59,12 @@ fun StatusBottomSheet(
         Spacer(modifier = Modifier.height(Paddings.medium))
 
         LazyColumn {
-            items(state.statusList) { item ->
+            items(statusList) { item ->
                 StatusItem(
                     status = item,
-                    isSelected = state.statusList[state.indexOfSelectedStatus] == item,
+                    isSelected = selectedStatus == item,
                     onItemClick = {
-                        onItemChange(state.statusList.indexOf(item))
+                        onItemChange(item)
                     })
             }
         }
