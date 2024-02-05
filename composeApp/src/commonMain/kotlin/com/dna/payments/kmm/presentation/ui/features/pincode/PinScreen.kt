@@ -91,7 +91,6 @@ class PinScreen : Screen {
         val state by pinViewModel.uiState.collectAsState()
 
         val navigator = LocalNavigator.currentOrThrow
-
         UiStateController(state.getAccessToken)
 
         LaunchedEffect(key1 = Unit) {
