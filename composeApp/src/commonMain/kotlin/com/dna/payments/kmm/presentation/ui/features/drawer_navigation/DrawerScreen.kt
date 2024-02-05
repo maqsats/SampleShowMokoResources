@@ -136,7 +136,10 @@ class DrawerScreen(
                     VirtualTerminalButton()
                     Spacer(modifier = Modifier.height(Paddings.medium))
                 }
-                items(state.navItems) { navItem ->
+                items(
+                    state.navItems,
+                    key = { navItem -> navItem.position }
+                ) { navItem ->
                     DrawerItem(navItem, onNavItemClick)
                 }
                 item {
@@ -144,7 +147,12 @@ class DrawerScreen(
                     Divider(modifier = Modifier.fillMaxWidth())
                     Spacer(modifier = Modifier.height(Paddings.medium))
                 }
-                items(state.settingsItems) { settingsItem ->
+                items(
+                    state.settingsItems,
+                    key = { settingsItem ->
+                        settingsItem.position
+                    }
+                ) { settingsItem ->
                     SettingsItem(settingsItem, onSettingsClick)
                 }
                 item {

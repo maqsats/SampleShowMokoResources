@@ -15,6 +15,7 @@ import com.dna.payments.kmm.domain.interactors.use_cases.currency.DefaultCurrenc
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DateHelper
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.GetDateRangeUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.drawer.DrawerUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.ecom_stores.GetEcomStoresUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_link.PaymentLinkUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.ChangeTerminalStatusUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.RegisterDomainUseCase
@@ -32,9 +33,12 @@ import com.dna.payments.kmm.domain.interactors.use_cases.reports.transactions.De
 import com.dna.payments.kmm.domain.interactors.use_cases.reports.transactions.DefaultPosSummaryGraphUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.reports.transactions.OnlineSummaryGraphUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.reports.transactions.PosSummaryGraphUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.stores.DefaultStoresUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.stores.StoresUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidateCode
 import com.dna.payments.kmm.domain.interactors.validation.ValidateDomain
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
+import com.dna.payments.kmm.domain.interactors.validation.ValidateField
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
 import com.dna.payments.kmm.domain.use_case.ChangePasswordUseCase
 import com.dna.payments.kmm.domain.use_case.GetDetailTerminalSettingsUseCase
@@ -71,6 +75,7 @@ val useCasesModule: Module = module {
     singleOf(::DateHelper)
     singleOf(::GetDateRangeUseCase)
 
+    singleOf(::GetEcomStoresUseCase)
     factoryOf(::GetIssuingBanksUseCase)
     factoryOf(::GetPaymentMethodsUseCase)
     factoryOf(::GetCardSchemeUseCase)
@@ -91,12 +96,14 @@ val useCasesModule: Module = module {
     factoryOf(::VerifyOtpCodeUseCaseImpl).bind(VerifyOtpCodeUseCase::class)
     factoryOf(::ChangePasswordUseCaseImpl).bind(ChangePasswordUseCase::class)
     factoryOf(::PaymentLinkStatusUseCaseImpl).bind(PaymentLinkStatusUseCase::class)
+    factoryOf(::DefaultStoresUseCase).bind(StoresUseCase::class)
 
     //validation
     factoryOf(::ValidatePassword)
     factoryOf(::ValidateEmail)
     factoryOf(::ValidateDomain)
     factoryOf(::ValidateCode)
+    factoryOf(::ValidateField)
 
 }
 

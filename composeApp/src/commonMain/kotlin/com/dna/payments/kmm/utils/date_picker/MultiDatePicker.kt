@@ -59,12 +59,12 @@ import com.dna.payments.kmm.utils.date_picker.utils.mediumRadius
 import com.dna.payments.kmm.utils.date_picker.utils.smallRadius
 import com.dna.payments.kmm.utils.date_picker.utils.xsmallPadding
 import com.dna.payments.kmm.utils.date_picker.utils.xxsmallPadding
-import com.soywiz.klock.Date
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeSpan
-import com.soywiz.klock.DayOfWeek
-import com.soywiz.klock.MonthSpan
-import com.soywiz.klock.TimeSpan
+import korlibs.time.Date
+import korlibs.time.DateTime
+import korlibs.time.DateTimeSpan
+import korlibs.time.DayOfWeek
+import korlibs.time.MonthSpan
+import korlibs.time.TimeSpan
 import dev.icerock.moko.resources.compose.painterResource
 
 @OptIn(ExperimentalAnimationApi::class)

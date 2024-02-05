@@ -16,5 +16,13 @@
 	<false/>
     <key>NSFaceIDUsageDescription</key>
     <string>Program requires FaceID to login</string>
+    <key>UIUserInterfaceStyle</key>
+    <string>Light</string>
+    <key>LSRequiresIPhoneOS</key><true/>
+
+   	<key>UIRequiredDeviceCapabilities</key>
+   	<array>
+   		<string>armv7</string>
+   	</array>
 </dict>
 </plist>

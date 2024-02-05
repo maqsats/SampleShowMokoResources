@@ -1,9 +1,9 @@
 package com.dna.payments.kmm.utils.date_picker.utils.extensions
 
-import com.soywiz.klock.Date
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.Time
-import com.soywiz.klock.Year
+import korlibs.time.Date
+import korlibs.time.DateTime
+import korlibs.time.Time
+import korlibs.time.Year
 
 const val ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 const val MONTH_YEAR = "MMMM YYYY"

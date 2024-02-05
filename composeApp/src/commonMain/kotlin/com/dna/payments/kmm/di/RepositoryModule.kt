@@ -2,6 +2,7 @@ package com.dna.payments.kmm.di
 
 import com.dna.payments.kmm.data.repository.DefaultAccessLevelRepository
 import com.dna.payments.kmm.data.repository.DefaultAuthorizationRepository
+import com.dna.payments.kmm.data.repository.DefaultCreateNewLinkRepository
 import com.dna.payments.kmm.data.repository.DefaultDomainRepository
 import com.dna.payments.kmm.data.repository.DefaultInfoRepository
 import com.dna.payments.kmm.data.repository.DefaultOnlinePaymentOperationRepository
@@ -14,6 +15,7 @@ import com.dna.payments.kmm.data.repository.DefaultTeamManagementRepository
 import com.dna.payments.kmm.data.repository.DefaultTransactionRepository
 import com.dna.payments.kmm.domain.repository.AccessLevelRepository
 import com.dna.payments.kmm.domain.repository.AuthorizationRepository
+import com.dna.payments.kmm.domain.repository.CreateNewLinkRepository
 import com.dna.payments.kmm.domain.repository.DomainsRepository
 import com.dna.payments.kmm.domain.repository.InfoRepository
 import com.dna.payments.kmm.domain.repository.OnlinePaymentOperationRepository
@@ -39,6 +41,7 @@ val repositoryModule = module {
     factoryOf(::DefaultPaymentLinksRepository).bind(PaymentLinksRepository::class)
     factoryOf(::DefaultDomainRepository).bind(DomainsRepository::class)
     factoryOf(::DefaultTransactionRepository).bind(TransactionRepository::class)
+    factoryOf(::DefaultCreateNewLinkRepository).bind(CreateNewLinkRepository::class)
     factoryOf(::DefaultSettingRepository).bind(SettingRepository::class)
     factoryOf(::DefaultOnlinePaymentOperationRepository).bind(OnlinePaymentOperationRepository::class)
 }

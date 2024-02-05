@@ -319,13 +319,16 @@ class PosPaymentsScreen : DrawerScreen {
     }
 
     @Composable
-    override fun DrawerHeader() {  // Just for testing purposes
+    override fun DrawerHeader() {
         Column {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(Paddings.large))
             DNAText(
                 text = stringResource(MR.strings.pos_payments),
                 style = DnaTextStyle.Bold20,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+                modifier = Modifier.padding(
+                    horizontal = Paddings.medium,
+                    vertical = Paddings.standard
+                )
             )
         }
     }
