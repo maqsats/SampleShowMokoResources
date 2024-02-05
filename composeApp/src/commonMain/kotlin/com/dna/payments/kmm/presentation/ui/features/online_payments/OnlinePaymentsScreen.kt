@@ -42,7 +42,8 @@ import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.*
 import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentCard
 import com.dna.payments.kmm.domain.model.transactions.Transaction
-import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
+import com.dna.payments.kmm.presentation.state.ComponentCircle
+import com.dna.payments.kmm.presentation.state.ComponentRectangleLineShort
 import com.dna.payments.kmm.presentation.state.Empty
 import com.dna.payments.kmm.presentation.state.PaginationUiStateManager
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
@@ -52,6 +53,7 @@ import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
 import com.dna.payments.kmm.presentation.ui.common.DnaFilter
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeBottomSheet
 import com.dna.payments.kmm.presentation.ui.features.date_range.DateRangeWidget
+import com.dna.payments.kmm.presentation.ui.features.online_payments.detail.DetailOnlinePaymentScreen
 import com.dna.payments.kmm.presentation.ui.features.online_payments.status.StatusBottomSheet
 import com.dna.payments.kmm.presentation.ui.features.online_payments.status.StatusWidget
 import com.dna.payments.kmm.utils.extension.noRippleClickable
@@ -104,7 +106,8 @@ class OnlinePaymentsScreen : DrawerScreen {
             isToolbarCollapsed = isToolbarCollapsed,
             onRequestNextPage = {
                 onlinePaymentsViewModel.setEvent(OnlinePaymentsContract.Event.OnLoadMore)
-            }
+            },
+            onClick = { navigator.push(DetailOnlinePaymentScreen(it)) }
         ) {
             onlinePaymentsViewModel.setEvent(OnlinePaymentsContract.Event.OnRefresh)
         }
@@ -116,7 +119,9 @@ class OnlinePaymentsScreen : DrawerScreen {
         state: OnlinePaymentsContract.State,
         isToolbarCollapsed: Boolean,
         onRequestNextPage: () -> Unit = {},
+        onClick: (Transaction) -> Unit,
         onRefresh: () -> Unit = {}
+
     ) {
         Column(
             modifier = modifier.padding(horizontal = Paddings.medium),
@@ -132,7 +137,7 @@ class OnlinePaymentsScreen : DrawerScreen {
                 successItemView = { transaction ->
                     OnlinePaymentItem(
                         transaction = transaction,
-                        onClick = {}
+                        onClick = onClick
                     )
 
                 },
@@ -146,7 +151,7 @@ class OnlinePaymentsScreen : DrawerScreen {
     private fun OnlinePaymentItem(
         transaction: Transaction,
         modifier: Modifier = Modifier,
-        onClick: () -> Unit
+        onClick: (Transaction) -> Unit
     ) {
         val clipboardManager: ClipboardManager = LocalClipboardManager.current
 
@@ -157,7 +162,7 @@ class OnlinePaymentsScreen : DrawerScreen {
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .noRippleClickable {
-
+                    onClick(transaction)
                 }
         ) {
             Column(modifier = modifier.padding(Paddings.medium)) {
@@ -200,7 +205,8 @@ class OnlinePaymentsScreen : DrawerScreen {
                         style = DnaTextStyle.WithAlphaNormal12,
                         icon = transaction.status.icon,
                         textColor = transaction.status.textColor,
-                        backgroundColor = transaction.status.backgroundColor
+                        backgroundColor = transaction.status.backgroundColor,
+                        modifier = Modifier.padding(vertical = Paddings.extraSmall)
                     )
                 }
                 Spacer(modifier = Modifier.height(Paddings.medium))
@@ -320,18 +326,65 @@ class OnlinePaymentsScreen : DrawerScreen {
         modifier: Modifier = Modifier,
     ) {
         Box(
-            modifier = modifier.padding(top = 8.dp)
-                .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+            modifier = modifier.padding(top = 2.dp, bottom = 6.dp)
+                .shadow(2.dp, shape = RoundedCornerShape(8.dp))
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            Row(
-                modifier = modifier.fillMaxWidth().padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                ComponentRectangleLineLong()
+            Column(modifier = modifier.padding(Paddings.medium)) {
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        ComponentCircle(modifier = Modifier.size(40.dp))
+                        ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                    }
+                    ComponentRectangleLineShort()
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Divider()
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ComponentRectangleLineShort()
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                    }
+
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ComponentRectangleLineShort()
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                    }
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ComponentRectangleLineShort()
+                    ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                }
+                Spacer(modifier = Modifier.height(Paddings.small))
             }
         }
     }

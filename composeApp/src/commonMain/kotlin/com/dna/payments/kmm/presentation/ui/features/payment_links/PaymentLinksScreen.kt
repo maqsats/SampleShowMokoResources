@@ -37,7 +37,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.payment_links.PaymentLinkHeader
 import com.dna.payments.kmm.domain.model.payment_links.PaymentLinkItem
-import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
+import com.dna.payments.kmm.presentation.state.ComponentRectangleLineShort
 import com.dna.payments.kmm.presentation.state.Empty
 import com.dna.payments.kmm.presentation.state.PaginationUiStateManager
 import com.dna.payments.kmm.presentation.theme.Dimens
@@ -127,8 +127,8 @@ class PaymentLinksScreen : DrawerScreen {
                     }
                 }
             },
-            loadingView = { TeammateItemOnLoading() },
-            emptyView = { Empty(text = "No payment links yet") }
+            loadingView = { PaymentLinkItemOnLoading() },
+            emptyView = { Empty(text = stringResource(MR.strings.no_payment_links)) }
         )
     }
 
@@ -313,22 +313,55 @@ class PaymentLinksScreen : DrawerScreen {
     }
 
     @Composable
-    private fun TeammateItemOnLoading(
+    private fun PaymentLinkItemOnLoading(
         modifier: Modifier = Modifier,
     ) {
         Box(
-            modifier = modifier.padding(top = Paddings.small)
-                .shadow(Paddings.xxSmall, shape = RoundedCornerShape(Paddings.small))
-                .background(Color.White, RoundedCornerShape(Paddings.small))
+            modifier = modifier.padding(top = 2.dp, bottom = 6.dp)
+                .shadow(2.dp, shape = RoundedCornerShape(8.dp))
+                .background(Color.White, RoundedCornerShape(8.dp))
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            Row(
-                modifier = modifier.fillMaxWidth().padding(Paddings.medium),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                ComponentRectangleLineLong()
+            Column(modifier = modifier.padding(Paddings.medium)) {
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ComponentRectangleLineShort()
+                    ComponentRectangleLineShort()
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Divider()
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ComponentRectangleLineShort()
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                    }
+
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ComponentRectangleLineShort()
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        ComponentRectangleLineShort(modifier = Modifier.padding(start = Paddings.small))
+                    }
+                }
+                Spacer(modifier = Modifier.height(Paddings.medium))
             }
         }
     }

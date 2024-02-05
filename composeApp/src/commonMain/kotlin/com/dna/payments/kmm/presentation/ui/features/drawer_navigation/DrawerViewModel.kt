@@ -17,6 +17,15 @@ class DrawerViewModel(
 ) :
     BaseViewModel<DrawerScreenContract.Event, DrawerScreenContract.State, DrawerScreenContract.Effect>() {
 
+    init {
+        setState {
+            copy(
+                navItems = drawerUseCase.getNavItemList(),
+                settingsItems = drawerUseCase.getSettingsItems()
+            )
+        }
+    }
+
     override fun createInitialState(): DrawerScreenContract.State =
         DrawerScreenContract.State(
             navItems = emptyList(),
@@ -59,9 +68,7 @@ class DrawerViewModel(
                         is Response.TokenExpire -> {
                             ResourceUiState.Error(UiText.DynamicString("Token expired"))
                         }
-                    },
-                    navItems = drawerUseCase.getNavItemList(),
-                    settingsItems = drawerUseCase.getSettingsItems()
+                    }
                 )
             }
         }

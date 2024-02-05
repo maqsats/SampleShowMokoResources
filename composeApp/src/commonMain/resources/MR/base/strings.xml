@@ -90,6 +90,7 @@
     <string name="details">Details</string>
     <string name="team_management">Team Management</string>
     <string name="help_center">Help center</string>
+    <string name="no_payment_links">No payment links yet</string>
 
     <!--    payment methods-->
     <string name="apple_pay">Apple Pay</string>
@@ -244,6 +245,8 @@
     <string name="select_currency">Select Currency</string>
     <string name="approval_rate">Approval rate</string>
     <string name="charged_transactions">Charged transactions</string>
+    <string name="charged_amount">Charged amount</string>
+    <string name="rnr">RNR</string>
     <string name="all_pos_transactions">All POS Transactions</string>
     <string name="charged_transactions_comparison">Charged transactions comparison</string>
     <string name="all_transactions_comparison">All transactions comparison</string>
@@ -304,6 +307,7 @@
     <string name="failed">Failed</string>
     <string name="new_status">New</string>
     <string name="three_d_secure">3D Secure</string>
+    <string name="three_d_secure_short">3DS</string>
     <string name="tokenized">Tokenized</string>
     <string name="verified">Verified</string>
     <string name="processing">Processing</string>
@@ -352,6 +356,40 @@
     <string name="add">Add</string>
     <string name="domain_added">Domain was added</string>
     <string name="domain_deleted">Domain was deleted</string>
+
+    <!--    change terminal setting-->
+    <string name="enable_to_payment_method">Are you sure you want to enable the payment method?
+    </string>
+    <string name="disable_to_payment_method">Are you sure you want to disable the payment method?
+    </string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="id">ID</string>
+
+    <!--    Detail Online Payment-->
+    <string name="avs_house_number">AVS house number</string>
+    <string name="csc_result">CSC result</string>
+    <string name="pa_enrollment">PA enrollment</string>
+    <string name="pa_authentication">PA authentication</string>
+    <string name="summary">Summary</string>
+    <string name="processing_type">Processing Type</string>
+    <string name="store">Store</string>
+    <string name="description">Description</string>
+    <string name="authorised_on">Authorised On</string>
+    <string name="issuer">Issuer</string>
+    <string name="card_expiry_date">Card expiry date</string>
+    <string name="acquirer_response_code">Acquirer response code</string>
+    <string name="auth_code">Auth code</string>
+    <string name="customer_details">Customer Details</string>
+    <string name="name">Name</string>
+    <string name="account_id">Account ID</string>
+    <string name="phone">Phone</string>
+    <string name="location">Location</string>
+    <string name="payer_ip">Payer IP</string>
+    <string name="payment_page">Payment Page</string>
+    <string name="language">Language</string>
+    <string name="post_link_address">PostLink address</string>
+    <string name="post_link">PostLink</string>
 
     <string name="no_internet_connection">No internet connection</string>
 
