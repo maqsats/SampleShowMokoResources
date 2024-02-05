@@ -11,11 +11,11 @@ import com.dna.payments.kmm.utils.chart.histogram.BarEntry
 import com.dna.payments.kmm.utils.chart.histogram.HistogramEntry
 import com.dna.payments.kmm.utils.extension.convertToServerFormat
 import com.dna.payments.kmm.utils.extension.daysBetween
-import com.soywiz.klock.DateFormat
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeSpan
-import com.soywiz.klock.parse
-import com.soywiz.klock.weekOfYear1
+import korlibs.time.DateFormat
+import korlibs.time.DateTime
+import korlibs.time.DateTimeSpan
+import korlibs.time.parse
+import korlibs.time.weekOfYear1
 
 class DefaultPosSummaryGraphUseCase(private val transactionRepository: TransactionRepository) :
     PosSummaryGraphUseCase {

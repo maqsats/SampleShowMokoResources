@@ -11,7 +11,7 @@ import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.repository.TransactionRepository
 import com.dna.payments.kmm.utils.chart.pie.PieChartData
 import com.dna.payments.kmm.utils.extension.convertToServerFormat
-import com.soywiz.klock.DateTime
+import korlibs.time.DateTime
 
 class GetCardSchemeUseCase(private val transactionRepository: TransactionRepository) {
 

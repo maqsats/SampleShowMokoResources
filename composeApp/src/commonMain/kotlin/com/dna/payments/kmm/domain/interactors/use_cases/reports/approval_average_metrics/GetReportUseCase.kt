@@ -4,7 +4,7 @@ import com.dna.payments.kmm.domain.model.average_metrics.Metric
 import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentStatus
 import com.dna.payments.kmm.domain.model.overview_report.Summary
 import com.dna.payments.kmm.domain.network.Response
-import com.soywiz.klock.DateTime
+import korlibs.time.DateTime
 
 interface GetReportUseCase {
 
