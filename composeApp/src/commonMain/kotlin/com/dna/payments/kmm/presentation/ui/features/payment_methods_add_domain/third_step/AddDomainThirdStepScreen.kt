@@ -67,7 +67,7 @@ class AddDomainThirdStepScreen(
         val clipboardManager: ClipboardManager = LocalClipboardManager.current
         val hostProtocol: String = stringResource(MR.strings.host_protocol)
 
-        UiStateController(state.addDomain)
+        UiStateController(state.addDomainState)
 
         LaunchedEffect(key1 = Unit) {
             viewModel.effect.collectLatest { effect ->

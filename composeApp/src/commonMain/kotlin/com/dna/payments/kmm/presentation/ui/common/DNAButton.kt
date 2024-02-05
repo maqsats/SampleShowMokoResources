@@ -92,14 +92,14 @@ fun DNAYellowButton(
 @Composable
 fun DNAOutlinedGreenButton(
     content: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.fillMaxWidth(),
     onClick: () -> Unit,
     enabled: Boolean = true
 ) {
     OutlinedButton(
         onClick = onClick,
         enabled = enabled,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         border = BorderStroke(1.dp, greenButtonNotFilled),
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color.Transparent,
