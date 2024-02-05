@@ -90,8 +90,7 @@ class PinScreen : Screen {
 
         val state by pinViewModel.uiState.collectAsState()
 
-        val navigator = cafe.adriel.voyager.navigator.LocalNavigator.currentOrThrow
-
+        val navigator = LocalNavigator.currentOrThrow
         UiStateController(state.getAccessToken)
 
         LaunchedEffect(key1 = Unit) {
