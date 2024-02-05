@@ -1,5 +1,8 @@
 package com.dna.payments.kmm.data.model.stores
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Card(
     val allowMoto: Boolean,
     val allowMotoNonCvv: Boolean,

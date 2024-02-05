@@ -390,4 +390,15 @@
     <string name="language">Language</string>
     <string name="post_link_address">PostLink address</string>
     <string name="post_link">PostLink</string>
+
+    <string name="no_internet_connection">No internet connection</string>
+
+    // Validation
+    <string name="error_description_is_required">Description is required</string>
+    <string name="amount_is_required">Amount is required</string>
+    <string name="field_is_required">Field is required</string>
+    <string name="invalid_card_number">Invalid card number</string>
+    <string name="invalid_expire_date">Invalid expiration date</string>
+    <string name="link_expiration_required">Link expiration required</string>
+    <string name="invalid_cvv">Invalid CVV/CVC</string>
 </resources>
