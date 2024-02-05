@@ -3,7 +3,6 @@ package com.dna.payments.kmm.presentation.ui.features.online_payments.detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod
@@ -27,19 +25,23 @@ import com.dna.payments.kmm.domain.model.transactions.Transaction
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.greyFirst
+import com.dna.payments.kmm.presentation.theme.lightGrey
 import com.dna.payments.kmm.presentation.ui.common.ClipboardDotsContent
 import com.dna.payments.kmm.presentation.ui.common.DNADots
 import com.dna.payments.kmm.presentation.ui.common.DNAExpandBox
-import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
+import com.dna.payments.kmm.presentation.ui.common.DNATopAppBar
 import com.dna.payments.kmm.presentation.ui.common.DefaultDotsContent
+import com.dna.payments.kmm.presentation.ui.common.LinkDotsContent
+import com.dna.payments.kmm.presentation.ui.common.MessageDotsContent
 import com.dna.payments.kmm.presentation.ui.common.PainterDotsContent
 import com.dna.payments.kmm.presentation.ui.common.PainterWithBackgroundDotsContent
 import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.toMoneyString
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
+import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
 class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
@@ -56,24 +58,19 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
                 .background(greyFirst),
             verticalArrangement = Arrangement.Top
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(vertical = Paddings.medium),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                DNAGreenBackButton(
-                    text = stringResource(MR.strings.close),
-                    onClick = {
-                        navigator.pop()
-                    },
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                )
-                DNAText(
-                    text = stringResource(MR.strings.payment_detail),
-                    modifier = Modifier.padding(horizontal = Paddings.extraLarge),
-                    style = DnaTextStyle.Normal16
-                )
-            }
-            PosPaymentDetailContent(
+            DNATopAppBar(
+                title = stringResource(MR.strings.payment_detail),
+                navigationIcon = painterResource(MR.images.ic_green_arrow_back),
+                navigationText = stringResource(MR.strings.close),
+                onNavigationClick = {
+                    navigator.pop()
+                },
+                actionIcon = painterResource(MR.images.ic_actions),
+                onActionClick = {
+
+                }
+            )
+            OnlinePaymentDetailContent(
                 modifier = Modifier.wrapContentHeight(),
                 transaction = transaction
             )
@@ -81,12 +78,13 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
     }
 
     @Composable
-    private fun PosPaymentDetailContent(
+    private fun OnlinePaymentDetailContent(
         modifier: Modifier,
         transaction: Transaction
     ) {
         Column(
             modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+                .padding(start = Paddings.medium, end = Paddings.medium)
         ) {
             Spacer(modifier = Modifier.height(Paddings.medium))
             DNAText(
@@ -112,11 +110,32 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
                 icon = MR.images.ic_message
             )
             Spacer(modifier = Modifier.height(Paddings.large))
-            PaymentDetails(modifier, transaction)
-            Divider(modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium))
+            PaymentDetails(modifier.padding(top = Paddings.small), transaction)
+            Divider(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
             VerificationDetails(modifier, transaction)
-            Divider(modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium))
+            Divider(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
             SummaryDetails(modifier, transaction)
+            Divider(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
+            CustomerDetails(modifier, transaction)
+            Divider(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
+            LocationDetails(modifier, transaction)
+            Divider(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
+            PaymentPageDetails(modifier.padding(bottom = Paddings.small), transaction)
         }
     }
 
@@ -151,18 +170,13 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
                     icon = when (transaction.paymentMethod) {
                         OnlinePaymentMethod.CARD -> {
                             if (transaction.cardType != null) {
-                                PosPaymentCard.fromCardType(transaction.cardType).imageResource?.let {
-                                    it
-                                }
+                                PosPaymentCard.fromCardType(transaction.cardType).imageResource
                             } else {
                                 null
                             }
                         }
-
                         else -> {
-                            transaction.paymentMethod.imageResource?.let {
-                                it
-                            }
+                            transaction.paymentMethod.imageResource
                         }
                     }
                 )
@@ -279,7 +293,7 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
                 )
             }
             DNADots {
-                DefaultDotsContent(
+                MessageDotsContent(
                     MR.strings.description,
                     transaction.description
                 )
@@ -341,6 +355,104 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
                 DefaultDotsContent(
                     MR.strings.auth_code,
                     transaction.authCode
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun CustomerDetails(
+        modifier: Modifier,
+        transaction: Transaction
+    ) {
+        DNAExpandBox(
+            modifier,
+            MR.strings.customer_details,
+            MR.images.ic_customer,
+            isFirst = false
+        ) {
+            DNADots {
+                DefaultDotsContent(
+                    MR.strings.name,
+                    transaction.payerName
+                )
+            }
+            DNADots {
+                DefaultDotsContent(
+                    MR.strings.account_id,
+                    transaction.accountId
+                )
+            }
+            DNADots {
+                DefaultDotsContent(
+                    MR.strings.email,
+                    transaction.payerEmail
+                )
+            }
+            DNADots(isContinued = false) {
+                DefaultDotsContent(
+                    MR.strings.phone,
+                    transaction.payerPhone
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun LocationDetails(
+        modifier: Modifier,
+        transaction: Transaction
+    ) {
+        DNAExpandBox(
+            modifier,
+            MR.strings.location,
+            MR.images.ic_location,
+            isFirst = false
+        ) {
+            DNADots {
+                DefaultDotsContent(
+                    MR.strings.payer_ip,
+                    transaction.payerIp
+                )
+            }
+            DNADots(isContinued = false) {
+                DefaultDotsContent(
+                    MR.strings.description,
+                    transaction.ipCity
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun PaymentPageDetails(
+        modifier: Modifier,
+        transaction: Transaction
+    ) {
+        val clipboardManager: ClipboardManager = LocalClipboardManager.current
+        DNAExpandBox(
+            modifier,
+            MR.strings.payment_page,
+            MR.images.ic_link,
+            isFirst = false
+        ) {
+            DNADots {
+                DefaultDotsContent(
+                    MR.strings.language,
+                    transaction.language
+                )
+            }
+            DNADots {
+                LinkDotsContent(
+                    MR.strings.post_link_address,
+                    transaction.postLink,
+                    clipboardManager
+                )
+            }
+            DNADots(isContinued = false) {
+                DefaultDotsContent(
+                    MR.strings.post_link,
+                    transaction.postLinkStatus.toString()
                 )
             }
         }

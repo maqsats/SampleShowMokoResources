@@ -54,7 +54,7 @@ fun DNAExpandBox(
     val rotation = remember { Animatable(currentRotation) }
     Box(
         modifier.fillMaxWidth().wrapContentHeight().background(Color.White)
-            .padding(vertical = Paddings.large, horizontal = Paddings.medium)
+            .padding(top = Paddings.medium, bottom = Paddings.medium, start = Paddings.medium, end = Paddings.medium)
             .animateContentSize()
             .noRippleClickable {
                 isExpanded = isExpanded != true

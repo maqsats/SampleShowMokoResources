@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
+import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.poppinsFontFamily
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.compose.painterResource
@@ -92,7 +93,7 @@ fun DNATextWithIcon(
             text = text,
             style = style,
             color = textColor,
-            modifier = modifier.padding(horizontal = 4.dp),
+            modifier = modifier.padding(start = Paddings.small),
             fontFamily = poppinsFontFamily(),
             textAlign = textAlign,
             maxLines = maxLines ?: Int.MAX_VALUE,
