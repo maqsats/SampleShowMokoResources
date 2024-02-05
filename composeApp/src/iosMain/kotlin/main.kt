@@ -1,4 +1,4 @@
 import androidx.compose.ui.window.ComposeUIViewController
-import com.dna.payments.kmm.presentation.ui.features.help_center.BasicWebViewSample
+import com.dna.payments.kmm.App
 
-fun MainViewController() = ComposeUIViewController { BasicWebViewSample() }
+fun MainViewController() = ComposeUIViewController { App() }

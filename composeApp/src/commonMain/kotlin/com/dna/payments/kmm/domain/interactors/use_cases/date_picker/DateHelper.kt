@@ -35,8 +35,8 @@ import com.dna.payments.kmm.domain.model.date_picker.IntervalType.YEAR
 import com.dna.payments.kmm.domain.model.date_picker.Menu
 import com.dna.payments.kmm.domain.model.date_picker.Menu.SETTLEMENTS
 import com.dna.payments.kmm.utils.extension.isSameDayAs
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeSpan
+import korlibs.time.DateTime
+import korlibs.time.DateTimeSpan
 
 
 class DateHelper {
