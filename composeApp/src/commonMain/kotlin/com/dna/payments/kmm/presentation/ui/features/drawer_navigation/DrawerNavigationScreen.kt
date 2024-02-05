@@ -65,7 +65,10 @@ class DrawerNavigationScreen : Screen {
         CompositionLocalProvider(
             LocalDrawerNavigatorStateHolder providesDefault rememberSaveableStateHolder()
         ) {
-            val disposeBehavior = NavigatorDisposeBehavior()
+            val disposeBehavior = NavigatorDisposeBehavior(
+                disposeSteps = false,
+                disposeNestedNavigators = false
+            )
             val navigator =
                 rememberDrawerNavigator(
                     listOf(getInitialScreen()),
@@ -73,10 +76,6 @@ class DrawerNavigationScreen : Screen {
                     disposeBehavior,
                     LocalDrawerNavigator.current
                 )
-
-            if (navigator.parent?.disposeBehavior?.disposeNestedNavigators != false) {
-                DrawerNavigatorDisposableEffect(navigator)
-            }
 
             ModalNavigationDrawer(
                 drawerState = drawerState,

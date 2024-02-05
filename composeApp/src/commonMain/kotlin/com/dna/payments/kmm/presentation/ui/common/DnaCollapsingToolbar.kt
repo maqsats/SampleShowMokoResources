@@ -1,6 +1,7 @@
 package com.dna.payments.kmm.presentation.ui.common
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -130,9 +131,13 @@ fun DnaCollapsingToolbarWithFilter(
                     .height(if (columnHeightDp > 0.dp) columnHeightDp else Dimens.collapsingToolbarHeight)
                     .pin()
             ) {
-                AnimatedVisibility(
-                    visible = state.toolbarState.progress > 0.8f,
-                    enter = fadeIn(animationSpec = tween(1000)),
+               AnimatedVisibility(
+                    visible = if (!isExpandToolbar) true else state.toolbarState.progress > 0.8f,
+                    enter = if (!isExpandToolbar) EnterTransition.None else fadeIn(
+                        animationSpec = tween(
+                            1000
+                        )
+                    ),
                     exit = fadeOut(animationSpec = tween(1000))
                 ) {
                     Column {

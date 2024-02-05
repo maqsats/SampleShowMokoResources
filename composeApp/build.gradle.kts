@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.sqlDelight)
     alias(libs.plugins.resource.generator)
     alias(libs.plugins.parcelize)
-    id("com.google.gms.google-services")
+    alias(libs.plugins.gms)
 }
 
 
@@ -26,11 +26,6 @@ kotlin {
     }
 
     jvm("desktop")
-
-    js {
-        browser()
-        binaries.executable()
-    }
 
     iosX64()
     iosArm64()
@@ -99,7 +94,8 @@ kotlin {
                 implementation(libs.multiplatform.settings.no.arg)
                 implementation(libs.time.klock)
                 implementation(libs.compose.shimmer)
-                implementation("dev.chrisbanes.material3:material3-window-size-class-multiplatform:0.3.1")
+                api(libs.compose.webview.multiplatform)
+                implementation(libs.material3.window.size.classMultiplatform)
             }
         }
 
@@ -141,16 +137,6 @@ kotlin {
             }
         }
 
-        val jsMain by getting {
-            dependsOn(commonMain)
-            dependencies {
-                implementation(compose.html.core)
-                implementation(libs.sqlDelight.driver.sqljs)
-                implementation(npm("sql.js", "1.6.2"))
-                implementation(devNpm("copy-webpack-plugin", "9.1.0"))
-            }
-        }
-
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
@@ -173,7 +159,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
         targetSdk = 33
 
         applicationId = "com.dna.payments.kmm"
@@ -205,10 +191,6 @@ compose.desktop {
     }
 }
 
-compose.experimental {
-    web.application {}
-}
-
 libres {
     // https://github.com/Skeptick/libres#setup
 }
@@ -217,7 +199,6 @@ tasks.getByPath("desktopSourcesJar").dependsOn("libresGenerateResources")
 dependencies {
     implementation(libs.play.services.wallet)
 }
-tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
 
 sqldelight {
     databases {
@@ -231,11 +212,5 @@ sqldelight {
 }
 
 multiplatformResources {
-    multiplatformResourcesPackage = "com.dna.payments.kmm" // required
-}
-
-configurations.all {
-    resolutionStrategy {
-        force("org.jetbrains.skiko:skiko:0.7.88")
-    }
+    multiplatformResourcesPackage = "com.dna.payments.kmm"
 }

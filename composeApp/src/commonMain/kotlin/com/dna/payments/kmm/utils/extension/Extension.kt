@@ -41,12 +41,12 @@ import com.dna.payments.kmm.presentation.theme.greyFirst
 import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.constants.Constants
 import com.dna.payments.kmm.utils.platform_colors.PlatformColors
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeTz
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.utils.io.core.toByteArray
+import korlibs.time.DateTime
+import korlibs.time.DateTimeTz
 import kotlinx.serialization.json.Json
 import okio.IOException
 import kotlin.io.encoding.Base64
@@ -300,7 +300,7 @@ fun Screen.changePlatformColor(isGrey: Boolean = false) {
 }
 
 private fun getFormattedTimestamp(): String {
-    return DateTime.nowUnixLong().toString()
+    return DateTime.nowUnixMillis().toString()
 }
 
 fun generateRandomOrderNumber(): String {

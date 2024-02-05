@@ -39,7 +39,7 @@ val repositoryModule = module {
     factoryOf(::DefaultPaymentLinksRepository).bind(PaymentLinksRepository::class)
     factoryOf(::DefaultDomainRepository).bind(DomainsRepository::class)
     factoryOf(::DefaultTransactionRepository).bind(TransactionRepository::class)
-    factoryOf(::DefaultSettingRepository).bind(SettingRepository::class)
     factoryOf(::DefaultCreateNewLinkRepository).bind(CreateNewLinkRepository::class)
+    factoryOf(::DefaultSettingRepository).bind(SettingRepository::class)
 }
 

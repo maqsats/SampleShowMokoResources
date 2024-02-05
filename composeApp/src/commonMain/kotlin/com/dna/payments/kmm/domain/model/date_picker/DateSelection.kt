@@ -1,6 +1,6 @@
 package com.dna.payments.kmm.domain.model.date_picker
 
-import com.soywiz.klock.DateTime
+import korlibs.time.DateTime
 import dev.icerock.moko.parcelize.IgnoredOnParcel
 import dev.icerock.moko.parcelize.Parcelable
 import dev.icerock.moko.parcelize.Parcelize

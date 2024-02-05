@@ -10,10 +10,10 @@ import com.dna.payments.kmm.domain.repository.PaymentLinksRepository
 import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.cutSubstringAfterDot
 import com.dna.payments.kmm.utils.extension.isEqual
-import com.soywiz.klock.DateFormat
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeSpan
-import com.soywiz.klock.parse
+import korlibs.time.DateFormat
+import korlibs.time.DateTime
+import korlibs.time.DateTimeSpan
+import korlibs.time.parse
 
 
 class PaymentLinkUseCase(

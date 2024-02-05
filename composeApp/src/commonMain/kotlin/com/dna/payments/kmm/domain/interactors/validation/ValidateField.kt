@@ -5,7 +5,7 @@ import com.dna.payments.kmm.presentation.model.text_input.TextInput
 import com.dna.payments.kmm.presentation.model.text_input.TextInput.*
 import com.dna.payments.kmm.presentation.model.validation_result.ValidationResult
 import com.dna.payments.kmm.utils.UiText
-import com.soywiz.klock.DateTime
+import korlibs.time.DateTime
 
 class ValidateField {
 

@@ -10,8 +10,8 @@ import com.dna.payments.kmm.domain.network.Response
 import com.dna.payments.kmm.domain.repository.TransactionRepository
 import com.dna.payments.kmm.utils.extension.convertToServerFormat
 import com.dna.payments.kmm.utils.extension.daysBetween
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeSpan
+import korlibs.time.DateTime
+import korlibs.time.DateTimeSpan
 
 class DefaultGetReportUseCase(private val transactionRepository: TransactionRepository) :
     GetReportUseCase {
