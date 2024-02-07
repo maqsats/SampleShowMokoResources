@@ -192,7 +192,7 @@ object DnaTextStyle {
         color = orange
     )
 
-    val Red16 = TextStyle(
+    val MediumRed16 = TextStyle(
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
         color = red

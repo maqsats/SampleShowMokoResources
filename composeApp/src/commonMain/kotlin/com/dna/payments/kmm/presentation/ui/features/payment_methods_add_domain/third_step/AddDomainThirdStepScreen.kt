@@ -29,11 +29,13 @@ import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.main_screens.ScreenName
 import com.dna.payments.kmm.domain.model.payment_methods.PaymentMethod
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
@@ -44,7 +46,9 @@ import com.dna.payments.kmm.presentation.ui.common.DNAOutlinedGreenButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
+import com.dna.payments.kmm.utils.constants.Constants
 import com.dna.payments.kmm.utils.extension.noRippleClickable
+import com.dna.payments.kmm.utils.firebase.logEvent
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.NavigatorResultString
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -66,6 +70,15 @@ class AddDomainThirdStepScreen(
         val state by viewModel.uiState.collectAsState()
         val clipboardManager: ClipboardManager = LocalClipboardManager.current
         val hostProtocol: String = stringResource(MR.strings.host_protocol)
+
+        LifecycleEffect(
+            onStarted = {
+                logEvent(
+                    Constants.SCREEN_OPEN_EVENT,
+                    mapOf(Constants.SCREEN_NAME to ScreenName.ADD_DOMAIN_THIRD_STEP)
+                )
+            }
+        )
 
         UiStateController(state.addDomain)
 
@@ -209,6 +222,7 @@ class AddDomainThirdStepScreen(
                                 )
                             )
                         },
+                        screenName = ScreenName.ADD_DOMAIN_THIRD_STEP,
                         textColor = Color.Black,
                         modifier = Modifier.weight(0.6f).padding(
                             horizontal = Paddings.medium

@@ -17,8 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.main_screens.ScreenName
 import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod
 import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentCard
 import com.dna.payments.kmm.domain.model.transactions.pos.PosTransaction
@@ -35,18 +37,30 @@ import com.dna.payments.kmm.presentation.ui.common.DNATopAppBar
 import com.dna.payments.kmm.presentation.ui.common.DefaultDotsContent
 import com.dna.payments.kmm.presentation.ui.common.PainterDotsContent
 import com.dna.payments.kmm.presentation.ui.common.PainterWithBackgroundDotsContent
+import com.dna.payments.kmm.utils.constants.Constants
 import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.toMoneyString
+import com.dna.payments.kmm.utils.firebase.logEvent
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
 class DetailPosPaymentScreen(private val posTransaction: PosTransaction) : Screen {
+
     @Composable
     override fun Content() {
 
         changePlatformColor(true)
+
+        LifecycleEffect(
+            onStarted = {
+                logEvent(
+                    Constants.SCREEN_OPEN_EVENT,
+                    mapOf(Constants.SCREEN_NAME to ScreenName.DETAIL_POS_PAYMENT)
+                )
+            }
+        )
 
         val navigator = LocalNavigator.currentOrThrow
 
@@ -87,7 +101,8 @@ class DetailPosPaymentScreen(private val posTransaction: PosTransaction) : Scree
             )
             Spacer(modifier = Modifier.height(Paddings.medium))
             DNATextWithIcon(
-                modifier = modifier.align(Alignment.CenterHorizontally).padding(vertical = Paddings.extraSmall),
+                modifier = modifier.align(Alignment.CenterHorizontally)
+                    .padding(vertical = Paddings.extraSmall),
                 text = transaction.status.displayName,
                 style = DnaTextStyle.WithAlphaNormal12,
                 icon = transaction.status.imageResource,
