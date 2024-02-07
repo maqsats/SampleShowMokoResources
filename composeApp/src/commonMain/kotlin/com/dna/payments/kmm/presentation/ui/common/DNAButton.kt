@@ -23,14 +23,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.main_screens.ScreenName
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.backgroundBtnNotEnabled
 import com.dna.payments.kmm.presentation.theme.black
 import com.dna.payments.kmm.presentation.theme.greenButtonNotFilled
 import com.dna.payments.kmm.presentation.theme.yellowButton
+import com.dna.payments.kmm.utils.constants.Constants.BUTTON_CLICK_EVENT
+import com.dna.payments.kmm.utils.constants.Constants.BUTTON_NAME
+import com.dna.payments.kmm.utils.constants.Constants.SCREEN_NAME
 import com.dna.payments.kmm.utils.constants.Constants.delayInMillis
 import com.dna.payments.kmm.utils.constants.Constants.initialTime
 import com.dna.payments.kmm.utils.extension.noRippleClickable
+import com.dna.payments.kmm.utils.firebase.logEvent
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
@@ -41,10 +46,12 @@ fun DNAYellowButton(
     text: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    screenName: ScreenName,
     enabled: Boolean = true,
     icon: ImageResource? = null,
     textColor: Color = Color.Black
 ) {
+    logEvent(BUTTON_CLICK_EVENT, mapOf(SCREEN_NAME to screenName, BUTTON_NAME to text))
     Button(
         onClick = onClick,
         enabled = enabled,

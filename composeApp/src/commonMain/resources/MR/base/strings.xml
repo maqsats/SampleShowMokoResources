@@ -407,4 +407,6 @@
     <string name="invalid_expire_date">Invalid expiration date</string>
     <string name="link_expiration_required">Link expiration required</string>
     <string name="invalid_cvv">Invalid CVV/CVC</string>
+
+    <string name="new_payment_link">New payment link</string>
 </resources>

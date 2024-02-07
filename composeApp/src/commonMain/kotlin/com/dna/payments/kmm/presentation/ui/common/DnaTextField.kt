@@ -131,7 +131,7 @@ fun DnaTextField(
             if (!textState.validationResult.value.successful) {
                 DNAText(
                     textState.validationResult.value.errorMessage?.getText() ?: "",
-                    style = DnaTextStyle.Red16,
+                    style = DnaTextStyle.MediumRed16,
                     modifier = Modifier.padding(start = 0.dp)
                 )
             }

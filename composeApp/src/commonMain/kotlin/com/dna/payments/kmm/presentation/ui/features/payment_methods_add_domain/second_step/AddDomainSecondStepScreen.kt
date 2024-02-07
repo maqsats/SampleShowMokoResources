@@ -18,12 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.main_screens.ScreenName
 import com.dna.payments.kmm.domain.model.payment_methods.PaymentMethod
-import com.dna.payments.kmm.domain.model.payment_methods.setting.PaymentMethodType
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
@@ -31,6 +32,8 @@ import com.dna.payments.kmm.presentation.ui.common.DNAOutlinedGreenButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.features.payment_methods_add_domain.third_step.AddDomainThirdStepScreen
+import com.dna.payments.kmm.utils.constants.Constants
+import com.dna.payments.kmm.utils.firebase.logEvent
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
@@ -44,6 +47,16 @@ class AddDomainSecondStepScreen(
 
     @Composable
     override fun Content() {
+
+        LifecycleEffect(
+            onStarted = {
+                logEvent(
+                    Constants.SCREEN_OPEN_EVENT,
+                    mapOf(Constants.SCREEN_NAME to ScreenName.ADD_DOMAIN_SECOND_STEP)
+                )
+            }
+        )
+
         val navigator = LocalNavigator.currentOrThrow
         Column(
             modifier = Modifier
@@ -143,9 +156,17 @@ class AddDomainSecondStepScreen(
                     )
                     DNAYellowButton(
                         text = stringResource(MR.strings.next_step),
-                        onClick = { navigator.replace(AddDomainThirdStepScreen(domain, paymentMethod)) },
+                        onClick = {
+                            navigator.replace(
+                                AddDomainThirdStepScreen(
+                                    domain,
+                                    paymentMethod
+                                )
+                            )
+                        },
                         icon = MR.images.product_guide_arrow,
                         textColor = Color.Black,
+                        screenName = ScreenName.ADD_DOMAIN_SECOND_STEP,
                         modifier = Modifier.weight(0.6f).padding(
                             horizontal = Paddings.medium
                         )

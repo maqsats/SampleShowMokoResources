@@ -79,7 +79,6 @@ class PosPaymentsScreen : DrawerScreen {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun DrawerContent(isToolbarCollapsed: Boolean) {
-        changePlatformColor()
         val posPaymentsViewModel = getScreenModel<PosPaymentsViewModel>()
         val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
         val state by posPaymentsViewModel.uiState.collectAsState()

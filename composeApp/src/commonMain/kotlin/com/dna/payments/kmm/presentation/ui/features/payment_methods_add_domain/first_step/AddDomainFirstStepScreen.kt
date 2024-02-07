@@ -11,18 +11,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.domain.model.main_screens.ScreenName
 import com.dna.payments.kmm.domain.model.payment_methods.PaymentMethod
-import com.dna.payments.kmm.domain.model.payment_methods.setting.PaymentMethodType
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
@@ -30,7 +30,9 @@ import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.DnaTextField
 import com.dna.payments.kmm.presentation.ui.features.payment_methods_add_domain.second_step.AddDomainSecondStepScreen
+import com.dna.payments.kmm.utils.constants.Constants
 import com.dna.payments.kmm.utils.extension.noRippleClickable
+import com.dna.payments.kmm.utils.firebase.logEvent
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.stringResource
@@ -38,13 +40,22 @@ import dev.icerock.moko.resources.compose.stringResource
 class AddDomainFirstStepScreen(private val paymentMethod: PaymentMethod) : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = getScreenModel<AddDomainFirstStepViewModel>()
         val state by viewModel.uiState.collectAsState()
         val controller = LocalSoftwareKeyboardController.current
+
+        LifecycleEffect(
+            onStarted = {
+                logEvent(
+                    Constants.SCREEN_OPEN_EVENT,
+                    mapOf(Constants.SCREEN_NAME to ScreenName.ADD_DOMAIN_FIRST_STEP)
+                )
+            }
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -113,6 +124,7 @@ class AddDomainFirstStepScreen(private val paymentMethod: PaymentMethod) : Scree
                             )
                         )
                     },
+                    screenName = ScreenName.ADD_DOMAIN_FIRST_STEP,
                     enabled = state.isNextEnabled.value,
                     icon = MR.images.product_guide_arrow,
                     textColor = Color.Black,
