@@ -45,7 +45,7 @@ import com.dna.payments.kmm.presentation.theme.red
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.LogoutDialog
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
-import com.dna.payments.kmm.presentation.ui.features.drawer_navigation.DrawerNavigationScreen
+import com.dna.payments.kmm.presentation.ui.features.drawer_navigation.DrawerContainerScreen
 import com.dna.payments.kmm.presentation.ui.features.login.LoginScreen
 import com.dna.payments.kmm.utils.biometry.BindBiometryAuthenticatorEffect
 import com.dna.payments.kmm.utils.biometry.BiometryAuthenticatorFactory
@@ -104,7 +104,7 @@ class PinScreen : Screen {
                         navigator.replaceAll(LoginScreen())
                     }
                     PinContract.Effect.OnPinCorrect -> {
-                        navigator.replaceAll(DrawerNavigationScreen())
+                        navigator.replaceAll(DrawerContainerScreen())
                     }
                 }
             }

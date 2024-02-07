@@ -34,7 +34,7 @@ class OverviewReportViewModel(
 
     override fun createInitialState() = OverviewReportContract.State(
         dateRange = getDefaultDateRange(),
-        currencies = ResourceUiState.Loading,
+        currencies = ResourceUiState.Idle,
         overviewReportWidgetItems = emptyList(),
         selectedCurrency = Currency(GBP),
         menuType = Menu.OVERVIEW
@@ -69,11 +69,20 @@ class OverviewReportViewModel(
                     }
                 }
             }
+            OverviewReportContract.Event.OnRefresh -> {
+                getCurrencies()
+            }
         }
     }
 
     private fun getCurrencies() {
         screenModelScope.launch {
+            setState {
+                copy(
+                    currencies = ResourceUiState.Loading
+                )
+            }
+
             val currencies = when (val result = currencyUseCase()) {
                 is Response.Success -> {
                     ResourceUiState.Success(result.data)

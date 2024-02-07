@@ -32,6 +32,10 @@ class TeamManagementViewModel(
                 roleList = ResourceUiState.Success(UserType.entries.map { it.displayName })
             )
         }
+        teamManagementByUserPageSource.onReset()
+        teamManagementInvitedPageSource.onReset()
+        getTeammateList()
+        getInvitedTeammateList()
     }
 
     override fun createInitialState(): TeamManagementContract.State =
@@ -47,19 +51,10 @@ class TeamManagementViewModel(
 
     override fun handleEvent(event: TeamManagementContract.Event) {
         when (event) {
-            is TeamManagementContract.Event.OnInit -> {
-                teamManagementByUserPageSource.onReset()
-                teamManagementInvitedPageSource.onReset()
-                getTeammateList()
-                getInvitedTeammateList()
-            }
-
             is TeamManagementContract.Event.OnPageChanged -> {
+                println("TeamManagementViewModel: handleEvent: OnPageChanged: event.position: ${event.position}")
                 setState {
                     copy(selectedPage = event.position)
-                }
-                setEffect {
-                    TeamManagementContract.Effect.OnPageChanged(event.position)
                 }
             }
 

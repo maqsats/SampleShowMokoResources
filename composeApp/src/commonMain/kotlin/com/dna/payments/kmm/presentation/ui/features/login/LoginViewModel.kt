@@ -76,8 +76,8 @@ class LoginViewModel(
     }
 
     private fun authorize(email: String, password: String) {
-        setState { copy(authorization = ResourceUiState.Loading) }
         screenModelScope.launch {
+            setState { copy(authorization = ResourceUiState.Loading) }
             val result = authorizationUseCase(
                 userName = email,
                 password = password

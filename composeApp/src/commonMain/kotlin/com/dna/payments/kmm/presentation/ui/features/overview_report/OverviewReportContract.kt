@@ -20,6 +20,7 @@ interface OverviewReportContract {
         data class OnDateSelection(val datePickerPeriod: DatePickerPeriod) : Event
         data class OnCurrencyChange(val selectedCurrency: Currency) : Event
         data object OnMerchantChanged : Event
+        data object OnRefresh : Event
     }
 
     data class State(

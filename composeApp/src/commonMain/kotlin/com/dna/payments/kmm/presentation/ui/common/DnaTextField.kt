@@ -39,6 +39,7 @@ import com.dna.payments.kmm.presentation.theme.outlineGreenColor
 import com.dna.payments.kmm.presentation.theme.poppinsFontFamily
 import com.dna.payments.kmm.presentation.theme.red
 import com.dna.payments.kmm.presentation.theme.white
+import com.dna.payments.kmm.utils.extension.noRippleClickable
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
@@ -106,11 +107,15 @@ fun DnaTextField(
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     trailingIcon: (@Composable () -> Unit)? = null,
+    enabled: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     maxLength: Int = 0,
     leadingIcon: @Composable (() -> Unit)? = null,
+    onClick: () -> Unit = {}
 ) {
     OutlinedTextField(
+        modifier = modifier.noRippleClickable(onClick),
+        enabled = enabled,
         value = textState.input.value,
         onValueChange = {
             if (maxLength == 0 || it.length <= maxLength) {
@@ -118,7 +123,6 @@ fun DnaTextField(
                 textState.onFieldChanged()
             }
         },
-        modifier = modifier,
         shape = RoundedCornerShape(10.dp),
         textStyle = DnaTextStyle.Normal16.copy(
             fontFamily = poppinsFontFamily()
@@ -142,7 +146,8 @@ fun DnaTextField(
         },
         colors = OutlinedTextFieldDefaults.colors(
             cursorColor = greyColor,
-            disabledLabelColor = white,
+            disabledLabelColor = greyColor,
+            disabledBorderColor = greyColor,
             unfocusedBorderColor = greyColor,
             focusedBorderColor = outlineGreenColor,
             focusedContainerColor = white,

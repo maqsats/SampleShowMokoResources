@@ -403,4 +403,11 @@
     <string name="invalid_cvv">Invalid CVV/CVC</string>
 
     <string name="new_payment_link">New payment link</string>
+    <string name="select_store">Select Store</string>
+    <string name="empty_amount">00.00</string>
+    <string name="customer_name">Customer name</string>
+    <string name="name_of_service_or_item">Name of the service or item</string>
+    <string name="link_expiry">Link expiry</string>
+    <string name="select_date">Select date</string>
+    <string name="create_link">Create link</string>
 </resources>

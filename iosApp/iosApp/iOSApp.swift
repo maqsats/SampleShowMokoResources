@@ -7,6 +7,7 @@ import Firebase
 
 @main
 struct iosApp: App {
+    
     init() {
         KoinKt.doInitKoin()
         FirebaseApp.configure()
@@ -21,7 +22,7 @@ struct iosApp: App {
 
 struct ContentView: View {
     var body: some View {
-        ComposeView().ignoresSafeArea(.keyboard)
+        ComposeView().ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 

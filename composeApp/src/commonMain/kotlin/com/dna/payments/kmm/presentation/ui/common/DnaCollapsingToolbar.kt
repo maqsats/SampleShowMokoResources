@@ -79,7 +79,7 @@ fun DnaCollapsingToolbarWithoutFilter(
 ) {
     LazyColumn(
         Modifier
-            .fillMaxSize().background(drawerBackgroundColor)
+            .fillMaxSize().background(Color.White)
     ) {
         stickyHeader {
             DnaToolbar(
@@ -131,7 +131,7 @@ fun DnaCollapsingToolbarWithFilter(
                     .height(if (columnHeightDp > 0.dp) columnHeightDp else Dimens.collapsingToolbarHeight)
                     .pin()
             ) {
-               AnimatedVisibility(
+                AnimatedVisibility(
                     visible = if (!isExpandToolbar) true else state.toolbarState.progress > 0.8f,
                     enter = if (!isExpandToolbar) EnterTransition.None else fadeIn(
                         animationSpec = tween(
