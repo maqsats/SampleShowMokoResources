@@ -80,7 +80,7 @@ class AddDomainThirdStepScreen(
             }
         )
 
-        UiStateController(state.addDomain)
+        UiStateController(state.addDomainState)
 
         LaunchedEffect(key1 = Unit) {
             viewModel.effect.collectLatest { effect ->
