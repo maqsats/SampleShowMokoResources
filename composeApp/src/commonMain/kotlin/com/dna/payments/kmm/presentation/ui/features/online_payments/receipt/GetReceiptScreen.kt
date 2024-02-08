@@ -47,7 +47,8 @@ import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.toMoneyString
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.Navigator
-import com.dna.payments.kmm.utils.navigation.NavigatorResultString
+import com.dna.payments.kmm.utils.navigation.OnlinePaymentNavigatorResult
+import com.dna.payments.kmm.utils.navigation.OnlinePaymentNavigatorResultType
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.popWithResult
 import dev.icerock.moko.resources.compose.painterResource
@@ -68,8 +69,8 @@ class GetReceiptScreen(private val transaction: Transaction) : Screen {
                 when (effect) {
                     GetReceiptContract.Effect.OnSendSuccess -> {
                         navigator.popWithResult(
-                            NavigatorResultString(
-                                true
+                            OnlinePaymentNavigatorResult(
+                                OnlinePaymentNavigatorResultType.REFUND,
                             )
                         )
                     }

@@ -32,6 +32,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.dna.payments.kmm.MR
+import com.dna.payments.kmm.presentation.state.ComponentRectangle
+import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.greyColorBackground
@@ -119,6 +121,50 @@ fun DNAExpandBox(
                     content()
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun DNAExpandBoxOnLoading(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier.fillMaxWidth().wrapContentHeight().background(Color.White)
+            .padding(
+                top = Paddings.medium,
+                bottom = Paddings.medium,
+                start = Paddings.medium,
+                end = Paddings.medium
+            )
+
+    ) {
+        Column {
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Box(
+                        modifier = modifier
+                            .shadow(1.dp, shape = RoundedCornerShape(4.dp))
+                            .border(
+                                BorderStroke(width = 1.dp, color = greyColorBackground),
+                                shape = RoundedCornerShape(4.dp)
+                            ).height(40.dp)
+                            .background(Color.White)
+                            .width(40.dp).padding(4.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ComponentRectangle(modifier = modifier.padding(Paddings.extraSmall))
+                    }
+                    ComponentRectangleLineLong(modifier = modifier.padding(horizontal = Paddings.medium))
+                }
+            }
+            Spacer(modifier = Modifier.height(Paddings.small))
         }
     }
 }

@@ -409,4 +409,8 @@
     <string name="invalid_cvv">Invalid CVV/CVC</string>
 
     <string name="new_payment_link">New payment link</string>
+    <string name="payment_refunded">Payment has been refunded</string>
+    <string name="payment_charged">Payment has been charged</string>
+    <string name="process_new_payment_successfully">Process new payment was successful</string>
+
 </resources>

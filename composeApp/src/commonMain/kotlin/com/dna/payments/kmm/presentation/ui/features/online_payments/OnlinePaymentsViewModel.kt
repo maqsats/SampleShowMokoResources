@@ -44,6 +44,8 @@ class OnlinePaymentsViewModel(
                 indexOfSelectedStatus = 0
             )
         }
+        onlinePaymentsPageSource.onReset()
+        getOnlinePaymentList()
     }
 
     override fun createInitialState(): OnlinePaymentsContract.State =
@@ -68,11 +70,6 @@ class OnlinePaymentsViewModel(
                         )
                     )
                 }
-                onlinePaymentsPageSource.onReset()
-                getOnlinePaymentList()
-            }
-
-            OnlinePaymentsContract.Event.OnInit -> {
                 onlinePaymentsPageSource.onReset()
                 getOnlinePaymentList()
             }

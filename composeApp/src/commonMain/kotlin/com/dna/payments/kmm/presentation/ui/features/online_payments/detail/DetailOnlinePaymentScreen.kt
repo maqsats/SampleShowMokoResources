@@ -15,19 +15,26 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.zIndex
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod
 import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentStatus
 import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentCard
 import com.dna.payments.kmm.domain.model.transactions.Transaction
+import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
+import com.dna.payments.kmm.presentation.state.ComponentRectangleLineShort
+import com.dna.payments.kmm.presentation.state.ManagementResourceUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.greyFirst
@@ -35,6 +42,7 @@ import com.dna.payments.kmm.presentation.theme.lightGrey
 import com.dna.payments.kmm.presentation.ui.common.ClipboardDotsContent
 import com.dna.payments.kmm.presentation.ui.common.DNADots
 import com.dna.payments.kmm.presentation.ui.common.DNAExpandBox
+import com.dna.payments.kmm.presentation.ui.common.DNAExpandBoxOnLoading
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
 import com.dna.payments.kmm.presentation.ui.common.DNATopAppBar
@@ -50,20 +58,65 @@ import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.toMoneyString
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
-import com.dna.payments.kmm.utils.navigation.NavigatorResultString
+import com.dna.payments.kmm.utils.navigation.Navigator
+import com.dna.payments.kmm.utils.navigation.OnlinePaymentNavigatorResult
+import com.dna.payments.kmm.utils.navigation.OnlinePaymentNavigatorResultType.CHARGED
+import com.dna.payments.kmm.utils.navigation.OnlinePaymentNavigatorResultType.PROCESS_NEW_PAYMENT
+import com.dna.payments.kmm.utils.navigation.OnlinePaymentNavigatorResultType.REFUND
 import com.dna.payments.kmm.utils.navigation.clearResults
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.getResult
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
-class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
+class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Screen {
+
     @Composable
     override fun Content() {
 
         changePlatformColor(true)
 
         val navigator = LocalNavigator.currentOrThrow
+        val detailPaymentViewModel = getScreenModel<DetailOnlinePaymentViewModel>()
+        val state by detailPaymentViewModel.uiState.collectAsState()
+
+        val showSuccessMessage = remember { mutableStateOf(false) }
+        val successMessage = remember { mutableStateOf(MR.strings.empty_text) }
+
+        val result = getResult().value
+
+        LaunchedEffect(transactionParam, result) {
+            if (result == null) return@LaunchedEffect
+
+            if (result is OnlinePaymentNavigatorResult) {
+                println("RESULT IS ${result.value}")
+                when (result.value) {
+                    REFUND, CHARGED, PROCESS_NEW_PAYMENT -> {
+                        detailPaymentViewModel.setEvent(
+                            DetailOnlinePaymentContract.Event.OnTransactionChanged(
+                                transactionParam.id
+                            )
+                        )
+                    }
+
+                    else -> {
+                        detailPaymentViewModel.setEvent(
+                            DetailOnlinePaymentContract.Event.OnTransactionGet(
+                                transactionParam
+                            )
+                        )
+                    }
+                }
+                successMessage.value = result.value.successMessage ?: MR.strings.empty_text
+                showSuccessMessage.value = result.value.successMessage != null
+                navigator.clearResults()
+            }
+        }
+
+        SuccessPopup(
+            UiText.StringResource(successMessage.value),
+            showSuccessMessage
+        )
 
         Column(
             modifier = Modifier
@@ -71,22 +124,6 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
                 .background(greyFirst),
             verticalArrangement = Arrangement.Top
         ) {
-            val showReceiptSentSuccess = remember { mutableStateOf(false) }
-
-            val result = getResult().value
-
-            LaunchedEffect(result) {
-                if (result == null) return@LaunchedEffect
-                if (result is NavigatorResultString) {
-                    showReceiptSentSuccess.value = result.value
-                    navigator.clearResults()
-                }
-            }
-
-            SuccessPopup(
-                UiText.StringResource(MR.strings.receipt_sent),
-                showReceiptSentSuccess
-            )
 
             DNATopAppBar(
                 title = stringResource(MR.strings.payment_detail),
@@ -100,53 +137,88 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
 
                 }
             )
-            Box {
-                Box(
-                    Modifier.zIndex(1f)
-                ) {
-                    OnlinePaymentDetailContent(
-                        modifier = Modifier.wrapContentHeight(),
-                        transaction = transaction
-                    )
-                }
-                if ((transaction.status == OnlinePaymentStatus.CHARGE) || (transaction.status == OnlinePaymentStatus.AUTH) || (transaction.status == OnlinePaymentStatus.CREDITED)) {
-                    Box(
-                        Modifier.zIndex(2f)
-                    ) {
-                        Column {
-                            Spacer(
-                                modifier = Modifier.fillMaxWidth().weight(1f)
-                            )
-                            DNAYellowButton(
-                                content = {
-                                    DNAText(
-                                        text = stringResource(MR.strings.receipt),
-                                        style = DnaTextStyle.Medium16,
-                                        modifier = Modifier.padding(vertical = Paddings.extraSmall)
-                                    )
-                                },
-                                onClick = { navigator.push(GetReceiptScreen(transaction)) },
-                                modifier = Modifier.fillMaxWidth().padding(
-                                    start = Paddings.medium,
-                                    end = Paddings.medium,
-                                    bottom = Paddings.medium
-                                )
-                            )
-                        }
-                    }
 
-                }
-            }
+            OnlinePaymentDetailContent(
+                modifier = Modifier.wrapContentHeight(),
+                state = state,
+                navigator = navigator
+            )
         }
     }
 
     @Composable
     private fun OnlinePaymentDetailContent(
         modifier: Modifier,
+        state: DetailOnlinePaymentContract.State,
+        navigator: Navigator,
+    ) {
+        Column(
+            modifier.fillMaxSize()
+        ) {
+            ManagementResourceUiState(
+                modifier = modifier,
+                resourceUiState = state.detailPaymentState,
+                successView = {
+                    Box {
+                        Box(
+                            Modifier.zIndex(1f)
+                        ) {
+                            if (it != null) {
+                                DetailOnlinePaymentContent(
+                                    modifier = modifier,
+                                    transaction = it
+                                )
+                            }
+                        }
+                        if ((it?.status == OnlinePaymentStatus.CHARGE) || (it?.status == OnlinePaymentStatus.AUTH) || (it?.status == OnlinePaymentStatus.CREDITED)) {
+                            Box(
+                                Modifier.zIndex(2f)
+                            ) {
+                                Column {
+                                    Spacer(
+                                        modifier = Modifier.fillMaxWidth().weight(1f)
+                                    )
+                                    DNAYellowButton(
+                                        content = {
+                                            DNAText(
+                                                text = stringResource(MR.strings.receipt),
+                                                style = DnaTextStyle.Medium16,
+                                                modifier = Modifier.padding(vertical = Paddings.extraSmall)
+                                            )
+                                        },
+                                        onClick = { navigator.push(GetReceiptScreen(it)) },
+                                        modifier = Modifier.fillMaxWidth().padding(
+                                            start = Paddings.medium,
+                                            end = Paddings.medium,
+                                            bottom = Paddings.small
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                    }
+                },
+                loadingView = {
+                    DetailOnlinePaymentContentOnLoading()
+                },
+                onCheckAgain = {},
+                onTryAgain = {},
+            )
+        }
+    }
+
+
+    @Composable
+    private fun DetailOnlinePaymentContent(
+        modifier: Modifier,
         transaction: Transaction
     ) {
         Column(
-            modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+            modifier = modifier
+                .fillMaxWidth()
+                .verticalScroll(
+                    rememberScrollState()
+                )
         ) {
             Spacer(modifier = Modifier.height(Paddings.medium))
             DNAText(
@@ -180,25 +252,30 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
             )
             VerificationDetails(modifier, transaction)
             Divider(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = Paddings.medium),
                 color = lightGrey
             )
             SummaryDetails(modifier, transaction)
             Divider(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = Paddings.medium),
                 color = lightGrey
             )
             CustomerDetails(modifier, transaction)
             Divider(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = Paddings.medium),
                 color = lightGrey
             )
             LocationDetails(modifier, transaction)
             Divider(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = Paddings.medium),
                 color = lightGrey
             )
-            PaymentPageDetails(modifier.padding(bottom = Paddings.large), transaction)
+            PaymentPageDetails(modifier.padding(), transaction)
+            Spacer(modifier = Modifier.height(Paddings.extraLarge))
         }
     }
 
@@ -518,6 +595,52 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
                     transaction.postLinkStatus.toString()
                 )
             }
+        }
+    }
+
+    @Composable
+    private fun DetailOnlinePaymentContentOnLoading(
+        modifier: Modifier = Modifier
+    ) {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+        ) {
+            Spacer(modifier = Modifier.height(Paddings.medium))
+            ComponentRectangleLineShort(modifier.align(CenterHorizontally))
+            Spacer(modifier = Modifier.height(Paddings.medium))
+            ComponentRectangleLineShort(modifier.align(CenterHorizontally))
+            Spacer(modifier = Modifier.height(Paddings.standard12dp))
+            ComponentRectangleLineLong(
+                modifier.align(CenterHorizontally)
+                    .padding(start = Paddings.medium, end = Paddings.medium)
+            )
+            Spacer(modifier = Modifier.height(Paddings.large))
+            DNAExpandBoxOnLoading()
+            Divider(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
+            DNAExpandBoxOnLoading()
+            Divider(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
+            DNAExpandBoxOnLoading()
+            Divider(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
+            DNAExpandBoxOnLoading()
+            Divider(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = Paddings.medium),
+                color = lightGrey
+            )
+            Spacer(modifier = Modifier.height(Paddings.large))
         }
     }
 }
