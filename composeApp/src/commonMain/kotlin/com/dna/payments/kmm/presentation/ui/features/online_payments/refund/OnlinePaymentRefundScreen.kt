@@ -1,4 +1,4 @@
-package com.dna.payments.kmm.presentation.ui.features.online_payments.receipt
+package com.dna.payments.kmm.presentation.ui.features.online_payments.refund
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,24 +9,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
-import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod
-import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentCard
 import com.dna.payments.kmm.domain.model.transactions.Transaction
 import com.dna.payments.kmm.presentation.model.TextFieldUiState
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
@@ -34,14 +28,12 @@ import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.greyFirst
 import com.dna.payments.kmm.presentation.theme.lightGrey
 import com.dna.payments.kmm.presentation.theme.white
-import com.dna.payments.kmm.presentation.ui.common.DNAEmailTextField
-import com.dna.payments.kmm.presentation.ui.common.DNAOutlinedGreenButton
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
 import com.dna.payments.kmm.presentation.ui.common.DNATopAppBar
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.DefaultDotsContent
-import com.dna.payments.kmm.presentation.ui.common.PainterDotsContent
+import com.dna.payments.kmm.presentation.ui.common.DnaTextField
 import com.dna.payments.kmm.presentation.ui.common.UiStateController
 import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.toMoneyString
@@ -55,22 +47,22 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
-class GetReceiptScreen(private val transaction: Transaction) : Screen {
+class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
     @Composable
     override fun Content() {
 
         changePlatformColor(true)
-        val getReceiptViewModel = getScreenModel<GetReceiptViewModel>()
+        val getReceiptViewModel = getScreenModel<OnlinePaymentRefundViewModel>()
         val state by getReceiptViewModel.uiState.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
 
         LaunchedEffect(key1 = Unit) {
             getReceiptViewModel.effect.collectLatest { effect ->
                 when (effect) {
-                    GetReceiptContract.Effect.OnSendSuccess -> {
+                    OnlinePaymentRefundContract.Effect.OnSuccessfullyRefunded -> {
                         navigator.popWithResult(
                             OnlinePaymentNavigatorResult(
-                                OnlinePaymentNavigatorResultType.SEND_RECEIPT,
+                                OnlinePaymentNavigatorResultType.REFUND,
                             )
                         )
                     }
@@ -98,9 +90,9 @@ class GetReceiptScreen(private val transaction: Transaction) : Screen {
                 transaction = transaction,
                 state = state,
                 navigator = navigator,
-                onSendReceiptClicked = {
+                onSendRefundClicked = {
                     getReceiptViewModel.setEvent(
-                        GetReceiptContract.Event.OnSendClicked(
+                        OnlinePaymentRefundContract.Event.OnRefundClicked(
                             it
                         )
                     )
@@ -113,9 +105,9 @@ class GetReceiptScreen(private val transaction: Transaction) : Screen {
     private fun GetReceiptContent(
         modifier: Modifier,
         transaction: Transaction,
-        state: GetReceiptContract.State,
+        state: OnlinePaymentRefundContract.State,
         navigator: Navigator,
-        onSendReceiptClicked: (String) -> Unit
+        onSendRefundClicked: (String) -> Unit
     ) {
         Column(
             modifier.fillMaxSize()
@@ -141,8 +133,8 @@ class GetReceiptScreen(private val transaction: Transaction) : Screen {
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 Column {
-                    EmailField(
-                        email = state.email
+                    AmountField(
+                        amount = state.amount
                     )
                     Divider(
                         modifier = Modifier.fillMaxWidth(),
@@ -150,47 +142,8 @@ class GetReceiptScreen(private val transaction: Transaction) : Screen {
                     )
                     Spacer(modifier = Modifier.height(Paddings.medium))
                     DefaultDotsContent(
-                        title = MR.strings.date,
-                        value = transaction.createdDate
-                    )
-                    Spacer(modifier = Modifier.height(Paddings.medium))
-                    Divider(
-                        modifier = Modifier.fillMaxWidth(),
-                        color = lightGrey
-                    )
-                    Spacer(modifier = Modifier.height(Paddings.medium))
-                    PainterDotsContent(
-                        title = MR.strings.payment_method,
-                        value = when (transaction.paymentMethod) {
-                            OnlinePaymentMethod.CARD -> {
-                                transaction.cardMask
-                            }
-
-                            OnlinePaymentMethod.CLICK_TO_PAY -> {
-                                transaction.cardMask
-                            }
-
-                            else -> {
-                                stringResource(transaction.paymentMethod.stringResource)
-                            }
-                        },
-                        icon = when (transaction.paymentMethod) {
-                            OnlinePaymentMethod.CARD -> {
-                                if (transaction.cardType != null) {
-                                    PosPaymentCard.fromCardType(transaction.cardType).imageResource?.let {
-                                        it
-                                    }
-                                } else {
-                                    null
-                                }
-                            }
-
-                            else -> {
-                                transaction.paymentMethod.imageResource?.let {
-                                    it
-                                }
-                            }
-                        }
+                        title = MR.strings.payment_amount,
+                        value = transaction.amount.toMoneyString(transaction.currency)
                     )
                     Spacer(modifier = Modifier.height(Paddings.medium))
                     Divider(
@@ -199,8 +152,8 @@ class GetReceiptScreen(private val transaction: Transaction) : Screen {
                     )
                     Spacer(modifier = Modifier.height(Paddings.medium))
                     DefaultDotsContent(
-                        MR.strings.order_number,
-                        transaction.invoiceId
+                        title = MR.strings.balance,
+                        value = transaction.balance.toMoneyString(transaction.currency)
                     )
                 }
                 Row(
@@ -209,33 +162,20 @@ class GetReceiptScreen(private val transaction: Transaction) : Screen {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    DNAOutlinedGreenButton(
-                        enabled = state.isButtonEnabled.value,
-                        modifier = Modifier.wrapContentWidth().wrapContentHeight(),
-                        content = {
-                            Icon(
-                                modifier = Modifier.align(Alignment.CenterVertically)
-                                    .padding(vertical = Paddings.extraSmall)
-                                    .height(24.dp).width(24.dp),
-                                painter = painterResource(MR.images.ic_send_green),
-                                contentDescription = null,
-                                tint = Color.Unspecified,
-                            )
-                        },
-                        onClick = { onSendReceiptClicked(transaction.id) },
-                    )
                     DNAYellowButton(
                         enabled = state.isButtonEnabled.value,
                         content = {
                             DNAText(
-                                text = stringResource(MR.strings.download_receipt),
+                                text = stringResource(MR.strings.refund),
                                 style = DnaTextStyle.Medium16,
                                 modifier = Modifier.padding(vertical = Paddings.extraSmall)
                             )
                         },
-                        onClick = {},
-                        modifier = Modifier.weight(1f).padding(
-                            start = Paddings.medium
+                        onClick = {
+                            onSendRefundClicked(transaction.id)
+                        },
+                        modifier = Modifier.fillMaxWidth().padding(
+                            horizontal = Paddings.medium
                         )
                     )
                 }
@@ -244,14 +184,22 @@ class GetReceiptScreen(private val transaction: Transaction) : Screen {
     }
 
     @Composable
-    private fun EmailField(
-        email: TextFieldUiState
+    private fun AmountField(
+        amount: TextFieldUiState
     ) {
         DNAText(
-            text = stringResource(MR.strings.customer_email),
+            text = stringResource(MR.strings.refund_amount),
             style = DnaTextStyle.Medium16,
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        DNAEmailTextField(email, stringResource(MR.strings.customer_email))
+        Spacer(modifier = Modifier.height(Paddings.small))
+        DnaTextField(
+            amount, stringResource(MR.strings.charge_amount),
+            leadingIcon = {
+                DNAText(
+                    style = DnaTextStyle.Normal16,
+                    text = stringResource(MR.strings.euro),
+                    modifier = Modifier.padding(start = Paddings.standard12dp)
+                )
+            })
     }
 }

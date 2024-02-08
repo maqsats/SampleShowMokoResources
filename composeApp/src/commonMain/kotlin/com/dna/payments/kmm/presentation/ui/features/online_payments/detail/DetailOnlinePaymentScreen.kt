@@ -19,7 +19,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ClipboardManager
@@ -54,6 +53,7 @@ import com.dna.payments.kmm.presentation.ui.common.PainterDotsContent
 import com.dna.payments.kmm.presentation.ui.common.PainterWithBackgroundDotsContent
 import com.dna.payments.kmm.presentation.ui.common.SuccessPopup
 import com.dna.payments.kmm.presentation.ui.features.online_payments.receipt.GetReceiptScreen
+import com.dna.payments.kmm.presentation.ui.features.online_payments.refund.OnlinePaymentRefundScreen
 import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.toMoneyString
@@ -89,7 +89,6 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
             if (result == null) return@LaunchedEffect
 
             if (result is OnlinePaymentNavigatorResult) {
-                println("RESULT IS ${result.value}")
                 when (result.value) {
                     REFUND, CHARGED, PROCESS_NEW_PAYMENT -> {
                         detailPaymentViewModel.setEvent(
@@ -134,7 +133,11 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
                 },
                 actionIcon = painterResource(MR.images.ic_actions),
                 onActionClick = {
-
+                    navigator.push(
+                        OnlinePaymentRefundScreen(
+                            transactionParam
+                        )
+                    )
                 }
             )
 
@@ -160,41 +163,20 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
                 resourceUiState = state.detailPaymentState,
                 successView = {
                     Box {
-                        Box(
-                            Modifier.zIndex(1f)
-                        ) {
-                            if (it != null) {
+                        if (it != null) {
+                            Box(
+                                Modifier.zIndex(1f)
+                            ) {
+
                                 DetailOnlinePaymentContent(
                                     modifier = modifier,
                                     transaction = it
                                 )
                             }
-                        }
-                        if ((it?.status == OnlinePaymentStatus.CHARGE) || (it?.status == OnlinePaymentStatus.AUTH) || (it?.status == OnlinePaymentStatus.CREDITED)) {
-                            Box(
-                                Modifier.zIndex(2f)
-                            ) {
-                                Column {
-                                    Spacer(
-                                        modifier = Modifier.fillMaxWidth().weight(1f)
-                                    )
-                                    DNAYellowButton(
-                                        content = {
-                                            DNAText(
-                                                text = stringResource(MR.strings.receipt),
-                                                style = DnaTextStyle.Medium16,
-                                                modifier = Modifier.padding(vertical = Paddings.extraSmall)
-                                            )
-                                        },
-                                        onClick = { navigator.push(GetReceiptScreen(it)) },
-                                        modifier = Modifier.fillMaxWidth().padding(
-                                            start = Paddings.medium,
-                                            end = Paddings.medium,
-                                            bottom = Paddings.small
-                                        )
-                                    )
-                                }
-                            }
+                            ZStackReceiptButton(
+                                it,
+                                navigator
+                            )
                         }
                     }
                 },
@@ -223,12 +205,12 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
             Spacer(modifier = Modifier.height(Paddings.medium))
             DNAText(
                 text = transaction.amount.toMoneyString(transaction.currency),
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+                modifier = Modifier.align(CenterHorizontally),
                 style = DnaTextStyle.Bold32
             )
             Spacer(modifier = Modifier.height(Paddings.medium))
             DNATextWithIcon(
-                modifier = modifier.align(Alignment.CenterHorizontally)
+                modifier = modifier.align(CenterHorizontally)
                     .padding(vertical = Paddings.extraSmall),
                 text = stringResource(transaction.status.stringResource),
                 style = DnaTextStyle.WithAlphaNormal12,
@@ -239,7 +221,7 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
             Spacer(modifier = Modifier.height(Paddings.standard12dp))
             DNATextWithIcon(
                 modifier = Modifier.padding(start = Paddings.medium, end = Paddings.medium)
-                    .align(Alignment.CenterHorizontally),
+                    .align(CenterHorizontally),
                 text = transaction.description,
                 style = DnaTextStyle.WithAlphaNormal14,
                 icon = MR.images.ic_message
@@ -469,18 +451,14 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
                     icon = when (transaction.paymentMethod) {
                         OnlinePaymentMethod.CARD -> {
                             if (transaction.cardType != null) {
-                                PosPaymentCard.fromCardType(transaction.cardType).imageResource?.let {
-                                    it
-                                }
+                                PosPaymentCard.fromCardType(transaction.cardType).imageResource
                             } else {
                                 null
                             }
                         }
 
                         else -> {
-                            transaction.paymentMethod.imageResource?.let {
-                                it
-                            }
+                            transaction.paymentMethod.imageResource
                         }
                     }
                 )
@@ -641,6 +619,43 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
                 color = lightGrey
             )
             Spacer(modifier = Modifier.height(Paddings.large))
+        }
+    }
+
+    @Composable
+    private fun ZStackReceiptButton(
+        transaction: Transaction,
+        navigator: Navigator,
+        modifier: Modifier = Modifier
+    ) {
+        if ((transaction.status == OnlinePaymentStatus.CHARGE) ||
+            (transaction.status == OnlinePaymentStatus.AUTH) ||
+            (transaction.status == OnlinePaymentStatus.CREDITED)
+        ) {
+            Box(
+                modifier.zIndex(2f)
+            ) {
+                Column {
+                    Spacer(
+                        modifier = modifier.fillMaxWidth().weight(1f)
+                    )
+                    DNAYellowButton(
+                        content = {
+                            DNAText(
+                                text = stringResource(MR.strings.receipt),
+                                style = DnaTextStyle.Medium16,
+                                modifier = modifier.padding(vertical = Paddings.extraSmall)
+                            )
+                        },
+                        onClick = { navigator.push(GetReceiptScreen(transaction)) },
+                        modifier = modifier.fillMaxWidth().padding(
+                            start = Paddings.medium,
+                            end = Paddings.medium,
+                            bottom = Paddings.small
+                        )
+                    )
+                }
+            }
         }
     }
 }

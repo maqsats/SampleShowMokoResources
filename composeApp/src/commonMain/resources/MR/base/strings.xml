@@ -399,7 +399,7 @@
     <string name="receipt_sent">Receipt has been sent to customer</string>
     <string name="no_internet_connection">No internet connection</string>
 
-    // Validation
+<!--    Validation-->
     <string name="error_description_is_required">Description is required</string>
     <string name="amount_is_required">Amount is required</string>
     <string name="field_is_required">Field is required</string>
@@ -413,4 +413,14 @@
     <string name="payment_charged">Payment has been charged</string>
     <string name="process_new_payment_successfully">Process new payment was successful</string>
 
+    <!--    Payment refund-->
+    <string name="payment_refund">Payment refund</string>
+    <string name="charge_amount">Charge Amount</string>
+    <string name="refund_amount">Refund Amount</string>
+    <string name="payment_amount">Payment Amount</string>
+    <string name="balance">Balance</string>
+    <string name="euro">£</string>
+    <string name="amount_required">Amount is required.</string>
+    <string name="amount_must_be">Charge amount must be a positive number not greater than the payment amount.</string>
+    <string name="refund_amount_must_be">Refund amount must be a positive number not greater than the balance.</string>
 </resources>

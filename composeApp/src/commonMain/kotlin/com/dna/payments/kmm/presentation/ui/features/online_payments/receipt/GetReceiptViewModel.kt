@@ -5,13 +5,13 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.data.model.payment_methods.SendReceiptRequest
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.SendReceiptOperationUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
-import com.dna.payments.kmm.domain.network.Response
+import com.dna.payments.kmm.domain.network.Response.Companion.onSuccess
+import com.dna.payments.kmm.domain.network.toResourceUiState
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.model.TextFieldUiState
 import com.dna.payments.kmm.presentation.model.text_input.TextInput
 import com.dna.payments.kmm.presentation.model.validation_result.ValidationResult
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
-import com.dna.payments.kmm.utils.UiText
 import kotlinx.coroutines.launch
 
 class GetReceiptViewModel(
@@ -63,28 +63,11 @@ class GetReceiptViewModel(
             )
             setState {
                 copy(
-                    sendReceiptState = when (result) {
-                        is Response.Success -> {
-                            setEffect {
-                                GetReceiptContract.Effect.OnSendSuccess
-                            }
-                            ResourceUiState.Success(
-                                result.data
-                            )
+                    sendReceiptState = result.onSuccess {
+                        setEffect {
+                            GetReceiptContract.Effect.OnSendSuccess
                         }
-
-                        is Response.Error -> {
-                            ResourceUiState.Error(result.error)
-                        }
-
-                        is Response.NetworkError -> {
-                            ResourceUiState.Error(UiText.DynamicString("Network error"))
-                        }
-
-                        is Response.TokenExpire -> {
-                            ResourceUiState.Error(UiText.DynamicString("Token expired"))
-                        }
-                    }
+                    }.toResourceUiState()
                 )
             }
         }
