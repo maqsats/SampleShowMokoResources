@@ -27,8 +27,9 @@ class OnlinePaymentRefundViewModel(
                 validationResult = mutableStateOf(ValidationResult(successful = true)),
                 onFieldChanged = { this.setEvent(OnlinePaymentRefundContract.Event.OnAmountFieldChanged) }
             ),
-            isButtonEnabled = mutableStateOf(false),
-            sendReceiptState = ResourceUiState.Idle
+            isButtonEnabled = mutableStateOf(true),
+            sendReceiptState = ResourceUiState.Idle,
+            balance = mutableStateOf(0.0)
         )
 
 
@@ -38,7 +39,7 @@ class OnlinePaymentRefundViewModel(
                 with(currentState) {
                     val validateAmountResult = validate(
                         amount = currentState.amount.input.value,
-                        balance = 10,
+                        balance = balance.value,
                         textInput = currentState.amount.textInput,
                         operationType = OperationType.REFUND
                     )
@@ -49,6 +50,13 @@ class OnlinePaymentRefundViewModel(
 
             is OnlinePaymentRefundContract.Event.OnRefundClicked -> {
                 refund(event.transactionId)
+            }
+
+            is OnlinePaymentRefundContract.Event.OnInit -> {
+                with(currentState) {
+                    amount.input.value = event.amount.toInt().toString()
+                    balance.value = event.balance
+                }
             }
         }
     }
@@ -64,7 +72,7 @@ class OnlinePaymentRefundViewModel(
                 copy(
                     sendReceiptState = result.onSuccess {
                         setEffect {
-                            OnlinePaymentRefundContract.Effect.OnSuccessfullyRefunded
+                            OnlinePaymentRefundContract.Effect.OnSuccessfullyRefunded(it.id)
                         }
                     }.toResourceUiState()
                 )

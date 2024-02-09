@@ -1,6 +1,7 @@
 package com.dna.payments.kmm.presentation.ui.features.online_payments.refund
 
 import androidx.compose.runtime.MutableState
+import com.dna.payments.kmm.data.model.online_payments.RefundResult
 import com.dna.payments.kmm.presentation.model.ResourceUiState
 import com.dna.payments.kmm.presentation.model.TextFieldUiState
 import com.dna.payments.kmm.presentation.mvi.UiEffect
@@ -13,17 +14,20 @@ interface OnlinePaymentRefundContract {
             val transactionId: String
         ) : Event
 
+        data class OnInit(val amount: Double, val balance: Double) : Event
+
         data object OnAmountFieldChanged : Event
     }
 
     data class State(
-        val sendReceiptState: ResourceUiState<Unit>,
+        val sendReceiptState: ResourceUiState<RefundResult>,
         val amount: TextFieldUiState,
+        val balance: MutableState<Double>,
         val isButtonEnabled: MutableState<Boolean>
     ) : UiState
 
     sealed interface Effect : UiEffect {
-        data object OnSuccessfullyRefunded : Effect
+        data class OnSuccessfullyRefunded(val id: String) : Effect
     }
 }
 

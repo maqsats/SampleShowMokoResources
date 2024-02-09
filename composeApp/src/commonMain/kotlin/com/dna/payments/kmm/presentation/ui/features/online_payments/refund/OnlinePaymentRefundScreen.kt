@@ -58,12 +58,20 @@ class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
         val navigator = LocalNavigator.currentOrThrow
 
         LaunchedEffect(key1 = Unit) {
+            getReceiptViewModel.setEvent(
+                OnlinePaymentRefundContract.Event.OnInit(
+                    amount = transaction.amount,
+                    balance = transaction.balance
+                )
+            )
+
             getReceiptViewModel.effect.collectLatest { effect ->
                 when (effect) {
-                    OnlinePaymentRefundContract.Effect.OnSuccessfullyRefunded -> {
+                    is OnlinePaymentRefundContract.Effect.OnSuccessfullyRefunded -> {
                         navigator.popWithResult(
                             OnlinePaymentNavigatorResult(
                                 OnlinePaymentNavigatorResultType.REFUND,
+                                effect.id
                             )
                         )
                     }

@@ -1,5 +1,6 @@
 package com.dna.payments.kmm.data.repository
 
+import com.dna.payments.kmm.data.model.online_payments.RefundResult
 import com.dna.payments.kmm.data.model.payment_methods.ProcessNewPaymentRequest
 import com.dna.payments.kmm.data.model.payment_methods.SendReceiptRequest
 import com.dna.payments.kmm.data.preferences.Preferences
@@ -56,7 +57,7 @@ class DefaultOnlinePaymentOperationRepository(
     override suspend fun refundPaymentOperation(
         transactionId: String,
         amount: Int
-    ): Response<Unit> = handleApiCall {
+    ): Response<RefundResult> = handleApiCall {
         httpClient.post {
             url("${Constants.BASE_URL}operation/$transactionId/refund?amount=${amount}")
             header(Constants.CREDENTIALS_HEADER, preferences.getAuthToken().toBearerToken())

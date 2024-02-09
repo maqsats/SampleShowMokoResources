@@ -10,7 +10,7 @@ class ValidatePaymentAmount {
 
     operator fun invoke(
         amount: String,
-        balance: Int,
+        balance: Double,
         textInput: TextInput,
         operationType: OperationType = OperationType.CHARGE
     ): ValidationResult {
@@ -22,7 +22,7 @@ class ValidatePaymentAmount {
             )
         }
 
-        if (amount.toDouble() > balance.toDouble()) {
+        if (amount.toDouble() > balance) {
             val errorMessageRes = if (operationType == OperationType.CHARGE) {
                 MR.strings.amount_must_be
             } else {
