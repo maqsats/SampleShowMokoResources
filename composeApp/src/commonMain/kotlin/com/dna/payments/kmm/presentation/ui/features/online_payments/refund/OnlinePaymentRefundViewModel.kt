@@ -38,10 +38,11 @@ class OnlinePaymentRefundViewModel(
                 with(currentState) {
                     val validateAmountResult = validate(
                         amount = currentState.amount.input.value,
-                        balance = 0,
+                        balance = 10,
                         textInput = currentState.amount.textInput,
                         operationType = OperationType.REFUND
                     )
+                    amount.validationResult.value = validateAmountResult
                     isButtonEnabled.value = validateAmountResult.successful
                 }
             }

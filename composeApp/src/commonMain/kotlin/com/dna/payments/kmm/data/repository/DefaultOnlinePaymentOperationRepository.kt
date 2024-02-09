@@ -58,7 +58,7 @@ class DefaultOnlinePaymentOperationRepository(
         amount: Int
     ): Response<Unit> = handleApiCall {
         httpClient.post {
-            url("${Constants.BASE_URL}operation/{$transactionId}/refund?amount=${amount}")
+            url("${Constants.BASE_URL}operation/$transactionId/refund?amount=${amount}")
             header(Constants.CREDENTIALS_HEADER, preferences.getAuthToken().toBearerToken())
             header(HttpHeaders.ContentType, ContentType.Application.Json)
         }.body()
