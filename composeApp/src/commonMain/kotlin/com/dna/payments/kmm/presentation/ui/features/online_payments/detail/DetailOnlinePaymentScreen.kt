@@ -2,6 +2,7 @@ package com.dna.payments.kmm.presentation.ui.features.online_payments.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,13 +14,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.zIndex
 import cafe.adriel.voyager.core.screen.Screen
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentStatus
 import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentCard
 import com.dna.payments.kmm.domain.model.transactions.Transaction
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
@@ -32,15 +38,22 @@ import com.dna.payments.kmm.presentation.ui.common.DNAExpandBox
 import com.dna.payments.kmm.presentation.ui.common.DNAText
 import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
 import com.dna.payments.kmm.presentation.ui.common.DNATopAppBar
+import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.DefaultDotsContent
 import com.dna.payments.kmm.presentation.ui.common.LinkDotsContent
 import com.dna.payments.kmm.presentation.ui.common.MessageDotsContent
 import com.dna.payments.kmm.presentation.ui.common.PainterDotsContent
 import com.dna.payments.kmm.presentation.ui.common.PainterWithBackgroundDotsContent
+import com.dna.payments.kmm.presentation.ui.common.SuccessPopup
+import com.dna.payments.kmm.presentation.ui.features.online_payments.receipt.GetReceiptScreen
+import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.toMoneyString
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
+import com.dna.payments.kmm.utils.navigation.NavigatorResultString
+import com.dna.payments.kmm.utils.navigation.clearResults
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
+import com.dna.payments.kmm.utils.navigation.getResult
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
@@ -58,6 +71,23 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
                 .background(greyFirst),
             verticalArrangement = Arrangement.Top
         ) {
+            val showReceiptSentSuccess = remember { mutableStateOf(false) }
+
+            val result = getResult().value
+
+            LaunchedEffect(result) {
+                if (result == null) return@LaunchedEffect
+                if (result is NavigatorResultString) {
+                    showReceiptSentSuccess.value = result.value
+                    navigator.clearResults()
+                }
+            }
+
+            SuccessPopup(
+                UiText.StringResource(MR.strings.receipt_sent),
+                showReceiptSentSuccess
+            )
+
             DNATopAppBar(
                 title = stringResource(MR.strings.payment_detail),
                 navigationIcon = painterResource(MR.images.ic_green_arrow_back),
@@ -70,10 +100,43 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
 
                 }
             )
-            OnlinePaymentDetailContent(
-                modifier = Modifier.wrapContentHeight(),
-                transaction = transaction
-            )
+            Box {
+                Box(
+                    Modifier.zIndex(1f)
+                ) {
+                    OnlinePaymentDetailContent(
+                        modifier = Modifier.wrapContentHeight(),
+                        transaction = transaction
+                    )
+                }
+                if ((transaction.status == OnlinePaymentStatus.CHARGE) || (transaction.status == OnlinePaymentStatus.AUTH) || (transaction.status == OnlinePaymentStatus.CREDITED)) {
+                    Box(
+                        Modifier.zIndex(2f)
+                    ) {
+                        Column {
+                            Spacer(
+                                modifier = Modifier.fillMaxWidth().weight(1f)
+                            )
+                            DNAYellowButton(
+                                content = {
+                                    DNAText(
+                                        text = stringResource(MR.strings.receipt),
+                                        style = DnaTextStyle.Medium16,
+                                        modifier = Modifier.padding(vertical = Paddings.extraSmall)
+                                    )
+                                },
+                                onClick = { navigator.push(GetReceiptScreen(transaction)) },
+                                modifier = Modifier.fillMaxWidth().padding(
+                                    start = Paddings.medium,
+                                    end = Paddings.medium,
+                                    bottom = Paddings.medium
+                                )
+                            )
+                        }
+                    }
+
+                }
+            }
         }
     }
 
@@ -84,7 +147,6 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
     ) {
         Column(
             modifier.fillMaxWidth().verticalScroll(rememberScrollState())
-                .padding(start = Paddings.medium, end = Paddings.medium)
         ) {
             Spacer(modifier = Modifier.height(Paddings.medium))
             DNAText(
@@ -104,7 +166,8 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
             )
             Spacer(modifier = Modifier.height(Paddings.standard12dp))
             DNATextWithIcon(
-                modifier = modifier.align(Alignment.CenterHorizontally),
+                modifier = Modifier.padding(start = Paddings.medium, end = Paddings.medium)
+                    .align(Alignment.CenterHorizontally),
                 text = transaction.description,
                 style = DnaTextStyle.WithAlphaNormal14,
                 icon = MR.images.ic_message
@@ -135,7 +198,7 @@ class DetailOnlinePaymentScreen(private val transaction: Transaction) : Screen {
                 modifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.medium),
                 color = lightGrey
             )
-            PaymentPageDetails(modifier.padding(bottom = Paddings.small), transaction)
+            PaymentPageDetails(modifier.padding(bottom = Paddings.large), transaction)
         }
     }
 

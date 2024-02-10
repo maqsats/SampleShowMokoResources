@@ -6,6 +6,7 @@ import com.dna.payments.kmm.presentation.ui.features.nav_auth.NavAuthViewModel
 import com.dna.payments.kmm.presentation.ui.features.new_password.NewPasswordViewModel
 import com.dna.payments.kmm.presentation.ui.features.new_payment_link.NewPaymentLinkViewModel
 import com.dna.payments.kmm.presentation.ui.features.online_payments.OnlinePaymentsViewModel
+import com.dna.payments.kmm.presentation.ui.features.online_payments.receipt.GetReceiptViewModel
 import com.dna.payments.kmm.presentation.ui.features.overview_report.OverviewReportViewModel
 import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.approval_average_metrics.ApprovalAverageMetricsViewModel
 import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.chart.ChartViewModel
@@ -83,5 +84,6 @@ val viewModelModule = module {
     factoryOf(::PosPaymentsViewModel)
     factoryOf(::AddDomainFirstStepViewModel)
     factoryOf(::AddDomainThirdStepViewModel)
+    factoryOf(::GetReceiptViewModel)
 }
 

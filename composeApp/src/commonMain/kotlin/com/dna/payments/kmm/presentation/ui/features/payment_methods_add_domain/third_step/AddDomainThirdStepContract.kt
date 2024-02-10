@@ -12,7 +12,7 @@ interface AddDomainThirdStepContract {
     }
 
     data class State(
-        val addDomain: ResourceUiState<Unit>
+        val addDomainState: ResourceUiState<Unit>
     ) : UiState
 
     sealed interface Effect : UiEffect {

@@ -16,7 +16,7 @@ class AddDomainThirdStepViewModel(
 
     override fun createInitialState(): AddDomainThirdStepContract.State =
         AddDomainThirdStepContract.State(
-            addDomain = ResourceUiState.Idle
+            addDomainState = ResourceUiState.Idle
         )
 
     override fun handleEvent(event: AddDomainThirdStepContract.Event) {
@@ -28,7 +28,7 @@ class AddDomainThirdStepViewModel(
     }
 
     private fun addNewDomain(domain: String, paymentMethodType: PaymentMethodType) {
-        setState { copy(addDomain = ResourceUiState.Loading) }
+        setState { copy(addDomainState = ResourceUiState.Loading) }
         screenModelScope.launch {
             val result = registerDomainUseCase(paymentMethodType = paymentMethodType,
                 registerDomainRequest = RegistrationDomainRequest(
@@ -36,7 +36,7 @@ class AddDomainThirdStepViewModel(
                 ))
             setState {
                 copy(
-                    addDomain = when (result) {
+                    addDomainState = when (result) {
                         is Response.Success -> {
                             setEffect {
                                 AddDomainThirdStepContract.Effect.OnRegisterNewDomainSuccess

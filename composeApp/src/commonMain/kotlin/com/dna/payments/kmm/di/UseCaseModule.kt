@@ -19,6 +19,7 @@ import com.dna.payments.kmm.domain.interactors.use_cases.ecom_stores.GetEcomStor
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_link.PaymentLinkUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.ChangeTerminalStatusUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.RegisterDomainUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.SendReceiptOperationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.UnregisterDomainUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pincode.PinUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.pos_payments.GetPosTransactionsUseCase
@@ -85,6 +86,8 @@ val useCasesModule: Module = module {
     factoryOf(::GetDomainsUseCase)
     factoryOf(::GetTerminalSettingsUseCase)
     factoryOf(::GetDetailTerminalSettingsUseCase)
+    factoryOf(::SendReceiptOperationUseCase)
+
     factoryOf(::DefaultCurrencyUseCase).bind(CurrencyUseCase::class)
     factoryOf(::DefaultPosSummaryGraphUseCase).bind(PosSummaryGraphUseCase::class)
     factoryOf(::DefaultOnlineSummaryGraphUseCase).bind(OnlineSummaryGraphUseCase::class)

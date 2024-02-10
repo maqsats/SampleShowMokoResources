@@ -44,10 +44,13 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
-fun DNAEmailTextField(textState: TextFieldUiState) {
+fun DNAEmailTextField(
+    textState: TextFieldUiState,
+    placeholder: String = stringResource(MR.strings.email)
+) {
     DnaTextField(
         textState = textState,
-        placeholder = stringResource(MR.strings.email),
+        placeholder = placeholder,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
             autoCorrect = false

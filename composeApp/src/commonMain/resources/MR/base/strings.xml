@@ -391,6 +391,12 @@
     <string name="post_link_address">PostLink address</string>
     <string name="post_link">PostLink</string>
 
+    <!--    Get Receipt-->
+    <string name="get_receipt">Get Receipt</string>
+    <string name="customer_email">Customer\'s email</string>
+    <string name="download_receipt">Download receipt</string>
+    <string name="receipt">Receipt</string>
+    <string name="receipt_sent">Receipt has been sent to customer</string>
     <string name="no_internet_connection">No internet connection</string>
 
     // Validation

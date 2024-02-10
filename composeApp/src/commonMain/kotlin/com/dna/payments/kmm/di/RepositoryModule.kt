@@ -5,6 +5,7 @@ import com.dna.payments.kmm.data.repository.DefaultAuthorizationRepository
 import com.dna.payments.kmm.data.repository.DefaultCreateNewLinkRepository
 import com.dna.payments.kmm.data.repository.DefaultDomainRepository
 import com.dna.payments.kmm.data.repository.DefaultInfoRepository
+import com.dna.payments.kmm.data.repository.DefaultOnlinePaymentOperationRepository
 import com.dna.payments.kmm.data.repository.DefaultPaymentLinksRepository
 import com.dna.payments.kmm.data.repository.DefaultProfileRepository
 import com.dna.payments.kmm.data.repository.DefaultResetPasswordRepository
@@ -17,6 +18,7 @@ import com.dna.payments.kmm.domain.repository.AuthorizationRepository
 import com.dna.payments.kmm.domain.repository.CreateNewLinkRepository
 import com.dna.payments.kmm.domain.repository.DomainsRepository
 import com.dna.payments.kmm.domain.repository.InfoRepository
+import com.dna.payments.kmm.domain.repository.OnlinePaymentOperationRepository
 import com.dna.payments.kmm.domain.repository.PaymentLinksRepository
 import com.dna.payments.kmm.domain.repository.ProfileRepository
 import com.dna.payments.kmm.domain.repository.ResetPasswordRepository
@@ -41,5 +43,6 @@ val repositoryModule = module {
     factoryOf(::DefaultTransactionRepository).bind(TransactionRepository::class)
     factoryOf(::DefaultCreateNewLinkRepository).bind(CreateNewLinkRepository::class)
     factoryOf(::DefaultSettingRepository).bind(SettingRepository::class)
+    factoryOf(::DefaultOnlinePaymentOperationRepository).bind(OnlinePaymentOperationRepository::class)
 }
 
