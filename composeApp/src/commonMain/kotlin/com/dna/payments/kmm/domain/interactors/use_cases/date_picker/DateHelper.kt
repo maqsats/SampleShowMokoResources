@@ -13,25 +13,10 @@ import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.NewLinkDate
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.NewLinkDatePeriodOption.ONE_WEEK
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.NewLinkDatePeriodOption.TWENTY_FOUR_HOURS
 import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod
-import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.CURRENT_MONTH
-import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.LAST_12_MONTHS
-import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.LAST_30_DAYS
-import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.LAST_60_DAYS
-import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.LAST_90_DAYS
-import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.LAST_MONTH
-import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.LAST_WEEK
-import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.PREVIOUS_WEEK
-import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.THIS_WEEK
-import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.THIS_YEAR
-import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.TODAY
-import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.YESTERDAY
+import com.dna.payments.kmm.domain.model.date_picker.DatePickerPeriod.*
 import com.dna.payments.kmm.domain.model.date_picker.DateSelection
 import com.dna.payments.kmm.domain.model.date_picker.IntervalType
-import com.dna.payments.kmm.domain.model.date_picker.IntervalType.DAY
-import com.dna.payments.kmm.domain.model.date_picker.IntervalType.HOUR
-import com.dna.payments.kmm.domain.model.date_picker.IntervalType.MONTH
-import com.dna.payments.kmm.domain.model.date_picker.IntervalType.WEEK
-import com.dna.payments.kmm.domain.model.date_picker.IntervalType.YEAR
+import com.dna.payments.kmm.domain.model.date_picker.IntervalType.*
 import com.dna.payments.kmm.domain.model.date_picker.Menu
 import com.dna.payments.kmm.domain.model.date_picker.Menu.SETTLEMENTS
 import com.dna.payments.kmm.utils.extension.isSameDayAs
@@ -67,17 +52,17 @@ class DateHelper {
 
 
         return when {
-            startDate.isSameDayAs(getCurrentDay()) && endDate.isSameDayAs(getEndOfToday()) -> TODAY
-            startDate.isSameDayAs(getYesterdayStart()) && endDate.isSameDayAs(getYesterdayEnd()) -> YESTERDAY
-            startDate.isSameDayAs(getFirstDayOfWeek()) && endDate.isSameDayAs(getEndOfToday()) -> THIS_WEEK
-            startDate.isSameDayAs(getSevenDayEarlier()) && endDate.isSameDayAs(getEndOfToday()) -> if (menu == SETTLEMENTS) LAST_WEEK else PREVIOUS_WEEK
-            startDate.isSameDayAs(getFirstDayOfMonth()) && endDate.isSameDayAs(getEndOfToday()) -> CURRENT_MONTH
-            startDate.isSameDayAs(getThirtyDayEarlier()) && endDate.isSameDayAs(getEndOfToday()) -> if (menu == SETTLEMENTS) LAST_MONTH else LAST_30_DAYS
-            startDate.isSameDayAs(getSixtyDayEarlier()) && endDate.isSameDayAs(getEndOfToday()) -> LAST_60_DAYS
-            startDate.isSameDayAs(getNinetyDayEarlier()) && endDate.isSameDayAs(getEndOfToday()) -> LAST_90_DAYS
-            startDate.isSameDayAs(getFirstDayOfYear()) && endDate.isSameDayAs(getEndOfToday()) -> THIS_YEAR
-            startDate.isSameDayAs(getTwelveMonthEarlier()) && endDate.isSameDayAs(getEndOfToday()) -> LAST_12_MONTHS
-            else -> TODAY
+            startDate.isSameDayAs(getCurrentDay()) && endDate.isSameDayAs(getEndOfToday()) -> TODAY()
+            startDate.isSameDayAs(getYesterdayStart()) && endDate.isSameDayAs(getYesterdayEnd()) -> YESTERDAY()
+            startDate.isSameDayAs(getFirstDayOfWeek()) && endDate.isSameDayAs(getEndOfToday()) -> THIS_WEEK()
+            startDate.isSameDayAs(getSevenDayEarlier()) && endDate.isSameDayAs(getEndOfToday()) -> if (menu == SETTLEMENTS) LAST_WEEK() else PREVIOUS_WEEK()
+            startDate.isSameDayAs(getFirstDayOfMonth()) && endDate.isSameDayAs(getEndOfToday()) -> CURRENT_MONTH()
+            startDate.isSameDayAs(getThirtyDayEarlier()) && endDate.isSameDayAs(getEndOfToday()) -> if (menu == SETTLEMENTS) LAST_MONTH() else LAST_30_DAYS()
+            startDate.isSameDayAs(getSixtyDayEarlier()) && endDate.isSameDayAs(getEndOfToday()) -> LAST_60_DAYS()
+            startDate.isSameDayAs(getNinetyDayEarlier()) && endDate.isSameDayAs(getEndOfToday()) -> LAST_90_DAYS()
+            startDate.isSameDayAs(getFirstDayOfYear()) && endDate.isSameDayAs(getEndOfToday()) -> THIS_YEAR()
+            startDate.isSameDayAs(getTwelveMonthEarlier()) && endDate.isSameDayAs(getEndOfToday()) -> LAST_12_MONTHS()
+            else -> TODAY()
         }
     }
 
@@ -85,18 +70,22 @@ class DateHelper {
         val today = getEndOfToday()
 
         return when (datePickerPeriod) {
-            CURRENT_MONTH -> DateSelection(getFirstDayOfMonth(), today)
-            PREVIOUS_WEEK -> DateSelection(getSevenDayEarlier(), today)
-            TODAY -> DateSelection(getStartOfToday(), today)
-            YESTERDAY -> DateSelection(getYesterdayStart(), getYesterdayEnd())
-            THIS_WEEK -> DateSelection(getFirstDayOfWeek(), today)
-            LAST_30_DAYS -> DateSelection(getThirtyDayEarlier(), today)
-            LAST_90_DAYS -> DateSelection(getNinetyDayEarlier(), today)
-            THIS_YEAR -> DateSelection(getFirstDayOfYear(), today)
-            LAST_12_MONTHS -> DateSelection(getTwelveMonthEarlier(), today)
-            LAST_60_DAYS -> DateSelection(getSixtyDayEarlier(), today)
-            LAST_WEEK -> DateSelection(getSevenDayEarlier(), today)
-            LAST_MONTH -> DateSelection(getThirtyDayEarlier(), today)
+            is CURRENT_MONTH -> DateSelection(getFirstDayOfMonth(), today)
+            is PREVIOUS_WEEK -> DateSelection(getSevenDayEarlier(), today)
+            is TODAY -> DateSelection(getStartOfToday(), today)
+            is YESTERDAY -> DateSelection(getYesterdayStart(), getYesterdayEnd())
+            is THIS_WEEK -> DateSelection(getFirstDayOfWeek(), today)
+            is LAST_30_DAYS -> DateSelection(getThirtyDayEarlier(), today)
+            is LAST_90_DAYS -> DateSelection(getNinetyDayEarlier(), today)
+            is THIS_YEAR -> DateSelection(getFirstDayOfYear(), today)
+            is LAST_12_MONTHS -> DateSelection(getTwelveMonthEarlier(), today)
+            is LAST_60_DAYS -> DateSelection(getSixtyDayEarlier(), today)
+            is LAST_WEEK -> DateSelection(getSevenDayEarlier(), today)
+            is LAST_MONTH -> DateSelection(getThirtyDayEarlier(), today)
+            is DatePickerPeriod.CUSTOM -> DateSelection(
+                datePickerPeriod.startDate,
+                datePickerPeriod.endDate
+            )
         }
     }
 

@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.Dp
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
@@ -127,7 +128,7 @@ fun DateTime?.ddMmYyyy(): String {
 }
 
 fun getDefaultDateRange(): Pair<DatePickerPeriod, DateSelection> = Pair(
-    DatePickerPeriod.TODAY,
+    DatePickerPeriod.TODAY(),
     DateSelection(
         DateTime.now().startOfDay,
         DateTime.now().endOfDay
@@ -294,8 +295,8 @@ fun Screen.changePlatformColor(isGrey: Boolean = false) {
     )
 
     PlatformColors(
-        statusBarColor = if (changePlatformColor) greyFirst else Color.White,
-        navBarColor = if (changePlatformColor) greyFirst else Color.White
+        statusBarColor = if (changePlatformColor) greyFirst else Color.Transparent,
+        navBarColor = if (changePlatformColor) greyFirst else Color.Transparent
     )
 }
 
@@ -305,4 +306,11 @@ private fun getFormattedTimestamp(): String {
 
 fun generateRandomOrderNumber(): String {
     return "PL-${getFormattedTimestamp()}"
+}
+
+fun Modifier.hideKeyboardOnOutsideClick(): Modifier = composed {
+    val controller = LocalSoftwareKeyboardController.current
+    this then Modifier.noRippleClickable {
+        controller?.hide()
+    }
 }
