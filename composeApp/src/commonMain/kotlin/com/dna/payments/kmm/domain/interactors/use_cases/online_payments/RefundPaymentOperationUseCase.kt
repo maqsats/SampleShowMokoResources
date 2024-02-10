@@ -9,7 +9,7 @@ class RefundPaymentOperationUseCase(
 ) {
     suspend operator fun invoke(
         transactionId: String,
-        amount: Int
+        amount: Double
     ): Response<RefundResult> =
         repository.refundPaymentOperation(transactionId, amount)
 }

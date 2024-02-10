@@ -66,7 +66,7 @@ class OnlinePaymentRefundViewModel(
         screenModelScope.launch {
             val result = refundPaymentOperationUseCase(
                 transactionId = transactionId,
-                amount = currentState.amount.input.value.toInt()
+                amount = currentState.amount.input.value.toDouble()
             )
             setState {
                 copy(

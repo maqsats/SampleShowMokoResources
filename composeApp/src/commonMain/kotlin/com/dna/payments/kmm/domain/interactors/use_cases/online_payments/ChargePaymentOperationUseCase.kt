@@ -9,7 +9,7 @@ class ChargePaymentOperationUseCase(
 ) {
     suspend operator fun invoke(
         transactionId: String,
-        amount: Int
+        amount: Double
     ): Response<ChargeResult> =
         repository.chargePaymentOperation(transactionId, amount)
 }
