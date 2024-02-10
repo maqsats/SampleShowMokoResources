@@ -36,6 +36,7 @@ interface NewPaymentLinkContract {
         val description: TextFieldUiState,
         val orderNumber: TextFieldUiState,
         val expiredDate: TextFieldUiState,
+        val store: TextFieldUiState,
     ) : UiState
 
     sealed interface Effect : UiEffect {
