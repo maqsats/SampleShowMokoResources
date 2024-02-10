@@ -39,7 +39,6 @@ import com.dna.payments.kmm.presentation.ui.common.UiStateController
 import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.toMoneyString
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
-import com.dna.payments.kmm.utils.navigation.Navigator
 import com.dna.payments.kmm.utils.navigation.OnlinePaymentNavigatorResult
 import com.dna.payments.kmm.utils.navigation.OnlinePaymentNavigatorResultType
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -53,19 +52,19 @@ class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
     override fun Content() {
 
         changePlatformColor(true)
-        val getReceiptViewModel = getScreenModel<OnlinePaymentRefundViewModel>()
-        val state by getReceiptViewModel.uiState.collectAsState()
+        val onlinePaymentRefundViewModel = getScreenModel<OnlinePaymentRefundViewModel>()
+        val state by onlinePaymentRefundViewModel.uiState.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
 
         LaunchedEffect(key1 = Unit) {
-            getReceiptViewModel.setEvent(
+            onlinePaymentRefundViewModel.setEvent(
                 OnlinePaymentRefundContract.Event.OnInit(
                     amount = transaction.amount,
                     balance = transaction.balance
                 )
             )
 
-            getReceiptViewModel.effect.collectLatest { effect ->
+            onlinePaymentRefundViewModel.effect.collectLatest { effect ->
                 when (effect) {
                     is OnlinePaymentRefundContract.Effect.OnSuccessfullyRefunded -> {
                         navigator.popWithResult(
@@ -87,7 +86,7 @@ class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
             verticalArrangement = Arrangement.Top
         ) {
             DNATopAppBar(
-                title = stringResource(MR.strings.get_receipt),
+                title = stringResource(MR.strings.payment_refund),
                 navigationIcon = painterResource(MR.images.ic_green_arrow_back),
                 navigationText = stringResource(MR.strings.close),
                 onNavigationClick = {
@@ -98,9 +97,8 @@ class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
                 modifier = Modifier,
                 transaction = transaction,
                 state = state,
-                navigator = navigator,
                 onSendRefundClicked = {
-                    getReceiptViewModel.setEvent(
+                    onlinePaymentRefundViewModel.setEvent(
                         OnlinePaymentRefundContract.Event.OnRefundClicked(
                             it
                         )
@@ -115,7 +113,6 @@ class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
         modifier: Modifier,
         transaction: Transaction,
         state: OnlinePaymentRefundContract.State,
-        navigator: Navigator,
         onSendRefundClicked: (String) -> Unit
     ) {
         Column(

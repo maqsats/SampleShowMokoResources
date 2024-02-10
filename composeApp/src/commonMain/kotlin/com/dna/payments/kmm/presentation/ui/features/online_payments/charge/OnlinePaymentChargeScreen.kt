@@ -69,7 +69,7 @@ class OnlinePaymentChargeScreen(private val transaction: Transaction) : Screen {
                     is OnlinePaymentChargeContract.Effect.OnSuccessfullyCharge -> {
                         navigator.popWithResult(
                             OnlinePaymentNavigatorResult(
-                                OnlinePaymentNavigatorResultType.REFUND,
+                                OnlinePaymentNavigatorResultType.CHARGED,
                                 effect.id
                             )
                         )
@@ -86,7 +86,7 @@ class OnlinePaymentChargeScreen(private val transaction: Transaction) : Screen {
             verticalArrangement = Arrangement.Top
         ) {
             DNATopAppBar(
-                title = stringResource(MR.strings.get_receipt),
+                title = stringResource(MR.strings.payment_charge),
                 navigationIcon = painterResource(MR.images.ic_green_arrow_back),
                 navigationText = stringResource(MR.strings.close),
                 onNavigationClick = {
