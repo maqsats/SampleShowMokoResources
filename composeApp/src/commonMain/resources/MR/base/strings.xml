@@ -302,6 +302,7 @@
     <string name="created">Created</string>
     <string name="credited">Credited</string>
     <string name="charged">Charged</string>
+    <string name="charge">Charge</string>
     <string name="refunded">Refunded</string>
     <string name="declined">Declined</string>
     <string name="failed">Failed</string>

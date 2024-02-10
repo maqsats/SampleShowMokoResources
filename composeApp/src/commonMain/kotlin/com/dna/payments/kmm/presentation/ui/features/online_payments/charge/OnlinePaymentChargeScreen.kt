@@ -1,4 +1,4 @@
-package com.dna.payments.kmm.presentation.ui.features.online_payments.refund
+package com.dna.payments.kmm.presentation.ui.features.online_payments.charge
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -39,7 +39,6 @@ import com.dna.payments.kmm.presentation.ui.common.UiStateController
 import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.toMoneyString
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
-import com.dna.payments.kmm.utils.navigation.Navigator
 import com.dna.payments.kmm.utils.navigation.OnlinePaymentNavigatorResult
 import com.dna.payments.kmm.utils.navigation.OnlinePaymentNavigatorResultType
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
@@ -48,18 +47,18 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
 
-class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
+class OnlinePaymentChargeScreen(private val transaction: Transaction) : Screen {
     @Composable
     override fun Content() {
 
         changePlatformColor(true)
-        val getReceiptViewModel = getScreenModel<OnlinePaymentRefundViewModel>()
+        val getReceiptViewModel = getScreenModel<OnlinePaymentChargeViewModel>()
         val state by getReceiptViewModel.uiState.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
 
         LaunchedEffect(key1 = Unit) {
             getReceiptViewModel.setEvent(
-                OnlinePaymentRefundContract.Event.OnInit(
+                OnlinePaymentChargeContract.Event.OnInit(
                     amount = transaction.amount,
                     balance = transaction.balance
                 )
@@ -67,7 +66,7 @@ class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
 
             getReceiptViewModel.effect.collectLatest { effect ->
                 when (effect) {
-                    is OnlinePaymentRefundContract.Effect.OnSuccessfullyRefunded -> {
+                    is OnlinePaymentChargeContract.Effect.OnSuccessfullyCharge -> {
                         navigator.popWithResult(
                             OnlinePaymentNavigatorResult(
                                 OnlinePaymentNavigatorResultType.REFUND,
@@ -78,7 +77,7 @@ class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
                 }
             }
         }
-        UiStateController(state.refundState)
+        UiStateController(state.chargeState)
 
         Column(
             modifier = Modifier
@@ -94,14 +93,13 @@ class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
                     navigator.pop()
                 }
             )
-            OnlinePaymentRefundContent(
+            OnlinePaymentChargeContent(
                 modifier = Modifier,
                 transaction = transaction,
                 state = state,
-                navigator = navigator,
-                onSendRefundClicked = {
+                onSendChargeClicked = {
                     getReceiptViewModel.setEvent(
-                        OnlinePaymentRefundContract.Event.OnRefundClicked(
+                        OnlinePaymentChargeContract.Event.OnChargeClicked(
                             it
                         )
                     )
@@ -111,12 +109,11 @@ class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
     }
 
     @Composable
-    private fun OnlinePaymentRefundContent(
+    private fun OnlinePaymentChargeContent(
         modifier: Modifier,
         transaction: Transaction,
-        state: OnlinePaymentRefundContract.State,
-        navigator: Navigator,
-        onSendRefundClicked: (String) -> Unit
+        state: OnlinePaymentChargeContract.State,
+        onSendChargeClicked: (String) -> Unit
     ) {
         Column(
             modifier.fillMaxSize()
@@ -155,15 +152,6 @@ class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
                         value = transaction.amount.toMoneyString(transaction.currency)
                     )
                     Spacer(modifier = Modifier.height(Paddings.medium))
-                    Divider(
-                        modifier = Modifier.fillMaxWidth(),
-                        color = lightGrey
-                    )
-                    Spacer(modifier = Modifier.height(Paddings.medium))
-                    DefaultDotsContent(
-                        title = MR.strings.balance,
-                        value = transaction.balance.toMoneyString(transaction.currency)
-                    )
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().wrapContentHeight()
@@ -175,13 +163,13 @@ class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
                         enabled = state.isButtonEnabled.value,
                         content = {
                             DNAText(
-                                text = stringResource(MR.strings.refund),
+                                text = stringResource(MR.strings.charge),
                                 style = DnaTextStyle.Medium16,
                                 modifier = Modifier.padding(vertical = Paddings.extraSmall)
                             )
                         },
                         onClick = {
-                            onSendRefundClicked(transaction.id)
+                            onSendChargeClicked(transaction.id)
                         },
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -195,7 +183,7 @@ class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
         amount: TextFieldUiState
     ) {
         DNAText(
-            text = stringResource(MR.strings.refund_amount),
+            text = stringResource(MR.strings.charge_amount),
             style = DnaTextStyle.Medium16,
         )
         Spacer(modifier = Modifier.height(Paddings.small))
