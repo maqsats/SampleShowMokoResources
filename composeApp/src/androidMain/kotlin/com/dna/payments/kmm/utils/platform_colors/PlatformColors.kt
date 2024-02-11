@@ -9,7 +9,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 actual fun PlatformColors(statusBarColor: Color, navBarColor: Color) {
     val sysUiController = rememberSystemUiController()
     SideEffect {
-        sysUiController.setSystemBarsColor(color = statusBarColor)
+        sysUiController.setSystemBarsColor(color = if (statusBarColor == Color.Transparent) Color.White else statusBarColor)
         sysUiController.setNavigationBarColor(color = navBarColor)
     }
 }
