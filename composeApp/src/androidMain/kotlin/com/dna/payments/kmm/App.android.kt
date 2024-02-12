@@ -23,14 +23,8 @@ class AndroidApp : Application() {
             androidLogger(if (isDebug()) Level.ERROR else Level.NONE)
             androidContext(this@AndroidApp)
         }
-        // Init App Check
         FirebaseApp.initializeApp(applicationContext)
         Firebase.analytics.setAnalyticsCollectionEnabled(true)
-//        logEvent(
-//            "app_open", mapOf(
-//                "app_open" to true
-//            )
-//        )
     }
 }
 

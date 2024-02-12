@@ -17,6 +17,11 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
@@ -39,54 +44,72 @@ import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.app
 import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.chart.ChartWidget
 import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.product_guide.ProductGuideWidget
 import com.dna.payments.kmm.presentation.ui.features.overview_report.widgets.transactions.TransactionsWidget
+import com.dna.payments.kmm.utils.pull_to_refresh.PullToRefresh
+import com.dna.payments.kmm.utils.pull_to_refresh.rememberPullToRefreshState
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun OverviewWidget(
     state: OverviewReportContract.State,
-    overviewReportType: OverviewReportType
+    overviewReportType: OverviewReportType,
+    isToolbarCollapsed: Boolean,
+    onRefresh: () -> Unit,
 ) {
     val widthSizeClass = calculateWindowSizeClass().widthSizeClass
     val isCompactScreen = widthSizeClass == WindowWidthSizeClass.Compact
 
-    if (isCompactScreen)
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            items(
-                items = state.overviewReportWidgetItems.filter {
-                    it.overviewReportType == overviewReportType
-                },
-                key = {
-                    "${it.overviewReportWidgetType.name}${it.overviewReportType}"
+    var isRefreshing by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isRefreshing) {
+        delay(1000)
+        if (isRefreshing)
+            isRefreshing = false
+    }
+
+    PullToRefresh(
+        modifier = Modifier
+            .fillMaxSize(),
+        state = rememberPullToRefreshState(isRefreshing = isRefreshing),
+        onRefresh = onRefresh,
+        enabled = !isToolbarCollapsed
+    ) {
+        if (isCompactScreen)
+            LazyColumn {
+                items(
+                    items = state.overviewReportWidgetItems.filter {
+                        it.overviewReportType == overviewReportType
+                    },
+                    key = {
+                        "${it.overviewReportWidgetType.name}${it.overviewReportType}"
+                    }
+                )
+                { widgetItem ->
+                    OverviewWidgetContainer(
+                        overviewReportWidgetItem = widgetItem,
+                        state = state,
+                        overviewReportType = overviewReportType
+                    )
                 }
-            )
-            { widgetItem ->
-                OverviewWidgetContainer(
-                    overviewReportWidgetItem = widgetItem,
-                    state = state,
-                    overviewReportType = overviewReportType
-                )
             }
-        }
-    else {
-        LazyVerticalStaggeredGrid(
-            modifier = Modifier
-                .fillMaxSize().padding(bottom = Dimens.toolbarHeight),
-            columns = StaggeredGridCells.Fixed(2),
-            contentPadding = PaddingValues(0.dp),
-        ) {
-            items(state.overviewReportWidgetItems.filter {
-                it.overviewReportType == overviewReportType
-            }) { widgetItem ->
-                OverviewWidgetContainer(
-                    overviewReportWidgetItem = widgetItem,
-                    state = state,
-                    overviewReportType = overviewReportType
-                )
+        else {
+            LazyVerticalStaggeredGrid(
+                modifier = Modifier
+                    .fillMaxSize().padding(bottom = Dimens.toolbarHeight),
+                columns = StaggeredGridCells.Fixed(2),
+                contentPadding = PaddingValues(0.dp),
+            ) {
+                items(state.overviewReportWidgetItems.filter {
+                    it.overviewReportType == overviewReportType
+                }) { widgetItem ->
+                    OverviewWidgetContainer(
+                        overviewReportWidgetItem = widgetItem,
+                        state = state,
+                        overviewReportType = overviewReportType
+                    )
+                }
             }
         }
     }

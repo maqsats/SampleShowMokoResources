@@ -9,7 +9,6 @@ import com.dna.payments.kmm.presentation.mvi.UiState
 
 interface TeamManagementContract {
     sealed interface Event : UiEvent {
-        data object OnInit : Event
         data class OnPageChanged(
             val position: Int
         ) : Event
@@ -32,11 +31,7 @@ interface TeamManagementContract {
         val indexOfSelectedRole: Int = 0
     ) : UiState
 
-    sealed interface Effect : UiEffect {
-        data class OnPageChanged(
-            val position: Int
-        ) : Effect
-    }
+    sealed interface Effect : UiEffect
 }
 
 

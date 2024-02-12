@@ -51,6 +51,12 @@ fun CurrencyWidget(
                     .width(30.dp)
             )
         },
+        msgCheckAgain = {
+            ComponentRectangleLineShort(
+                modifier = Modifier
+                    .width(30.dp)
+            )
+        },
         onCheckAgain = {},
         onTryAgain = {},
     )

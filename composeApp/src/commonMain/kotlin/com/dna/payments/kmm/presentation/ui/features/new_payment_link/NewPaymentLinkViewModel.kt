@@ -70,8 +70,13 @@ class NewPaymentLinkViewModel(
             validationResult = mutableStateOf(ValidationResult(successful = true))
         ),
         orderNumber = TextFieldUiState(
-            input = mutableStateOf(""),
+            input = mutableStateOf(generateRandomOrderNumber()),
             textInput = TextInput.ORDER_NUMBER,
+            validationResult = mutableStateOf(ValidationResult(successful = true))
+        ),
+        store = TextFieldUiState(
+            input = mutableStateOf(""),
+            textInput = TextInput.STORES,
             validationResult = mutableStateOf(ValidationResult(successful = true))
         ),
         expiredDate = TextFieldUiState(

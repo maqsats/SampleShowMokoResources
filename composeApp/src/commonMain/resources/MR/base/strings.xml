@@ -425,4 +425,11 @@
     <string name="amount_required">Amount is required.</string>
     <string name="amount_must_be">Charge amount must be a positive number not greater than the payment amount.</string>
     <string name="refund_amount_must_be">Refund amount must be a positive number not greater than the balance.</string>
+    <string name="select_store">Select Store</string>
+    <string name="empty_amount">00.00</string>
+    <string name="customer_name">Customer name</string>
+    <string name="name_of_service_or_item">Name of the service or item</string>
+    <string name="link_expiry">Link expiry</string>
+    <string name="select_date">Select date</string>
+    <string name="create_link">Create link</string>
 </resources>

@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
-import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.main_screens.ScreenName
@@ -47,16 +46,27 @@ import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import kotlinx.coroutines.flow.collectLatest
 
 class LoginScreen(private var showSuccess: Boolean = false) : Screen {
-    override val key: ScreenKey = uniqueScreenKey
+    override val key: ScreenKey = ScreenName.LOGIN.name
 
     @Composable
     override fun Content() {
         val loginViewModel = getScreenModel<LoginViewModel>()
 
         val state by loginViewModel.uiState.collectAsState()
+
+        val navigator = LocalNavigator.currentOrThrow
+
+        LaunchedEffect(Unit) {
+            loginViewModel.effect.collect { effect ->
+                when (effect) {
+                    LoginContract.Effect.OnLoginSuccess -> {
+                        navigator.push(PinScreen())
+                    }
+                }
+            }
+        }
 
         LifecycleEffect(
             onStarted = {
@@ -69,8 +79,6 @@ class LoginScreen(private var showSuccess: Boolean = false) : Screen {
 
         val controller = LocalSoftwareKeyboardController.current
 
-        val navigator = LocalNavigator.currentOrThrow
-
         val showSuccessChangePassword = mutableStateOf(showSuccess)
 
         SuccessPopup(
@@ -79,16 +87,6 @@ class LoginScreen(private var showSuccess: Boolean = false) : Screen {
         )
 
         UiStateController(state.authorization)
-
-        LaunchedEffect(key1 = Unit) {
-            loginViewModel.effect.collectLatest { effect ->
-                when (effect) {
-                    LoginContract.Effect.OnLoginSuccess -> {
-                        navigator.push(PinScreen())
-                    }
-                }
-            }
-        }
 
         Column(
             modifier = Modifier
