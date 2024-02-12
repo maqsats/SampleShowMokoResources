@@ -15,7 +15,6 @@ internal fun App() = AppTheme {
         NavAuthScreen()
     ) { navigator ->
         val supportSwipeBack = remember { shouldUseSwipeBack }
-
         if (supportSwipeBack) {
             VoyagerSwipeBackContent(navigator)
         } else {

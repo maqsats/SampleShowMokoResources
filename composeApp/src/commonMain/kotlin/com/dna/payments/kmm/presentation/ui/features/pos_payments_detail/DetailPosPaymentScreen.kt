@@ -28,6 +28,7 @@ import com.dna.payments.kmm.presentation.theme.DnaTextStyle
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.greyFirst
 import com.dna.payments.kmm.presentation.theme.lightGrey
+import com.dna.payments.kmm.presentation.theme.red
 import com.dna.payments.kmm.presentation.ui.common.ClipboardDotsContent
 import com.dna.payments.kmm.presentation.ui.common.DNADots
 import com.dna.payments.kmm.presentation.ui.common.DNAExpandBox
