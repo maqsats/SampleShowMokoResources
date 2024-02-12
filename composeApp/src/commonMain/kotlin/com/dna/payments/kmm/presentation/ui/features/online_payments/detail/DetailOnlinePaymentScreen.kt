@@ -93,7 +93,7 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
                     REFUND, CHARGED, PROCESS_NEW_PAYMENT -> {
                         detailPaymentViewModel.setEvent(
                             DetailOnlinePaymentContract.Event.OnTransactionChanged(
-                                transactionParam.id
+                                result.id ?: transactionParam.id
                             )
                         )
                     }

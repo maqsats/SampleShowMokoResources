@@ -1,5 +1,7 @@
 package com.dna.payments.kmm.data.repository
 
+import com.dna.payments.kmm.data.model.online_payments.ChargeResult
+import com.dna.payments.kmm.data.model.online_payments.RefundResult
 import com.dna.payments.kmm.data.model.payment_methods.ProcessNewPaymentRequest
 import com.dna.payments.kmm.data.model.payment_methods.SendReceiptRequest
 import com.dna.payments.kmm.data.preferences.Preferences
@@ -24,7 +26,7 @@ class DefaultOnlinePaymentOperationRepository(
     override suspend fun cancelPendingOperation(transactionId: String): Response<Unit> =
         handleApiCall {
             httpClient.post {
-                url("${Constants.BASE_URL}operation/{$transactionId}/cancel")
+                url("${Constants.BASE_URL}operation/$transactionId/cancel")
                 header(Constants.CREDENTIALS_HEADER, preferences.getAuthToken().toBearerToken())
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }.body()
@@ -35,7 +37,7 @@ class DefaultOnlinePaymentOperationRepository(
         sendReceiptRequest: SendReceiptRequest
     ): Response<Unit> = handleApiCall {
         httpClient.post {
-            url("${Constants.BASE_URL}v1/payments/{$transactionId}/receipts")
+            url("${Constants.BASE_URL}v1/payments/$transactionId/receipts")
             header(Constants.CREDENTIALS_HEADER, preferences.getAuthToken().toBearerToken())
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             setBody(sendReceiptRequest)
@@ -44,10 +46,10 @@ class DefaultOnlinePaymentOperationRepository(
 
     override suspend fun chargePaymentOperation(
         transactionId: String,
-        amount: Int
-    ): Response<Unit> = handleApiCall {
+        amount: Double
+    ): Response<ChargeResult> = handleApiCall {
         httpClient.post {
-            url("${Constants.BASE_URL}operation/{$transactionId}/charge?amount=${amount}")
+            url("${Constants.BASE_URL}operation/$transactionId/charge?amount=${amount}")
             header(Constants.CREDENTIALS_HEADER, preferences.getAuthToken().toBearerToken())
             header(HttpHeaders.ContentType, ContentType.Application.Json)
         }.body()
@@ -55,8 +57,8 @@ class DefaultOnlinePaymentOperationRepository(
 
     override suspend fun refundPaymentOperation(
         transactionId: String,
-        amount: Int
-    ): Response<Unit> = handleApiCall {
+        amount: Double
+    ): Response<RefundResult> = handleApiCall {
         httpClient.post {
             url("${Constants.BASE_URL}operation/$transactionId/refund?amount=${amount}")
             header(Constants.CREDENTIALS_HEADER, preferences.getAuthToken().toBearerToken())

@@ -302,6 +302,7 @@
     <string name="created">Created</string>
     <string name="credited">Credited</string>
     <string name="charged">Charged</string>
+    <string name="charge">Charge</string>
     <string name="refunded">Refunded</string>
     <string name="declined">Declined</string>
     <string name="failed">Failed</string>
@@ -415,6 +416,7 @@
 
     <!--    Payment refund-->
     <string name="payment_refund">Payment refund</string>
+    <string name="payment_charge">Payment charge</string>
     <string name="charge_amount">Charge Amount</string>
     <string name="refund_amount">Refund Amount</string>
     <string name="payment_amount">Payment Amount</string>

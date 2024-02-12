@@ -1,8 +1,8 @@
-package com.dna.payments.kmm.presentation.ui.features.online_payments.refund
+package com.dna.payments.kmm.presentation.ui.features.online_payments.charge
 
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.dna.payments.kmm.domain.interactors.use_cases.online_payments.RefundPaymentOperationUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.online_payments.ChargePaymentOperationUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePaymentAmount
 import com.dna.payments.kmm.domain.model.online_payments.OperationType
 import com.dna.payments.kmm.domain.network.Response.Companion.onSuccess
@@ -14,45 +14,45 @@ import com.dna.payments.kmm.presentation.model.validation_result.ValidationResul
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
 import kotlinx.coroutines.launch
 
-class OnlinePaymentRefundViewModel(
+class OnlinePaymentChargeViewModel(
     private val validate: ValidatePaymentAmount,
-    private val refundPaymentOperationUseCase: RefundPaymentOperationUseCase
-) : BaseViewModel<OnlinePaymentRefundContract.Event, OnlinePaymentRefundContract.State, OnlinePaymentRefundContract.Effect>() {
+    private val chargePaymentOperationUseCase: ChargePaymentOperationUseCase
+) : BaseViewModel<OnlinePaymentChargeContract.Event, OnlinePaymentChargeContract.State, OnlinePaymentChargeContract.Effect>() {
 
-    override fun createInitialState(): OnlinePaymentRefundContract.State =
-        OnlinePaymentRefundContract.State(
+    override fun createInitialState(): OnlinePaymentChargeContract.State =
+        OnlinePaymentChargeContract.State(
             amount = TextFieldUiState(
                 input = mutableStateOf(""),
                 textInput = TextInput.AMOUNT,
                 validationResult = mutableStateOf(ValidationResult(successful = true)),
-                onFieldChanged = { this.setEvent(OnlinePaymentRefundContract.Event.OnAmountFieldChanged) }
+                onFieldChanged = { this.setEvent(OnlinePaymentChargeContract.Event.OnAmountFieldChanged) }
             ),
             isButtonEnabled = mutableStateOf(true),
-            refundState = ResourceUiState.Idle,
+            chargeState = ResourceUiState.Idle,
             balance = mutableStateOf(0.0)
         )
 
 
-    override fun handleEvent(event: OnlinePaymentRefundContract.Event) {
+    override fun handleEvent(event: OnlinePaymentChargeContract.Event) {
         when (event) {
-            OnlinePaymentRefundContract.Event.OnAmountFieldChanged -> {
+            OnlinePaymentChargeContract.Event.OnAmountFieldChanged -> {
                 with(currentState) {
                     val validateAmountResult = validate(
                         amount = currentState.amount.input.value,
                         balance = balance.value,
                         textInput = currentState.amount.textInput,
-                        operationType = OperationType.REFUND
+                        operationType = OperationType.CHARGE
                     )
                     amount.validationResult.value = validateAmountResult
                     isButtonEnabled.value = validateAmountResult.successful
                 }
             }
 
-            is OnlinePaymentRefundContract.Event.OnRefundClicked -> {
+            is OnlinePaymentChargeContract.Event.OnChargeClicked -> {
                 refund(event.transactionId)
             }
 
-            is OnlinePaymentRefundContract.Event.OnInit -> {
+            is OnlinePaymentChargeContract.Event.OnInit -> {
                 with(currentState) {
                     amount.input.value = event.amount.toInt().toString()
                     balance.value = event.balance
@@ -62,17 +62,17 @@ class OnlinePaymentRefundViewModel(
     }
 
     private fun refund(transactionId: String) {
-        setState { copy(refundState = ResourceUiState.Loading) }
+        setState { copy(chargeState = ResourceUiState.Loading) }
         screenModelScope.launch {
-            val result = refundPaymentOperationUseCase(
+            val result = chargePaymentOperationUseCase(
                 transactionId = transactionId,
                 amount = currentState.amount.input.value.toDouble()
             )
             setState {
                 copy(
-                    refundState = result.onSuccess {
+                    chargeState = result.onSuccess {
                         setEffect {
-                            OnlinePaymentRefundContract.Effect.OnSuccessfullyRefunded(it.id)
+                            OnlinePaymentChargeContract.Effect.OnSuccessfullyCharge(it.id)
                         }
                     }.toResourceUiState()
                 )
