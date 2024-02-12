@@ -16,7 +16,9 @@ import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DateHelper
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.GetDateRangeUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.drawer.DrawerUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.ecom_stores.GetEcomStoresUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.online_payments.ChargePaymentOperationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.online_payments.GetTransactionByIdUseCase
+import com.dna.payments.kmm.domain.interactors.use_cases.online_payments.RefundPaymentOperationUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_link.PaymentLinkUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.ChangeTerminalStatusUseCase
 import com.dna.payments.kmm.domain.interactors.use_cases.payment_method.RegisterDomainUseCase
@@ -41,6 +43,7 @@ import com.dna.payments.kmm.domain.interactors.validation.ValidateDomain
 import com.dna.payments.kmm.domain.interactors.validation.ValidateEmail
 import com.dna.payments.kmm.domain.interactors.validation.ValidateField
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePassword
+import com.dna.payments.kmm.domain.interactors.validation.ValidatePaymentAmount
 import com.dna.payments.kmm.domain.use_case.ChangePasswordUseCase
 import com.dna.payments.kmm.domain.use_case.GetDetailTerminalSettingsUseCase
 import com.dna.payments.kmm.domain.use_case.GetDomainsUseCase
@@ -89,6 +92,8 @@ val useCasesModule: Module = module {
     factoryOf(::GetDetailTerminalSettingsUseCase)
     factoryOf(::SendReceiptOperationUseCase)
     factoryOf(::GetTransactionByIdUseCase)
+    factoryOf(::RefundPaymentOperationUseCase)
+    factoryOf(::ChargePaymentOperationUseCase)
 
     factoryOf(::DefaultCurrencyUseCase).bind(CurrencyUseCase::class)
     factoryOf(::DefaultPosSummaryGraphUseCase).bind(PosSummaryGraphUseCase::class)
@@ -106,7 +111,7 @@ val useCasesModule: Module = module {
     factoryOf(::ValidateDomain)
     factoryOf(::ValidateCode)
     factoryOf(::ValidateField)
-
+    factoryOf(::ValidatePaymentAmount)
 }
 
 

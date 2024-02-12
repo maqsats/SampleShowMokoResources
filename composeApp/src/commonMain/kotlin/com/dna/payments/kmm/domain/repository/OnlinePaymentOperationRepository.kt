@@ -1,5 +1,7 @@
 package com.dna.payments.kmm.domain.repository
 
+import com.dna.payments.kmm.data.model.online_payments.ChargeResult
+import com.dna.payments.kmm.data.model.online_payments.RefundResult
 import com.dna.payments.kmm.data.model.payment_methods.ProcessNewPaymentRequest
 import com.dna.payments.kmm.data.model.payment_methods.SendReceiptRequest
 import com.dna.payments.kmm.domain.network.Response
@@ -16,13 +18,13 @@ interface OnlinePaymentOperationRepository {
 
     suspend fun chargePaymentOperation(
         transactionId: String,
-        amount: Int
-    ): Response<Unit>
+        amount: Double
+    ): Response<ChargeResult>
 
     suspend fun refundPaymentOperation(
         transactionId: String,
-        amount: Int
-    ): Response<Unit>
+        amount: Double
+    ): Response<RefundResult>
 
     suspend fun processNewPaymentOperation(
         processNewPaymentRequest: ProcessNewPaymentRequest

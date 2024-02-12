@@ -15,6 +15,7 @@ interface NavigatorResult
 
 data class OnlinePaymentNavigatorResult(
     val value: OnlinePaymentNavigatorResultType,
+    val id : String? = null
 ) : NavigatorResult
 
 enum class OnlinePaymentNavigatorResultType(val successMessage: StringResource? = null) {
