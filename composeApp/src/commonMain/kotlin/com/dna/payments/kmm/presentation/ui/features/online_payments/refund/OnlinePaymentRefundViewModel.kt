@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.domain.interactors.use_cases.online_payments.RefundPaymentOperationUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePaymentAmount
-import com.dna.payments.kmm.domain.model.online_payments.OperationType
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentOperationType
 import com.dna.payments.kmm.domain.network.Response.Companion.onSuccess
 import com.dna.payments.kmm.domain.network.toResourceUiState
 import com.dna.payments.kmm.presentation.model.ResourceUiState
@@ -16,8 +16,17 @@ import kotlinx.coroutines.launch
 
 class OnlinePaymentRefundViewModel(
     private val validate: ValidatePaymentAmount,
-    private val refundPaymentOperationUseCase: RefundPaymentOperationUseCase
+    private val refundPaymentOperationUseCase: RefundPaymentOperationUseCase,
+    balance: Double
 ) : BaseViewModel<OnlinePaymentRefundContract.Event, OnlinePaymentRefundContract.State, OnlinePaymentRefundContract.Effect>() {
+
+    init {
+        setState {
+            copy(
+                balance = balance
+            )
+        }
+    }
 
     override fun createInitialState(): OnlinePaymentRefundContract.State =
         OnlinePaymentRefundContract.State(
@@ -29,7 +38,7 @@ class OnlinePaymentRefundViewModel(
             ),
             isButtonEnabled = mutableStateOf(true),
             refundState = ResourceUiState.Idle,
-            balance = mutableStateOf(0.0)
+            balance = 0.0
         )
 
 
@@ -39,9 +48,9 @@ class OnlinePaymentRefundViewModel(
                 with(currentState) {
                     val validateAmountResult = validate(
                         amount = currentState.amount.input.value,
-                        balance = balance.value,
+                        balance = balance,
                         textInput = currentState.amount.textInput,
-                        operationType = OperationType.REFUND
+                        onlinePaymentOperationType = OnlinePaymentOperationType.REFUND
                     )
                     amount.validationResult.value = validateAmountResult
                     isButtonEnabled.value = validateAmountResult.successful
@@ -55,7 +64,7 @@ class OnlinePaymentRefundViewModel(
             is OnlinePaymentRefundContract.Event.OnInit -> {
                 with(currentState) {
                     amount.input.value = event.amount.toInt().toString()
-                    balance.value = event.balance
+                    copy(balance = event.balance)
                 }
             }
         }

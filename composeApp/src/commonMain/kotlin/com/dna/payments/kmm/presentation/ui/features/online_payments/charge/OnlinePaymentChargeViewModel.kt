@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.dna.payments.kmm.domain.interactors.use_cases.online_payments.ChargePaymentOperationUseCase
 import com.dna.payments.kmm.domain.interactors.validation.ValidatePaymentAmount
-import com.dna.payments.kmm.domain.model.online_payments.OperationType
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentOperationType
 import com.dna.payments.kmm.domain.network.Response.Companion.onSuccess
 import com.dna.payments.kmm.domain.network.toResourceUiState
 import com.dna.payments.kmm.presentation.model.ResourceUiState
@@ -41,7 +41,7 @@ class OnlinePaymentChargeViewModel(
                         amount = currentState.amount.input.value,
                         balance = balance.value,
                         textInput = currentState.amount.textInput,
-                        operationType = OperationType.CHARGE
+                        onlinePaymentOperationType = OnlinePaymentOperationType.CHARGE
                     )
                     amount.validationResult.value = validateAmountResult
                     isButtonEnabled.value = validateAmountResult.successful

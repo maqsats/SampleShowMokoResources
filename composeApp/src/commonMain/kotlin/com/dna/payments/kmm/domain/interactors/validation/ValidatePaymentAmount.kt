@@ -1,7 +1,7 @@
 package com.dna.payments.kmm.domain.interactors.validation
 
 import com.dna.payments.kmm.MR
-import com.dna.payments.kmm.domain.model.online_payments.OperationType
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentOperationType
 import com.dna.payments.kmm.presentation.model.text_input.TextInput
 import com.dna.payments.kmm.presentation.model.validation_result.ValidationResult
 import com.dna.payments.kmm.utils.UiText
@@ -12,7 +12,7 @@ class ValidatePaymentAmount {
         amount: String,
         balance: Double,
         textInput: TextInput,
-        operationType: OperationType = OperationType.CHARGE
+        onlinePaymentOperationType: OnlinePaymentOperationType = OnlinePaymentOperationType.CHARGE
     ): ValidationResult {
         if (amount.isBlank()) {
             return ValidationResult(
@@ -23,7 +23,7 @@ class ValidatePaymentAmount {
         }
 
         if (amount.toDouble() > balance) {
-            val errorMessageRes = if (operationType == OperationType.CHARGE) {
+            val errorMessageRes = if (onlinePaymentOperationType == OnlinePaymentOperationType.CHARGE) {
                 MR.strings.amount_must_be
             } else {
                 MR.strings.refund_amount_must_be

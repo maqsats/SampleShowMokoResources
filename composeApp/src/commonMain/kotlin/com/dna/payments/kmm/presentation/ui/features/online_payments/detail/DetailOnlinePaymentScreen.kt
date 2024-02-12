@@ -28,7 +28,9 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod
-import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentStatus
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentOperationType
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentOperationType.CANCEL
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentOperationType.CHARGE
 import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentCard
 import com.dna.payments.kmm.domain.model.transactions.Transaction
 import com.dna.payments.kmm.presentation.state.ComponentRectangleLineLong
@@ -47,6 +49,7 @@ import com.dna.payments.kmm.presentation.ui.common.DNATextWithIcon
 import com.dna.payments.kmm.presentation.ui.common.DNATopAppBar
 import com.dna.payments.kmm.presentation.ui.common.DNAYellowButton
 import com.dna.payments.kmm.presentation.ui.common.DefaultDotsContent
+import com.dna.payments.kmm.presentation.ui.common.DnaFilter
 import com.dna.payments.kmm.presentation.ui.common.LinkDotsContent
 import com.dna.payments.kmm.presentation.ui.common.MessageDotsContent
 import com.dna.payments.kmm.presentation.ui.common.PainterDotsContent
@@ -54,6 +57,7 @@ import com.dna.payments.kmm.presentation.ui.common.PainterWithBackgroundDotsCont
 import com.dna.payments.kmm.presentation.ui.common.SuccessPopup
 import com.dna.payments.kmm.presentation.ui.features.online_payments.receipt.GetReceiptScreen
 import com.dna.payments.kmm.presentation.ui.features.online_payments.refund.OnlinePaymentRefundScreen
+import com.dna.payments.kmm.presentation.ui.features.online_payments.status.StatusWidget
 import com.dna.payments.kmm.utils.UiText
 import com.dna.payments.kmm.utils.extension.changePlatformColor
 import com.dna.payments.kmm.utils.extension.toMoneyString
@@ -82,7 +86,7 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
 
         val showSuccessMessage = remember { mutableStateOf(false) }
         val successMessage = remember { mutableStateOf(MR.strings.empty_text) }
-
+        val showOperationBottomSheet = remember { mutableStateOf(false) }
         val result = getResult().value
 
         LaunchedEffect(transactionParam, result) {
@@ -131,13 +135,9 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
                 onNavigationClick = {
                     navigator.pop()
                 },
-                actionIcon = painterResource(MR.images.ic_actions),
+                actionIcon = if (state.operationTypeList.isNotEmpty()) painterResource(MR.images.ic_actions) else null,
                 onActionClick = {
-                    navigator.push(
-                        OnlinePaymentRefundScreen(
-                            transactionParam
-                        )
-                    )
+                    showOperationBottomSheet.value = true
                 }
             )
 
@@ -145,6 +145,40 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
                 modifier = Modifier.wrapContentHeight(),
                 state = state,
                 navigator = navigator
+            )
+            DnaFilter(
+                openBottomSheet = showOperationBottomSheet,
+                dropDownContent = {
+                    OnlinePaymentOperationWidget(state)
+                },
+                bottomSheetContent = {
+                    OnlinePaymentOperationBottomSheet(
+                        state = state,
+                        onItemChange = {
+                            when (it) {
+                                CHARGE -> {
+
+                                }
+
+                                OnlinePaymentOperationType.REFUND -> {
+                                    navigator.push(
+                                        OnlinePaymentRefundScreen(
+                                            transactionParam
+                                        )
+                                    )
+                                }
+
+                                OnlinePaymentOperationType.PROCESS_NEW_PAYMENT -> {
+
+                                }
+
+                                CANCEL -> {
+
+                                }
+                            }
+                        }
+                    )
+                }
             )
         }
     }
@@ -175,7 +209,8 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
                             }
                             ZStackReceiptButton(
                                 it,
-                                navigator
+                                navigator,
+                                state
                             )
                         }
                     }
@@ -626,12 +661,10 @@ class DetailOnlinePaymentScreen(private val transactionParam: Transaction) : Scr
     private fun ZStackReceiptButton(
         transaction: Transaction,
         navigator: Navigator,
+        state: DetailOnlinePaymentContract.State,
         modifier: Modifier = Modifier
     ) {
-        if ((transaction.status == OnlinePaymentStatus.CHARGE) ||
-            (transaction.status == OnlinePaymentStatus.AUTH) ||
-            (transaction.status == OnlinePaymentStatus.CREDITED)
-        ) {
+        if (state.isReceiptVisible) {
             Box(
                 modifier.zIndex(2f)
             ) {

@@ -46,13 +46,16 @@ import com.dna.payments.kmm.utils.navigation.popWithResult
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
+import org.koin.core.parameter.parametersOf
 
 class OnlinePaymentRefundScreen(private val transaction: Transaction) : Screen {
     @Composable
     override fun Content() {
 
         changePlatformColor(true)
-        val onlinePaymentRefundViewModel = getScreenModel<OnlinePaymentRefundViewModel>()
+        val onlinePaymentRefundViewModel = getScreenModel<OnlinePaymentRefundViewModel> {
+            parametersOf(transaction.balance)
+        }
         val state by onlinePaymentRefundViewModel.uiState.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
 
