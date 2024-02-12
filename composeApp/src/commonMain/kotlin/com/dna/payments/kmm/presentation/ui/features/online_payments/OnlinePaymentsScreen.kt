@@ -39,7 +39,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.koin.getScreenModel
 import com.dna.payments.kmm.MR
-import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.*
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.CARD
+import com.dna.payments.kmm.domain.model.online_payments.OnlinePaymentMethod.CLICK_TO_PAY
 import com.dna.payments.kmm.domain.model.pos_payments.PosPaymentCard
 import com.dna.payments.kmm.domain.model.transactions.Transaction
 import com.dna.payments.kmm.presentation.state.ComponentCircle
@@ -59,8 +60,11 @@ import com.dna.payments.kmm.presentation.ui.features.online_payments.status.Stat
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import com.dna.payments.kmm.utils.extension.toCurrencySymbol
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
+import com.dna.payments.kmm.utils.navigation.OnlinePaymentNavigatorResult
+import com.dna.payments.kmm.utils.navigation.OnlinePaymentNavigatorResultType
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
 import com.dna.payments.kmm.utils.navigation.drawer_navigation.DrawerScreen
+import com.dna.payments.kmm.utils.navigation.pushWithResult
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.flow.collectLatest
@@ -83,9 +87,6 @@ class OnlinePaymentsScreen : DrawerScreen {
         val navigator = LocalNavigator.currentOrThrow
 
         LaunchedEffect(key1 = Unit) {
-            onlinePaymentsViewModel.setEvent(
-                OnlinePaymentsContract.Event.OnInit
-            )
             onlinePaymentsViewModel.effect.collectLatest { effect ->
                 when (effect) {
                     is OnlinePaymentsContract.Effect.OnPageChanged -> {
@@ -107,7 +108,14 @@ class OnlinePaymentsScreen : DrawerScreen {
             onRequestNextPage = {
                 onlinePaymentsViewModel.setEvent(OnlinePaymentsContract.Event.OnLoadMore)
             },
-            onClick = { navigator.push(DetailOnlinePaymentScreen(it)) }
+            onClick = {
+                navigator.pushWithResult(
+                    OnlinePaymentNavigatorResult(
+                        OnlinePaymentNavigatorResultType.DEFAULT,
+                    ),
+                    DetailOnlinePaymentScreen(it)
+                )
+            }
         ) {
             onlinePaymentsViewModel.setEvent(OnlinePaymentsContract.Event.OnRefresh)
         }

@@ -10,7 +10,6 @@ import com.dna.payments.kmm.presentation.theme.darkRed
 import com.dna.payments.kmm.presentation.theme.lightBlue
 import com.dna.payments.kmm.presentation.theme.lightGreen
 import com.dna.payments.kmm.presentation.theme.lightGrey
-import com.dna.payments.kmm.presentation.theme.white
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
 
@@ -35,8 +34,8 @@ enum class OnlinePaymentStatus(
     CHARGE("Charged", MR.strings.charged, darkGreen, lightGreen, MR.images.ic_success),
     CANCEL("Cancelled", MR.strings.cancelled, darkGrey, lightGrey, MR.images.ic_cancel),
     REFUND("Refunded", MR.strings.refunded, darkGrey, lightGrey, MR.images.ic_restore),
-    REJECT("Declined", MR.strings.declined, darkRed, white, MR.images.ic_cancel),
-    FAILED("Failed", MR.strings.failed, darkRed, white, MR.images.ic_cancel),
+    REJECT("Declined", MR.strings.declined, darkRed, Color.Unspecified, MR.images.ic_cancel),
+    FAILED("Failed", MR.strings.failed, darkRed, Color.Unspecified, MR.images.ic_cancel),
     NEW("New", MR.strings.new_status, darkGrey, lightGrey, MR.images.ic_ready_to_charge),
     THREE_D_SECURE(
         "3D Secure",

@@ -46,12 +46,10 @@ fun ComponentSquare(
 
 @Composable
 fun ComponentRectangle(
-    isLoadingCompleted: Boolean,
-    isLightModeActive: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
-            .clip(shape = RoundedCornerShape(24.dp))
+        modifier = modifier
             .background(color = grayLight)
             .height(200.dp)
             .fillMaxWidth()
@@ -71,9 +69,9 @@ fun ComponentCircle(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ComponentRectangleLineLong() {
+fun ComponentRectangleLineLong(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(shape = RoundedCornerShape(4.dp))
             .background(color = grayLight)
             .height(20.dp).fillMaxWidth()
