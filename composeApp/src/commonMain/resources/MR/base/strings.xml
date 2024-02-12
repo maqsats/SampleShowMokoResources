@@ -432,4 +432,9 @@
     <string name="link_expiry">Link expiry</string>
     <string name="select_date">Select date</string>
     <string name="create_link">Create link</string>
+    <string name="am_time">AM</string>
+    <string name="time">Time</string>
+    <string name="pm_time">PM</string>
+    <string name="apply">Apply</string>
+    <string name="custom">Custom</string>
 </resources>

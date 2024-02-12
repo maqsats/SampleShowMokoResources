@@ -17,6 +17,10 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -30,10 +34,12 @@ import com.dna.payments.kmm.presentation.theme.greyColor
 import com.dna.payments.kmm.presentation.theme.greyFirst
 import com.dna.payments.kmm.presentation.theme.white
 import com.dna.payments.kmm.presentation.ui.common.DNAText
+import com.dna.payments.kmm.utils.date_picker.DnaDatePickerDialog
 import com.dna.payments.kmm.utils.extension.ddMmYyyy
 import com.dna.payments.kmm.utils.extension.noRippleClickable
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import korlibs.time.DateTime
 
 @Composable
 fun DateRangeWidget(datePickerPeriod: DatePickerPeriod) {
@@ -58,6 +64,25 @@ fun DateRangeBottomSheet(
     dateSelection: DateSelection,
     onDatePeriodClick: (DatePickerPeriod) -> Unit
 ) {
+    var showDatePicker by remember { mutableStateOf(false) }
+
+    if (showDatePicker) {
+        DnaDatePickerDialog(
+            maxDate = DateTime.now().date,
+            showDatePicker = showDatePicker,
+            onDismiss = { showDatePicker = false },
+            onRangeDateSelected = { startDate, endDate ->
+                showDatePicker = false
+                onDatePeriodClick(
+                    DatePickerPeriod.CUSTOM(
+                        startDate = startDate,
+                        endDate = endDate
+                    )
+                )
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,7 +111,9 @@ fun DateRangeBottomSheet(
                     .padding(
                         vertical = Paddings.small,
                         horizontal = Paddings.standard12dp
-                    ),
+                    ).noRippleClickable {
+                        showDatePicker = true
+                    },
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 DNAText(
@@ -111,7 +138,23 @@ fun DateRangeBottomSheet(
             verticalArrangement = Arrangement.spacedBy(Paddings.small),
             horizontalArrangement = Arrangement.spacedBy(Paddings.small)
         ) {
-            items(DatePickerPeriod.values()) { item ->
+
+            items(
+                listOf(
+                    DatePickerPeriod.TODAY(),
+                    DatePickerPeriod.YESTERDAY(),
+                    DatePickerPeriod.THIS_WEEK(),
+                    DatePickerPeriod.LAST_WEEK(),
+                    DatePickerPeriod.PREVIOUS_WEEK(),
+                    DatePickerPeriod.CURRENT_MONTH(),
+                    DatePickerPeriod.LAST_30_DAYS(),
+                    DatePickerPeriod.LAST_MONTH(),
+                    DatePickerPeriod.LAST_60_DAYS(),
+                    DatePickerPeriod.LAST_90_DAYS(),
+                    DatePickerPeriod.THIS_YEAR(),
+                    DatePickerPeriod.LAST_12_MONTHS()
+                )
+            ) { item ->
                 DatePeriodItem(
                     datePickerPeriod = item,
                     onClick = {
@@ -122,7 +165,6 @@ fun DateRangeBottomSheet(
                 )
             }
         }
-
         Spacer(modifier = Modifier.height(Paddings.minimum))
     }
 }

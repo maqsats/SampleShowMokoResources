@@ -6,6 +6,11 @@ import androidx.compose.ui.unit.sp
 
 object DnaTextStyle {
 
+    val SemiBold13 = TextStyle(
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 13.sp
+    )
+
     val SemiBold14 = TextStyle(
         fontWeight = FontWeight.SemiBold,
         fontSize = 14.sp
@@ -33,6 +38,10 @@ object DnaTextStyle {
 
     val Normal18 = TextStyle(
         fontSize = 18.sp
+    )
+
+    val Normal20 = TextStyle(
+        fontSize = 20.sp
     )
 
     val Normal21 = TextStyle(
