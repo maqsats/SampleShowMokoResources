@@ -20,12 +20,12 @@ class GetDateRangeUseCase(
         dateHelper.getDateSelectionByDatePickerPeriod(datePickerPeriod)
 
     private fun getDatePickerPeriod(menu: Menu): DatePickerPeriod = when (menu) {
-        OVERVIEW -> DatePickerPeriod.TODAY
-        POS_PAYMENTS -> DatePickerPeriod.TODAY
-        ONLINE_PAYMENTS -> DatePickerPeriod.TODAY
-        PAYMENT_LINKS -> DatePickerPeriod.PREVIOUS_WEEK
-        SETTLEMENTS -> DatePickerPeriod.YESTERDAY
-        REPORTS -> DatePickerPeriod.TODAY
+        OVERVIEW -> DatePickerPeriod.TODAY()
+        POS_PAYMENTS -> DatePickerPeriod.TODAY()
+        ONLINE_PAYMENTS -> DatePickerPeriod.TODAY()
+        PAYMENT_LINKS -> DatePickerPeriod.PREVIOUS_WEEK()
+        SETTLEMENTS -> DatePickerPeriod.YESTERDAY()
+        REPORTS -> DatePickerPeriod.TODAY()
     }
 
     private fun getDateSelection(menu: Menu): DateSelection =

@@ -12,6 +12,10 @@ internal val grayLight = Color(0xFF333C3C43)
 
 
 internal val white = Color(0xFFFFFFFF)
+internal val green3 = Color(0xFF317E72)
+internal val labelColor = Color(0x3C3C434D)
+internal val darkPurple = Color(0xFF1D1737)
+internal val timeSwitchBg = Color(0xFFEEEEEF)
 internal val black = Color(0xFF000000)
 internal val yellow = Color(0xFFFFF5F504)
 internal val red = Color(0xFFB71C1C)

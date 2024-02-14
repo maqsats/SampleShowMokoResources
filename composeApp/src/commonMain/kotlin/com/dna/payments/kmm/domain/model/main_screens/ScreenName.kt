@@ -13,4 +13,5 @@ enum class ScreenName {
     RESTORE_PASSWORD,
     VERIFICATION_CODE,
     CREATE_LINK,
+    DATE_PICKER,
 }

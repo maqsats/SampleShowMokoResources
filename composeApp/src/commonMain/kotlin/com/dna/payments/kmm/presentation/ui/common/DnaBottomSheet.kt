@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.contentColorFor
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -25,7 +26,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.greyColor
-import com.dna.payments.kmm.presentation.theme.white
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +34,7 @@ fun DnaBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     ),
-    scrimColor: Color = white.copy(alpha = 0.30f),
+    scrimColor: Color = BottomSheetDefaults.ScrimColor,
     sheetShape: Shape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp),
     sheetElevation: Dp = Paddings.normal,
     sheetBackgroundColor: Color = Color.Transparent,
