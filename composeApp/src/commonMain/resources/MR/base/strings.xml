@@ -413,6 +413,8 @@
     <string name="payment_refunded">Payment has been refunded</string>
     <string name="payment_charged">Payment has been charged</string>
     <string name="process_new_payment_successfully">Process new payment was successful</string>
+    <string name="process_new_payment">Process new payment</string>
+    <string name="send_receipt">Process new payment</string>
 
     <!--    Payment refund-->
     <string name="payment_refund">Payment refund</string>

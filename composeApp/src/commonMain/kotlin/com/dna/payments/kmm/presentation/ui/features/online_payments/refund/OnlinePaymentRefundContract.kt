@@ -22,7 +22,7 @@ interface OnlinePaymentRefundContract {
     data class State(
         val refundState: ResourceUiState<RefundResult>,
         val amount: TextFieldUiState,
-        val balance: MutableState<Double>,
+        val balance: Double,
         val isButtonEnabled: MutableState<Boolean>
     ) : UiState
 

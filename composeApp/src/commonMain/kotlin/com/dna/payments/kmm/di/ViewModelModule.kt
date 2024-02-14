@@ -83,13 +83,21 @@ val viewModelModule = module {
             params.get()
         )
     }
+
+    factory { params ->
+        OnlinePaymentRefundViewModel(
+            get(),
+            get(),
+            params.get()
+        )
+    }
+
     factoryOf(::PaymentLinksViewModel)
     factoryOf(::OnlinePaymentsViewModel)
     factoryOf(::PosPaymentsViewModel)
     factoryOf(::AddDomainFirstStepViewModel)
     factoryOf(::AddDomainThirdStepViewModel)
     factoryOf(::GetReceiptViewModel)
-    factoryOf(::OnlinePaymentRefundViewModel)
     factoryOf(::OnlinePaymentChargeViewModel)
 }
 
