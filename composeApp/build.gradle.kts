@@ -27,6 +27,11 @@ kotlin {
 
     jvm("desktop")
 
+    js {
+        browser()
+        binaries.executable()
+    }
+
     iosX64()
     iosArm64()
     iosSimulatorArm64()
@@ -42,6 +47,7 @@ kotlin {
             export("dev.icerock.moko:resources:0.22.3")
             export("dev.icerock.moko:graphics:0.9.0")
         }
+        iosTarget.setUpiOSObserver()
     }
 
     cocoapods {
@@ -94,7 +100,6 @@ kotlin {
                 implementation(libs.multiplatform.settings.no.arg)
                 implementation(libs.time.klock)
                 implementation(libs.compose.shimmer)
-                api(libs.compose.webview.multiplatform)
                 implementation(libs.material3.window.size.classMultiplatform)
             }
         }
@@ -120,6 +125,7 @@ kotlin {
                 implementation(libs.play.services.maps)
                 implementation(libs.accompanist.systemuicontroller)
                 implementation(libs.maps.compose)
+                api(libs.androidx.webkit)
                 implementation(libs.ui.tooling.preview)
                 api(project.dependencies.platform(libs.firebase.bom))
                 api(libs.firebase.analytics.ktx)
@@ -134,6 +140,17 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.sqlDelight.driver.sqlite)
                 implementation(libs.ui.tooling.preview)
+                api(libs.kcef)
+            }
+        }
+
+        val jsMain by getting {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(compose.html.core)
+                implementation(libs.sqlDelight.driver.sqljs)
+                implementation(npm("sql.js", "1.6.2"))
+                implementation(devNpm("copy-webpack-plugin", "9.1.0"))
             }
         }
 
@@ -191,6 +208,10 @@ compose.desktop {
     }
 }
 
+compose.experimental {
+    web.application {}
+}
+
 libres {
     // https://github.com/Skeptick/libres#setup
 }
@@ -199,6 +220,7 @@ tasks.getByPath("desktopSourcesJar").dependsOn("libresGenerateResources")
 dependencies {
     implementation(libs.play.services.wallet)
 }
+tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
 
 sqldelight {
     databases {
@@ -213,4 +235,19 @@ sqldelight {
 
 multiplatformResources {
     multiplatformResourcesPackage = "com.dna.payments.kmm"
+}
+
+fun org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget.setUpiOSObserver() {
+    val path = projectDir.resolve("src/nativeInterop/cinterop/observer")
+
+    binaries.all {
+        linkerOpts("-F $path")
+        linkerOpts("-ObjC")
+    }
+
+    compilations.getByName("main") {
+        cinterops.create("observer") {
+            compilerOpts("-F $path")
+        }
+    }
 }

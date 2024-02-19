@@ -20,11 +20,10 @@ import com.dna.payments.kmm.presentation.ui.common.DNAGreenBackButton
 import com.dna.payments.kmm.utils.constants.Constants.HELP_CENTER_URL
 import com.dna.payments.kmm.utils.navigation.LocalNavigator
 import com.dna.payments.kmm.utils.navigation.currentOrThrow
-import com.multiplatform.webview.util.KLogSeverity
-import com.multiplatform.webview.web.LoadingState
-import com.multiplatform.webview.web.WebView
-import com.multiplatform.webview.web.rememberWebViewNavigator
-import com.multiplatform.webview.web.rememberWebViewState
+import com.dna.payments.kmm.utils.webview.web.LoadingState
+import com.dna.payments.kmm.utils.webview.web.WebView
+import com.dna.payments.kmm.utils.webview.web.rememberWebViewNavigator
+import com.dna.payments.kmm.utils.webview.web.rememberWebViewState
 import dev.icerock.moko.resources.compose.stringResource
 
 class HelpCenterScreen : Screen {
@@ -42,7 +41,6 @@ class HelpCenterScreen : Screen {
 
         state.webSettings.apply {
             isJavaScriptEnabled = true
-            logSeverity = KLogSeverity.Debug
             customUserAgentString =
                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1) AppleWebKit/625.20 (KHTML, like Gecko) Version/14.3.43 Safari/625.20"
         }

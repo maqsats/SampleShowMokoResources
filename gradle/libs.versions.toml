@@ -3,6 +3,7 @@
 accompanistSystemuicontroller = "0.32.0"
 composeMaterialDialogsCore = "0.9.4"
 composeShimmer = "1.2.0"
+kcef = "2024.01.07.1"
 kotlin = "1.9.22"
 agp = "8.2.2"
 compose = "1.6.0-rc02"
@@ -36,15 +37,16 @@ gms-service = "4.4.0"
 firebaseBom = "32.7.1"
 
 #*** Compose webview ***#
-composeWebviewMultiplatform = "1.8.6"
+webkit = "1.10.0"
 
 [libraries]
 
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
+androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
 biometric = { module = "androidx.biometric:biometric", version.ref = "androidBiometricVersion" }
 compose-material-dialogs-core = { module = "ca.gosyer:compose-material-dialogs-core", version.ref = "composeMaterialDialogsCore" }
 compose-shimmer = { module = "com.valentinilk.shimmer:compose-shimmer", version.ref = "composeShimmer" }
-compose-webview-multiplatform = { module = "io.github.kevinnzou:compose-webview-multiplatform", version.ref = "composeWebviewMultiplatform" }
+kcef = { module = "dev.datlag:kcef", version.ref = "kcef" }
 material3-window-size-classMultiplatform = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "material3WindowSizeClassMultiplatform" }
 image-loader-extension-moko-resources = { module = "io.github.qdsfdhvh:image-loader-extension-moko-resources", version.ref = "composeImageLoader" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
