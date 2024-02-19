@@ -10,13 +10,7 @@
 * [Ktor]
 * [Koin]
 
-## Android, iOS, Desktop
-
-## Architecture
-
-<p align="center">    
-  <img src="./arch.png">
-<p>
+## Android, iOS, Desktop, Browser
 
 ## Run project
 
