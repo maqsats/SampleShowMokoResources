@@ -172,14 +172,14 @@ kotlin {
 }
 
 android {
-    namespace = "com.dna.payments.kmm"
+    namespace = "com.dnapayments.mp"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 24
         targetSdk = 33
 
-        applicationId = "com.dna.payments.kmm"
+        applicationId = "com.dnapayments.mp"
         versionCode = 1
         versionName = "1.0.0"
     }
@@ -202,7 +202,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.dna.payments.kmm.desktopApp"
+            packageName = "com.dnapayments.mp.desktopApp"
             packageVersion = "1.0.0"
         }
     }
@@ -227,14 +227,14 @@ sqldelight {
         create("AppDatabase") {
             // Database configuration here.
             // https://cashapp.github.io/sqldelight
-            packageName.set("com.dna.payments.kmm.data_cache.sqldelight")
+            packageName.set("com.dnapayments.mp.data_cache.sqldelight")
             sourceFolders.set(listOf("kotlin"))
         }
     }
 }
 
 multiplatformResources {
-    multiplatformResourcesPackage = "com.dna.payments.kmm"
+    multiplatformResourcesPackage = "com.dnapayments.mp"
 }
 
 fun org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget.setUpiOSObserver() {

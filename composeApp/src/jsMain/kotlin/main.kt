@@ -1,5 +1,5 @@
-import com.dna.payments.kmm.App
-import com.dna.payments.kmm.di.initKoin
+import com.dnapayments.mp.App
+import com.dnapayments.mp.di.initKoin
 import org.jetbrains.skiko.wasm.onWasmReady
 
 fun main() {

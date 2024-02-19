@@ -1,4 +1,4 @@
 import androidx.compose.ui.window.ComposeUIViewController
-import com.dna.payments.kmm.App
+import com.dnapayments.mp.App
 
 fun MainViewController() = ComposeUIViewController { App() }
