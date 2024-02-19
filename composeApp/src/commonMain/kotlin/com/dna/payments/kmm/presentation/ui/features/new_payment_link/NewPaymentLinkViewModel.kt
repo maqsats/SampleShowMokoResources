@@ -21,9 +21,9 @@ import com.dna.payments.kmm.presentation.model.validation_result.ValidationResul
 import com.dna.payments.kmm.presentation.mvi.BaseViewModel
 import com.dna.payments.kmm.utils.constants.Constants.GBP
 import com.dna.payments.kmm.utils.constants.Constants.UCOF
+import com.dna.payments.kmm.utils.extension.convertToReadable
 import com.dna.payments.kmm.utils.extension.convertToServerFormat
 import com.dna.payments.kmm.utils.extension.generateRandomOrderNumber
-import com.dna.payments.kmm.utils.extension.getDefaultDateRange
 import kotlinx.coroutines.launch
 
 class NewPaymentLinkViewModel(
@@ -52,37 +52,61 @@ class NewPaymentLinkViewModel(
         storeList = ResourceUiState.Loading,
         currencyList = emptyList(),
         selectedStore = null,
-        dateSelection = getDefaultDateRange().second,
+        linkExpire = null,
         selectedCurrency = Currency(GBP),
         amount = TextFieldUiState(
             input = mutableStateOf(""),
             textInput = TextInput.AMOUNT,
-            validationResult = mutableStateOf(ValidationResult(successful = true))
+            validationResult = mutableStateOf(ValidationResult(successful = true)),
+            onFieldChanged = {
+                currentState.amount.validationResult.value =
+                    validateField(currentState.amount.input.value, TextInput.AMOUNT)
+            }
         ),
         customerName = TextFieldUiState(
             input = mutableStateOf(""),
             textInput = TextInput.CUSTOMER_NAME,
-            validationResult = mutableStateOf(ValidationResult(successful = true))
+            validationResult = mutableStateOf(ValidationResult(successful = true)),
+            onFieldChanged = {
+                currentState.customerName.validationResult.value =
+                    validateField(currentState.customerName.input.value, TextInput.CUSTOMER_NAME)
+            }
         ),
         description = TextFieldUiState(
             input = mutableStateOf(""),
             textInput = TextInput.DESCRIPTION,
-            validationResult = mutableStateOf(ValidationResult(successful = true))
+            validationResult = mutableStateOf(ValidationResult(successful = true)),
+            onFieldChanged = {
+                currentState.description.validationResult.value =
+                    validateField(currentState.description.input.value, TextInput.DESCRIPTION)
+            }
         ),
         orderNumber = TextFieldUiState(
             input = mutableStateOf(generateRandomOrderNumber()),
             textInput = TextInput.ORDER_NUMBER,
-            validationResult = mutableStateOf(ValidationResult(successful = true))
+            validationResult = mutableStateOf(ValidationResult(successful = true)),
+            onFieldChanged = {
+                currentState.orderNumber.validationResult.value =
+                    validateField(currentState.orderNumber.input.value, TextInput.ORDER_NUMBER)
+            }
         ),
         store = TextFieldUiState(
             input = mutableStateOf(""),
             textInput = TextInput.STORES,
-            validationResult = mutableStateOf(ValidationResult(successful = true))
+            validationResult = mutableStateOf(ValidationResult(successful = true)),
+            onFieldChanged = {
+                currentState.store.validationResult.value =
+                    validateField(currentState.store.input.value, TextInput.STORES)
+            }
         ),
         expiredDate = TextFieldUiState(
             input = mutableStateOf(""),
             textInput = TextInput.EXPIRED_DATE,
-            validationResult = mutableStateOf(ValidationResult(successful = true))
+            validationResult = mutableStateOf(ValidationResult(successful = true)),
+            onFieldChanged = {
+                currentState.expiredDate.validationResult.value =
+                    validateField(currentState.expiredDate.input.value, TextInput.EXPIRED_DATE)
+            }
         )
     )
 
@@ -96,12 +120,13 @@ class NewPaymentLinkViewModel(
                     copy(selectedCurrency = event.selectedCurrency)
                 }
             }
-            is NewPaymentLinkContract.Event.OnDateSelection -> {
+            is NewPaymentLinkContract.Event.OnDateSelected -> {
                 setState {
                     copy(
-                        dateSelection = event.dateSelection
+                        linkExpire = event.linkExpire
                     )
                 }
+                currentState.expiredDate.input.value = event.linkExpire.convertToReadable()
             }
             NewPaymentLinkContract.Event.OnGenerateNewRandomNumberClick -> {
                 currentState.orderNumber.input.value = generateRandomOrderNumber()
@@ -115,11 +140,12 @@ class NewPaymentLinkViewModel(
                 val currencyList = currencyUseCase.getCurrencyListFromStoreItem(
                     event.storesItem
                 )
+                currentState.store.input.value = event.storesItem.name
                 setState {
                     copy(
                         selectedStore = event.storesItem,
                         selectedCurrency = currencyList.first(),
-                        currencyList = currencyList
+                        currencyList = currencyList,
                     )
 
                 }
@@ -142,10 +168,9 @@ class NewPaymentLinkViewModel(
             validateField(currentState.orderNumber.input.value, TextInput.ORDER_NUMBER)
         val selectedDateValidation =
             validateField(
-                currentState.dateSelection.endDate.convertToServerFormat(),
+                currentState.expiredDate.input.value,
                 TextInput.EXPIRED_DATE
             )
-
 
         val validations = listOf(
             amountValidation,
@@ -157,10 +182,6 @@ class NewPaymentLinkViewModel(
 
         val allValid = validations.all { it.successful }
 
-        if (allValid) {
-            createNewLink()
-            return
-        }
         val errorTextInputFields = validations.filter { !it.successful }
         errorTextInputFields.forEach {
             when (it.textInput) {
@@ -182,6 +203,11 @@ class NewPaymentLinkViewModel(
                 else -> {}
             }
         }
+
+        if (allValid) {
+            createNewLink()
+            return
+        }
     }
 
     private fun getStores() {
@@ -195,20 +221,24 @@ class NewPaymentLinkViewModel(
         }
     }
 
-
     private fun createNewLink() {
         val createNewLink = CreateNewLinkRequest(
             amount = currentState.amount.input.value.toDouble(),
             currency = currentState.selectedCurrency.name,
             customerName = currentState.customerName.input.value,
             description = currentState.description.input.value,
-            expirationDate = currentState.dateSelection.endDate.convertToServerFormat(),
+            expirationDate = currentState.linkExpire.convertToServerFormat(),
             invoiceId = currentState.orderNumber.input.value,
             terminalId = currentState.selectedStore?.terminals?.first()?.id.toString(),
             periodic = if (true) Periodic(UCOF) else null,
             transactionType = if (cardSettings.transactionTypeSelection) currentState.transactionType.key else null
         )
         screenModelScope.launch {
+            setState {
+                copy(
+                    createNewLinkState = ResourceUiState.Loading
+                )
+            }
             val result = createNewLinkRepository.createNewLink(createNewLink)
             setState {
                 copy(

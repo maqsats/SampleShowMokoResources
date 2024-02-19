@@ -31,7 +31,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.presentation.model.TextFieldUiState
+import com.dna.payments.kmm.presentation.theme.Dimens
 import com.dna.payments.kmm.presentation.theme.DnaTextStyle
+import com.dna.payments.kmm.presentation.theme.Paddings
 import com.dna.payments.kmm.presentation.theme.black
 import com.dna.payments.kmm.presentation.theme.greenButtonNotFilled
 import com.dna.payments.kmm.presentation.theme.greyColor
@@ -39,7 +41,6 @@ import com.dna.payments.kmm.presentation.theme.outlineGreenColor
 import com.dna.payments.kmm.presentation.theme.poppinsFontFamily
 import com.dna.payments.kmm.presentation.theme.red
 import com.dna.payments.kmm.presentation.theme.white
-import com.dna.payments.kmm.utils.extension.noRippleClickable
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 
@@ -113,11 +114,12 @@ fun DnaTextField(
     enabled: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     maxLength: Int = 0,
-    leadingIcon: @Composable (() -> Unit)? = null,
-    onClick: () -> Unit = {}
+    readOnly: Boolean = false,
+    singleLine: Boolean = true,
+    leadingIcon: @Composable (() -> Unit)? = null
 ) {
     OutlinedTextField(
-        modifier = modifier.noRippleClickable(onClick),
+        modifier = modifier,
         enabled = enabled,
         value = textState.input.value,
         onValueChange = {
@@ -126,7 +128,7 @@ fun DnaTextField(
                 textState.onFieldChanged()
             }
         },
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(Paddings.standard),
         textStyle = DnaTextStyle.Normal16.copy(
             fontFamily = poppinsFontFamily()
         ),
@@ -156,10 +158,11 @@ fun DnaTextField(
             focusedContainerColor = white,
             errorTextColor = red
         ),
-        singleLine = true,
+        singleLine = singleLine,
         trailingIcon = trailingIcon,
         visualTransformation = visualTransformation,
-        leadingIcon = leadingIcon
+        leadingIcon = leadingIcon,
+        readOnly = readOnly
     )
 }
 
@@ -194,7 +197,7 @@ fun OutlinedTextField(
 
     BasicTextField(
         value = value,
-        modifier = modifier.fillMaxWidth().defaultMinSize(minHeight = 60.dp),
+        modifier = modifier.fillMaxWidth().defaultMinSize(minHeight = Dimens.textFieldHeight),
         onValueChange = onValueChange,
         enabled = enabled,
         readOnly = readOnly,

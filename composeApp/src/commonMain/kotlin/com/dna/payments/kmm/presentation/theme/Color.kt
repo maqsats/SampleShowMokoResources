@@ -10,7 +10,7 @@ internal val dnaRedLightBackground = Color(0xFFF2D2D1)
 internal val gray = Color(0xFF8A8A8A)
 internal val grayLight = Color(0xFF333C3C43)
 
-
+internal val grey3 = Color(0xFFC3C5C7)
 internal val white = Color(0xFFFFFFFF)
 internal val green3 = Color(0xFF317E72)
 internal val labelColor = Color(0x3C3C434D)

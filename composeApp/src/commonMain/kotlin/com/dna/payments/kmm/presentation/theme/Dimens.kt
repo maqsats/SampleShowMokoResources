@@ -8,6 +8,7 @@ object Dimens {
     val emptyIconSize = 120.dp
     val dateRangeHeight = 42.dp
     val switchHeight = 40.dp
+    val textFieldHeight = 60.dp
     val switchTimeHeight = 36.dp
     val switchWidth = 134.dp
     val switchTimeWidth = 101.dp

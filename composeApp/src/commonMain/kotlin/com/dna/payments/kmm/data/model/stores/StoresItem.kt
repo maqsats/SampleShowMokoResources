@@ -10,4 +10,8 @@ data class StoresItem(
     val name: String,
     val terminals: List<Terminal>,
     val type: String
-)
+) {
+    override fun toString(): String {
+        return "StoresItem(id='$id', isActive=$isActive, mid='$mid', name='$name', terminals=$terminals, type='$type')"
+    }
+}

@@ -46,7 +46,7 @@ fun WheelTimePicker(
     var selectedMinute by remember { mutableStateOf(0) }
 
     val hours = mutableListOf<Int>().apply {
-        for (hour in 0..12) {
+        for (hour in 0..11) {
             add(hour)
         }
     }

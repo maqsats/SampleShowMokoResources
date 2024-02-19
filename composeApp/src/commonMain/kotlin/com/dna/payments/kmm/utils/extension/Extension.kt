@@ -30,6 +30,7 @@ import com.dna.payments.kmm.MR
 import com.dna.payments.kmm.data.model.Error
 import com.dna.payments.kmm.domain.interactors.use_cases.currency.CurrencyHelper
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.DATE_FORMAT_WITH_HOUR
+import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.DATE_FORMAT_WITH_HOUR_POS
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatter
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterHM
 import com.dna.payments.kmm.domain.interactors.use_cases.date_picker.DatePickerConstants.dateFormatterOnlyHM
@@ -159,6 +160,10 @@ fun DateTime?.daysBetween(other: DateTime?): Int {
 
 fun DateTime?.convertToServerFormat(): String {
     return this?.format(DATE_FORMAT_WITH_HOUR) ?: ""
+}
+
+fun DateTime?.convertToReadable(): String {
+    return this?.format(DATE_FORMAT_WITH_HOUR_POS) ?: ""
 }
 
 fun Double.toMoneyString(): String {
